@@ -185,7 +185,7 @@ const CONFIG=Object.freeze({
   household:'646073c7-6a89-4077-b000-ea0cb287e2c9'
 });
 const KEYS={state:'marichevy_state_v10',session:'marichevy_session_v10',pending:'marichevy_pending_v10'};
-const PEOPLE=['Сергей','Виктория','Алиса','Майя','Денни','Макс'];
+const PEOPLE=['Сергей','Виктория','Алиса','Мая','Deni','Max'];
 const CATS=['Продукты','Супермаркеты','Рестораны и кафе','Жильё','ЖКХ','Электричество','Вода и газ','Интернет','Мобильная связь','Дети','Образование','Аптека и медицина','Питомцы','Автомобиль','Бензин','Парковка','Мойка','Страховка','Налог','Штрафы','Шины','Кредиты','Транспорт','Такси','Одежда','Красота','Маркетплейсы','Дом','Ремонт','Развлечения','Подписки','Путешествия','Подарки','Банковские комиссии','Прочее'];
 const NAV={home:['Финансовый центр семьи','Все деньги семьи — в одном понятном месте.'],today:['Ежедневная запись','Один экран для всех операций.'],history:['История','Найдите, измените или удалите любую операцию.'],analytics:['Аналитика','Куда уходят деньги и кто их тратит.'],income:['Доходы','Все поступления семьи.'],housing:['Жильё и обязательные расходы','Регулярные платежи.'],car:['Cherry Tiggo','Расходы на автомобиль.'],loans:['Кредиты','Платежи и обязательства.'],accounts:['Счета','Балансы и наличные.'],family:['Семья','Участники бюджета.'],limits:['Лимиты','Сколько можно тратить.'],data:['Данные','Облако, экспорт и импорт.']};
 
@@ -193,9 +193,10 @@ let state=loadLocal();
 let session=null;
 let editId=null;
 let saving=false;
+let saveChain=Promise.resolve();
 
 function blankState(){return {
- entries:[], settings:{
+ entries:[], deletedIds:[], settings:{
   housing:{rent:0,utilities:0,electricity:0,water:0,internet:0,mobile:0,education:0,children:0,subscriptions:0,parking:0},
   car:{fuel:0,parking:0,service:0,tires:0,wash:0,insurance:0,tax:0,fines:0,repair:0},
   loans:{loan1:0,loan2:0,other:0},
@@ -205,6 +206,7 @@ function blankState(){return {
 }}
 function normalize(s){const b=blankState(); if(!s||typeof s!=='object')return b; return {
  entries:Array.isArray(s.entries)?s.entries:[],
+ deletedIds:Array.isArray(s.deletedIds)?s.deletedIds:[],
  settings:{housing:{...b.settings.housing,...(s.settings?.housing||{})},car:{...b.settings.car,...(s.settings?.car||{})},loans:{...b.settings.loans,...(s.settings?.loans||{})},accounts:{...b.settings.accounts,...(s.settings?.accounts||{})},limits:{...b.settings.limits,...(s.settings?.limits||{})}}
 }}
 function loadLocal(){try{return normalize(JSON.parse(localStorage.getItem(KEYS.state)||'null'))}catch{return blankState()}}
@@ -256,32 +258,120 @@ async function ensureToken(){
  if(exp && Date.now()>exp-60000)return await refreshSession();
  return true;
 }
+async function fetchCloudState(){
+ if(!(await ensureToken())) return null;
+ const r=await api('/rest/v1/family_state?household_id=eq.'+encodeURIComponent(CONFIG.household)+'&select=data,updated_at',{
+   headers:{Authorization:'Bearer '+session.access_token}
+ });
+ if(r.status===401 && await refreshSession()) return fetchCloudState();
+ if(!r.ok) throw new Error('Ошибка загрузки облачных данных: HTTP '+r.status);
+ const rows=await r.json();
+ return rows[0]?.data ? normalize(rows[0].data) : null;
+}
+function entryTime(e){return Date.parse(e?.updated_at||e?.created_at||0)||0}
+function mergeStates(...sources){
+ const valid=sources.filter(Boolean).map(normalize);
+ const deleted=new Set();
+ valid.forEach(s=>(s.deletedIds||[]).forEach(id=>deleted.add(id)));
+ const map=new Map();
+ for(const s of valid){
+   for(const e of (s.entries||[])){
+     if(!e?.id||deleted.has(e.id)) continue;
+     const old=map.get(e.id);
+     if(!old || entryTime(e)>=entryTime(old)) map.set(e.id,e);
+   }
+ }
+ const base=blankState();
+ // For settings, later sources win only when they contain a non-zero/defined value.
+ // In normal use settings are changed by the current user and then pushed.
+ for(const s of valid){
+   for(const group of Object.keys(base.settings)){
+     if(s.settings?.[group]) base.settings[group]={...base.settings[group],...s.settings[group]};
+   }
+ }
+ base.entries=[...map.values()];
+ base.deletedIds=[...deleted];
+ return normalize(base);
+}
 async function pullCloud(){
  if(!(await ensureToken()))return false;
- const r=await api('/rest/v1/family_state?household_id=eq.'+encodeURIComponent(CONFIG.household)+'&select=data,updated_at',{headers:{Authorization:'Bearer '+session.access_token}});
- if(r.status===401 && await refreshSession())return pullCloud();
- if(!r.ok)throw new Error('Ошибка загрузки облачных данных: HTTP '+r.status);
- const rows=await r.json();
- if(rows[0]?.data){state=normalize(rows[0].data);saveLocal();localStorage.removeItem(KEYS.pending)}
- else {await pushCloud(true)}
+ const cloud=await fetchCloudState();
+ const local=state;
+ let pending=null;
+ try{pending=normalize(JSON.parse(localStorage.getItem(KEYS.pending)||'null'))}catch{}
+ if(cloud){
+   // Never throw away local/pending additions during login or refresh.
+   state=mergeStates(cloud,local,pending);
+   saveLocal();
+   localStorage.removeItem(KEYS.pending);
+   // If local/pending contained anything new, push the merged result once.
+   const cloudIds=new Set(cloud.entries.map(e=>e.id));
+   const hasNew=state.entries.some(e=>!cloudIds.has(e.id)) || state.deletedIds.some(id=>!(cloud.deletedIds||[]).includes(id));
+   if(hasNew) await pushCloud(true);
+ }else{
+   state=mergeStates(local,pending);
+   await pushCloud(true);
+ }
  return true;
 }
 async function pushCloud(initial=false){
  if(!(await ensureToken()))return false;
  saving=true;updateSync('Сохраняем в облако…');
- const payload={household_id:CONFIG.household,data:state,updated_by:session.user?.id||null};
- let r=await api('/rest/v1/family_state?on_conflict=household_id',{method:'POST',headers:{Authorization:'Bearer '+session.access_token,Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify(payload)});
- if(r.status===401 && await refreshSession())return pushCloud(initial);
- if(!r.ok){localStorage.setItem(KEYS.pending,JSON.stringify(state));updateSync('⚠️ Не синхронизировано — данные сохранены на устройстве');saving=false;return false}
- localStorage.removeItem(KEYS.pending);saveLocal();updateSync('☁️ Синхронизировано');saving=false;return true
+ try{
+   // Always merge with the latest server state immediately before writing.
+   const cloud=await fetchCloudState();
+   if(cloud && !initial) state=mergeStates(cloud,state);
+   const payload={household_id:CONFIG.household,data:state,updated_by:session.user?.id||null};
+   let r=await api('/rest/v1/family_state?on_conflict=household_id',{
+     method:'POST',
+     headers:{Authorization:'Bearer '+session.access_token,Prefer:'resolution=merge-duplicates,return=minimal'},
+     body:JSON.stringify(payload)
+   });
+   if(r.status===401 && await refreshSession())return pushCloud(initial);
+   if(!r.ok)throw new Error('HTTP '+r.status);
+
+   // Read back what the server actually stored. Never claim success without checking
+   // both additions/edits AND deletions (tombstones).
+   const verify=await fetchCloudState();
+   if(!verify)throw new Error('Не удалось проверить сохранение');
+   const ids=new Set(verify.entries.map(e=>e.id));
+   const missing=state.entries.filter(e=>!ids.has(e.id));
+   const deleted=new Set(verify.deletedIds||[]);
+   const resurrected=(state.deletedIds||[]).filter(id=>ids.has(id)||!deleted.has(id));
+   if(missing.length)throw new Error('Сервер не подтвердил сохранение операции');
+   if(resurrected.length)throw new Error('Сервер не подтвердил удаление операции');
+
+   state=verify;
+   saveLocal();
+   localStorage.removeItem(KEYS.pending);
+   updateSync('☁️ Синхронизировано');
+   saving=false;
+   return true;
+ }catch(e){
+   localStorage.setItem(KEYS.pending,JSON.stringify(state));
+   saveLocal();
+   updateSync('⚠️ Не подтверждено облаком — данные сохранены на устройстве');
+   saving=false;
+   return false;
+ }
 }
-async function saveAll(){
+async function saveAllNow(){
  saveLocal();
- if(!session){localStorage.setItem(KEYS.pending,JSON.stringify(state));updateSync('⚠️ Только на этом устройстве — войдите для облака');return false}
+ if(!session){
+   localStorage.setItem(KEYS.pending,JSON.stringify(state));
+   updateSync('⚠️ Только на этом устройстве — войдите для облака');
+   return false;
+ }
  localStorage.setItem(KEYS.pending,JSON.stringify(state));
- const ok=await pushCloud();
- return ok
+ return await pushCloud(false);
 }
+// Serialize all writes. This prevents a fast sequence such as add→edit→delete
+// from sending requests out of order and bringing an old version back.
+function saveAll(){
+ saveChain=saveChain.catch(()=>false).then(()=>saveAllNow());
+ return saveChain;
+}
+
 function updateSync(t){const el=document.getElementById('syncStatus');if(el)el.textContent=t}
 
 function logout(){
@@ -318,10 +408,18 @@ async function addEntry(){
  document.getElementById('saveMsg').innerHTML=ok?'<div class="success">✓ Операция сохранена в облако.</div>':'<div class="error">⚠️ Не удалось подтвердить сохранение в облаке. Данные оставлены на устройстве.</div>';
  if(ok)clearEntry();
 }
-function deleteEntry(id){
- const e=state.entries.find(x=>x.id===id);if(!e)return;
+async function deleteEntry(id){
+ const e=state.entries.find(x=>x.id===id);if(!e||saving)return;
  if(!confirm('Удалить операцию '+money(e.amount)+'?'))return;
- state.entries=state.entries.filter(x=>x.id!==id);renderAll();saveAll().then(ok=>{if(!ok)toast('⚠️ Удаление пока только на устройстве')})
+ const previous=state;
+ state={...state,entries:state.entries.filter(x=>x.id!==id),deletedIds:Array.from(new Set([...(state.deletedIds||[]),id]))};
+ saveLocal();renderAll();
+ const ok=await saveAll();
+ if(!ok){
+   toast('⚠️ Удаление не подтверждено облаком');
+ }else{
+   toast('✓ Операция удалена');
+ }
 }
 function openEdit(id){
  const e=state.entries.find(x=>x.id===id);if(!e)return;editId=id;
@@ -338,7 +436,7 @@ function openEdit(id){
 function closeEdit(){document.getElementById('editModal').classList.remove('open');editId=null}
 async function saveEdit(){
  const e=state.entries.find(x=>x.id===editId);if(!e)return;
- e.type=document.getElementById('xType').value;e.amount=Number(document.getElementById('xAmount').value)||0;e.category=document.getElementById('xCat').value;e.who=document.getElementById('xWho').value;e.date=document.getElementById('xDate').value;e.store=document.getElementById('xStore').value;e.comment=document.getElementById('xComment').value;
+ e.updated_at=new Date().toISOString();e.type=document.getElementById('xType').value;e.amount=Number(document.getElementById('xAmount').value)||0;e.category=document.getElementById('xCat').value;e.who=document.getElementById('xWho').value;e.date=document.getElementById('xDate').value;e.store=document.getElementById('xStore').value;e.comment=document.getElementById('xComment').value;
  closeEdit();renderAll();const ok=await saveAll();toast(ok?'✓ Изменения сохранены':'⚠️ Изменения пока только на устройстве')
 }
 
