@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Маричевы · Траты.Банк</title>
+<style>
+:root{
+ --bg:#f4f7fb;--card:#fff;--ink:#162033;--muted:#7a8498;--line:#e5e9f1;
+ --blue:#3777ff;--blue2:#edf3ff;--green:#169653;--greenbg:#eaf8f0;
+ --red:#d83c52;--redbg:#fff0f2;--orange:#c47b00;--orangebg:#fff6df;
+ --dark:#111a2d;--shadow:0 10px 30px rgba(27,40,70,.07);--radius:18px
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,Arial,sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.app{min-height:100vh;display:flex}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:255px;background:var(--dark);color:#fff;padding:22px 15px;z-index:10}
+.logo{font-weight:900;font-size:20px;padding:8px 12px 25px}.logo span{color:#6d9aff}
+.nav button{width:100%;border:0;background:transparent;color:#c9d1e0;text-align:left;padding:12px 13px;border-radius:12px;margin:2px 0}
+.nav button:hover,.nav button.active{background:#253453;color:#fff}
+.main{margin-left:255px;width:calc(100% - 255px);padding:28px;max-width:1550px}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:20px}
+h1{font-size:30px;margin:0 0 5px}.subtitle{color:var(--muted)}
+.section{display:none}.section.active{display:block}
+.grid{display:grid;gap:16px}.kpis{grid-template-columns:repeat(6,1fr)}.two{grid-template-columns:1.35fr .65fr}.three{grid-template-columns:repeat(3,1fr)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
+.kpi .label{font-size:12px;color:var(--muted)}.kpi .value{font-size:24px;font-weight:900;margin-top:7px}
+h2{font-size:20px;margin:0 0 15px}h3{margin:0 0 12px}
+.green{color:var(--green)}.red{color:var(--red)}.orange{color:var(--orange)}
+.formgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}
+label{display:block;font-size:12px;color:var(--muted);margin:0 0 6px}
+input,select,textarea{width:100%;border:1px solid #dfe4ec;border-radius:10px;padding:11px 12px;background:#fff;color:var(--ink);outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px #3777ff14}
+textarea{min-height:80px;resize:vertical}
+.primary,.save{border:0;background:var(--blue);color:#fff;border-radius:11px;padding:11px 18px;font-weight:800}
+.secondary{border:0;background:#eef1f6;color:#26324a;border-radius:10px;padding:10px 14px}
+.danger{border:0;background:var(--redbg);color:var(--red);border-radius:9px;padding:8px 11px}
+.small{font-size:12px}.note{font-size:13px;line-height:1.5;color:var(--muted)}
+.badge{display:inline-block;padding:5px 9px;border-radius:99px;font-size:11px;font-weight:800}.badge.green{background:var(--greenbg)}.badge.red{background:var(--redbg)}.badge.blue{background:var(--blue2);color:var(--blue)}
+table{width:100%;border-collapse:collapse}th,td{padding:11px 8px;border-bottom:1px solid var(--line);font-size:13px;text-align:left;vertical-align:middle}th{color:var(--muted);font-weight:600}
+.empty{padding:28px;text-align:center;color:var(--muted)}
+.toolbar{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+.sticky-save{position:sticky;bottom:12px;z-index:7;background:#111827;color:#fff;border-radius:15px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:15px;box-shadow:0 14px 35px #0003;margin-top:16px}
+.sticky-save button{background:#fff;color:#111827;border:0;padding:10px 17px;border-radius:10px;font-weight:900}
+.progress{height:9px;background:#edf0f5;border-radius:99px;overflow:hidden}.progress i{height:100%;display:block;background:var(--blue);border-radius:99px}
+.metric{font-size:34px;font-weight:900}
+.person-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.person{border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center}.person .emoji{font-size:26px}.person b{display:block;margin-top:5px}.person small{color:var(--muted)}
+.canvas-wrap{height:300px;position:relative}.canvas-wrap canvas{width:100%;height:100%}
+.chart-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px;color:var(--muted);font-size:12px}
+.legend-dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px}
+.months{display:flex;gap:8px}.months select{width:auto}
+.receipt-preview{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.receipt{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}.receipt img{width:100%;height:150px;object-fit:cover}.receipt .rbody{padding:10px}
+.switch{display:flex;align-items:center;gap:9px}
+.instruction ol{padding-left:22px}.instruction li{margin:10px 0;line-height:1.5}
+.warning{background:var(--orangebg);border:1px solid #f0d48c;border-radius:12px;padding:12px}
+.success{background:var(--greenbg);border-radius:12px;padding:12px}
+.toast{position:fixed;right:24px;bottom:24px;background:#111827;color:#fff;padding:13px 17px;border-radius:12px;opacity:0;transform:translateY(10px);transition:.2s;z-index:50}.toast.show{opacity:1;transform:none}
+.modal{position:fixed;inset:0;background:#10182799;display:none;align-items:center;justify-content:center;z-index:40;padding:20px}.modal.show{display:flex}.modalbox{background:#fff;border-radius:18px;max-width:700px;width:100%;max-height:90vh;overflow:auto;padding:22px}
+@media(max-width:1200px){.kpis{grid-template-columns:repeat(3,1fr)}.person-grid{grid-template-columns:repeat(3,1fr)}.receipt-preview{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:900px){.sidebar{position:static;width:100%;height:auto}.app{display:block}.main{margin:0;width:100%;padding:16px}.nav{display:flex;overflow:auto}.nav button{white-space:nowrap}.two,.three{grid-template-columns:1fr}.formgrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.kpis,.formgrid,.person-grid,.receipt-preview{grid-template-columns:1fr}.top{flex-direction:column}}
+
+/* Маричевы · mobile redesign */
+@media(max-width:700px){
+ body{background:#f7f8fc;padding-bottom:74px}
+ .sidebar{position:fixed;left:0;right:0;top:auto;bottom:0;width:100%;height:68px;padding:5px 6px;background:rgba(17,26,45,.96);backdrop-filter:blur(14px);border-radius:18px 18px 0 0;z-index:30}
+ .logo{display:none}.nav{height:100%;display:flex;overflow-x:auto;gap:2px}.nav button{flex:0 0 76px;height:58px;margin:0;padding:5px 3px;text-align:center;font-size:10px;border-radius:10px;white-space:normal}.nav button::first-line{font-size:18px}
+ .main{margin:0;width:100%;padding:14px 12px 90px;max-width:none}
+ h1{font-size:25px;line-height:1.1}.subtitle{font-size:12px}
+ .top{gap:12px;margin-bottom:14px}.top>.save{width:100%}
+ .kpis{grid-template-columns:repeat(2,1fr);gap:9px}.kpi{padding:14px}.kpi .value{font-size:20px}
+ .card{padding:15px;border-radius:16px}.formgrid{grid-template-columns:1fr!important;gap:9px}.two,.three{grid-template-columns:1fr!important}
+ .person-grid{grid-template-columns:repeat(3,1fr);gap:7px}.person{padding:9px 4px}.person .emoji{font-size:21px}.person b{font-size:12px}
+ table{min-width:720px}.card:has(table){overflow-x:auto}
+ .sticky-save{bottom:78px;border-radius:13px}
+ .canvas-wrap{height:240px}
+ .receipt-preview{grid-template-columns:1fr 1fr!important;gap:8px}.receipt img{height:120px}
+}
+@media(min-width:701px){
+ .nav button{transition:.18s}.nav button:hover{transform:translateX(2px)}
+}
+
+/* v6 cloud authentication */
+.authbar{position:fixed;right:18px;top:14px;z-index:35;display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:7px 9px;box-shadow:var(--shadow)}
+.authbar .dot{width:9px;height:9px;border-radius:50%;background:#c47b00}.authbar.online .dot{background:#169653}
+.authbar small{color:var(--muted);max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.authbar button{border:0;background:#eef1f6;border-radius:9px;padding:7px 10px;font-weight:700;color:#26324a}
+.auth-modal{position:fixed;inset:0;background:#101827aa;display:none;align-items:center;justify-content:center;z-index:100;padding:18px}.auth-modal.show{display:flex}.auth-box{background:#fff;border-radius:22px;width:min(430px,100%);padding:26px;box-shadow:0 30px 80px #0004}.auth-box h1{font-size:26px;margin-bottom:7px}.auth-box .brand{font-weight:900;color:var(--blue);margin-bottom:18px}.auth-error{display:none;background:var(--redbg);color:var(--red);padding:11px;border-radius:10px;margin:12px 0;font-size:13px}.auth-error.show{display:block}.auth-loading{display:none;color:var(--muted);font-size:13px;margin-top:10px}.auth-loading.show{display:block}
+@media(max-width:700px){.authbar{top:8px;right:8px}.authbar small{max-width:130px}.main{padding-top:62px}}
+</style>
+</head>
+<body>
+<div id="authBar" class="authbar"><span class="dot"></span><small id="authUser">Вход не выполнен</small><button id="authButton" onclick="openAuth()">Войти</button></div>
+<div class="app">
+<aside class="sidebar">
+ <div class="logo">Маричевы <span>Траты.Банк</span></div>
+ <div class="nav">
+  <button class="active" onclick="show('home',this)">🏠 Главная</button>
+  <button onclick="show('daily',this)">➕ Сегодня</button>
+  <button onclick="show('history',this)">📅 История</button>
+  <button onclick="show('income',this)">💰 Доходы</button>
+  <button onclick="show('fixed',this)">🏠 Жильё и обязательные</button>
+  <button onclick="show('car',this)">🚗 Cherry Tiggo</button>
+  <button onclick="show('debts',this)">💳 Кредиты</button>
+  <button onclick="show('accounts',this)">🏦 Счета</button>
+  <button onclick="show('family',this)">👨‍👩‍👧‍👶 Семья</button>
+  <button onclick="show('receipts',this)">🧾 Чеки</button>
+  <button onclick="show('limits',this)">🎯 Лимиты</button>
+  <button onclick="show('goals',this)">🏦 Накопления</button>
+  <button onclick="show('instructions',this)">📖 Инструкция</button>
+  <button onclick="show('sync',this)">☁️ Синхронизация</button>
+  <button onclick="show('data',this)">⚙️ Данные</button>
+ </div>
+</aside>
+
+<main class="main">
+
+<section id="home" class="section active">
+ <div class="top"><div><h1>Финансовый центр семьи</h1><div class="subtitle">Сережа + Виктория · Майя + Алиса · Дени 🐶 · Макс 🐱</div></div><button class="save" onclick="saveAll()">💾 СОХРАНИТЬ</button></div>
+ <div class="person-grid">
+  <div class="person"><div class="emoji">👨</div><b>Сережа</b><small>личные расходы</small></div>
+  <div class="person"><div class="emoji">👩</div><b>Виктория</b><small>личные расходы</small></div>
+  <div class="person"><div class="emoji">👶</div><b>Майя</b><small>дети</small></div>
+  <div class="person"><div class="emoji">👧</div><b>Алиса</b><small>дети</small></div>
+  <div class="person"><div class="emoji">🐶</div><b>Дени</b><small>собака</small></div>
+  <div class="person"><div class="emoji">🐱</div><b>Макс</b><small>кот</small></div>
+ </div><br>
+ <div class="grid kpis">
+  <div class="card kpi"><div class="label">Доходы месяца</div><div class="value green" id="kIncome">0 ₽</div></div>
+  <div class="card kpi"><div class="label">Расходы месяца</div><div class="value red" id="kExpense">0 ₽</div></div>
+  <div class="card kpi"><div class="label">Остаток</div><div class="value" id="kBalance">0 ₽</div></div>
+  <div class="card kpi"><div class="label">Сегодня</div><div class="value" id="kToday">0 ₽</div></div>
+  <div class="card kpi"><div class="label">Лимит/день</div><div class="value" id="kLimit">0 ₽</div></div>
+  <div class="card kpi"><div class="label">Кредиты/мес.</div><div class="value" id="kDebt">0 ₽</div></div>
+ </div><br>
+ <div class="grid two">
+  <div class="card"><h2>Куда уходят деньги</h2><div class="canvas-wrap"><canvas id="catChart"></canvas></div><div id="catLegend" class="chart-legend"></div></div>
+  <div class="card"><h2>Кто тратит</h2><div class="canvas-wrap"><canvas id="whoChart"></canvas></div><div id="whoLegend" class="chart-legend"></div></div>
+ </div><br>
+ <div class="grid two">
+  <div class="card"><h2>Состояние бюджета</h2><div class="metric" id="status">—</div><p class="note" id="statusNote"></p><div class="progress"><i id="budgetProgress"></i></div></div>
+  <div class="card"><h2>Главное сегодня</h2><div id="todaySummary"></div></div>
+ </div>
+</section>
+
+<section id="daily" class="section">
+ <div class="top"><div><h1>Ежедневная запись</h1><div class="subtitle">Один экран для всех операций. Добавили → сохранили.</div></div><div><input id="dailyDate" type="date"></div></div>
+ <div class="card">
+  <h2>Добавить операцию</h2>
+  <div class="formgrid">
+   <div><label>Тип операции</label><select id="eType"><option value="expense">Расход</option><option value="income">Доход</option><option value="transfer">Перевод между своими счетами</option><option value="cash">Снятие наличных</option></select></div>
+   <div><label>Сумма, ₽</label><input id="eAmount" type="number" min="0" placeholder="0"></div>
+   <div><label>Категория</label><select id="eCat"></select></div>
+   <div><label>Кто</label><select id="eWho"></select></div>
+  </div><br>
+  <div class="formgrid">
+   <div><label>Комментарий</label><input id="eNote" placeholder="Например: продукты, аптека, школа"></div>
+   <div><label>Способ оплаты</label><select id="ePay"><option>Карта</option><option>Наличные</option><option>Перевод</option><option>Другое</option></select></div>
+   <div><label>Источник/магазин</label><input id="eStore" placeholder="Пятёрочка, Ozon..."></div>
+  </div><br>
+  <button class="primary" onclick="addEntry()">➕ Добавить</button><br><br><div class="note">Переводы между своими счетами и снятие наличных не считаются расходом — это движение денег. Покупку записываем отдельным расходом.</div>
+ </div><br>
+ <div class="card"><div class="toolbar"><h2>Операции за день</h2><span id="dayTotal"></span></div><div id="dayTable"></div></div>
+ <div class="sticky-save"><span>💾 Сохраните изменения — они останутся в этом браузере.</span><button onclick="saveAll()">СОХРАНИТЬ</button></div>
+</section>
+
+<section id="history" class="section">
+ <div class="top"><div><h1>История</h1><div class="subtitle">Сравнение дней и месяцев.</div></div><div class="months"><select id="histMonth" onchange="renderHistory()"></select></div></div>
+ <div class="card"><div class="canvas-wrap"><canvas id="monthChart"></canvas></div></div><br>
+ <div class="grid two">
+  <div class="card"><h2>По дням</h2><div id="historyDays"></div></div>
+  <div class="card"><h2>Кто сколько потратил</h2><div id="whoMonth"></div></div>
+ </div>
+</section>
+
+<section id="income" class="section">
+ <div class="top"><div><h1>Доходы</h1><div class="subtitle">Зарплаты, подработки, пособия и другие поступления.</div></div></div>
+ <div class="card">
+  <div class="formgrid">
+   <div><label>Дата</label><input id="iDate" type="date"></div>
+   <div><label>Кто</label><select id="iWho"></select></div>
+   <div><label>Сумма, ₽</label><input id="iAmount" type="number" min="0"></div>
+   <div><label>Источник</label><input id="iNote" placeholder="Зарплата, пособие..."></div>
+  </div><br><button class="primary" onclick="addIncome()">Добавить доход</button>
+ </div><br><div class="card"><div id="incomeTable"></div></div>
+</section>
+
+<section id="fixed" class="section">
+ <div class="top"><div><h1>Жильё и обязательные расходы</h1><div class="subtitle">Квартира, квартплата/ЖКХ, электричество, вода, интернет, связь, детские и другие обязательные платежи.</div></div></div>
+ <div class="card">
+  <div class="formgrid">
+   <div><label>Название</label><input id="fName" placeholder="Аренда/ипотека"></div>
+   <div><label>Сумма в месяц, ₽</label><input id="fAmount" type="number" min="0"></div>
+   <div><label>Категория</label><select id="fCat"><option>Квартира / аренда / ипотека</option><option>Квартплата / ЖКХ</option><option>Электричество / вода / газ</option><option>Интернет</option><option>Связь</option><option>Дети</option><option>Образование</option><option>Здоровье</option><option>Подписки</option><option>Паркинг</option><option>Другое</option></select></div>
+   <div><label>Оплачено?</label><select id="fPaid"><option>Нет</option><option>Да</option></select></div>
+  </div><br><button class="primary" onclick="addFixed()">Добавить обязательный расход</button>
+ <br><br><div class="warning"><b>Что сюда обычно вносить:</b> квартира/ипотека или аренда, квартплата и ЖКХ, электричество, вода, интернет, мобильная связь, детский сад/школа, секции, регулярные лекарства, подписки и платный паркинг, если он фиксированный.</div>
+ </div><br><div class="card"><div id="fixedTable"></div></div>
+</section>
+
+
+<section id="car" class="section">
+ <div class="top"><div><h1>🚗 Cherry Tiggo</h1><div class="subtitle">Отдельно контролируем автомобиль: топливо, обслуживание, страховку, налоги, штрафы и платный паркинг.</div></div></div>
+ <div class="card">
+  <h2>Постоянные расходы автомобиля</h2>
+  <div class="formgrid">
+   <div><label>Платный паркинг, ₽/мес.</label><input id="carParking" type="number" min="0" placeholder="Например 15000"></div>
+   <div><label>Страховка, ₽/год</label><input id="carInsurance" type="number" min="0"></div>
+   <div><label>Налог, ₽/год</label><input id="carTax" type="number" min="0"></div>
+   <div><label>Средний бензин, ₽/мес.</label><input id="carFuel" type="number" min="0"></div>
+  </div><br>
+  <div class="formgrid">
+   <div><label>Обслуживание/ремонт, ₽/мес.</label><input id="carService" type="number" min="0"></div>
+   <div><label>Мойка/шины, ₽/мес.</label><input id="carWash" type="number" min="0"></div>
+   <div><label>Штрафы, ₽/мес. план</label><input id="carFines" type="number" min="0"></div>
+   <div><label>Комментарий</label><input id="carNote" placeholder="Что учитывать"></div>
+  </div><br>
+  <button class="primary" onclick="saveCar()">Сохранить расходы автомобиля</button>
+ </div><br>
+ <div class="grid three">
+  <div class="card"><div class="note">Паркинг</div><div class="metric" id="carParkingView">0 ₽</div></div>
+  <div class="card"><div class="note">Автомобиль в среднем/мес.</div><div class="metric" id="carMonthView">0 ₽</div></div>
+  <div class="card"><div class="note">Автомобиль в год</div><div class="metric" id="carYearView">0 ₽</div></div>
+ </div><br>
+ <div class="card">
+  <h2>Фактические расходы Cherry Tiggo в текущем месяце</h2>
+  <div id="carFact"></div>
+ </div>
+</section>
+
+<section id="debts" class="section">
+ <div class="top"><div><h1>Кредиты</h1><div class="subtitle">Остаток долга и обязательный ежемесячный платёж.</div></div></div>
+ <div class="card">
+  <div class="formgrid">
+   <div><label>Кредит</label><input id="dName" placeholder="Кредит 1"></div>
+   <div><label>Остаток, ₽</label><input id="dBalance" type="number" min="0"></div>
+   <div><label>Платёж, ₽</label><input id="dPayment" type="number" min="0"></div>
+   <div><label>Дата платежа</label><input id="dDay" type="number" min="1" max="31" placeholder="15"></div>
+  </div><br><button class="primary" onclick="addDebt()">Добавить кредит</button>
+ </div><br><div class="card"><div id="debtTable"></div></div>
+</section>
+
+
+<section id="accounts" class="section">
+ <div class="top"><div><h1>🏦 Счета и движение денег</h1><div class="subtitle">Чтобы переводы между своими счетами и снятие наличных не искажали расходы.</div></div></div>
+ <div class="card">
+  <div class="warning"><b>Важно:</b> перевод между своими картами/счетами — это не расход. Снятие наличных — тоже не расход, пока деньги не потрачены. Расходом становится сама покупка.</div><br>
+  <h2>Счета семьи</h2>
+  <div class="formgrid">
+   <div><label>Название</label><input id="aName" placeholder="Т-Банк Black"></div>
+   <div><label>Владелец</label><select id="aWho"></select></div>
+   <div><label>Остаток, ₽</label><input id="aBalance" type="number"></div>
+   <div><label>Комментарий</label><input id="aNote" placeholder="Основная карта"></div>
+  </div><br><button class="primary" onclick="addAccount()">Добавить счёт</button>
+  <br><br><div id="accountsTable"></div>
+ </div>
+</section>
+
+<section id="family" class="section">
+ <div class="top"><div><h1>Семья</h1><div class="subtitle">Кому относятся расходы.</div></div></div>
+ <div class="card"><h2>Участники бюджета</h2><div class="person-grid">
+  <div class="person"><div class="emoji">👨</div><b>Сережа</b><small>взрослый</small></div><div class="person"><div class="emoji">👩</div><b>Виктория</b><small>взрослый</small></div>
+  <div class="person"><div class="emoji">👶</div><b>Майя</b><small>ребёнок</small></div><div class="person"><div class="emoji">👧</div><b>Алиса</b><small>ребёнок</small></div>
+  <div class="person"><div class="emoji">🐶</div><b>Дени</b><small>собака</small></div><div class="person"><div class="emoji">🐱</div><b>Макс</b><small>кот</small></div>
+ </div><br>
+ <div class="success"><b>Правило семьи:</b> расходы записываем без обвинений. Система показывает цифры, а решение принимаете вы вдвоём.</div></div>
+</section>
+
+<section id="receipts" class="section">
+ <div class="top"><div><h1>Чеки и документы</h1><div class="subtitle">Загружайте фото/сканы чеков и привязывайте их к расходу.</div></div></div>
+ <div class="card">
+  <h2>Загрузить чек</h2>
+  <div class="formgrid">
+   <div><label>Дата</label><input id="rDate" type="date"></div>
+   <div><label>Сумма, ₽</label><input id="rAmount" type="number" min="0" placeholder="Если известна"></div>
+   <div><label>Магазин</label><input id="rStore" placeholder="Пятёрочка"></div>
+   <div><label>Кто</label><select id="rWho"></select></div>
+  </div><br>
+  <input id="receiptFile" type="file" accept="image/*,.pdf">
+  <p class="note">Фото чека сохраняется локально в этом браузере. Автоматическое распознавание суммы может быть подключено отдельно; пока поля суммы и магазина можно проверить перед сохранением.</p>
+  <br><button class="primary" onclick="addReceipt()">🧾 Сохранить чек</button>
+ </div><br>
+ <div class="card"><h2>Загруженные чеки</h2><div id="receiptsList" class="receipt-preview"></div></div>
+</section>
+
+<section id="limits" class="section">
+ <div class="top"><div><h1>Лимиты</h1><div class="subtitle">Система считает безопасный остаток и показывает перерасход.</div></div></div>
+ <div class="grid two">
+  <div class="card">
+   <h2>План месяца</h2>
+   <div class="formgrid">
+    <div><label>Плановый доход, ₽</label><input id="pIncome" type="number"></div>
+    <div><label>Лимит всех переменных расходов, ₽</label><input id="pVariable" type="number"></div>
+    <div><label>Накопления, ₽</label><input id="pSave" type="number"></div>
+    <div><label>Неприкосновенный запас, ₽</label><input id="pReserve" type="number"></div>
+   </div><br><button class="primary" onclick="savePlan()">Сохранить лимиты</button>
+  </div>
+  <div class="card"><h2>Сегодня</h2><div class="metric" id="safeDay">0 ₽</div><p class="note">рекомендуемый максимум переменных расходов на оставшиеся дни месяца</p><div class="metric" id="safeWeek">0 ₽</div><p class="note">ориентир на неделю</p></div>
+ </div><br>
+ <div class="card"><h2>Контроль категорий</h2><div id="limitCategories"></div></div>
+</section>
+
+<section id="goals" class="section">
+ <div class="top"><div><h1>Накопления и цели</h1><div class="subtitle">Отдельно видим деньги, которые нельзя случайно потратить.</div></div></div>
+ <div class="card">
+  <div class="formgrid">
+   <div><label>Цель</label><input id="gName" placeholder="Резерв 500 000 ₽"></div>
+   <div><label>Целевая сумма, ₽</label><input id="gTarget" type="number" min="0"></div>
+   <div><label>Уже накоплено, ₽</label><input id="gCurrent" type="number" min="0"></div>
+   <div><label>Дата цели</label><input id="gDate" type="date"></div>
+  </div><br><button class="primary" onclick="addGoal()">Добавить цель</button>
+ </div><br><div class="card"><div id="goalsList"></div></div>
+</section>
+
+<section id="instructions" class="section">
+ <div class="top"><div><h1>📖 Инструкция</h1><div class="subtitle">Как пользоваться семейным банком каждый день.</div></div></div>
+ <div class="card instruction">
+  <h2>1. Первый запуск</h2>
+  <ol>
+   <li>Откройте раздел <b>Лимиты</b> и внесите плановый доход семьи на месяц.</li>
+   <li>Укажите допустимый объём переменных расходов и сумму, которую хотите откладывать.</li>
+   <li>В разделе <b>Обязательные</b> внесите квартиру/ипотеку, коммуналку, связь, образование, детские обязательства и другие постоянные платежи.</li>
+   <li>В разделе <b>Кредиты</b> внесите каждый кредит отдельно: остаток и ежемесячный платёж.</li>
+  </ol>
+  <h2>2. Каждый день — 2 минуты</h2>
+  <ol>
+   <li>Открываете <b>Сегодня</b>.</li>
+   <li>Каждую покупку записываете отдельной строкой: сумма → категория → кто → магазин.</li>
+   <li>Зарплату, пособие или другой приход записываете как <b>Доход</b>.</li>
+   <li>После внесения нажимаете <b>СОХРАНИТЬ</b>.</li>
+  </ol>
+  <h2>3. Чеки</h2>
+  <ol><li>В разделе <b>Чеки</b> можно хранить фотографии/сканы чеков.</li><li>Указывайте сумму и магазин, чтобы потом сверять расходы.</li><li>Раз в неделю проверяйте чеки против операций.</li></ol>
+  <h2>4. Как смотреть, кто тратит больше</h2>
+  <p>Главная показывает расходы по каждому члену семьи. В разделе <b>История</b> можно выбрать месяц и сравнить Сережу, Викторию, детей и животных по сумме расходов.</p>
+  <h2>5. Главное правило</h2>
+  <div class="warning"><b>Не ищем виноватого.</b> Если расходы выше лимита, сначала смотрим категорию и причину. Цель системы — показать семье, куда уходят деньги и сколько можно потратить дальше.</div>
+  <h2>6. Резервная копия</h2>
+  <p>Раз в неделю заходите в <b>Данные → Скачать резервную копию</b>. Если компьютер/браузер сломается, JSON можно будет импортировать обратно.</p>
+  <h2>7. Счета и переводы</h2><p>В разделе <b>Счета</b> можно хранить остатки карт. Перевод между своими счетами не записывайте как расход. Снятие наличных тоже не является расходом — расходом станет конкретная покупка за наличные.</p><h2>8. Автомобиль</h2><p>Для Cherry Tiggo отдельно учитываем паркинг, бензин, обслуживание, мойку/шины, страховку, налог, штрафы и запчасти. Паркинг можно поставить как постоянный ежемесячный расход.</p><h2>9. Важно про совместное использование</h2>
+  <p>Теперь семейный банк работает через Supabase: Сергей и Виктория входят под своими аккаунтами, а финансовые данные хранятся в общей защищённой базе «Маричевы». Локальная копия в браузере используется как быстрый резерв.</p>
+ </div>
+</section>
+
+
+<section id="sync" class="section">
+ <div class="top">
+  <div><h1>☁️ Синхронизация семьи</h1><div class="subtitle">Одна база для Серёжи и Виктории — телефон, компьютер и планшет.</div></div>
+  <div id="syncStatus" class="badge blue">Только это устройство</div>
+ </div>
+ <div class="grid two">
+  <div class="card">
+   <h2>Как это будет работать</h2>
+   <div class="success">
+    <b>Да, это можно сделать.</b><br>
+    Вы оба заходите в один «Маричевы · Траты.Банк», и записи сохраняются в общей облачной базе. Если Серёжа добавил покупку с компьютера, Виктория увидит её с телефона.
+   </div>
+   <br>
+   <ol class="note" style="line-height:1.8;padding-left:20px">
+    <li>Создаём одну семейную базу.</li>
+    <li>У каждого своё устройство.</li>
+    <li>Изменения отправляются в облако.</li>
+    <li>Приложение автоматически подтягивает новые данные.</li>
+   </ol>
+   <div class="warning"><b>Важно:</b> для настоящей работы с двух разных устройств нужен облачный сервер. Сам HTML-файл не может синхронизировать два телефона только через localStorage.</div>
+  </div>
+  <div class="card">
+   <h2>Подключение облака</h2>
+   <p class="note">Приложение уже настроено для проекта Supabase семьи «Маричевы». Для обычного пользователя достаточно войти по своему email и паролю. Publishable key встроен в приложение и не является секретным ключом.</p>
+   <div class="success"><b>☁️ Проект подключён</b><br>Семейная база: <b>Маричевы</b></div><br>
+   <div id="cloudHelp" class="note">Для работы с облаком войдите в аккаунт. URL и Publishable key уже настроены.</div>
+   <button class="primary" onclick="openAuth()">🔐 Войти / сменить пользователя</button>
+   <button class="secondary" onclick="signOut()">Выйти</button>
+  </div>
+ </div>
+ <br>
+ <div class="card">
+  <h2>Сейчас</h2>
+  <div class="grid three">
+   <div><div class="note">Локальное сохранение</div><b class="green">✓ Работает</b></div>
+   <div><div class="note">Сохранение в двух вкладках</div><b class="green">✓ Работает</b></div>
+   <div><div class="note">Телефон ↔ компьютер</div><b id="cloudReady">Требуется вход</b></div>
+  </div>
+ </div>
+</section>
+
+<section id="data" class="section">
+ <div class="top"><div><h1>Данные и резерв</h1><div class="subtitle">Сохраняйте копию, особенно перед очисткой браузера.</div></div></div>
+ <div class="grid two">
+  <div class="card"><h2>Резервная копия</h2><p class="note">Экспорт сохраняет операции, лимиты, кредиты, цели и настройки.</p><button class="primary" onclick="exportData()">⬇️ Экспортировать JSON</button><br><br><input type="file" accept=".json" onchange="importData(event)"></div>
+  <div class="card"><h2>Удаление</h2><p class="note">Удаляются только данные этого устройства. Облачная база семьи не удаляется.</p><button class="danger" onclick="resetAll()">Удалить все данные</button></div>
+ </div>
+</section>
+
+</main></div>
+<div id="toast" class="toast">Сохранено</div>
+<div id="authModal" class="auth-modal">
+ <div class="auth-box">
+  <div class="brand">☁️ МАРИЧЕВЫ · ТРАТЫ.БАНК</div>
+  <h1>Вход в семейный банк</h1>
+  <p class="note">Один аккаунт для Сергея, второй — для Виктории. Данные расходов общие для семьи «Маричевы».</p>
+  <label>Email</label><input id="authEmail" type="email" autocomplete="username" placeholder="ваш@email.com">
+  <br><label>Пароль</label><input id="authPassword" type="password" autocomplete="current-password" placeholder="••••••••">
+  <div id="authError" class="auth-error"></div>
+  <div style="display:flex;gap:9px;margin-top:15px">
+   <button class="primary" style="flex:1" onclick="signIn()">Войти</button>
+   <button class="secondary" onclick="closeAuth()">Закрыть</button>
+  </div>
+  <div id="authLoading" class="auth-loading">Подключаем семейную базу…</div>
+ </div>
+</div>
+
+<script>
+const KEY='familyBankV3';
+const PEOPLE=['Сережа','Виктория','Майя','Алиса','Дени','Макс'];
+const CATS=['Супермаркеты','Продукты','Рестораны и доставка','Кафе','Жильё — аренда/ипотека','ЖКХ / квартплата','Электричество / вода / газ','Интернет','Связь','Паркинг','Автомобиль — топливо','Автомобиль — обслуживание','Автомобиль — мойка/шины','Автомобиль — страховка','Автомобиль — налоги/штрафы','Автомобиль — запчасти','Транспорт / такси','Дети — Майя','Дети — Алиса','Детские товары','Образование','Аптеки / медицина','Животные — Дени','Животные — Макс','Продукты для животных','Личное — Серёжа','Личное — Виктория','Одежда и обувь','Красота','Развлечения','Подписки / цифровые','Маркетплейсы','Покупки для дома','Ремонт / мебель','Подарки / цветы','Путешествия','Банк / комиссии','Другое'];
+let state=JSON.parse(localStorage.getItem(KEY)||'null')||{
+ entries:[],fixed:[],debts:[],receipts:[],goals:[],accounts:[],
+ car:{parking:0,insurance:0,tax:0,fuel:0,service:0,wash:0,fines:0,note:''},
+ plan:{income:0,variable:0,save:0,reserve:0}
+};
+let dbPromise=null;
+
+function money(n){return new Intl.NumberFormat('ru-RU',{maximumFractionDigits:0}).format(Math.round(n||0))+' ₽'}
+function today(){return new Date().toISOString().slice(0,10)}
+function month(){return today().slice(0,7)}
+function monthName(m){return new Date(m+'-01T12:00:00').toLocaleDateString('ru-RU',{month:'long',year:'numeric'})}
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function toast(t='💾 Сохранено'){let x=document.getElementById('toast');x.textContent=t;x.classList.add('show');setTimeout(()=>x.classList.remove('show'),1700)}
+function saveAll(showToast=true){localStorage.setItem(KEY,JSON.stringify(state));renderAll();if(showToast)toast()}
+function show(id,btn){document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));if(btn)btn.classList.add('active');renderAll()}
+function setupSelects(){
+ ['eWho','iWho','rWho','aWho'].forEach(id=>document.getElementById(id).innerHTML=PEOPLE.map(x=>`<option>${x}</option>`).join(''));
+ document.getElementById('eCat').innerHTML=CATS.map(x=>`<option>${x}</option>`).join('');
+}
+function addEntry(){
+ let amount=+document.getElementById('eAmount').value;if(!amount){toast('Введите сумму');return}
+ state.entries.push({id:Date.now(),date:document.getElementById('dailyDate').value,type:document.getElementById('eType').value,amount,
+ category:document.getElementById('eCat').value,who:document.getElementById('eWho').value,note:document.getElementById('eNote').value,method:document.getElementById('ePay').value,store:document.getElementById('eStore').value});
+ ['eAmount','eNote','eStore'].forEach(id=>document.getElementById(id).value='');saveAll();
+}
+function delEntry(id){state.entries=state.entries.filter(x=>x.id!==id);saveAll()}
+function editEntry(id){
+ let x=state.entries.find(e=>e.id===id);if(!x)return;
+ let a=prompt('Сумма:',x.amount);if(a===null)return;let n=prompt('Комментарий:',x.note||'');if(n===null)return;x.amount=+a||x.amount;x.note=n;saveAll()
+}
+function renderDay(){
+ let d=document.getElementById('dailyDate').value,arr=state.entries.filter(x=>x.date===d),exp=arr.filter(x=>x.type==='expense').reduce((a,x)=>a+x.amount,0);
+ document.getElementById('dayTotal').textContent='Расходы: '+money(exp);
+ document.getElementById('dayTable').innerHTML=arr.length?`<table><thead><tr><th>Тип</th><th>Категория</th><th>Кто</th><th>Магазин</th><th>Комментарий</th><th>Сумма</th><th></th></tr></thead><tbody>${arr.slice().reverse().map(x=>`<tr><td><span class="badge ${x.type==='income'?'green':'red'}">${x.type==='income'?'Доход':x.type==='transfer'?'Перевод':x.type==='cash'?'Наличные':'Расход'}</span></td><td>${esc(x.category)}</td><td>${esc(x.who)}</td><td>${esc(x.store||'—')}</td><td>${esc(x.note||'—')}</td><td><b>${money(x.amount)}</b></td><td><button class="secondary" onclick="editEntry(${x.id})">Изм.</button> <button class="danger" onclick="delEntry(${x.id})">×</button></td></tr>`).join('')}</tbody></table>`:'<div class="empty">За этот день пока ничего нет.</div>';
+}
+function addIncome(){
+ let amount=+iAmount.value;if(!amount)return toast('Введите сумму');
+ state.entries.push({id:Date.now(),date:iDate.value,type:'income',amount,category:'Доход',who:iWho.value,note:iNote.value,method:'',store:''});
+ iAmount.value='';iNote.value='';saveAll()
+}
+function addFixed(){
+ let name=fName.value.trim(),amount=+fAmount.value;if(!name||!amount)return toast('Заполните название и сумму');
+ state.fixed.push({id:Date.now(),name,amount,cat:fCat.value,paid:fPaid.value});fName.value='';fAmount.value='';saveAll()
+}
+function delFixed(id){state.fixed=state.fixed.filter(x=>x.id!==id);saveAll()}
+function renderFixed(){fixedTable.innerHTML=state.fixed.length?`<table><thead><tr><th>Расход</th><th>Категория</th><th>Сумма</th><th>Статус</th><th></th></tr></thead><tbody>${state.fixed.map(x=>`<tr><td><b>${esc(x.name)}</b></td><td>${esc(x.cat)}</td><td>${money(x.amount)}</td><td>${x.paid==='Да'?'<span class="badge green">Оплачено</span>':'<span class="badge blue">Запланировано</span>'}</td><td><button class="danger" onclick="delFixed(${x.id})">Удалить</button></td></tr>`).join('')}</tbody></table>`:'<div class="empty">Добавьте обязательные расходы.</div>'}
+
+function saveCar(){
+ state.car={parking:+carParking.value||0,insurance:+carInsurance.value||0,tax:+carTax.value||0,fuel:+carFuel.value||0,service:+carService.value||0,wash:+carWash.value||0,fines:+carFines.value||0,note:carNote.value||''};saveAll()
+}
+function renderCar(){
+ let c=state.car||{parking:0,insurance:0,tax:0,fuel:0,service:0,wash:0,fines:0,note:''};
+ carParking.value=c.parking||'';carInsurance.value=c.insurance||'';carTax.value=c.tax||'';carFuel.value=c.fuel||'';carService.value=c.service||'';carWash.value=c.wash||'';carFines.value=c.fines||'';carNote.value=c.note||'';
+ let monthly=c.parking+c.fuel+c.service+c.wash+c.fines+(c.insurance/12)+(c.tax/12);
+ carParkingView.textContent=money(c.parking);carMonthView.textContent=money(monthly);carYearView.textContent=money(monthly*12);
+ let arr=state.entries.filter(x=>x.date.startsWith(month())&&x.type==='expense'&&x.category.startsWith('Автомобиль'));
+ let total=arr.reduce((a,x)=>a+x.amount,0);
+ carFact.innerHTML=arr.length?`<table><thead><tr><th>Категория</th><th>Кто</th><th>Магазин</th><th>Сумма</th></tr></thead><tbody>${arr.map(x=>`<tr><td>${esc(x.category)}</td><td>${esc(x.who)}</td><td>${esc(x.store||'—')}</td><td><b>${money(x.amount)}</b></td></tr>`).join('')}</tbody><tfoot><tr><th colspan="3">Итого за месяц</th><th>${money(total)}</th></tr></tfoot></table>`:'<div class="empty">Фактических автомобильных расходов в этом месяце пока нет.</div>'
+}
+function addAccount(){
+ let name=aName.value.trim(),balance=+aBalance.value||0;if(!name)return toast('Введите название счёта');
+ state.accounts.push({id:Date.now(),name,who:aWho.value,balance,note:aNote.value});aName.value='';aBalance.value='';aNote.value='';saveAll()
+}
+function delAccount(id){state.accounts=state.accounts.filter(x=>x.id!==id);saveAll()}
+function renderAccounts(){
+ accountsTable.innerHTML=state.accounts.length?`<table><thead><tr><th>Счёт</th><th>Владелец</th><th>Остаток</th><th>Комментарий</th><th></th></tr></thead><tbody>${state.accounts.map(x=>`<tr><td><b>${esc(x.name)}</b></td><td>${esc(x.who)}</td><td>${money(x.balance)}</td><td>${esc(x.note||'—')}</td><td><button class="danger" onclick="delAccount(${x.id})">Удалить</button></td></tr>`).join('')}</tbody></table>`:'<div class="empty">Добавьте основные счета и карты семьи.</div>'
+}
+
+function addDebt(){
+ let name=dName.value.trim(),balance=+dBalance.value,payment=+dPayment.value;if(!name)return toast('Введите название');
+ state.debts.push({id:Date.now(),name,balance,payment,day:+dDay.value||0});['dName','dBalance','dPayment','dDay'].forEach(id=>document.getElementById(id).value='');saveAll()
+}
+function delDebt(id){state.debts=state.debts.filter(x=>x.id!==id);saveAll()}
+function renderDebts(){debtTable.innerHTML=state.debts.length?`<table><thead><tr><th>Кредит</th><th>Остаток</th><th>Платёж</th><th>Дата</th><th></th></tr></thead><tbody>${state.debts.map(x=>`<tr><td><b>${esc(x.name)}</b></td><td>${money(x.balance)}</td><td>${money(x.payment)}</td><td>${x.day||'—'}</td><td><button class="danger" onclick="delDebt(${x.id})">Удалить</button></td></tr>`).join('')}</tbody></table>`:'<div class="empty">Кредиты пока не добавлены.</div>'}
+function totals(){
+ let m=month(),arr=state.entries.filter(x=>x.date.startsWith(m)),income=arr.filter(x=>x.type==='income').reduce((a,x)=>a+x.amount,0),expense=arr.filter(x=>x.type==='expense').reduce((a,x)=>a+x.amount,0);
+ return {arr,income,expense}
+}
+function normalizeState(){state.accounts??=[];state.car??={parking:0,insurance:0,tax:0,fuel:0,service:0,wash:0,fines:0,note:''};state.goals??=[];state.receipts??=[];state.fixed??=[];state.debts??=[];state.entries??=[];state.plan??={income:0,variable:0,save:0,reserve:0}}
+function renderHome(){
+ let t=totals(),d=t.arr.filter(x=>x.date===today()&&x.type==='expense').reduce((a,x)=>a+x.amount,0),debt=state.debts.reduce((a,x)=>a+x.payment,0);
+ kIncome.textContent=money(t.income);kExpense.textContent=money(t.expense);kBalance.textContent=money(t.income-t.expense);kToday.textContent=money(d);kDebt.textContent=money(debt);
+ let variableLimit=state.plan.variable||0,spent=t.expense-state.fixed.reduce((a,x)=>a+x.amount,0)-debt;spent=Math.max(0,spent);
+ let remain=Math.max(0,variableLimit-spent),days=new Date().getDate(),last=new Date(new Date().getFullYear(),new Date().getMonth()+1,0).getDate(),left=Math.max(1,last-days+1);
+ kLimit.textContent=money(variableLimit?remain/left:0);
+ let pct=variableLimit?Math.min(100,spent/variableLimit*100):0;budgetProgress.style.width=pct+'%';
+ if(t.income===0&&t.expense===0){status.textContent='Начинаем';status.className='metric orange';statusNote.textContent='Внесите доходы, обязательные расходы и первые покупки.'}
+ else if(t.income>=t.expense){status.textContent='В пределах дохода';status.className='metric green';statusNote.textContent='За текущий месяц расходы пока не превышают доходы.'}
+ else{status.textContent='Расходы выше доходов';status.className='metric red';statusNote.textContent='Посмотрите категории и дневной лимит.'}
+ let todayRows=t.arr.filter(x=>x.date===today());todaySummary.innerHTML=todayRows.length?todayRows.slice().reverse().slice(0,7).map(x=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)"><span>${esc(x.category)} · ${esc(x.who)}</span><b class="${x.type==='income'?'green':'red'}">${x.type==='income'?'+':'−'}${money(x.amount)}</b></div>`).join(''):'<div class="empty">Сегодня операций ещё нет.</div>';
+ drawCharts(t.arr);
+}
+function aggregate(arr,key){
+ let o={};arr.filter(x=>x.type==='expense').forEach(x=>o[x[key]]=(o[x[key]]||0)+x.amount);return o
+}
+function drawDonut(canvasId,data,legendId){
+ let c=document.getElementById(canvasId),ctx=c.getContext('2d'),w=c.clientWidth||500,h=c.clientHeight||300,dpr=devicePixelRatio||1;c.width=w*dpr;c.height=h*dpr;ctx.scale(dpr,dpr);
+ ctx.clearRect(0,0,w,h);let vals=Object.entries(data).sort((a,b)=>b[1]-a[1]),total=vals.reduce((a,x)=>a+x[1],0),cx=w/2,cy=h/2,r=Math.min(w,h)*.32,start=-Math.PI/2;
+ if(!total){ctx.fillStyle='#edf0f5';ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fill();ctx.fillStyle='#7a8498';ctx.font='14px Arial';ctx.textAlign='center';ctx.fillText('Нет данных',cx,cy+5);document.getElementById(legendId).innerHTML='';return}
+ let colors=['#3777ff','#16a36b','#f1a51d','#d83c52','#805ad5','#0ea5a8','#e86f51','#64748b','#f06292','#8b5cf6'];
+ vals.forEach((v,i)=>{let ang=v[1]/total*Math.PI*2;ctx.fillStyle=colors[i%colors.length];ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,start,start+ang);ctx.closePath();ctx.fill();start+=ang});
+ ctx.globalCompositeOperation='destination-out';ctx.beginPath();ctx.arc(cx,cy,r*.55,0,Math.PI*2);ctx.fill();ctx.globalCompositeOperation='source-over';
+ ctx.fillStyle='#162033';ctx.font='bold 18px Arial';ctx.textAlign='center';ctx.fillText(money(total),cx,cy+5);
+ document.getElementById(legendId).innerHTML=vals.slice(0,8).map((v,i)=>`<span><i class="legend-dot" style="background:${colors[i%colors.length]}"></i>${esc(v[0])}: ${money(v[1])}</span>`).join('');
+}
+function drawCharts(arr){drawDonut('catChart',aggregate(arr,'category'),'catLegend');drawDonut('whoChart',aggregate(arr,'who'),'whoLegend')}
+function renderHistory(){
+ let m=histMonth.value||month(),arr=state.entries.filter(x=>x.date.startsWith(m)),by={};arr.forEach(x=>{by[x.date]??={i:0,e:0};if(x.type==='income')by[x.date].i+=x.amount;else by[x.date].e+=x.amount});
+ historyDays.innerHTML=Object.keys(by).sort().reverse().map(d=>`<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)"><b>${new Date(d+'T12:00:00').toLocaleDateString('ru-RU',{day:'2-digit',month:'short'})}</b><span class="green">+${money(by[d].i)}</span><span class="red">−${money(by[d].e)}</span></div>`).join('')||'<div class="empty">Нет операций.</div>';
+ let who=aggregate(arr,'who');whoMonth.innerHTML=Object.entries(who).sort((a,b)=>b[1]-a[1]).map(x=>`<div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line)"><span>${esc(x[0])}</span><b>${money(x[1])}</b></div>`).join('')||'<div class="empty">Нет расходов.</div>';
+ drawLine('monthChart',by);
+}
+function drawLine(id,by){
+ let c=document.getElementById(id),ctx=c.getContext('2d'),w=c.clientWidth||700,h=c.clientHeight||300,dpr=devicePixelRatio||1;c.width=w*dpr;c.height=h*dpr;ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);
+ let keys=Object.keys(by).sort();if(!keys.length){ctx.fillStyle='#7a8498';ctx.font='14px Arial';ctx.textAlign='center';ctx.fillText('Нет данных для графика',w/2,h/2);return}
+ let max=Math.max(...keys.map(k=>by[k].e),1),pad=35;ctx.strokeStyle='#e5e9f1';ctx.lineWidth=1;
+ for(let i=0;i<5;i++){let y=pad+i*(h-pad*2)/4;ctx.beginPath();ctx.moveTo(pad,y);ctx.lineTo(w-pad,y);ctx.stroke()}
+ ctx.strokeStyle='#3777ff';ctx.lineWidth=3;ctx.beginPath();keys.forEach((k,i)=>{let x=pad+i*(w-pad*2)/Math.max(1,keys.length-1),y=h-pad-(by[k].e/max)*(h-pad*2);i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke();
+ ctx.fillStyle='#7a8498';ctx.font='11px Arial';ctx.textAlign='center';keys.forEach((k,i)=>{if(i%Math.max(1,Math.ceil(keys.length/8))===0){let x=pad+i*(w-pad*2)/Math.max(1,keys.length-1);ctx.fillText(k.slice(8),x,h-10)}})
+}
+function savePlan(){state.plan={income:+pIncome.value||0,variable:+pVariable.value||0,save:+pSave.value||0,reserve:+pReserve.value||0};saveAll()}
+function renderLimits(){
+ pIncome.value=state.plan.income||'';pVariable.value=state.plan.variable||'';pSave.value=state.plan.save||'';pReserve.value=state.plan.reserve||'';
+ let t=totals(),fixedTotal=state.fixed.reduce((a,x)=>a+x.amount,0),debt=state.debts.reduce((a,x)=>a+x.payment,0),spent=Math.max(0,t.expense-fixedTotal-debt),remain=Math.max(0,(state.plan.variable||0)-spent),now=new Date(),last=new Date(now.getFullYear(),now.getMonth()+1,0).getDate(),left=Math.max(1,last-now.getDate()+1);
+ safeDay.textContent=money(remain/left);safeWeek.textContent=money(remain/left*7);
+ let cats=aggregate(t.arr,'category');let rows=Object.entries(cats).sort((a,b)=>b[1]-a[1]);limitCategories.innerHTML=rows.map(x=>`<div style="padding:11px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between"><span>${esc(x[0])}</span><b>${money(x[1])}</b></div>`).join('')||'<div class="empty">Появится после первых расходов.</div>';
+}
+function addGoal(){let name=gName.value.trim(),target=+gTarget.value,current=+gCurrent.value;if(!name||!target)return toast('Введите цель и сумму');state.goals.push({id:Date.now(),name,target,current,date:gDate.value});['gName','gTarget','gCurrent','gDate'].forEach(id=>document.getElementById(id).value='');saveAll()}
+function delGoal(id){state.goals=state.goals.filter(x=>x.id!==id);saveAll()}
+function renderGoals(){goalsList.innerHTML=state.goals.length?state.goals.map(x=>{let p=Math.min(100,x.current/x.target*100);return `<div style="padding:14px 0;border-bottom:1px solid var(--line)"><div style="display:flex;justify-content:space-between"><b>${esc(x.name)}</b><button class="danger" onclick="delGoal(${x.id})">Удалить</button></div><p class="note">${money(x.current)} из ${money(x.target)} ${x.date?'· до '+new Date(x.date+'T12:00:00').toLocaleDateString('ru-RU'):''}</p><div class="progress"><i style="width:${p}%"></i></div></div>`}).join(''):'<div class="empty">Целей пока нет.</div>'}
+async function initDB(){
+ return new Promise((resolve,reject)=>{let r=indexedDB.open('FamilyBankFiles',1);r.onupgradeneeded=()=>r.result.createObjectStore('receipts',{keyPath:'id'});r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)})
+}
+async function addReceipt(){
+ let f=receiptFile.files[0];if(!f)return toast('Выберите файл чека');
+ if(!dbPromise)dbPromise=initDB();let db=await dbPromise,record={id:Date.now(),date:rDate.value,amount:+rAmount.value||0,store:rStore.value,who:rWho.value,name:f.name,type:f.type,file:f};
+ await new Promise((res,rej)=>{let tx=db.transaction('receipts','readwrite');tx.objectStore('receipts').put(record);tx.oncomplete=res;tx.onerror=()=>rej(tx.error)});
+ state.receipts.push({id:record.id,date:record.date,amount:record.amount,store:record.store,who:record.who,name:record.name});saveAll();receiptFile.value='';rAmount.value='';rStore.value='';toast('🧾 Чек сохранён')
+}
+async function renderReceipts(){
+ if(!dbPromise)dbPromise=initDB();let db=await dbPromise,records=await new Promise((res,rej)=>{let tx=db.transaction('receipts','readonly'),r=tx.objectStore('receipts').getAll();r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});
+ receiptsList.innerHTML=records.length?records.slice().reverse().map(x=>`<div class="receipt">${x.type.startsWith('image/')?`<img src="${URL.createObjectURL(x.file)}">`:'<div style="height:150px;display:grid;place-items:center;font-size:40px">📄</div>'}<div class="rbody"><b>${esc(x.store||x.name)}</b><div class="small">${x.date||''} · ${esc(x.who)}</div><div><b>${x.amount?money(x.amount):'Сумма не указана'}</b></div><br><button class="danger" onclick="delReceipt(${x.id})">Удалить</button></div></div>`).join(''):'<div class="empty">Чеки пока не загружены.</div>'
+}
+async function delReceipt(id){if(!dbPromise)dbPromise=initDB();let db=await dbPromise;await new Promise((res,rej)=>{let tx=db.transaction('receipts','readwrite');tx.objectStore('receipts').delete(id);tx.oncomplete=res;tx.onerror=()=>rej(tx.error)});state.receipts=state.receipts.filter(x=>x.id!==id);saveAll()}
+function exportData(){let blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='семейный-банк-'+today()+'.json';a.click();toast('Резервная копия скачана')}
+function importData(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!x.entries||!x.plan)throw 0;state=x;saveAll();toast('Данные восстановлены')}catch{toast('Неверный файл')}};r.readAsText(f)}
+function resetAll(){if(confirm('Удалить все данные этого семейного банка?')){localStorage.removeItem(KEY);state={entries:[],fixed:[],debts:[],receipts:[],goals:[],accounts:[],car:{parking:0,insurance:0,tax:0,fuel:0,service:0,wash:0,fines:0,note:''},plan:{income:0,variable:0,save:0,reserve:0}};renderAll();toast('Данные удалены')}}
+function populateMonths(){let now=new Date(),arr=[];for(let i=0;i<12;i++){let d=new Date(now.getFullYear(),now.getMonth()-i,1),m=d.toISOString().slice(0,7);arr.push(`<option value="${m}">${monthName(m)}</option>`)}histMonth.innerHTML=arr.join('');histMonth.value=month()}
+function renderIncome(){let arr=state.entries.filter(x=>x.type==='income').sort((a,b)=>b.date.localeCompare(a.date));incomeTable.innerHTML=arr.length?`<table><thead><tr><th>Дата</th><th>Кто</th><th>Источник</th><th>Сумма</th><th></th></tr></thead><tbody>${arr.map(x=>`<tr><td>${x.date}</td><td>${esc(x.who)}</td><td>${esc(x.note||'Доход')}</td><td class="green"><b>+${money(x.amount)}</b></td><td><button class="danger" onclick="delEntry(${x.id})">Удалить</button></td></tr>`).join('')}</tbody></table>`:'<div class="empty">Доходов пока нет.</div>'}
+function renderAll(){setupSelects();renderHome();renderDay();renderHistory();renderIncome();renderFixed();renderDebts();renderLimits();renderGoals();renderReceipts();renderCar();renderAccounts()}
+normalizeState();dailyDate.value=today();iDate.value=today();rDate.value=today();setupSelects();populateMonths();renderAll();
+window.addEventListener('resize',()=>{renderHome();renderHistory()});
+
+/* --- v6.1: Supabase Auth + safe family cloud sync --- */
+const SUPABASE_URL='https://kqndxecziamypdjpxhyq.supabase.co';
+const SUPABASE_KEY='sb_publishable_INgxcqZCu3wughQNt7k8GQ_Bf5dYTXw';
+const FAMILY_ID='646073c7-6a89-4077-b000-ea0cb287e2c9';
+const SESSION_KEY='marichevySupabaseSession';
+const CLOUD_UPDATED_KEY='marichevyCloudUpdated';
+let cloudTimer=null;
+let authSession=null;
+let cloudLoaded=false;
+let cloudHasRow=false;
+let cloudPulling=false;
+let pendingLocalSave=false;
+const channel=('BroadcastChannel' in window)?new BroadcastChannel('marichevy-family-bank'):null;
+
+function session(){
+  if(authSession)return authSession;
+  try{return JSON.parse(localStorage.getItem(SESSION_KEY)||'null')}catch{return null}
+}
+function setSession(x){authSession=x;if(x)localStorage.setItem(SESSION_KEY,JSON.stringify(x));else localStorage.removeItem(SESSION_KEY);updateAuthUI()}
+function authHeaders(){
+ const s=session();
+ return {'apikey':SUPABASE_KEY,'Authorization':'Bearer '+(s?.access_token||SUPABASE_KEY),'Content-Type':'application/json'};
+}
+function updateAuthUI(){
+ const s=session(), bar=document.getElementById('authBar'), user=document.getElementById('authUser'), btn=document.getElementById('authButton');
+ if(s?.user){bar.classList.add('online');user.textContent=s.user.email||'Пользователь';btn.textContent='Выйти';btn.onclick=signOut;cloudReady.textContent='✓ Облако подключено';syncStatus.textContent='☁️ '+(s.user.email||'Онлайн');syncStatus.className='badge green';}
+ else {bar.classList.remove('online');user.textContent='Вход не выполнен';btn.textContent='Войти';btn.onclick=openAuth;cloudReady.textContent='Требуется вход';syncStatus.textContent='🔒 Требуется вход';syncStatus.className='badge blue';}
+}
+function openAuth(){document.getElementById('authModal').classList.add('show');document.getElementById('authError').classList.remove('show');document.getElementById('authEmail').focus()}
+function closeAuth(){document.getElementById('authModal').classList.remove('show')}
+function authMsg(msg){const x=document.getElementById('authError');x.textContent=msg;x.classList.add('show')}
+
+async function signIn(){
+ const email=authEmail.value.trim(), password=authPassword.value;
+ if(!email||!password){authMsg('Введите email и пароль.');return}
+ authLoading.classList.add('show');document.querySelector('.auth-box .primary').disabled=true;
+ try{
+  const r=await fetch(SUPABASE_URL+'/auth/v1/token?grant_type=password',{method:'POST',headers:{'apikey':SUPABASE_KEY,'Content-Type':'application/json'},body:JSON.stringify({email,password})});
+  const d=await r.json();if(!r.ok)throw new Error(d.error_description||d.msg||'Не удалось войти');
+  setSession(d);
+  cloudLoaded=false;
+  const ok=await pullCloud(false,true);
+  if(!ok)throw new Error('Не удалось загрузить семейные данные из облака');
+  closeAuth();toast('☁️ Вход выполнен');startCloudPolling();
+ }catch(e){authMsg(e.message)}
+ finally{authLoading.classList.remove('show');document.querySelector('.auth-box .primary').disabled=false}
+}
+
+async function refreshSession(){
+ const s=session();if(!s?.refresh_token)return null;
+ try{
+  const r=await fetch(SUPABASE_URL+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{'apikey':SUPABASE_KEY,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:s.refresh_token})});
+  const d=await r.json();if(!r.ok)throw new Error('refresh failed');setSession(d);return d;
+ }catch(e){setSession(null);cloudLoaded=false;return null}
+}
+
+async function signOut(){
+ const s=session();
+ try{if(s?.access_token)await fetch(SUPABASE_URL+'/auth/v1/logout',{method:'POST',headers:authHeaders()})}catch(e){}
+ setSession(null);
+ if(cloudTimer)clearInterval(cloudTimer);
+ cloudLoaded=false;cloudHasRow=false;pendingLocalSave=false;
+ /* Do not leave family finances visible to the next person using this browser. */
+ localStorage.removeItem(KEY);localStorage.removeItem('marichevyUpdated');localStorage.removeItem(CLOUD_UPDATED_KEY);
+ state={entries:[],fixed:[],debts:[],receipts:[],goals:[],accounts:[],car:{parking:0,insurance:0,tax:0,fuel:0,service:0,wash:0,fines:0,note:''},plan:{income:0,variable:0,save:0,reserve:0}};
+ renderAll();toast('Вы вышли из семейного банка');
+}
+
+async function pushCloud(){
+ const s=session();if(!s?.access_token||!cloudLoaded)return false;
+ try{
+  const res=await fetch(SUPABASE_URL+'/rest/v1/family_state?on_conflict=household_id',{
+   method:'POST',
+   headers:{...authHeaders(),'Prefer':'resolution=merge-duplicates,return=representation'},
+   body:JSON.stringify({household_id:FAMILY_ID,data:state,updated_at:new Date().toISOString(),updated_by:s.user.id})
+  });
+  if(res.status===401){if(await refreshSession())return pushCloud();throw new Error('Сессия истекла')}
+  if(!res.ok)throw new Error(await res.text());
+  const rows=await res.json().catch(()=>[]);
+  const serverUpdated=rows?.[0]?.updated_at;
+  if(serverUpdated){localStorage.setItem(CLOUD_UPDATED_KEY,String(new Date(serverUpdated).getTime()));}
+  else{localStorage.setItem(CLOUD_UPDATED_KEY,String(Date.now()));}
+  cloudHasRow=true;
+  cloudHelp.textContent='Последняя синхронизация: '+new Date().toLocaleTimeString('ru-RU');
+  return true;
+ }catch(e){cloudHelp.textContent='Ошибка синхронизации: '+(e.message||'проверьте вход');return false}
+}
+
+async function pullCloud(silent=false,force=false){
+ const s=session();if(!s?.access_token)return false;
+ if(cloudPulling)return false;
+ cloudPulling=true;
+ try{
+  const res=await fetch(SUPABASE_URL+'/rest/v1/family_state?household_id=eq.'+encodeURIComponent(FAMILY_ID)+'&select=data,updated_at',{headers:authHeaders()});
+  if(res.status===401){if(await refreshSession())return pullCloud(silent,force);throw new Error('Сессия истекла')}
+  if(!res.ok)throw new Error(await res.text());
+  const rows=await res.json();
+  if(rows[0]?.data){
+   const remote=rows[0].data;
+   const remoteUpdated=new Date(rows[0].updated_at||0).getTime();
+   const knownCloudUpdated=Number(localStorage.getItem(CLOUD_UPDATED_KEY)||0);
+   cloudHasRow=true;
+   /* On login, cloud is authoritative. Never compare server time to a local browser save time. */
+   if(force || !knownCloudUpdated || remoteUpdated>knownCloudUpdated){
+    state=remote;
+    normalizeState();
+    localStorage.setItem(KEY,JSON.stringify(state));
+    localStorage.setItem(CLOUD_UPDATED_KEY,String(remoteUpdated||Date.now()));
+    localStorage.setItem('marichevyUpdated',String(Date.now()));
+    renderAll();
+    if(!silent)toast('☁️ Семейные данные загружены из облака');
+   }
+  }else{
+   /* First device only: if the cloud row does not exist, seed it from real local data. */
+   cloudHasRow=false;
+   if(state.entries?.length||state.fixed?.length||state.debts?.length||state.goals?.length||state.receipts?.length||state.accounts?.length){
+    cloudLoaded=true;
+    await pushCloud();
+   }
+  }
+  cloudLoaded=true;
+  cloudHelp.textContent='Синхронизировано: '+new Date().toLocaleTimeString('ru-RU');
+  return true;
+ }catch(e){
+  cloudLoaded=false;
+  if(!silent)cloudHelp.textContent='Не удалось получить данные: '+(e.message||'ошибка');
+  return false;
+ }finally{cloudPulling=false}
+}
+
+function startCloudPolling(){
+ if(cloudTimer)clearInterval(cloudTimer);
+ cloudTimer=setInterval(()=>pullCloud(true,false),5000);
+}
+
+/* Save locally immediately, but never push stale/empty local state before the initial cloud pull finishes. */
+saveAll=function(showToast=true){
+ localStorage.setItem(KEY,JSON.stringify(state));
+ const localNow=Date.now();
+ localStorage.setItem('marichevyUpdated',String(localNow));
+ if(channel)channel.postMessage({state,updated:localNow});
+ renderAll();
+ if(showToast)toast('💾 Сохранено');
+ if(session()){
+  if(cloudLoaded)pushCloud();
+  else pendingLocalSave=true;
+ }
+};
+
+if(channel)channel.onmessage=(ev)=>{
+ if(ev.data?.state){
+  state=ev.data.state;localStorage.setItem(KEY,JSON.stringify(state));localStorage.setItem('marichevyUpdated',String(ev.data.updated||Date.now()));renderAll();
+ }
+};
+window.addEventListener('storage',e=>{if(e.key===KEY&&e.newValue){try{state=JSON.parse(e.newValue);renderAll()}catch{}}});
+
+/* Boot: refresh the session first, then load the cloud copy exactly once. */
+(async()=>{
+ updateAuthUI();
+ const s=session();
+ if(s?.access_token){
+  await refreshSession();
+  if(session()){
+   const ok=await pullCloud(true,true);
+   if(ok)startCloudPolling();
+  }
+ }
+})();
+</script>
+</body>
+</html>
