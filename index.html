@@ -162,6 +162,13 @@ body{background:radial-gradient(circle at 85% -10%,#e9efff 0,transparent 28%),va
  .authbar small{max-width:105px}
 }
 
+
+/* FINAL 2026 stability polish */
+.auth-box input:focus{outline:none;border-color:#6b8cff;box-shadow:0 0 0 4px rgba(55,119,255,.10)}
+@media(max-width:700px){
+  .auth-box{max-height:calc(100vh - 28px);overflow:auto}
+}
+
 </style>
 </head>
 <body>
@@ -524,6 +531,20 @@ body{background:radial-gradient(circle at 85% -10%,#e9efff 0,transparent 28%),va
 </div>
 
 <script>
+/* --- FINAL 2026: Supabase Auth + safe family cloud sync --- */
+const SUPABASE_URL='https://kqndxecziamypdjpxhyq.supabase.co';
+const SUPABASE_KEY='sb_publishable_INgxcqZCu3wughQNt7k8GQ_Bf5dYTXw';
+const FAMILY_ID='646073c7-6a89-4077-b000-ea0cb287e2c9';
+const SESSION_KEY='marichevySupabaseSession';
+const CLOUD_UPDATED_KEY='marichevyCloudUpdated';
+let cloudTimer=null;
+let cloudSaveQueue=Promise.resolve();
+let authSession=null;
+let cloudLoaded=false;
+let cloudHasRow=false;
+let cloudPulling=false;
+let pendingLocalSave=false;
+const channel=('BroadcastChannel' in window)?new BroadcastChannel('marichevy-family-bank'):null;
 const KEY='familyBankV3';
 const PEOPLE=['Сережа','Виктория','Майя','Алиса','Дени','Макс'];
 const CATS=['Супермаркеты','Продукты','Рестораны и доставка','Кафе','Жильё — аренда/ипотека','ЖКХ / квартплата','Электричество / вода / газ','Интернет','Связь','Паркинг','Автомобиль — топливо','Автомобиль — обслуживание','Автомобиль — мойка/шины','Автомобиль — страховка','Автомобиль — налоги/штрафы','Автомобиль — запчасти','Транспорт / такси','Дети — Майя','Дети — Алиса','Детские товары','Образование','Аптеки / медицина','Животные — Дени','Животные — Макс','Продукты для животных','Личное — Серёжа','Личное — Виктория','Одежда и обувь','Красота','Развлечения','Подписки / цифровые','Маркетплейсы','Покупки для дома','Ремонт / мебель','Подарки / цветы','Путешествия','Банк / комиссии','Другое'];
@@ -535,7 +556,7 @@ let state=JSON.parse(localStorage.getItem(KEY)||'null')||{
 let dbPromise=null;
 
 function money(n){return new Intl.NumberFormat('ru-RU',{maximumFractionDigits:0}).format(Math.round(n||0))+' ₽'}
-function today(){return new Date().toISOString().slice(0,10)}
+function today(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function month(){return today().slice(0,7)}
 function monthName(m){return new Date(m+'-01T12:00:00').toLocaleDateString('ru-RU',{month:'long',year:'numeric'})}
 function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
@@ -687,7 +708,7 @@ async function delReceipt(id){if(!dbPromise)dbPromise=initDB();let db=await dbPr
 function exportData(){let blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='семейный-банк-'+today()+'.json';a.click();toast('Резервная копия скачана')}
 function importData(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!x.entries||!x.plan)throw 0;state=x;saveAll();toast('Данные восстановлены')}catch{toast('Неверный файл')}};r.readAsText(f)}
 function resetAll(){if(confirm('Удалить все данные этого семейного банка?')){localStorage.removeItem(KEY);state={entries:[],fixed:[],debts:[],receipts:[],goals:[],accounts:[],car:{parking:0,insurance:0,tax:0,fuel:0,service:0,wash:0,fines:0,note:''},plan:{income:0,variable:0,save:0,reserve:0}};renderAll();toast('Данные удалены')}}
-function populateMonths(){let now=new Date(),arr=[];for(let i=0;i<12;i++){let d=new Date(now.getFullYear(),now.getMonth()-i,1),m=d.toISOString().slice(0,7);arr.push(`<option value="${m}">${monthName(m)}</option>`)}histMonth.innerHTML=arr.join('');histMonth.value=month()}
+function populateMonths(){let now=new Date(),arr=[];for(let i=0;i<12;i++){let d=new Date(now.getFullYear(),now.getMonth()-i,1),m=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');arr.push(`<option value="${m}">${monthName(m)}</option>`)}histMonth.innerHTML=arr.join('');histMonth.value=month()}
 function renderIncome(){let arr=state.entries.filter(x=>x.type==='income').sort((a,b)=>b.date.localeCompare(a.date));incomeTable.innerHTML=arr.length?`<table><thead><tr><th>Дата</th><th>Кто</th><th>Источник</th><th>Сумма</th><th></th></tr></thead><tbody>${arr.map(x=>`<tr><td>${x.date}</td><td>${esc(x.who)}</td><td>${esc(x.note||'Доход')}</td><td class="green"><b>+${money(x.amount)}</b></td><td><button class="danger" onclick="delEntry(${x.id})">Удалить</button></td></tr>`).join('')}</tbody></table>`:'<div class="empty">Доходов пока нет.</div>'}
 
 function categoryIcon(cat){
@@ -739,20 +760,7 @@ function renderAll(){setupSelects();renderHome();renderDay();renderHistory();ren
 normalizeState();dailyDate.value=today();iDate.value=today();rDate.value=today();setupSelects();populateMonths();renderAll();
 window.addEventListener('resize',()=>{renderHome();renderHistory()});
 
-/* --- v6.1: Supabase Auth + safe family cloud sync --- */
-const SUPABASE_URL='https://kqndxecziamypdjpxhyq.supabase.co';
-const SUPABASE_KEY='sb_publishable_INgxcqZCu3wughQNt7k8GQ_Bf5dYTXw';
-const FAMILY_ID='646073c7-6a89-4077-b000-ea0cb287e2c9';
-const SESSION_KEY='marichevySupabaseSession';
-const CLOUD_UPDATED_KEY='marichevyCloudUpdated';
-let cloudTimer=null;
-let cloudSaveQueue=Promise.resolve();
-let authSession=null;
-let cloudLoaded=false;
-let cloudHasRow=false;
-let cloudPulling=false;
-let pendingLocalSave=false;
-const channel=('BroadcastChannel' in window)?new BroadcastChannel('marichevy-family-bank'):null;
+
 
 function session(){
   if(authSession)return authSession;
@@ -773,9 +781,12 @@ function closeAuth(){document.getElementById('authModal').classList.remove('show
 function authMsg(msg){const x=document.getElementById('authError');x.textContent=msg;x.classList.add('show')}
 
 async function signIn(){
- const email=authEmail.value.trim(), password=authPassword.value;
+ const email=(document.getElementById('authEmail')?.value||'').trim();
+ const password=document.getElementById('authPassword')?.value||'';
+ const loading=document.getElementById('authLoading');
+ const submit=document.querySelector('.auth-box .primary');
  if(!email||!password){authMsg('Введите email и пароль.');return}
- authLoading.classList.add('show');document.querySelector('.auth-box .primary').disabled=true;
+ loading?.classList.add('show'); if(submit)submit.disabled=true;
  try{
   const r=await fetch(SUPABASE_URL+'/auth/v1/token?grant_type=password',{method:'POST',headers:{'apikey':SUPABASE_KEY,'Content-Type':'application/json'},body:JSON.stringify({email,password})});
   const d=await r.json();if(!r.ok)throw new Error(d.error_description||d.msg||'Не удалось войти');
@@ -783,9 +794,23 @@ async function signIn(){
   cloudLoaded=false;
   const ok=await pullCloud(false,true);
   if(!ok)throw new Error('Не удалось загрузить семейные данные из облака');
+  const pendingRaw=localStorage.getItem('marichevyPendingCloudState');
+  if(pendingRaw){
+   try{
+    const pending=JSON.parse(pendingRaw);
+    if(pending?.state){
+     state=pending.state;
+     normalizeState();
+     localStorage.setItem(KEY,JSON.stringify(state));
+     renderAll();
+     pendingLocalSave=true;
+     await pushCloud();
+    }
+   }catch(e){console.warn('Не удалось восстановить несинхронизированное изменение',e)}
+  }
   closeAuth();toast('☁️ Вход выполнен');startCloudPolling();
  }catch(e){authMsg(e.message)}
- finally{authLoading.classList.remove('show');document.querySelector('.auth-box .primary').disabled=false}
+ finally{loading?.classList.remove('show');if(submit)submit.disabled=false}
 }
 
 async function refreshSession(){
@@ -803,7 +828,7 @@ async function signOut(){
  if(cloudTimer)clearInterval(cloudTimer);
  cloudLoaded=false;cloudHasRow=false;pendingLocalSave=false;
  /* Do not leave family finances visible to the next person using this browser. */
- localStorage.removeItem(KEY);localStorage.removeItem('marichevyUpdated');localStorage.removeItem(CLOUD_UPDATED_KEY);
+ localStorage.removeItem(KEY);localStorage.removeItem('marichevyUpdated');localStorage.removeItem(CLOUD_UPDATED_KEY);localStorage.removeItem('marichevyPendingCloudState');
  state={entries:[],fixed:[],debts:[],receipts:[],goals:[],accounts:[],car:{parking:0,insurance:0,tax:0,fuel:0,service:0,wash:0,fines:0,note:''},plan:{income:0,variable:0,save:0,reserve:0}};
  renderAll();toast('Вы вышли из семейного банка');
 }
@@ -824,6 +849,7 @@ async function pushCloud(){
   else{localStorage.setItem(CLOUD_UPDATED_KEY,String(Date.now()));}
   cloudHasRow=true;
   pendingLocalSave=false;
+  localStorage.removeItem('marichevyPendingCloudState');
   cloudHelp.textContent='Последняя синхронизация: '+new Date().toLocaleTimeString('ru-RU');
   return true;
  }catch(e){cloudHelp.textContent='Ошибка синхронизации: '+(e.message||'проверьте вход');return false}
@@ -882,24 +908,47 @@ saveAll=function(showToast=true){
  localStorage.setItem(KEY,JSON.stringify(state));
  const localNow=Date.now();
  localStorage.setItem('marichevyUpdated',String(localNow));
+ /* Keep the exact latest state durably until Supabase confirms it. */
+ if(session()){
+  localStorage.setItem('marichevyPendingCloudState',JSON.stringify({state,updated:localNow}));
+  pendingLocalSave=true;
+ }
  if(channel)channel.postMessage({state,updated:localNow});
  renderAll();
  if(showToast)toast('💾 Сохранено');
  const ss=document.getElementById('saveStatus');if(ss){ss.textContent='✓';ss.style.color='#16a26a';setTimeout(()=>{ss.textContent='●';ss.style.color=''},1400)}
- if(session()){
-  if(cloudLoaded){
-   pendingLocalSave=true;
-   cloudSaveQueue=cloudSaveQueue.then(()=>pushCloud()).catch(()=>false);
-  } else pendingLocalSave=true;
+ if(session() && cloudLoaded){
+  cloudSaveQueue=cloudSaveQueue.catch(()=>false).then(()=>pushCloud()).catch(()=>false);
  }
 };
 
+document.addEventListener('visibilitychange',()=>{
+ if(document.visibilityState==='hidden' && session() && cloudLoaded && pendingLocalSave){
+  cloudSaveQueue=cloudSaveQueue.catch(()=>false).then(()=>pushCloud()).catch(()=>false);
+ }
+});
+window.addEventListener('pagehide',()=>{
+ if(session() && cloudLoaded && pendingLocalSave){
+  /* The durable pending snapshot is already in localStorage; the next login will replay it. */
+  localStorage.setItem('marichevyPendingCloudState',JSON.stringify({state,updated:Date.now()}));
+ }
+});
+
 if(channel)channel.onmessage=(ev)=>{
- if(ev.data?.state){
-  state=ev.data.state;localStorage.setItem(KEY,JSON.stringify(state));localStorage.setItem('marichevyUpdated',String(ev.data.updated||Date.now()));renderAll();
+ if(ev.data?.state && !pendingLocalSave && !cloudPulling){
+  state=ev.data.state;
+  localStorage.setItem(KEY,JSON.stringify(state));
+  localStorage.setItem('marichevyUpdated',String(ev.data.updated||Date.now()));
+  renderAll();
  }
 };
 window.addEventListener('storage',e=>{if(e.key===KEY&&e.newValue){try{state=JSON.parse(e.newValue);renderAll()}catch{}}});
+window.addEventListener('error',e=>{
+  console.error('Маричевы Траты.Банк:',e.error||e.message);
+  const msg=e?.error?.message||e?.message||'Неизвестная ошибка';
+  if(/supabase|auth|fetch/i.test(msg)) authMsg('Ошибка подключения: '+msg);
+});
+
 
 /* Boot: refresh the session first, then load the cloud copy exactly once. */
 (async()=>{
