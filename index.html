@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="ru" data-build="v92-purchase-search" data-ui-version="92">
+<html lang="ru" data-build="v94-expense-buckets" data-ui-version="94">
 <head><style>
 #eGroup{display:none!important}
 .v90-chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.v90-chips .btn{min-height:44px;white-space:normal;text-align:left}
@@ -14,7 +14,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
 <meta content="#0b1220" name="theme-color"/>
-<title>Маричевы · Траты.Банк — v91 · Семейный банк</title>
+<title>Маричевы · Траты.Банк · v94</title>
 
 
 
@@ -1608,6 +1608,17 @@ button:focus-visible,.btn:focus-visible,a:focus-visible,[role="button"]:focus-vi
 </style><style>
 .spendable-card,.spendable-main,.spendable-meta,.spendable-meta>div{min-width:0;max-width:100%}
 @media(max-width:760px){.spendable-card{grid-template-columns:minmax(0,1fr)!important}.spendable-meta{grid-template-columns:repeat(3,minmax(0,1fr))!important}.spendable-meta b{font-size:clamp(12px,3.4vw,16px);overflow-wrap:anywhere}.spendable-value{font-size:clamp(25px,7vw,40px);overflow-wrap:anywhere}}
+</style><style>
+/* v93: constrain controls to their card, including WebKit date intrinsic sizes. */
+#chores .chores-layout{grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr)}
+#chores .chores-form{grid-template-columns:repeat(2,minmax(0,1fr))}
+#chores .chores-form>.field:first-child{grid-column:1/-1}
+.field,.filters>*{min-width:0}
+input[type=date],input[type=month]{box-sizing:border-box;display:block;min-width:0;min-inline-size:0;max-width:100%;width:100%;appearance:none;-webkit-appearance:none}
+input::-webkit-date-and-time-value{min-width:0;text-align:left}
+.donut-ring .donut-center{inset:23%;width:auto;height:auto;max-width:54%;text-align:center;white-space:nowrap;font-variant-numeric:tabular-nums;font-size:18px;line-height:1.2}
+@media(max-width:1100px){#chores .chores-layout{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:600px){#chores .chores-form,#history .filters{grid-template-columns:minmax(0,1fr)}.field input,.field select,.field textarea,.filters input,.filters select{font-size:16px}}
 </style></head>
 <body>
 <noscript><div style="padding:14px;background:#fff3cd;color:#664d03;text-align:center;font:600 14px/1.4 system-ui">Для работы «Маричевы · Траты.Банк» необходимо включить JavaScript.</div></noscript>
@@ -1797,7 +1808,7 @@ button:focus-visible,.btn:focus-visible,a:focus-visible,[role="button"]:focus-vi
 <div class="form-grid v91-form">
 <div class="field"><label for="eType">Операция</label><select id="eType"><option value="expense">Расход</option><option value="income">Доход</option><option value="transfer">Перевод между своими счетами</option><option value="cash">Снятие наличных</option></select></div>
 <div class="field"><label for="eAmount">Сумма, ₽</label><input id="eAmount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="0" /></div>
-<div class="field expense-field full v91-category"><label for="v90Search">На что потратили?</label><input id="v90Search" type="search" maxlength="200" placeholder="Например: жвачка, хлеб, бензин" autocomplete="off" aria-describedby="v92SearchHint"><small id="v92SearchHint" role="status" aria-live="polite"></small><div id="v90Quick" class="v90-chips"></div><div id="v90Categories"><button type="button" class="v91-link" id="v91All" onclick="v91Toggle()" aria-expanded="false" aria-controls="v90Quick">Все категории</button><div id="v90Results" hidden></div></div><p id="v92Selected" role="status" hidden></p><select id="eCategory" aria-label="Выбранная категория" hidden></select><select id="eGroup" hidden></select></div>
+<div class="field expense-field full v91-category"><label for="v90Search">На что потратили?</label><input id="v90Search" type="search" maxlength="200" placeholder="Например: жвачка, хлеб, бензин" autocomplete="off" aria-describedby="v92SearchHint"><small id="v92SearchHint" role="status" aria-live="polite"></small><div id="v90Quick" class="v90-chips"></div><div id="v90Categories"><button type="button" class="v91-link" id="v91All" onclick="v91Toggle()" aria-expanded="false" aria-controls="v90Quick">Все категории</button><div id="v90Results" hidden></div></div><div id="v93CreditHelp" hidden class="hint"><b>Платёж по кредиту или рассрочке</b><p>Если обязательство уже есть в разделе кредитов, отметьте оплату в его графике — так платёж свяжется с ним.</p><button type="button" class="btn" onclick="go('loans')">Открыть кредиты и рассрочки</button><label for="v93CreditAccounting">Для отдельного платежа подтвердите учёт</label><select id="v93CreditAccounting"><option value="">Выберите вариант</option><option value="payment">Учитываю расходами только платежи; полная покупка не записана</option><option value="full">Полная стоимость покупки уже записана расходом</option></select></div><p id="v92Selected" role="status" hidden></p><select id="eCategory" aria-label="Выбранная категория" hidden></select><select id="eGroup" hidden></select></div>
 <div class="field expense-field full" id="v81BeneficiaryField"><label for="eBeneficiary">Для кого покупка?</label><select id="eBeneficiary"></select><small class="v81-field-note">Кому купили, а не кто приложил карту.</small></div>
 <div class="field full income-field" id="v86WhoField"><label id="eWhoLabel" for="eWho">Кто получил доход?</label><select id="eWho"></select></div>
 <div class="field full income-field"><label for="eIncomeSource">Источник дохода</label><input id="eIncomeSource" placeholder="Зарплата, премия…"></div>
@@ -1833,9 +1844,9 @@ button:focus-visible,.btn:focus-visible,a:focus-visible,[role="button"]:focus-vi
 </div>
 <div class="grid2">
 <div class="card"><h2>Для кого сделаны покупки</h2><div class="hint" id="peopleChartHint">Общие покупки, семья и питомцы · старые записи учтены</div><div id="aPeopleChart"></div></div>
-<div class="card"><h2>Распределение расходов</h2><div class="hint">Для семьи, детей, питомцев и других получателей</div><div class="people-donut-wrap"><div class="donut-ring people-donut" id="peopleDonut"><div class="donut-center" id="peopleDonutTotal">0 ₽</div></div></div><div class="legend" id="peopleLegend"></div></div>
+<div class="card"><h2>Распределение расходов</h2><div class="hint">Люди и питомцы — отдельно; кредитные платежи и автомобиль — самостоятельные статьи</div><div class="people-donut-wrap"><div class="donut-ring people-donut" id="peopleDonut"><div class="donut-center" id="peopleDonutTotal">0 ₽</div></div></div><div class="legend" id="peopleLegend"></div></div>
 </div>
-<div class="card"><h2>Расходы по получателям</h2><div class="hint">Кому или чему предназначались покупки</div><div class="people-cards" id="peopleCards"></div></div>
+<div class="card"><h2>Расходы по людям и статьям</h2><div class="hint">Каждая операция входит в одну строку. «Общее» — только общие покупки семьи.</div><div class="people-cards" id="peopleCards"></div></div>
 <div class="card v81-life-card" id="v81LifeAnalytics">
  <div class="v81-life-heading"><div><span class="v81-section-eyebrow">ПОДРОБНО О ТРАТАХ</span><h2>На что уходит семейный бюджет</h2><p class="hint">Дети, питомцы, дом и автомобиль. Уточнения появляются после новых записей; старую историю мы не угадываем.</p></div></div>
  <div class="v81-life-tabs" role="group" aria-label="Аналитика по направлениям">
@@ -2154,8 +2165,18 @@ function v86ExpenseTarget(e){
  if(['Общее','Семья','Семья / общее','Общие расходы'].includes(target))return 'Общее';
  return target||'Не указано';
 }
-function v86TargetTotals(entries){return Object.entries(aggregate(entries.map(e=>({...e,target:v86ExpenseTarget(e)})),'target')).sort((a,b)=>b[1]-a[1])}
-const V90_CATEGORIES=[['Продукты','Продукты','еда супермаркет'],['Вкусняшки','Вкусняшки','пиво снеки сладости'],['Рестораны и кафе','Кафе и доставка','кофе чаевые ресторан'],['Школа и занятия','Школа и занятия','обед школьное питание английский танцы кружки'],['Одежда','Одежда и обувь','ботинки куртка'],['Дом','Дом и быт','техника мебель ремонт хозяйство'],['ЖКХ','Счета и связь','электричество вода газ интернет телефон аренда'],['Аптека и медицина','Здоровье','лекарства врач аптека'],['Красота','Красота и уход','маникюр косметика стрижка'],['Авто и транспорт','Авто и транспорт','бензин то такси парковка шины'],['Развлечения','Отдых и развлечения','отпуск кино путешествия подписки хобби'],['Подарки','Подарки','цветы день рождения'],['Животные','Питомцы','корм ветеринар'],['Прочее','Другое','работа налог комиссия']];
+function v94ExpenseBucket(e){
+ const category=String(e.category||'').trim();
+ if(category==='Кредит'||e.installmentId||e.installmentPartId)return 'Кредиты и рассрочки';
+ if(category==='Авто и транспорт'||carCategory(e))return 'Автомобиль';
+ const person=v86ExpenseTarget(e);return person==='Дени'?'Денни':person;
+}
+function v86TargetTotals(entries){
+ const totals={'Сергей':0,'Виктория':0,'Алиса':0,'Майя':0,'Макс':0,'Денни':0,'Кредиты и рассрочки':0,'Автомобиль':0,'Общее':0};
+ for(const e of entries){const key=v94ExpenseBucket(e);totals[key]=(totals[key]||0)+(Number(e.amount)||0)}
+ return Object.entries(totals).sort((a,b)=>b[1]-a[1]);
+}
+const V90_CATEGORIES=[['Кредит','Кредит / рассрочка','ипотека кредит рассрочка сплит split займ долг'],['Продукты','Продукты','еда супермаркет'],['Вкусняшки','Вкусняшки','пиво снеки сладости'],['Рестораны и кафе','Кафе и доставка','кофе чаевые ресторан'],['Школа и занятия','Школа и занятия','обед школьное питание английский танцы кружки'],['Одежда','Одежда и обувь','ботинки куртка'],['Дом','Дом и быт','техника мебель ремонт хозяйство'],['ЖКХ','Счета и связь','электричество вода газ интернет телефон аренда'],['Аптека и медицина','Здоровье','лекарства врач аптека'],['Красота','Красота и уход','маникюр косметика стрижка'],['Авто и транспорт','Авто и транспорт','бензин то такси парковка шины'],['Развлечения','Отдых и развлечения','отпуск кино путешествия подписки хобби'],['Подарки','Подарки','цветы день рождения'],['Животные','Питомцы','корм ветеринар'],['Прочее','Другое','работа налог комиссия']];
 // Purchase vocabulary. Prefixes apply to whole words, never arbitrary substrings.
 const V92_WORDS = {
  'Продукты':'хлеб батон багет лаваш булоч молок кефир ряженк творог сметан йогурт сыр масл яйц яиц мяс говядин свинин куриц курин индейк фарш котлет колбас сосиск ветчин бекон рыба рыб лосос семг форел треск минтай сельд селед тунц кревет морепродукт икра рис греч макарон спагет вермишел лапш овсян хлопь круп пшен манк мук сахар соль перец специи приправ кетчуп майонез соус уксус дрожж крахмал овощ фрукт картош картоф морков лук чеснок капуст огур помидор томат свекл кабач баклаж тыкв броккол салат зелень укроп петруш яблок банан апельсин мандарин лимон груш персик нектарин абрикос слив виноград арбуз дын киви манго ягод клубник малин черник голубик вишн черешн гриб шампиньон горох фасол чечевиц нут консерв тушенк пельмен вареник замороз завтрак ужин вода вод минерал чай кофе какао орех сухофрукт изюм кураг финик мед варень джем масло оливков подсолнечн продукты супермаркет пятерочк перекресток ашан лента магнит вкусвилл азбук',
@@ -2223,7 +2244,7 @@ function v90Choose(key){
 }
 function v90Paint(){
  const selected=document.getElementById('eCategory').value,q=document.getElementById('v90Search').value.trim();
- const frequent=['Продукты','Вкусняшки','Рестораны и кафе','Школа и занятия','Дом','Животные'];
+ const frequent=['Кредит','Продукты','Вкусняшки','Рестораны и кафе','Школа и занятия','Дом','Животные'];
  const matches=v92Matches(q),hasQuery=Boolean(q);
  const items=hasQuery?(matches.length?matches:V90_CATEGORIES.map(x=>({key:x[0],label:x[1]}))):V90_CATEGORIES.filter(x=>v91Expanded||frequent.includes(x[0])||x[0]===selected).map(x=>({key:x[0],label:x[1]}));
  document.getElementById('v90Quick').innerHTML=items.map(({key,label,reason})=>`<button type="button" class="btn small ${selected===key?'primary':''}" aria-pressed="${selected===key}" data-cat="${esc(key)}"><span>${esc(label)}</span>${hasQuery&&reason?`<small>${esc(reason)}</small>`:''}</button>`).join('');
@@ -2232,6 +2253,7 @@ function v90Paint(){
  if(hint)hint.textContent=hasQuery?(matches.length?(matches.length===1?'Подходит эта категория — нажмите, чтобы выбрать.':'Выберите подходящий вариант: назначение покупки может отличаться.'):'Пока не знаю эту покупку. Выберите категорию — сохранённое описание поможет в следующий раз.'):'Напишите покупку или выберите категорию ниже.';
  const status=document.getElementById('v92Selected');
  if(status){status.hidden=!selected;status.textContent=selected?'Категория: '+(V90_CATEGORIES.find(x=>x[0]===selected)?.[1]||selected)+(document.getElementById('eComment').value?' · Описание: '+document.getElementById('eComment').value:''):''}
+ document.getElementById('v93CreditHelp').hidden=selected!=='Кредит';
  const all=document.getElementById('v91All');all.textContent=v91Expanded?'Частые категории':'Все категории';all.setAttribute('aria-expanded',String(v91Expanded));
  document.querySelectorAll('#v90Quick [data-cat]').forEach(b=>b.onclick=()=>v90Choose(b.dataset.cat));
 }
@@ -2698,7 +2720,7 @@ function updateEntryForm(){
  if(store) store.placeholder=type==='expense'?'Пятёрочка, Ozon, аптека...':'';
 }
 function openEntry(type='expense'){go('today');document.getElementById('eType').value=type;updateEntryForm();document.getElementById('eAmount').focus()}
-function clearEntry(){['eAmount','eStore','eIncomeSource','eComment','v90Search'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});document.getElementById('eDate').value=today();document.getElementById('eType').value='expense';updateEntryForm();document.getElementById('eCategory').value='';v81FillDetails('e','','','Не указано');v90Paint()}
+function clearEntry(){['eAmount','eStore','eIncomeSource','eComment','v90Search','v93CreditAccounting'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});document.getElementById('eDate').value=today();document.getElementById('eType').value='expense';updateEntryForm();document.getElementById('eCategory').value='';v81FillDetails('e','','','Не указано');v90Paint()}
 let v90Saving=false;
 async function addEntry(){
  if(v90Saving)return;
@@ -2706,6 +2728,7 @@ async function addEntry(){
  if(!Number.isFinite(amount)||amount<=0){document.getElementById('saveMsg').innerHTML='<div class="error">Укажите корректную сумму больше нуля.</div>';return}
  const store=type==='income'?(document.getElementById('eIncomeSource')?.value.trim()||''):(type==='expense'?(document.getElementById('eStore')?.value.trim()||''):'');
  if(type==='expense'&&!document.getElementById('eCategory').value){toast('Выберите, на что потратили');return}
+ if(type==='expense'&&document.getElementById('eCategory').value==='Кредит'){const mode=document.getElementById('v93CreditAccounting').value;if(mode!=='payment'){toast(mode==='full'?'Повторный расход не сохранён: покупка уже учтена. Нужен отдельный учёт погашения долга.':'Уточните способ учёта кредитного платежа');return}}
  const rawCategory=type==='expense'?(document.getElementById('eCategory').value||'Прочее'):'Прочее';
  const who=type==='expense'?'Не указано':type==='cash'||type==='transfer'?'Общее':document.getElementById('eWho').value;
  const category=type==='expense'?expenseCategory(rawCategory,who):type==='income'?'Доход':'Движение денег';if(type==='expense')try{localStorage.setItem('marichevy_v75_recent_category',category)}catch{}
@@ -3053,7 +3076,7 @@ function renderAnalytics(){
  const cats=Object.entries(aggregate(groupedExpenseEntries(ex),'category')).sort((a,b)=>b[1]-a[1]);
  const days=new Set(ex.map(e=>e.date)).size;
  const selectedLabel=new Date(m+'-01T12:00:00').toLocaleDateString('ru-RU',{month:'long',year:'numeric'});
- const hint=document.getElementById('peopleChartHint'); if(hint) hint.textContent='Для кого или чего · '+selectedLabel;
+ const hint=document.getElementById('peopleChartHint'); if(hint) hint.textContent='Люди, питомцы и отдельные статьи · '+selectedLabel;
  const pmax=people[0]?.[1]||1;
  const personColors=people.map(([k])=>v84PersonColor(k));
  document.getElementById('aPeopleChart').innerHTML=people.map(([k,v],i)=>`<button type="button" class="bar-row v84-drill-bar" onclick="v84Drill('person',${JSON.stringify(k).replace(/"/g,'&quot;')},'analytics')" style="margin:15px 0"><div class="bar-top"><span><b>${esc(k)}</b></span><b>${money(v)} · ${total?Math.round(v/total*100):0}%</b></div><div class="bar" style="height:12px;margin-top:7px"><i style="width:${v/pmax*100}%;background:${personColors[i%personColors.length]}"></i></div></button>`).join('')||'<div class="empty">За выбранный месяц расходов пока нет.</div>';
@@ -3299,7 +3322,7 @@ async function loadWeather(force=false){
   let lastError='';
   try{
    for(const source of sources){
-    const controller=new AbortController(), timer=setTimeout(()=>controller.abort(),9000);
+    const controller=new AbortController(), timer=setTimeout(()=>controller.abort(),20000);
     try{
      const response=await fetch(source.url,{signal:controller.signal,cache:'no-store',credentials:'omit',headers:{Accept:'application/json'}});
      if(!response.ok)throw new Error(`HTTP ${response.status}`);
@@ -3866,7 +3889,7 @@ const V84_PALETTE=Object.freeze({
  'Автомобиль':'#eb5ba1','Прочее':'#8291a5'
 });
 function v84GroupColor(name){return V84_PALETTE[name]||'#6884c5'}
-const V84_PERSON_COLORS=Object.freeze({'Сергей':'#3f69e8','Виктория':'#a657db','Алиса':'#f59c1b','Майя':'#13a780','Общее':'#617b9b','Общие расходы':'#617b9b','Оба ребёнка':'#b97b41','Все питомцы':'#3b8f9e','Макс':'#dd5772','Дени':'#06a8c4'});
+const V84_PERSON_COLORS=Object.freeze({'Сергей':'#3f69e8','Виктория':'#a657db','Алиса':'#f59c1b','Майя':'#13a780','Общее':'#617b9b','Общие расходы':'#617b9b','Оба ребёнка':'#b97b41','Все питомцы':'#3b8f9e','Макс':'#dd5772','Дени':'#06a8c4','Денни':'#06a8c4','Автомобиль':'#597c44','Кредиты и рассрочки':'#bd6a35'});
 function v84PersonColor(name){return V84_PERSON_COLORS[name]||'#6986bf'}
 function v84NormalizeIntelligence(x){
  const a=x&&typeof x==='object'?x:{},types=['budgets','recurring','accounts'];
@@ -3984,7 +4007,7 @@ function v84RenderReport(){const root=document.getElementById('v84Report');if(ro
 async function v84CopyReport(){const text=v84ReportText()+v87AdvisorReport();try{await navigator.clipboard.writeText(text);toast('Отчёт скопирован')}catch{v84DownloadReport();toast('Копирование недоступно, отчёт сохранён файлом')}}
 function v84DownloadReport(){const blob=new Blob([v84ReportText()+v87AdvisorReport()],{type:'text/plain;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='family-bank-report-'+v84ThisMonth()+'.txt';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
 function v84Drill(mode,key,source='analytics'){
- const m=source==='home'?homeMonth():v84ThisMonth();const raw=expenses(m),rows=raw.filter(e=>mode==='person'?v86ExpenseTarget(e)===key:expenseGroup(e.category)===key).sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+ const m=source==='home'?homeMonth():v84ThisMonth();const raw=expenses(m),rows=raw.filter(e=>mode==='person'?v94ExpenseBucket(e)===key:expenseGroup(e.category)===key).sort((a,b)=>String(b.date).localeCompare(String(a.date)));
  const total=sum(rows),sums=Object.entries(aggregate(mode==='person'?rows:rows.map(e=>({...e,target:v86ExpenseTarget(e)})),mode==='person'?'category':'target')).sort((a,b)=>b[1]-a[1]);
  document.getElementById('v84DrillTitle').textContent=key;document.getElementById('v84DrillPeriod').textContent=v84MonthLabel(m)+' · расшифровка до операции';
  const root=document.getElementById('v84DrillBody');root.innerHTML=`<div class="v84-drill-summary"><div><small>Потрачено</small><strong>${money(total)}</strong></div><div><small>Операций</small><strong>${rows.length}</strong></div><div><small>Средний расход</small><strong>${money(rows.length?total/rows.length:0)}</strong></div></div><div class="v84-drill-sub">${mode==='person'?'По категориям':'По назначению'}</div><div class="v84-drill-filter">${sums.map(([k,v])=>`<button type="button" data-v84-sub="${esc(k)}">${esc(k)} · ${money(v)}</button>`).join('')||'Нет расходов'}</div><div class="v84-drill-sub">Конкретные операции</div><div id="v84DrillEntries"></div>`;
@@ -4114,7 +4137,7 @@ async function verifyCachedSession(allowRefresh=true){
  if(!session?.access_token)return false;
  try{
   if(!(await ensureToken()))return false;
-  const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),9000);
+  const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),20000);
   let response;
   try{response=await fetch(CONFIG.url+'/auth/v1/user',{headers:{apikey:CONFIG.key,Authorization:'Bearer '+session.access_token},signal:controller.signal,cache:'no-store'})}
   finally{clearTimeout(timeout)}
@@ -4360,7 +4383,7 @@ function v88FeedbackPayload(){
  const type=document.getElementById('v88FeedbackType')?.value||'idea';
  const section=document.getElementById('v88FeedbackSection')?.value||'';
  const message=document.getElementById('v88FeedbackMessage')?.value?.trim()||'';
- return {type,section,message,appVersion:'v88.1',familyEdition:true};
+ return {type,section,message,appVersion:'v94',familyEdition:true};
 }
 function v88FeedbackText(){
  const p=v88FeedbackPayload();const labels={idea:'Новая функция',improvement:'Улучшить существующее',bug:'Сообщить об ошибке',design:'Дизайн и удобство'};
@@ -4394,6 +4417,7 @@ function v881OpenEmail(event){
  v88FeedbackStatus(v88FeedbackFile()?'Открываем письмо на '+V88_FEEDBACK_SUPPORT_EMAIL+'. Прикрепите скриншот к письму вручную, затем нажмите «Отправить» в почте.':'Открываем письмо на '+V88_FEEDBACK_SUPPORT_EMAIL+'. Проверьте адрес и отправьте письмо в почте.','info');
  window.location.href=url;return false;
 }
+let v93FeedbackRequest=null;
 async function v88SendFeedback(event){
  event?.preventDefault();if(v88FeedbackSending)return;
  const payload=v88FeedbackPayload(),file=v88FeedbackFile();
@@ -4405,12 +4429,13 @@ async function v88SendFeedback(event){
   const token=session?.access_token;
   if(token){
    try{
-    const form=new FormData();for(const [k,v] of Object.entries(payload))form.append(k,String(v));if(file)form.append('screenshot',file,file.name);
-    const controller=new AbortController();const t=setTimeout(()=>controller.abort(),9000);
+    const signature=JSON.stringify(payload)+String(file?.name||'')+String(file?.lastModified||'');if(v93FeedbackRequest?.signature!==signature)v93FeedbackRequest={signature,id:crypto.randomUUID()};
+    const form=new FormData();form.append('request_id',v93FeedbackRequest.id);for(const [k,v] of Object.entries(payload))form.append(k,String(v));if(file)form.append('screenshot',file,file.name);
+    const controller=new AbortController();const t=setTimeout(()=>controller.abort(),20000);
     let response;try{response=await fetch(V88_FEEDBACK_ENDPOINT,{method:'POST',headers:{Authorization:'Bearer '+token,apikey:CONFIG.key},body:form,signal:controller.signal})}finally{clearTimeout(t)}
     if(response?.status===429){v88FeedbackStatus('Ограничение: не более пяти обращений в час. Попробуйте позже.','error');return}
     if(response?.status===401){v88FeedbackStatus('Сеанс входа устарел. Войдите в банк заново, затем повторите.','error');return}
-    if(response?.ok){const data=await response.json().catch(()=>({}));if(data.ok===true){v88FeedbackStatus(data.emailNotified?'Обращение сохранено на сервере, уведомление отправлено на почту владельца.':'Обращение сохранено в Supabase. Почтовое уведомление пока не настроено; владелец увидит обращение в таблице.','success');document.getElementById('v88FeedbackMessage').value='';document.getElementById('v88FeedbackCount').textContent='0 / 2500';v88ClearFile();return}}
+    if(response?.ok){const data=await response.json().catch(()=>({}));if(data.ok===true){v88FeedbackStatus(data.emailNotified?'Обращение сохранено. Почтовый сервис принял уведомление; доставка во входящие пока не подтверждена.':'Обращение сохранено в Supabase. Почтовое уведомление пока не настроено; владелец увидит обращение в таблице.','success');document.getElementById('v88FeedbackMessage').value='';document.getElementById('v88FeedbackCount').textContent='0 / 2500';v88ClearFile();return}}
    }catch(e){console.info('Feedback server unavailable; try user-controlled sharing')}
   }
   // Sharing requires a NEW direct user tap: after an awaited request browser activation may expire.
@@ -4471,7 +4496,20 @@ function v89RenderAudit(){
 
 
 
-</body>
+<script>
+function fitDonutTotals(){
+ const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');if(!ctx)return;
+ document.querySelectorAll('.donut-center').forEach(box=>{
+  const target=box.querySelector('strong')||box;if(!box.clientWidth)return;
+  const style=getComputedStyle(target);ctx.font=`${style.fontWeight} 18px ${style.fontFamily}`;
+  const width=ctx.measureText(target.textContent.trim()).width;
+  target.style.fontSize=Math.min(18,18*(box.clientWidth-8)/Math.max(1,width))+'px';
+ });
+}
+let donutFitFrame;const queueDonutFit=()=>{cancelAnimationFrame(donutFitFrame);donutFitFrame=requestAnimationFrame(fitDonutTotals)};
+new MutationObserver(queueDonutFit).observe(document.body,{childList:true,subtree:true,characterData:true});
+window.addEventListener('resize',queueDonutFit);queueDonutFit();
+</script></body>
 
 </html>
 
