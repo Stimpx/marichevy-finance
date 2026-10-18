@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="ru" data-build="v78-obligations-polish" data-ui-version="83">
+<html lang="ru" data-build="v92-purchase-search" data-ui-version="92">
 <head><style>
 #eGroup{display:none!important}
 .v90-chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.v90-chips .btn{min-height:44px;white-space:normal;text-align:left}
@@ -23,7 +23,9 @@
 
 
 
-<link href="data:image/svg+xml,%3Csvg xmlns=%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 viewBox=%220 0 64 64%22%3E%3Crect width=%2264%22 height=%2264%22 rx=%2216%22 fill=%22%233b6cff%22%2F%3E%3Cpath d=%22M16 19h32v7H39v20h-7V26H16z%22 fill=%22white%22%2F%3E%3C/svg%3E" rel="icon" type="image/svg+xml"/>
+<link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAADRElEQVR4nO2WX4gVVRzHf79zzty5M3dm5+7du2u7rhFIvvTko2AkviQb+CCbueCDkIoLCVHomuKysCj5kFhCBRWWIgWCQdGfl6inlHooNAhSEKxVMnd2Zu7cO3fmzjk/H+6mV3funxWEAn9Ph+F7zuf7+/3OOXNwxZr18CiDPdLVHwP+EwCR+ZVzjs0RgpSKiDJliMjZPYuplD0BiMhd8BURAhKRbZuaEEsZiJhK6XrBv1awzyowhp0AiCilMg19cscWw9ClVELwM+e+nbt5K5/LqRYGIiaNRrlUfH1ygogQMU3lx5997VdCwXmrmwczUErl8/rU3u2GXQRKAK1n1jz10u7pvK5DyzTGWBTFM/tentg6DhQCapBE57/6wfV8wXnrghlNbpYoCr3AC/z5uRfGNuzYNuYuBEIszhScu17w4uaNE+ObAvdG4AXVwLu94CuV0arsXcQ5F5wLzjVNxLVoZv/Op1evqkV1xhAR63EyOjx45OCeRpLcVT5gvAvgbiBikiTlwYE3D+1JkhQAGWPVqD47tWv0yZF6FC/t6vIAAMAZC/2gWaigUg0q1a2bN24b3xT6Aefdp3fPQNdzABjXopn9u0ZHBouOdfTQZCNJgEjPaV0zyD5oAEAEQvB5N7h67c9n1631/Up5aGD2wO5aFK9cNeLPu07RvvDTpZXDQ8MrBqRUD5EBNRlTs+/9cfW6ZVuh528Ze277+POh55kF86+5W69Nn2wegg4ZdCoREeXzub//cV89fAIQGGP1uFGPE0TUctq+mZPXrt8omHml2trvAgAAmcr+ov3Ndxfeef9Ts69PKaWkKjjOh598fu7L7wf6nTTNuH+WAQAAKWV/se/I26cvXvzFskzDzF++9Pv0sQ8cuyA7eu8VQAScMSnV3oPHq7UICF5543i1VheCt7tlWyN7F0kpUymVIiklAEglrYLx629XZt86ZZnGjz9ffmKoFEXxUmVPAEQs9TuG7QCogrF4VtNUlkvOR2e/IIByabH0mcouAMawHifvnjpvGjoRpGkahlHzr0JEmqY1B4jYQXmf3aXvIiIKKlUiAkBEsLN+I70r25aoKSSAdsXtUdm2ye0WXa7y//9seQzoGncALaCisqk87SQAAAAASUVORK5CYII=">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2215%22%20fill%3D%22%2317263c%22%2F%3E%3Cpath%20d%3D%22M14%2047V17h8l10%2015%2010-15h8v30h-8V30L32%2044%2022%2030v17z%22%20fill%3D%22%23f6f2e9%22%2F%3E%3C%2Fsvg%3E">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=92">
 
 
 
@@ -1355,7 +1357,7 @@ button:focus-visible,.btn:focus-visible,a:focus-visible,[role="button"]:focus-vi
 .v87-note a{color:#4564cc;text-decoration:underline;text-underline-offset:3px}
 .v87-footnote,.v87-advisor-empty{color:#8391a7;font-size:12px;line-height:1.55;margin:0}
 @media(max-width:1100px){.early-card .early-plan-actions{grid-template-columns:repeat(2,minmax(0,1fr))!important}.early-card .early-strategy{grid-column:1/-1;justify-self:stretch;max-width:none}.early-card .early-plan-table{overflow-x:auto}.early-card .early-plan-head-row,.early-card .early-plan-row{min-width:830px}.v87-advisor-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:620px){.early-card .early-plan-actions{grid-template-columns:1fr!important}.early-card .early-plan-actions>.btn{width:100%}.early-card .early-strategy{grid-column:auto}.early-card .early-plan-table{overflow-x:visible}.early-card .early-plan-head-row{display:none}.early-card .early-plan-row{min-width:0;grid-template-columns:24px repeat(2,minmax(0,1fr));align-items:end;gap:8px}.early-card .early-plan-row .field-inline{min-width:0}.early-card .early-plan-row .field-inline input{font-size:13px}.early-card .early-plan-row .early-plan-total{grid-column:2/3;grid-row:2;text-align:left;font-size:13px}.early-card .early-plan-row>.btn{grid-column:3;grid-row:2;width:100%;min-height:43px}.v87-setup{grid-template-columns:1fr}.v87-setup>.btn{width:100%}.v87-advisor-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.v87-metric{padding:12px}.v87-metric strong{font-size:19px}.v87-flag{display:none}}
+@media(max-width:1100px){.early-card .early-plan-actions{grid-template-columns:1fr!important}.early-card .early-plan-actions>.btn{width:100%}.early-card .early-strategy{grid-column:auto}.early-card .early-plan-table{overflow-x:visible}.early-card .early-plan-head-row{display:none}.early-card .early-plan-row{min-width:0;grid-template-columns:24px repeat(2,minmax(0,1fr));align-items:end;gap:8px}.early-card .early-plan-row .field-inline{min-width:0}.early-card .early-plan-row .field-inline input{font-size:13px}.early-card .early-plan-row .early-plan-total{grid-column:2/3;grid-row:2;text-align:left;font-size:13px}.early-card .early-plan-row>.btn{grid-column:3;grid-row:2;width:100%;min-height:43px}.v87-setup{grid-template-columns:1fr}.v87-setup>.btn{width:100%}.v87-advisor-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.v87-metric{padding:12px}.v87-metric strong{font-size:19px}.v87-flag{display:none}}
 @media(max-width:365px){.v87-advisor-metrics{grid-template-columns:1fr}.early-card .early-plan-row{grid-template-columns:22px minmax(0,1fr)}.early-card .early-plan-row .field-inline:nth-of-type(2){grid-column:2}.early-card .early-plan-row .early-plan-total{grid-row:auto;grid-column:2}.early-card .early-plan-row>.btn{grid-column:2;grid-row:auto}}
 
 
@@ -1579,6 +1581,33 @@ button:focus-visible,.btn:focus-visible,a:focus-visible,[role="button"]:focus-vi
 </style><style>
 @media(max-width:1024px){.side{display:none!important}.main{margin-left:0!important;width:100%!important;padding:20px 20px 110px!important}.mobile-nav{position:fixed!important;display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr));left:8px;right:8px;bottom:8px;background:#111e35;padding:8px;border-radius:18px;z-index:50}.mobile-nav button{background:transparent;color:#cbd5e1;font-size:11px;padding:7px}.mobile-nav button.active{color:#fff}.top{flex-wrap:wrap}.userbar{max-width:100%}}
 @media(max-width:600px){.main{padding:12px 10px 110px!important}#today .v91-entry{padding:16px!important}#today .v91-entry .v91-form{gap:12px!important;margin-top:16px!important}#today .v91-kicker{display:none}#today .v91-head p{font-size:13px;margin-bottom:0}#today .v91-entry .field label{margin-bottom:5px!important}#today .v91-entry .v90-chips button{min-height:44px}#today .v91-entry #v90Extra{padding-top:10px}#today .v91-actions{margin-top:14px!important}.v91-transaction>strong{font-size:14px}}
+</style><style>/* v92: purchase search and intrinsic sizing across devices */
+#today .v91-category{display:flex!important;flex-direction:column;gap:10px}
+#today .v91-category #v90Search{order:0;margin:0!important;min-width:0;width:100%;padding:12px 14px!important}
+#today #v92SearchHint{display:block;font-size:12px;line-height:1.5;color:#697588}
+#today .v91-entry .v90-chips button{flex-direction:column;gap:5px}
+#today .v91-entry .v90-chips button small{font-size:10px;font-weight:400;color:#78849a;line-height:1.35}
+#today #v92Selected{margin:0;padding:12px 14px;border:1px solid #dbe4f3;border-radius:12px;background:#f3f6fc;color:#344d75;font-size:13px;line-height:1.5;overflow-wrap:anywhere}
+#today #v90Categories{margin:0!important}
+.main,.section,.card,.field,.kpi,.goal-card,.people-card{min-width:0}
+.form-grid>*{min-width:0}input,select,textarea{max-width:100%;box-sizing:border-box}
+.section h2,.section h3,.section p,.section .hint{overflow-wrap:anywhere}
+@media(max-width:760px){
+ .section-head,.v84-panel-head,.v86-heading,.home-chores-head{flex-wrap:wrap;gap:12px}
+ .section-head>div,.v84-panel-head>div,.v86-heading>div,.home-chores-head>div{min-width:0;max-width:100%}
+ .pill,.v84-status-pill{max-width:100%;white-space:normal;overflow-wrap:anywhere}
+ .actions{flex-wrap:wrap}.actions .btn{white-space:normal;overflow-wrap:anywhere}
+ .field input,.field select,.field textarea{font-size:16px!important;min-width:0}
+ .modal{max-height:calc(100dvh - 24px);overflow-y:auto}
+ #today .v91-entry .v90-chips{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+</style>
+<style>
+.chores-filters{display:flex!important;flex-wrap:wrap!important;overflow:visible!important;min-width:0}.chore-filter{max-width:100%;white-space:normal!important;min-height:44px}
+@media(max-width:760px){.chores-filters .chore-filter{flex:1 1 calc(50% - 7px);min-width:0}.chores-hero{flex-wrap:wrap}.chores-hero-status{white-space:normal}}
+</style><style>
+.spendable-card,.spendable-main,.spendable-meta,.spendable-meta>div{min-width:0;max-width:100%}
+@media(max-width:760px){.spendable-card{grid-template-columns:minmax(0,1fr)!important}.spendable-meta{grid-template-columns:repeat(3,minmax(0,1fr))!important}.spendable-meta b{font-size:clamp(12px,3.4vw,16px);overflow-wrap:anywhere}.spendable-value{font-size:clamp(25px,7vw,40px);overflow-wrap:anywhere}}
 </style></head>
 <body>
 <noscript><div style="padding:14px;background:#fff3cd;color:#664d03;text-align:center;font:600 14px/1.4 system-ui">Для работы «Маричевы · Траты.Банк» необходимо включить JavaScript.</div></noscript>
@@ -1768,7 +1797,7 @@ button:focus-visible,.btn:focus-visible,a:focus-visible,[role="button"]:focus-vi
 <div class="form-grid v91-form">
 <div class="field"><label for="eType">Операция</label><select id="eType"><option value="expense">Расход</option><option value="income">Доход</option><option value="transfer">Перевод между своими счетами</option><option value="cash">Снятие наличных</option></select></div>
 <div class="field"><label for="eAmount">Сумма, ₽</label><input id="eAmount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="0" /></div>
-<div class="field expense-field full v91-category"><label>На что потратили?</label><div id="v90Quick" class="v90-chips"></div><div id="v90Categories"><button type="button" class="v91-link" id="v91All" onclick="v91Toggle()" aria-expanded="false">Все категории</button><input id="v90Search" placeholder="Поиск: обед, бензин, маникюр" aria-label="Поиск категории" hidden><div id="v90Results" hidden></div></div><select id="eCategory" aria-label="Выбранная категория" hidden></select><select id="eGroup" hidden></select></div>
+<div class="field expense-field full v91-category"><label for="v90Search">На что потратили?</label><input id="v90Search" type="search" maxlength="200" placeholder="Например: жвачка, хлеб, бензин" autocomplete="off" aria-describedby="v92SearchHint"><small id="v92SearchHint" role="status" aria-live="polite"></small><div id="v90Quick" class="v90-chips"></div><div id="v90Categories"><button type="button" class="v91-link" id="v91All" onclick="v91Toggle()" aria-expanded="false" aria-controls="v90Quick">Все категории</button><div id="v90Results" hidden></div></div><p id="v92Selected" role="status" hidden></p><select id="eCategory" aria-label="Выбранная категория" hidden></select><select id="eGroup" hidden></select></div>
 <div class="field expense-field full" id="v81BeneficiaryField"><label for="eBeneficiary">Для кого покупка?</label><select id="eBeneficiary"></select><small class="v81-field-note">Кому купили, а не кто приложил карту.</small></div>
 <div class="field full income-field" id="v86WhoField"><label id="eWhoLabel" for="eWho">Кто получил доход?</label><select id="eWho"></select></div>
 <div class="field full income-field"><label for="eIncomeSource">Источник дохода</label><input id="eIncomeSource" placeholder="Зарплата, премия…"></div>
@@ -1798,7 +1827,7 @@ button:focus-visible,.btn:focus-visible,a:focus-visible,[role="button"]:focus-vi
 <section class="section" id="analytics">
 <div class="card">
 <div style="display:flex;justify-content:space-between;gap:14px;align-items:flex-start;flex-wrap:wrap">
-<div><h2>Семейная аналитика</h2><div class="hint" style="margin-bottom:0">Сразу видно, кто и сколько потратил за выбранный месяц.</div></div>
+<div><h2>Семейная аналитика</h2><div class="hint" style="margin-bottom:0">Расходы за выбранный месяц: на что и для кого сделаны покупки.</div></div>
 <select aria-label="Месяц аналитики" class="month-select" id="analyticsMonth" style="margin-left:0;color:#142033;border-color:var(--line)"></select>
 </div>
 </div>
@@ -2127,17 +2156,84 @@ function v86ExpenseTarget(e){
 }
 function v86TargetTotals(entries){return Object.entries(aggregate(entries.map(e=>({...e,target:v86ExpenseTarget(e)})),'target')).sort((a,b)=>b[1]-a[1])}
 const V90_CATEGORIES=[['Продукты','Продукты','еда супермаркет'],['Вкусняшки','Вкусняшки','пиво снеки сладости'],['Рестораны и кафе','Кафе и доставка','кофе чаевые ресторан'],['Школа и занятия','Школа и занятия','обед школьное питание английский танцы кружки'],['Одежда','Одежда и обувь','ботинки куртка'],['Дом','Дом и быт','техника мебель ремонт хозяйство'],['ЖКХ','Счета и связь','электричество вода газ интернет телефон аренда'],['Аптека и медицина','Здоровье','лекарства врач аптека'],['Красота','Красота и уход','маникюр косметика стрижка'],['Авто и транспорт','Авто и транспорт','бензин то такси парковка шины'],['Развлечения','Отдых и развлечения','отпуск кино путешествия подписки хобби'],['Подарки','Подарки','цветы день рождения'],['Животные','Питомцы','корм ветеринар'],['Прочее','Другое','работа налог комиссия']];
+// Purchase vocabulary. Prefixes apply to whole words, never arbitrary substrings.
+const V92_WORDS = {
+ 'Продукты':'хлеб батон багет лаваш булоч молок кефир ряженк творог сметан йогурт сыр масл яйц яиц мяс говядин свинин куриц курин индейк фарш котлет колбас сосиск ветчин бекон рыба рыб лосос семг форел треск минтай сельд селед тунц кревет морепродукт икра рис греч макарон спагет вермишел лапш овсян хлопь круп пшен манк мук сахар соль перец специи приправ кетчуп майонез соус уксус дрожж крахмал овощ фрукт картош картоф морков лук чеснок капуст огур помидор томат свекл кабач баклаж тыкв броккол салат зелень укроп петруш яблок банан апельсин мандарин лимон груш персик нектарин абрикос слив виноград арбуз дын киви манго ягод клубник малин черник голубик вишн черешн гриб шампиньон горох фасол чечевиц нут консерв тушенк пельмен вареник замороз завтрак ужин вода вод минерал чай кофе какао орех сухофрукт изюм кураг финик мед варень джем масло оливков подсолнечн продукты супермаркет пятерочк перекресток ашан лента магнит вкусвилл азбук',
+ 'Вкусняшки':'жвач жевательн конфет конфетк шоколад шоколадк шоколадн батончик мармелад зефир пастил печень пряник вафл торт пирожн кекс маффин пончик круассан десерт морожен пломбир карамел леденец чупа чупс чипс сухарик снек попкорн начос крекер соломк сухар сладост сладк вкусняш пиво пивн сидр вино вин виски коньяк шампанск алкогол коктейл лимонад газировк газирован кола пепси фанта спрайт сок энергетик нутелл орбит дирол сникерс твикс баунти киткат харибо orbit dirol snickers twix bounty haribo lays pringles',
+ 'Рестораны и кафе':'кафе ресторан кофейн бар баре столов чаевые официант доставка пицц суши роллы бургер шаверм шаурм фастфуд латте капучино эспрессо американо раф додо ростикс kfc макдональдс вкусно точка',
+ 'Школа и занятия':'школ школьн питани обед английск танц кружок кружк секци репетитор учебник тетрад пенал дневник рюкзак канцеляр карандаш фломастер пластилин гуашь акварел учеб занят продленк детсад садик университет институт курс обучени',
+ 'Одежда':'одежд обувь обув кроссовк кед ботин сапог туфл сандал тапоч куртк пальто пуховик шуб джинс брюк штан юбк плать футболк рубашк блуз свитер джемпер толстовк худи носок носки колгот белье трус бюстгальтер пижам шапк шарф перчат ремень сумк кошелек',
+ 'Дом':'дом быт ремонт мебел диван кресл стол стул шкаф кроват матрас подушк одеял простын полотенц посуд тарелк чашк кружк стакан кастрюл сковород нож вилк ложк лампоч батарейк провод розетк инструмент дрел молоток гвозд краск обои цемент пылесос холодильник плит стиральн телевизор ноутбук компьютер смартфон наушник утюг чайник микроволновк губк салфет туалетн бумаг порошок гель моющ чистящ кондиционер контейнер пакеты мусор ведро швабр подгузник памперс пеленк',
+ 'ЖКХ':'жкх коммунал квартплат электричеств водоснабж газоснабж отоплен водоотвед капремонт домофон интернет связь телефон тариф мобильн аренда квартплата счет',
+ 'Аптека и медицина':'аптек лекарств таблет витамин врач доктор клиник больниц анализ обследован узи мрт кт стоматолог зубн лечени прививк вакцин бинт пластыр термометр тонометр нурофен парацетамол ибупрофен линз очки',
+ 'Красота':'красот уход косметик маникюр педикюр стрижк парикмахер салон барбершоп шампун бальзам мыло крем помад тушь духи парфюм дезодорант бритв эпиляц массаж расческ макияж',
+ 'Авто и транспорт':'авто автомобил бензин дизель топлив заправк азс такси метро автобус трамвай троллейбус электричк проезд парковк шин резин колес мойк автомойк осаго каско запчаст техосмотр стоянк эвакуатор штраф транспондер антифриз шиномонтаж',
+ 'Развлечения':'развлеч отдых отпуск путешеств поездк кино театр концерт музей выставк цирк зоопарк парк аттракцион бассейн фитнес спортзал хобби игр игрушк лего lego книг подписк netflix spotify кинопоиск иви отель гостиниц хостел экскурси самолет авиабилет поезд билеты тур путевк',
+ 'Подарки':'подар подароч цвет букет розы тюльпан упаковк поздравлен сувенир',
+ 'Животные':'питом животн корм лакомств ветеринар ветклиник наполнител лоток поводок ошейник шлейк когтеточк груминг глист блох аквариум сено опилк purina royal canin whiskas whiskas роял канин пурина вискас',
+ 'Прочее':'другое прочее налог комисси благотвор пожертвован работа'
+};
+const V92_PHRASES = [
+ ['Школа и занятия','школьное питание|обед в школе|обеды в школе|питание в школе|английский алисы'],
+ ['Животные','корм для кошки|корм для собаки|кошачий корм|собачий корм|корм для попугая|корм для хомяка|лакомство для собаки'],
+ ['Дом','туалетная бумага|стиральный порошок|средство для посуды|гель для стирки|кондиционер для белья|мыло хозяйственное'],
+ ['Красота','зубная паста|зубная щетка|гель для душа|крем для лица|крем для рук|кондиционер для волос'],
+ ['Авто и транспорт','моторное масло|масло для двигателя|масло для машины|платная дорога|платные дороги|транспортный налог'],
+ ['Продукты','сливочное масло|растительное масло|оливковое масло|подсолнечное масло|кофе в зернах|молотый кофе|кофе домой|детское питание|молочная смесь|сухая смесь|сырные палочки'],
+ ['Вкусняшки','жевательная резинка|шоколадный батончик|сладкая вата|сладкие палочки|пиво безалкогольное'],
+ ['Рестораны и кафе','кофе с собой|кофе в кафе|кофе на вынос|обед в кафе|доставка еды|заказ пиццы|заказ суши|вкусно и точка|бургер кинг'],
+ ['Подарки','на день рождения|в подарок|для подарка|подарочный сертификат']
+];
+function v92Norm(value){return String(value||'').toLowerCase().replace(/ё/g,'е').replace(/[^a-zа-я0-9]+/g,' ').trim().replace(/\s+/g,' ')}
+function v92Near(a,b){
+ if(a.length<5||b.length<5||Math.abs(a.length-b.length)>1)return false;
+ let i=0,j=0,edits=0;
+ while(i<a.length&&j<b.length){if(a[i]===b[j]){i++;j++;continue}if(++edits>1)return false;if(a.length>b.length)i++;else if(b.length>a.length)j++;else{i++;j++}}
+ return edits+(a.length-i)+(b.length-j)<=1;
+}
+function v92Matches(query){
+ const q=v92Norm(query);if(!q)return [];
+ const tokens=q.split(' '),scores=new Map(), reasons=new Map();
+ const add=(key,score,why)=>{if(score>(scores.get(key)||0)){scores.set(key,score);reasons.set(key,why)}};
+ for(const [key,label,aliases] of V90_CATEGORIES){
+   if(v92Norm(label)===q||v92Norm(key)===q)add(key,120,'Категория');
+   else if(q.length>=2&&v92Norm(label).includes(q))add(key,70,'Категория');
+   const stems=v92Norm((V92_WORDS[key]||'')+' '+aliases).split(' ');
+   const hits=tokens.filter(t=>t.length>=2&&stems.some(s=>t===s||(s.length>=3&&t.startsWith(s))||(t.length>=3&&s.startsWith(t))));
+   if(hits.length)add(key,45+Math.min(hits.length,4)*4,'По названию покупки');
+   else if(tokens.some(t=>stems.some(s=>v92Near(t,s))))add(key,20,'Возможно, вы имели в виду');
+ }
+ for(const [key,phrases] of V92_PHRASES)if(phrases.split('|').some(p=>(' '+q+' ').includes(' '+p+' ')))add(key,100,'По названию покупки');
+ // Exact descriptions from saved expenses adapt suggestions to the family's habits.
+ const history=new Map();
+ for(const e of state.entries||[]){if(e.type==='expense'&&v92Norm(e.comment)===q&&V90_CATEGORIES.some(x=>x[0]===e.category))history.set(e.category,(history.get(e.category)||0)+1)}
+ for(const [key,count] of history)add(key,110+Math.min(count,5),'Так записывали раньше');
+ return V90_CATEGORIES.filter(x=>scores.has(x[0])).map(x=>({key:x[0],label:x[1],score:scores.get(x[0]),reason:reasons.get(x[0])})).sort((a,b)=>b.score-a.score);
+}
 let v91Expanded=false;
-function v91Toggle(){v91Expanded=!v91Expanded;document.getElementById('v90Search').value='';v90Paint();if(v91Expanded)document.getElementById('v90Search').focus()}
-function v90Choose(key){document.getElementById('eCategory').value=key;v81FillDetails('e',key);v91Expanded=false;document.getElementById('v90Search').value='';v90Paint()}
+let v92AutoDescription="";
+function v91Toggle(){v91Expanded=!v91Expanded;document.getElementById('v90Search').value='';v90Paint()}
+function v90Choose(key){
+ const q=document.getElementById('v90Search').value.trim();
+ const isCategory=V90_CATEGORIES.some(x=>[x[0],x[1]].some(label=>v92Norm(label)===v92Norm(q)));
+ const comment=document.getElementById('eComment');
+ if(q&&!isCategory&&(!comment.value.trim()||comment.value===v92AutoDescription)){comment.value=q.slice(0,200);v92AutoDescription=comment.value;}
+ document.getElementById('eCategory').value=key;v81FillDetails('e',key);v91Expanded=false;
+ document.getElementById('v90Search').value='';v90Paint();
+}
 function v90Paint(){
- const selected=document.getElementById('eCategory').value,q=(document.getElementById('v90Search').value||'').toLowerCase().trim();
+ const selected=document.getElementById('eCategory').value,q=document.getElementById('v90Search').value.trim();
  const frequent=['Продукты','Вкусняшки','Рестораны и кафе','Школа и занятия','Дом','Животные'];
- const items=V90_CATEGORIES.filter(x=>v91Expanded?x.join(' ').toLowerCase().includes(q):(frequent.includes(x[0])||x[0]===selected));
- document.getElementById('v90Quick').innerHTML=items.map(([key,label])=>`<button type="button" class="btn small ${selected===key?'primary':''}" aria-pressed="${selected===key}" data-cat="${esc(key)}">${esc(label)}</button>`).join('')||'<p>Ничего не найдено. Попробуйте другое слово.</p>';
- document.getElementById('v90Search').hidden=!v91Expanded;
- const all=document.getElementById('v91All');all.textContent=v91Expanded?'Свернуть категории':'Все категории';all.setAttribute('aria-expanded',String(v91Expanded));
- document.querySelectorAll('[data-cat]').forEach(b=>b.onclick=()=>v90Choose(b.dataset.cat));
+ const matches=v92Matches(q),hasQuery=Boolean(q);
+ const items=hasQuery?(matches.length?matches:V90_CATEGORIES.map(x=>({key:x[0],label:x[1]}))):V90_CATEGORIES.filter(x=>v91Expanded||frequent.includes(x[0])||x[0]===selected).map(x=>({key:x[0],label:x[1]}));
+ document.getElementById('v90Quick').innerHTML=items.map(({key,label,reason})=>`<button type="button" class="btn small ${selected===key?'primary':''}" aria-pressed="${selected===key}" data-cat="${esc(key)}"><span>${esc(label)}</span>${hasQuery&&reason?`<small>${esc(reason)}</small>`:''}</button>`).join('');
+ document.getElementById('v90Search').hidden=false;
+ const hint=document.getElementById('v92SearchHint');
+ if(hint)hint.textContent=hasQuery?(matches.length?(matches.length===1?'Подходит эта категория — нажмите, чтобы выбрать.':'Выберите подходящий вариант: назначение покупки может отличаться.'):'Пока не знаю эту покупку. Выберите категорию — сохранённое описание поможет в следующий раз.'):'Напишите покупку или выберите категорию ниже.';
+ const status=document.getElementById('v92Selected');
+ if(status){status.hidden=!selected;status.textContent=selected?'Категория: '+(V90_CATEGORIES.find(x=>x[0]===selected)?.[1]||selected)+(document.getElementById('eComment').value?' · Описание: '+document.getElementById('eComment').value:''):''}
+ const all=document.getElementById('v91All');all.textContent=v91Expanded?'Частые категории':'Все категории';all.setAttribute('aria-expanded',String(v91Expanded));
+ document.querySelectorAll('#v90Quick [data-cat]').forEach(b=>b.onclick=()=>v90Choose(b.dataset.cat));
 }
 function v90Template(i){openEntry();const t=[['Школа и занятия','Школьное питание','Алиса','Школа','Обед'],['Школа и занятия','Английский язык','Алиса','','Английский'],['Вкусняшки','','Не указано','','']][i];v90Choose(t[0]);v81FillDetails('e',t[0],t[1],t[2]);document.getElementById('eStore').value=t[3];document.getElementById('eComment').value=t[4];document.getElementById('eAmount').focus()}
 const INCOME_PEOPLE=['Сергей','Виктория','Майя','Алиса'];
@@ -2552,7 +2648,7 @@ function v81EntrySubjectText(e){return String(e.beneficiary||'')}
 function initExpenseGroupSelector(){
  const cat=document.getElementById('eCategory');cat.innerHTML='<option value="">Выберите категорию</option>'+V90_CATEGORIES.map(([key,label])=>`<option value="${esc(key)}">${esc(label)}</option>`).join('');
  cat.addEventListener('change',()=>{v81FillDetails('e',cat.value);v90Paint()});
- document.getElementById('v90Search').addEventListener('input',v90Paint);v90Paint();
+ document.getElementById('v90Search').addEventListener('input',()=>{document.getElementById('eCategory').value='';v90Paint()});document.getElementById('eComment').addEventListener('input',()=>{v92AutoDescription='';v90Paint()});v90Paint();
 }
 function updateExpenseGroup(selected=''){document.getElementById('eCategory').value=selected;v81FillDetails('e',selected);v90Paint()}
 function initForm(){
@@ -2602,7 +2698,7 @@ function updateEntryForm(){
  if(store) store.placeholder=type==='expense'?'Пятёрочка, Ozon, аптека...':'';
 }
 function openEntry(type='expense'){go('today');document.getElementById('eType').value=type;updateEntryForm();document.getElementById('eAmount').focus()}
-function clearEntry(){['eAmount','eStore','eIncomeSource','eComment'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});document.getElementById('eDate').value=today();document.getElementById('eType').value='expense';updateEntryForm();document.getElementById('eCategory').value='';v81FillDetails('e','','','Не указано');v90Paint()}
+function clearEntry(){['eAmount','eStore','eIncomeSource','eComment','v90Search'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});document.getElementById('eDate').value=today();document.getElementById('eType').value='expense';updateEntryForm();document.getElementById('eCategory').value='';v81FillDetails('e','','','Не указано');v90Paint()}
 let v90Saving=false;
 async function addEntry(){
  if(v90Saving)return;
