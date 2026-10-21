@@ -2309,6 +2309,10 @@ const NAV={
 
 const CHORE_REPEAT_LABELS={once:'Не повторять',daily:'Каждый день',weekly:'Раз в неделю',biweekly:'Раз в 2 недели',monthly:'Раз в месяц',yearly:'Раз в год'};
 var v89StorageFailed=false;
+var localRecoveryBlocked=false;
+var localRecoveryNotice='';
+const LOCAL_BACKUP_KEY='marichevy_state_backup_v44';
+const LOCAL_PREIMPORT_KEY='marichevy_pre_import_backup_v73';
 let state=loadLocal();
 let session=null;
 let editId=null;
@@ -2374,30 +2378,165 @@ function normalize(s){
  }
  }
 }
-function loadLocal(){try{return normalize(JSON.parse(localStorage.getItem(KEYS.state)||'null'))}catch{return blankState()}}
-function saveLocal(){
- let snapshot;
+// Validate structure, not a whitelist of historical categories or family members.
+function validateBackup(raw){
+ const object=x=>x!==null&&typeof x==='object'&&!Array.isArray(x);
+ const fail=path=>{throw new Error('Некорректные данные резервной копии: '+path)};
+ const id=(value,path)=>{if(typeof value!=='string'||!value.trim()||/[\u0000-\u001f\u007f]/.test(value)||['__proto__','prototype','constructor'].includes(value))fail(path)};
+ const text=(value,path)=>{if(value!==undefined&&value!==null&&typeof value!=='string')fail(path)};
+ const number=(value,path)=>{if(value!==undefined&&(value===null||!['number','string'].includes(typeof value)||String(value).trim()===''||!Number.isFinite(Number(value))))fail(path)};
+ const date=(value,path)=>{
+  text(value,path);if(value===undefined||value===null||value==='')return;
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(value))fail(path);
+  const parsed=new Date(value+'T12:00:00Z');if(!Number.isFinite(parsed.getTime())||parsed.toISOString().slice(0,10)!==value)fail(path);
+ };
+ const rows=(parent,key,check)=>{
+  if(parent[key]===undefined)return;
+  if(!Array.isArray(parent[key]))fail(key);
+  const seen=new Set();parent[key].forEach((row,i)=>{const path=key+'['+i+']';if(!object(row))fail(path);id(row.id,path+'.id');if(seen.has(row.id))fail(path+'.id: повтор');seen.add(row.id);check(row,path)});
+ };
+ // Reject dangerous object keys before a merge can write through a prototype.
+ const visit=(value,depth=0)=>{
+  if(depth>50)fail('слишком глубокая структура');
+  if(value&&typeof value==='object')for(const key of Object.keys(value)){
+   if(['__proto__','prototype','constructor','toString','valueOf'].includes(key))fail('служебное имя свойства');
+   visit(value[key],depth+1);
+  }
+ };
+ if(!object(raw)||!Array.isArray(raw.entries)||!object(raw.settings))fail('entries / settings');
+ visit(raw);
+ rows(raw,'entries',(e,p)=>{
+  if(!['expense','income','transfer','cash'].includes(e.type))fail(p+'.type');
+  if(e.amount===undefined)fail(p+'.amount');number(e.amount,p+'.amount');
+  if(typeof e.date!=='string')fail(p+'.date');date(e.date,p+'.date');
+  for(const k of ['category','who','beneficiary','subcategory','store','pay','comment','from','to','created_at','updated_at','installmentId','installmentPartId','recurringId','recurringPeriod'])text(e[k],p+'.'+k);
+ });
+ rows(raw,'goals',(g,p)=>{
+  text(g.name,p+'.name');for(const k of ['target','saved','monthly'])number(g[k],p+'.'+k);
+  if(g.deposits!==undefined){if(!Array.isArray(g.deposits))fail(p+'.deposits');for(const d of g.deposits){if(!object(d))fail(p+'.deposits');number(d.amount,p+'.deposits.amount');date(d.date,p+'.deposits.date');text(d.who,p+'.deposits.who')}}
+ });
+ rows(raw,'birthdays',(b,p)=>{date(b.date,p+'.date');for(const k of ['name','phone','note','group','kind'])text(b[k],p+'.'+k)});
+ rows(raw,'boardItems',(b,p)=>{for(const k of ['text','title','author','who','created_at','updated_at'])text(b[k],p+'.'+k)});
+ rows(raw,'chores',(c,p)=>{for(const k of ['title','assignee','who','recurrence','repeat'])text(c[k],p+'.'+k);for(const k of ['dueDate','due','lastDone'])date(c[k],p+'.'+k)});
+ rows(raw,'installments',(i,p)=>{
+  for(const k of ['title','provider','kind','who','created_at','updated_at'])text(i[k],p+'.'+k);
+  for(const k of ['amount','total','count'])number(i[k],p+'.'+k);
+  rows(i,'parts',(part,path)=>{
+   if(part.amount===undefined)fail(path+'.amount');number(part.amount,path+'.amount');
+   if(typeof part.date!=='string'||!part.date)fail(path+'.date');date(part.date,path+'.date');
+  });
+  if(i.links!==undefined){if(!object(i.links))fail(p+'.links');for(const [part,entry] of Object.entries(i.links)){id(part,p+'.links');id(entry,p+'.links')}}
+ });
+ if(raw.intelligence!==undefined){
+  if(!object(raw.intelligence))fail('intelligence');
+  for(const key of ['budgets','recurring','accounts'])rows(raw.intelligence,key,(r,p)=>{number(r.amount,p+'.amount');number(r.day,p+'.day');for(const k of ['name','group','category','who','updated_at','created_at'])text(r[k],p+'.'+k)});
+  const deleted=raw.intelligence.deleted;if(deleted!==undefined){if(!object(deleted))fail('intelligence.deleted');for(const key of ['budgets','recurring','accounts'])if(deleted[key]!==undefined){if(!object(deleted[key]))fail('intelligence.deleted.'+key);for(const [keyId,at] of Object.entries(deleted[key])){id(keyId,'intelligence.deleted.id');text(at,'intelligence.deleted.at')}}}
+ }
+ for(const key of ['deletedEntries','deletedGoals','deletedBirthdays','deletedBoardItems','deletedChores','deletedInstallments']){
+  const deleted=raw[key];if(deleted===undefined)continue;
+  if(Array.isArray(deleted)){for(const value of deleted)id(value,key)}
+  else{if(!object(deleted))fail(key);for(const [keyId,at] of Object.entries(deleted)){id(keyId,key);text(at,key)}}
+ }
+ for(const key of ['loans','preferences','notifications'])if(raw.settings[key]!==undefined&&!object(raw.settings[key]))fail('settings.'+key);
+ return raw;
+}
+function parseLocalState(raw,wrapped=false){
+ const parsed=JSON.parse(raw);return validateBackup(wrapped?parsed?.data:parsed);
+}
+function preserveDamagedLocal(key,raw){
+ if(raw===null)return;
+ // Keep the first damaged bytes independently; never overwrite them silently.
+ const quarantine=key+'_corrupt_v1',previous=localStorage.getItem(quarantine);
+ if(previous!==null&&previous!==raw)throw new Error('Сначала скачайте резервную копию: сохранена другая повреждённая версия');
+ if(previous===null)localStorage.setItem(quarantine,raw);
+}
+function loadLocal(){
+ const recovered=[];let primary=null,pending=null,damaged=false;
  try{
-  snapshot=JSON.stringify(state);
+  primary=localStorage.getItem(KEYS.state);pending=localStorage.getItem(KEYS.pending);
+  if(primary!==null){try{recovered.push(parseLocalState(primary))}catch{damaged=true}}
+  if(pending!==null){try{recovered.push(parseLocalState(pending))}catch{damaged=true}}
+  if(!recovered.length)for(const key of [LOCAL_BACKUP_KEY,LOCAL_PREIMPORT_KEY]){
+   const raw=localStorage.getItem(key);if(raw===null)continue;
+   try{recovered.push(parseLocalState(raw,true));break}catch{damaged=true}
+  }
+  if(recovered.length){
+   if(primary===null||damaged)localRecoveryNotice='Локальная копия восстановлена. Проверьте данные и скачайте JSON.';
+   return normalize(recovered.length===1?recovered[0]:mergeStates(...recovered));
+  }
+  if(damaged){localRecoveryBlocked=true;v89StorageFailed=true;localRecoveryNotice='Локальные данные повреждены. Запись остановлена; восстановите проверенную копию JSON.'}
+ }catch{localRecoveryBlocked=true;v89StorageFailed=true;localRecoveryNotice='Локальное хранилище недоступно. Не закрывайте вкладку; скачайте JSON.'}
+ return blankState();
+}
+function saveLocal(){
+ if(localRecoveryBlocked){v89StorageFailed=true;try{updateSync(localRecoveryNotice)}catch{}return false}
+ try{
+  validateBackup(state);
+  const snapshot=JSON.stringify(state),previous=localStorage.getItem(KEYS.state);
+  if(previous!==null&&previous!==snapshot){
+   let valid=false;try{parseLocalState(previous);valid=true}catch{}
+   if(valid){
+    // Rotate the previous committed state, not the state about to be written.
+    localStorage.setItem(LOCAL_BACKUP_KEY,JSON.stringify({saved_at:new Date().toISOString(),data:JSON.parse(previous)}));
+   }else preserveDamagedLocal(KEYS.state,previous);
+  }
   localStorage.setItem(KEYS.state,snapshot);
+  // A new installation gets a recovery copy; recovery never overwrites an old one.
+  const backup=localStorage.getItem(LOCAL_BACKUP_KEY);
+  let backupOK=false;if(backup!==null){try{parseLocalState(backup,true);backupOK=true}catch{preserveDamagedLocal(LOCAL_BACKUP_KEY,backup)}}
+  if(!backupOK)localStorage.setItem(LOCAL_BACKUP_KEY,JSON.stringify({saved_at:new Date().toISOString(),data:state}));
  }catch(e){
-  console.error('Local primary save failed',e);
+  console.error('Local save failed');
   v89StorageFailed=true;
   try{updateSync('Ошибка локального сохранения — скачайте резервную копию JSON')}catch(_e){}
   return false;
  }
- try{localStorage.setItem('marichevy_state_backup_v44',JSON.stringify({saved_at:new Date().toISOString(),data:state}))}
- catch(e){console.warn('Optional local backup failed',e)}
  v89StorageFailed=false;
  return true;
+}
+function localSaveMessage(cloudOK,success='Изменения сохранены'){
+ if(cloudOK)return success;
+ if(v89StorageFailed)return 'Не удалось надёжно сохранить изменения. Не закрывайте вкладку; скачайте JSON.';
+ return 'Сохранено на этом устройстве. Облако пока не подтвердило запись.';
+}
+function savePendingLocal(){
+ if(localRecoveryBlocked){v89StorageFailed=true;return false}
+ try{
+  const previous=localStorage.getItem(KEYS.pending);
+  if(previous!==null){try{parseLocalState(previous)}catch{preserveDamagedLocal(KEYS.pending,previous)}}
+  localStorage.setItem(KEYS.pending,JSON.stringify(state));return true;
+ }catch{v89StorageFailed=true;updateSync('Не удалось сохранить очередь изменений — скачайте JSON');return false}
 }
 function money(n){return new Intl.NumberFormat('ru-RU',{maximumFractionDigits:0}).format(Number(n)||0)+' ₽'}
 function today(){const p=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Moscow',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());const y=p.find(x=>x.type==='year').value,m=p.find(x=>x.type==='month').value,d=p.find(x=>x.type==='day').value;return `${y}-${m}-${d}`}
 function month(){return today().slice(0,7)}
 function homeMonth(){const v=document.getElementById('homeMonth')?.value;return /^\d{4}-\d{2}$/.test(v||'')?v:month()}
 function esc(x){return String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+// Data remains JSON in an HTML attribute, never JavaScript source in onclick.
+function recordAction(action,...args){return 'data-record-action="'+action+'" data-record-args="'+esc(JSON.stringify(args))+'"'}
+document.addEventListener('click',event=>{
+ const button=event.target.closest('[data-record-action]');if(!button||button.disabled)return;
+ let args;try{args=JSON.parse(button.dataset.recordArgs);if(!Array.isArray(args))return}catch{return}
+ switch(button.dataset.recordAction){
+  case 'entry-edit':openEdit(...args);break;
+  case 'entry-delete':deleteEntry(...args);break;
+  case 'board-delete':deleteBoardItem(...args);break;
+  case 'goal-deposit':addGoalDeposit(...args);break;
+  case 'goal-delete':deleteGoal(...args);break;
+  case 'birthday-edit':editBirthday(...args);break;
+  case 'birthday-delete':deleteBirthday(...args);break;
+  case 'chore-complete':completeChore(...args);break;
+  case 'chore-delete':deleteChore(...args);break;
+  case 'intelligence-remove':if(['budgets','recurring','accounts'].includes(args[0]))v84Remove(...args);break;
+  case 'account-edit':v84EditAccount(...args);break;
+  case 'recurring-link':v84LinkRecurring(...args);break;
+  case 'recurring-confirm':v84ConfirmRecurring(...args);break;
+  case 'drill':v84Drill(...args);break;
+  case 'navigate':if(Object.hasOwn(NAV,args[0]))go(...args);break;
+ }
+});
 function uid(){return crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2)}
-function typeName(t){return {expense:'Расход',income:'Доход',transfer:'Перевод',cash:'Наличные'}[t]||t}
+function typeName(t){const names={expense:'Расход',income:'Доход',transfer:'Перевод',cash:'Наличные'};return Object.hasOwn(names,t)?names[t]:'Неизвестный тип'}
 function isExpense(e){return e.type==='expense'}
 function monthEntries(m=month()){return state.entries.filter(e=>e.date?.startsWith(m))}
 function expenses(m=month()){return monthEntries(m).filter(isExpense)}
@@ -2531,7 +2670,7 @@ async function pullCloud(){
   const cloud=await fetchCloudState();
   let pending=null;try{const raw=JSON.parse(localStorage.getItem(KEYS.pending)||'null');if(raw&&typeof raw==='object')pending=normalize(raw)}catch{pending=null}
   if(cloud){
-   if(pending){state=mergeStates(cloud,pending);saveLocal();localStorage.setItem(KEYS.pending,JSON.stringify(state));await pushCloud(true)}
+   if(pending){state=mergeStates(cloud,pending);saveLocal();savePendingLocal();await pushCloud(true)}
    else{state=cloud;saveLocal();localStorage.removeItem(KEYS.pending)}
   }else{if(pending)state=mergeStates(state,pending);saveLocal();await pushCloud(true)}
   return true;
@@ -2564,10 +2703,11 @@ async function pushCloud(initial=false){
   if(!r.ok)throw new Error('HTTP '+r.status);
   const verified=await fetchCloudState();if(!verifiedCloudContains(verified,payload.data))throw new Error('Изменения не подтверждены чтением облака');
   state=mergeStates(verified,state);
-  saveLocal();
-  if(requestSerial!==mutationSerial){localStorage.setItem(KEYS.pending,JSON.stringify(state));updateSync(' Есть новые изменения — завершаем синхронизацию');return false;}
+  const localOK=saveLocal();
+  if(requestSerial!==mutationSerial){savePendingLocal();updateSync(v89StorageFailed?'Не удалось сохранить очередь изменений — скачайте JSON':'Есть новые изменения — завершаем синхронизацию');return false;}
+  if(!localOK){savePendingLocal();updateSync('Запись подтверждена облаком, но локальное сохранение не удалось — скачайте JSON');return true;}
   localStorage.removeItem(KEYS.pending);updateSync(' Синхронизировано');return true;
- }catch(err){console.error(err);saveLocal();localStorage.setItem(KEYS.pending,JSON.stringify(state));updateSync(' Не синхронизировано — данные сохранены на устройстве');return false}
+ }catch(err){console.error(err);const localOK=saveLocal(),pendingOK=savePendingLocal();updateSync(localOK&&pendingOK?'Не синхронизировано — данные сохранены на устройстве':'Не удалось сохранить изменения на устройстве — скачайте JSON');return false}
  finally{saving=false}
 }
 let saveQueue=Promise.resolve();
@@ -2575,11 +2715,8 @@ let mutationSerial=0;
 function saveAll(){
  mutationSerial++;
  const localOK=saveLocal();
- let pendingOK=true;
- try{localStorage.setItem(KEYS.pending,JSON.stringify(state))}catch(e){
-  pendingOK=false;console.error('Pending sync storage failed',e);
-  updateSync('Нет места для очереди изменений — экспортируйте JSON');
- }
+ const pendingOK=savePendingLocal();
+ v89StorageFailed=!localOK||!pendingOK;
  if(!session){
   if(localOK&&pendingOK)updateSync('Только на этом устройстве — войдите для облака');
   return Promise.resolve(false);
@@ -2606,7 +2743,14 @@ function logout(){
 }
 function openAuth(){document.getElementById('authModal').classList.add('open')}
 function closeAuth(){document.getElementById('authModal').classList.remove('open')}
-function toast(t){const x=document.createElement('div');x.textContent=t;x.style='position:fixed;right:18px;bottom:18px;z-index:200;background:#111a2d;color:#fff;padding:13px 16px;border-radius:13px;box-shadow:0 15px 40px #0003';document.body.appendChild(x);setTimeout(()=>x.remove(),2200)}
+function toast(t){
+ // Some older CRUD callers notify before saveAll(). Let its synchronous local
+ // writes finish, and never let a success notice mask a storage failure.
+ queueMicrotask(()=>{
+  const message=v89StorageFailed&&!/JSON|Резервная копия подготовлена|Ошибка|Не удалось/i.test(String(t))?localSaveMessage(false):t;
+  const x=document.createElement('div');x.textContent=message;x.style='position:fixed;right:18px;bottom:18px;z-index:200;background:#111a2d;color:#fff;padding:13px 16px;border-radius:13px;box-shadow:0 15px 40px #0003';document.body.appendChild(x);setTimeout(()=>x.remove(),2200);
+ });
+}
 function go(page){const sections=document.querySelectorAll('.section');sections.forEach(s=>{s.classList.remove('active');s.style.display='none'});const target=document.getElementById(page);if(!target||!target.classList.contains('section'))return;target.classList.add('active');target.style.display=page==='home'?'flex':'block';document.querySelectorAll('#nav button[data-page],#mobileNav button[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===page));const moreBtn=document.getElementById('v74MoreToggle');if(moreBtn)moreBtn.classList.toggle('active',['income','car','loans','goals','chores','dates','settings'].includes(page));document.getElementById('pageTitle').textContent=(NAV[page]||[page,''])[0];document.getElementById('pageSub').textContent=(NAV[page]||[page,''])[1];if(page==='history')renderHistory();if(page==='today')renderToday();if(page==='analytics')renderAnalytics();if(page==='income')renderIncome();if(page==='car')renderCar();if(page==='goals')renderGoals();if(page==='chores')renderChores();if(page==='dates')renderDates();if(page==='loans')renderLoans();if(page==='settings')settingsFields();v84RenderAll();window.scrollTo(0,0)}
 document.querySelectorAll('#nav button[data-page],#mobileNav button[data-page]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));
 
@@ -2735,19 +2879,21 @@ async function addEntry(){
  const e={id:uid(),date:document.getElementById('eDate').value||today(),type,amount,category,who,store,subcategory:type==='expense'?(document.getElementById('eSubcategory')?.value||''):'',beneficiary:type==='expense'?(document.getElementById('eBeneficiary')?.value||''):'',pay:type==='expense'?document.getElementById('ePay').value:'',comment:document.getElementById('eComment').value.trim(),from:type==='transfer'?document.getElementById('eFrom').value:'',to:type==='transfer'?document.getElementById('eTo').value:'',created_at:new Date().toISOString()};
  e.updated_at=e.created_at;v90Saving=true;document.getElementById('v90Save').disabled=true;state.entries.push(e);renderAll();
  let ok=false;try{ok=await saveAll()}finally{v90Saving=false;document.getElementById('v90Save').disabled=false}
- document.getElementById('saveMsg').innerHTML=ok?'<div class="success">✓ Операция сохранена в облако.</div>':'<div class="error">Облако временно недоступно. Операция сохранена локально и будет отправлена позже.</div>';
- if(!v89StorageFailed){clearEntry();if(!ok)document.getElementById('saveMsg').innerHTML='<div class="success">Сохранено на этом устройстве. Облако пока не подтвердило запись — повторно добавлять её не нужно.</div>'}
+ const durable=ok||!v89StorageFailed;
+ document.getElementById('saveMsg').innerHTML='<div class="'+(durable?'success':'error')+'"></div>';
+ document.getElementById('saveMsg').firstElementChild.textContent=localSaveMessage(ok,'Операция сохранена в облако.');
+ if(durable)clearEntry();
 }
 function deleteEntry(id){
  const e=state.entries.find(x=>x.id===id);if(!e)return;
  if(!confirm('Удалить операцию '+money(e.amount)+'?'))return;
- state.deletedEntries=state.deletedEntries||{};state.deletedEntries[id]=new Date().toISOString();state.entries=state.entries.filter(x=>x.id!==id);renderAll();saveAll().then(ok=>{if(!ok)toast(' Удаление пока только на устройстве')})
+ state.deletedEntries=state.deletedEntries||{};state.deletedEntries[id]=new Date().toISOString();state.entries=state.entries.filter(x=>x.id!==id);renderAll();saveAll().then(ok=>toast(localSaveMessage(ok,'Удаление сохранено')))
 }
 function openEdit(id){
  const e=state.entries.find(x=>x.id===id);if(!e)return;editId=id;
  document.getElementById('editForm').innerHTML=`<div class="form-grid">
  <div class="field"><label>Тип</label><select id="xType"><option value="expense">Расход</option><option value="income">Доход</option><option value="transfer">Перевод</option><option value="cash">Наличные</option></select></div>
- <div class="field"><label>Сумма</label><input id="xAmount" type="number" value="${e.amount}"></div>
+ <div class="field"><label>Сумма</label><input id="xAmount" type="number" value="${esc(e.amount)}"></div>
  <div class="field"><label>Категория</label><select id="xCat">${categoryOptions(e.category)}</select></div>
  <div class="field v81-edit-detail"><label for="xSubcategory">Уточнение расхода</label><select id="xSubcategory"></select></div>
  <div class="field v81-edit-detail"><label for="xBeneficiary">Для кого или чего?</label><select id="xBeneficiary"></select></div>
@@ -2765,7 +2911,7 @@ async function saveEdit(){
  const e=state.entries.find(x=>x.id===editId);if(!e)return;
  const amount=Number(document.getElementById('xAmount').value);if(!Number.isFinite(amount)||amount<=0){toast(' Укажите сумму больше нуля');return;} e.updated_at=new Date().toISOString();e.type=document.getElementById('xType').value;e.amount=amount;e.who=e.type==='income'?document.getElementById('xWho').value:(e.who||'Общее');e.category=e.type==='expense'?expenseCategory(document.getElementById('xCat').value,e.who):document.getElementById('xCat').value;e.date=document.getElementById('xDate').value;e.store=document.getElementById('xStore').value;e.comment=document.getElementById('xComment').value;
  if(e.type==='expense'){e.subcategory=document.getElementById('xSubcategory')?.value||'';e.beneficiary=document.getElementById('xBeneficiary')?.value||'';}else{delete e.subcategory;delete e.beneficiary;}
- closeEdit();renderAll();const ok=await saveAll();toast(ok?'✓ Изменения сохранены':' Изменения пока только на устройстве')
+ closeEdit();renderAll();const ok=await saveAll();toast(localSaveMessage(ok))
 }
 
 function animalNormalize(e){return e}
@@ -2890,7 +3036,7 @@ function renderFamilyBoard(){
         <div class="board-item-top"><div><b>${esc(author)}</b><span class="board-item-type">${note?'Финансовая заметка':'Сообщение семье'}</span></div><span>${esc(boardTimeLabel(x.created_at))}</span></div>
         <div class="board-item-text">${esc(x.text)}</div>
       </div>
-      <button class="board-delete" type="button" title="Удалить" aria-label="Удалить сообщение" onclick="deleteBoardItem('${esc(x.id)}')">×</button>
+      <button class="board-delete" type="button" title="Удалить" aria-label="Удалить сообщение" ${recordAction('board-delete',x.id)}>×</button>
     </article>`;
   }).join('');
 }
@@ -2902,7 +3048,7 @@ function addBoardItem(){
   state.boardItems.unshift({id:uid(),type,text,author:profile.name||'Семья',created_at:now,updated_at:now});
   document.getElementById('boardText').value='';
   renderFamilyBoard();renderFamilySpark();
-  saveAll().then(ok=>toast(ok?'✓ Опубликовано':' Сохранено на устройстве'));
+  saveAll().then(ok=>toast(localSaveMessage(ok,'Опубликовано')));
 }
 function deleteBoardItem(id){
   if(!id)return;
@@ -2991,7 +3137,7 @@ function renderHome(){
  const colors=entries.map(([k])=>v84GroupColor(k));
  let angle=0,grad=entries.length?entries.map(([,v],i)=>{const end=angle+(v/total)*360;const x=`${colors[i%colors.length]} ${angle}deg ${end}deg`;angle=end;return x}).join(','):'#dfe6f0 0 360deg';
  document.getElementById('donut').style.background=`conic-gradient(${grad})`;document.getElementById('donutTotal').textContent=money(exSum);
- document.getElementById('categoryLegend').innerHTML=entries.map(([k,v],i)=>`<button class="legend-row v84-legend-click" type="button" onclick="v84Drill('group',${JSON.stringify(k).replace(/"/g,'&quot;')},'home')"><i class="legend-dot" style="background:${colors[i%colors.length]}"></i><span>${esc(k)}</span><b>${money(v)} · ${Math.round(v/total*100)}% <span aria-hidden="true">↗</span></b></button>`).join('')||'<div class="empty">Расходов за месяц пока нет.</div>';
+ document.getElementById('categoryLegend').innerHTML=entries.map(([k,v],i)=>`<button class="legend-row v84-legend-click" type="button" ${recordAction('drill','group',k,'home')}><i class="legend-dot" style="background:${colors[i%colors.length]}"></i><span>${esc(k)}</span><b>${money(v)} · ${Math.round(v/total*100)}% <span aria-hidden="true">↗</span></b></button>`).join('')||'<div class="empty">Расходов за месяц пока нет.</div>';
  const SPECIAL_EXPENSE_GROUPS=Object.freeze({
    'Автомобиль':['ТО','Бензин','Парковка','Ремонт','Страховка','Налог','Шины','Мойка','Платные дороги','Штрафы','Запчасти'],
    'Кредитные платежи':['Кредит']
@@ -3002,16 +3148,16 @@ function renderHome(){
  const pmax=people.reduce((m,[,v])=>Math.max(m,v),1);
  const familyBars=document.getElementById('familyBars');
  if(familyBars){
-   const peopleHtml=people.map(([k,v])=>`<button type="button" class="bar-row v84-drill-bar" onclick="v84Drill('person',${JSON.stringify(k).replace(/"/g,'&quot;')},'home')"><div class="bar-top"><span>${esc(k)}</span><b>${money(v)}</b></div><div class="bar"><i style="width:${v/pmax*100}%;background:${v84PersonColor(k)}"></i></div></button>`).join('');
+   const peopleHtml=people.map(([k,v])=>`<button type="button" class="bar-row v84-drill-bar" ${recordAction('drill','person',k,'home')}><div class="bar-top"><span>${esc(k)}</span><b>${money(v)}</b></div><div class="bar"><i style="width:${v/pmax*100}%;background:${v84PersonColor(k)}"></i></div></button>`).join('');
    const breakdownSum=people.reduce((v,[,amount])=>v+amount,0);
    const summary=`<div class="spending-special-note v862-total-note">Всего по назначениям: <strong>${money(breakdownSum)}</strong> · ${Math.abs(breakdownSum-exSum)<0.01?'совпадает с расходами месяца':'проверьте записи'}</div>`;
    const specialHtml=`<div class="spending-special-title">Из них · отдельные статьи</div>`+specialRows.map(([k,v])=>`<div class="bar-row special-expense-row"><div class="bar-top"><span>${esc(k)}</span><b>${money(v)}</b></div><div class="bar"><i style="width:${v/pmax*100}%"></i></div></div>`).join('')+`<div class="spending-special-note">Автомобиль и кредитные платежи уже включены в суммы выше. Повторно прибавлять их не нужно.</div>`;
    familyBars.innerHTML=(peopleHtml||'<div class="empty">Пока нет расходов по назначению.</div>')+summary+specialHtml;
  }
  const recent=[...state.entries].sort((a,b)=>b.date.localeCompare(a.date)||String(b.created_at).localeCompare(String(a.created_at))).slice(0,8);
- document.getElementById('recent').innerHTML=recent.length?`<div class="table-wrap"><table class="table"><thead><tr><th>Дата</th><th>Операция</th><th>Для кого / источник</th><th>Сумма</th><th></th></tr></thead><tbody>${recent.map(e=>`<tr><td>${esc(e.date)}</td><td>${esc(e.store||e.category)}<br><small>${esc(e.comment||typeName(e.type))}</small></td><td>${esc(e.type==='expense'?v86ExpenseTarget(e):e.who||'—')}</td><td class="${e.type==='income'?'money-green':e.type==='expense'?'money-red':''}">${amountText(e)}</td><td><button class="btn small" onclick="openEdit('${e.id}')">Изменить</button> <button class="btn small danger" onclick="deleteEntry('${e.id}')">Удалить</button></td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">Операций пока нет.</div>'
+ document.getElementById('recent').innerHTML=recent.length?`<div class="table-wrap"><table class="table"><thead><tr><th>Дата</th><th>Операция</th><th>Для кого / источник</th><th>Сумма</th><th></th></tr></thead><tbody>${recent.map(e=>`<tr><td>${esc(e.date)}</td><td>${esc(e.store||e.category)}<br><small>${esc(e.comment||typeName(e.type))}</small></td><td>${esc(e.type==='expense'?v86ExpenseTarget(e):e.who||'—')}</td><td class="${e.type==='income'?'money-green':e.type==='expense'?'money-red':''}">${amountText(e)}</td><td><button class="btn small" ${recordAction('entry-edit',e.id)}>Изменить</button> <button class="btn small danger" ${recordAction('entry-delete',e.id)}>Удалить</button></td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">Операций пока нет.</div>'
 }
-function renderToday(){const arr=state.entries.filter(e=>e.date===today()).sort((a,b)=>String(b.created_at).localeCompare(String(a.created_at)));document.getElementById('todayList').innerHTML=arr.length?arr.map(e=>{const label=V90_CATEGORIES.find(x=>x[0]===e.category)?.[1]||e.category;return `<article class="v91-transaction"><div class="v91-transaction-main"><b>${esc(e.store||label||typeName(e.type))}</b><small>${esc([label,e.subcategory,e.type==='expense'?'Для: '+v86ExpenseTarget(e):e.who].filter(Boolean).join(' · '))}</small>${e.comment?`<p>${esc(e.comment)}</p>`:''}</div><strong class="${e.type==='income'?'money-green':e.type==='expense'?'money-red':''}">${amountText(e)}</strong><div class="v91-row-actions"><button class="btn small" onclick="openEdit('${esc(e.id)}')">Изменить</button><button class="btn small" onclick="deleteEntry('${esc(e.id)}')">Удалить</button></div></article>`}).join(''):'<div class="empty">За сегодня операций нет.</div>'}
+function renderToday(){const arr=state.entries.filter(e=>e.date===today()).sort((a,b)=>String(b.created_at).localeCompare(String(a.created_at)));document.getElementById('todayList').innerHTML=arr.length?arr.map(e=>{const label=V90_CATEGORIES.find(x=>x[0]===e.category)?.[1]||e.category;return `<article class="v91-transaction"><div class="v91-transaction-main"><b>${esc(e.store||label||typeName(e.type))}</b><small>${esc([label,e.subcategory,e.type==='expense'?'Для: '+v86ExpenseTarget(e):e.who].filter(Boolean).join(' · '))}</small>${e.comment?`<p>${esc(e.comment)}</p>`:''}</div><strong class="${e.type==='income'?'money-green':e.type==='expense'?'money-red':''}">${amountText(e)}</strong><div class="v91-row-actions"><button class="btn small" ${recordAction('entry-edit',e.id)}>Изменить</button><button class="btn small" ${recordAction('entry-delete',e.id)}>Удалить</button></div></article>`}).join(''):'<div class="empty">За сегодня операций нет.</div>'}
 
 function renderHistory(){
  const q=document.getElementById('fSearch').value.trim().toLowerCase(),who=document.getElementById('fWho').value,cat=document.getElementById('fCat').value,group=document.getElementById('fGroup')?.value||'',type=document.getElementById('fType').value,m=document.getElementById('fMonth').value;
@@ -3079,7 +3225,7 @@ function renderAnalytics(){
  const hint=document.getElementById('peopleChartHint'); if(hint) hint.textContent='Люди, питомцы и отдельные статьи · '+selectedLabel;
  const pmax=people[0]?.[1]||1;
  const personColors=people.map(([k])=>v84PersonColor(k));
- document.getElementById('aPeopleChart').innerHTML=people.map(([k,v],i)=>`<button type="button" class="bar-row v84-drill-bar" onclick="v84Drill('person',${JSON.stringify(k).replace(/"/g,'&quot;')},'analytics')" style="margin:15px 0"><div class="bar-top"><span><b>${esc(k)}</b></span><b>${money(v)} · ${total?Math.round(v/total*100):0}%</b></div><div class="bar" style="height:12px;margin-top:7px"><i style="width:${v/pmax*100}%;background:${personColors[i%personColors.length]}"></i></div></button>`).join('')||'<div class="empty">За выбранный месяц расходов пока нет.</div>';
+ document.getElementById('aPeopleChart').innerHTML=people.map(([k,v],i)=>`<button type="button" class="bar-row v84-drill-bar" ${recordAction('drill','person',k,'analytics')} style="margin:15px 0"><div class="bar-top"><span><b>${esc(k)}</b></span><b>${money(v)} · ${total?Math.round(v/total*100):0}%</b></div><div class="bar" style="height:12px;margin-top:7px"><i style="width:${v/pmax*100}%;background:${personColors[i%personColors.length]}"></i></div></button>`).join('')||'<div class="empty">За выбранный месяц расходов пока нет.</div>';
  let angle=0;
  const grad=people.length&&total?people.map(([k,v],i)=>{const end=angle+v/total*360;const part=`${personColors[i%personColors.length]} ${angle}deg ${end}deg`;angle=end;return part}).join(','):'#dfe6f0 0 360deg';
  const donut=document.getElementById('peopleDonut'); if(donut) donut.style.background=`conic-gradient(${grad})`;
@@ -3087,10 +3233,10 @@ function renderAnalytics(){
  document.getElementById('peopleLegend').innerHTML=people.map(([k,v],i)=>`<div class="legend-row"><i class="legend-dot" style="background:${personColors[i%personColors.length]}"></i><span>${esc(k)}</span><b>${money(v)} · ${total?Math.round(v/total*100):0}%</b></div>`).join('')||'<div class="empty">Нет расходов за выбранный месяц.</div>';
  document.getElementById('peopleCards').innerHTML=people.map(([k,v],i)=>`<div class="person-card"><div class="person-name">${esc(k)}</div><div class="person-sum">${money(v)}</div><div class="person-share">${total?Math.round(v/total*100):0}% от расходов</div><div class="person-bar"><i style="width:${total?v/total*100:0}%;background:${personColors[i%personColors.length]}"></i></div></div>`).join('')||'<div class="empty">Нет расходов за выбранный месяц.</div>';
  const catTotal=total||1;
- document.getElementById('aCatsDetails').innerHTML=Object.entries(aggregate(ex,'category')).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="v74-detail-row"><span>${esc(k)}</span><b>${money(v)}</b></div>`).join('')||'<div class="empty">Пока нет расходов</div>';document.getElementById('aCats').innerHTML=cats.map(([k,v])=>`<button type="button" class="bar-row v84-drill-bar" onclick="v84Drill('group',${JSON.stringify(k).replace(/"/g,'&quot;')},'analytics')"><div class="bar-top"><span>${esc(k)}</span><b>${money(v)}</b></div><div class="bar"><i style="width:${v/catTotal*100}%;background:${v84GroupColor(k)}"></i></div></button>`).join('')||'<div class="empty">Нет данных</div>';
+ document.getElementById('aCatsDetails').innerHTML=Object.entries(aggregate(ex,'category')).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="v74-detail-row"><span>${esc(k)}</span><b>${money(v)}</b></div>`).join('')||'<div class="empty">Пока нет расходов</div>';document.getElementById('aCats').innerHTML=cats.map(([k,v])=>`<button type="button" class="bar-row v84-drill-bar" ${recordAction('drill','group',k,'analytics')}><div class="bar-top"><span>${esc(k)}</span><b>${money(v)}</b></div><div class="bar"><i style="width:${v/catTotal*100}%;background:${v84GroupColor(k)}"></i></div></button>`).join('')||'<div class="empty">Нет данных</div>';
  document.getElementById('aStats').innerHTML=`<div class="kpi"><small>Всего расходов</small><strong>${money(total)}</strong></div><div class="kpi"><small>Операций</small><strong>${ex.length}</strong></div><div class="kpi"><small>Средняя покупка</small><strong>${money(ex.length?total/ex.length:0)}</strong></div><div class="kpi"><small>Дней с расходами</small><strong>${days}</strong></div>`;
 }
-function renderIncome(){const all=state.entries.filter(e=>e.type==='income');const sel=document.getElementById('incomeMonth');const m=sel?.value||month();const arr=all.filter(e=>e.date?.startsWith(m)&&INCOME_PEOPLE.includes(e.who)).sort((a,b)=>b.date.localeCompare(a.date));const by=aggregate(arr,'who');const ordered=INCOME_PEOPLE.map(p=>[p,by[p]||0]);const total=sum(arr);const label=new Date(m+'-01T12:00:00').toLocaleDateString('ru-RU',{month:'long',year:'numeric'});const hint=document.getElementById('incomePeopleChartHint');if(hint)hint.textContent='Доходы за '+label;const max=Math.max(...ordered.map(x=>x[1]),1);const chart=document.getElementById('incomePeopleChart');if(chart)chart.innerHTML=ordered.map(([p,v])=>`<div class="bar-row"><div class="bar-top"><b>${esc(p)}</b><span class="money-green">${money(v)}</span></div><div class="bar"><i style="width:${Math.max(0,Math.min(100,v/max*100))}%"></i></div></div>`).join('');const donut=document.getElementById('incomePeopleDonut');if(donut)donut.style.background=total?'conic-gradient('+ordered.map((x,i)=>{const a=ordered.slice(0,i).reduce((n,y)=>n+y[1],0)/total*360;const b=a+x[1]/total*360;const cols=['#496a9d','#76938b','#b1a18a','#9199aa','#aa90a5','#7296a0','#87909c'];return cols[i%cols.length]+' '+a+'deg '+b+'deg'}).join(',')+')':'conic-gradient(#e8edf5 0 360deg)';const dt=document.getElementById('incomePeopleDonutTotal');if(dt)dt.textContent=money(total);const legend=document.getElementById('incomePeopleLegend');if(legend)legend.innerHTML=ordered.filter(x=>x[1]>0).map(([p,v],i)=>`<div class="legend-row"><span class="legend-dot" style="background:${['#496a9d','#76938b','#b1a18a','#9199aa','#aa90a5','#7296a0','#87909c'][i%7]}"></span><span>${esc(p)}</span><b>${total?Math.round(v/total*100):0}% · ${money(v)}</b></div>`).join('')||'<div class="empty">Нет доходов за выбранный месяц.</div>';const cards=document.getElementById('incomePeopleCards');if(cards)cards.innerHTML=ordered.map(([p,v])=>`<div class="bar-row"><div class="bar-top"><b>${esc(p)}</b><span class="money-green">${money(v)} · ${total?Math.round(v/total*100):0}%</span></div><div class="bar"><i style="width:${total?Math.min(100,v/total*100):0}%"></i></div></div>`).join('');const list=document.getElementById('incomeList');list.innerHTML=arr.length?arr.map(e=>`<div class="bar-row"><div class="bar-top"><span>${esc(e.date)} · ${esc(e.store||e.category)} · ${esc(e.who)}</span><b class="money-green">+${money(e.amount)}</b></div><div>${esc(e.comment||'')}</div><div class="actions"><button class="btn small" onclick="openEdit('${e.id}')">Изменить</button><button class="btn small danger" onclick="deleteEntry('${e.id}')">Удалить</button></div></div>`).join(''):'<div class="empty">Нет доходов за выбранный месяц.</div>';}
+function renderIncome(){const all=state.entries.filter(e=>e.type==='income');const sel=document.getElementById('incomeMonth');const m=sel?.value||month();const arr=all.filter(e=>e.date?.startsWith(m)&&INCOME_PEOPLE.includes(e.who)).sort((a,b)=>b.date.localeCompare(a.date));const by=aggregate(arr,'who');const ordered=INCOME_PEOPLE.map(p=>[p,by[p]||0]);const total=sum(arr);const label=new Date(m+'-01T12:00:00').toLocaleDateString('ru-RU',{month:'long',year:'numeric'});const hint=document.getElementById('incomePeopleChartHint');if(hint)hint.textContent='Доходы за '+label;const max=Math.max(...ordered.map(x=>x[1]),1);const chart=document.getElementById('incomePeopleChart');if(chart)chart.innerHTML=ordered.map(([p,v])=>`<div class="bar-row"><div class="bar-top"><b>${esc(p)}</b><span class="money-green">${money(v)}</span></div><div class="bar"><i style="width:${Math.max(0,Math.min(100,v/max*100))}%"></i></div></div>`).join('');const donut=document.getElementById('incomePeopleDonut');if(donut)donut.style.background=total?'conic-gradient('+ordered.map((x,i)=>{const a=ordered.slice(0,i).reduce((n,y)=>n+y[1],0)/total*360;const b=a+x[1]/total*360;const cols=['#496a9d','#76938b','#b1a18a','#9199aa','#aa90a5','#7296a0','#87909c'];return cols[i%cols.length]+' '+a+'deg '+b+'deg'}).join(',')+')':'conic-gradient(#e8edf5 0 360deg)';const dt=document.getElementById('incomePeopleDonutTotal');if(dt)dt.textContent=money(total);const legend=document.getElementById('incomePeopleLegend');if(legend)legend.innerHTML=ordered.filter(x=>x[1]>0).map(([p,v],i)=>`<div class="legend-row"><span class="legend-dot" style="background:${['#496a9d','#76938b','#b1a18a','#9199aa','#aa90a5','#7296a0','#87909c'][i%7]}"></span><span>${esc(p)}</span><b>${total?Math.round(v/total*100):0}% · ${money(v)}</b></div>`).join('')||'<div class="empty">Нет доходов за выбранный месяц.</div>';const cards=document.getElementById('incomePeopleCards');if(cards)cards.innerHTML=ordered.map(([p,v])=>`<div class="bar-row"><div class="bar-top"><b>${esc(p)}</b><span class="money-green">${money(v)} · ${total?Math.round(v/total*100):0}%</span></div><div class="bar"><i style="width:${total?Math.min(100,v/total*100):0}%"></i></div></div>`).join('');const list=document.getElementById('incomeList');list.innerHTML=arr.length?arr.map(e=>`<div class="bar-row"><div class="bar-top"><span>${esc(e.date)} · ${esc(e.store||e.category)} · ${esc(e.who)}</span><b class="money-green">+${money(e.amount)}</b></div><div>${esc(e.comment||'')}</div><div class="actions"><button class="btn small" ${recordAction('entry-edit',e.id)}>Изменить</button><button class="btn small danger" ${recordAction('entry-delete',e.id)}>Удалить</button></div></div>`).join(''):'<div class="empty">Нет доходов за выбранный месяц.</div>';}
 function carMonthKey(){return document.getElementById('carMonth')?.value||month()}
 function carCategory(entry){
  if(entry.category==='Авто и транспорт')return carCategory({...entry,category:entry.subcategory||'',subcategory:''});
@@ -3160,7 +3306,7 @@ function renderGoals(){
  if(!goals.length){list.innerHTML='<div class="goal-empty"><div class="goal-icon"></div><b>Пока нет мечт</b><div class="hint" style="margin-top:5px">Создайте первую цель — например, отпуск или путешествие.</div></div>';return}
  list.innerHTML='<div class="goal-grid">'+goals.map(g=>{
   const target=Math.max(0,Number(g.target)||0),saved=Math.min(Math.max(0,Number(g.saved)||0),target),left=Math.max(0,target-saved),pct=target?Math.min(100,saved/target*100):0,monthly=Math.max(0,Number(g.monthly)||0),months=monthly>0&&left>0?Math.ceil(left/monthly):null,done=pct>=100;
-  return `<div class="goal-card"><div class="goal-ring" style="background:conic-gradient(var(--green) 0 ${pct}%,#e8edf5 ${pct}% 100%)"><span>${Math.round(pct)}%</span></div><div class="goal-content"><h3> ${esc(g.name)}</h3><div class="goal-meta"><span>Накоплено <b>${money(saved)}</b></span><span>Цель <b>${money(target)}</b></span></div><div class="goal-progress"><i style="width:${pct}%"></i></div><div class="goal-meta"><span>Осталось <b>${money(left)}</b></span><span>В месяц <b>${money(monthly)}</b></span><span>${done?'Цель достигнута ':months?`Ориентир: <b>${months} мес.</b>`:'Срок не задан'}</span></div>${done?'':`<div class="goal-actions"><input class="goal-deposit" id="deposit_${esc(g.id)}" type="number" min="1" inputmode="decimal" placeholder="Сумма пополнения, ₽"><button class="btn primary" onclick="addGoalDeposit('${esc(g.id)}')">Добавить</button><button class="btn danger" onclick="deleteGoal('${esc(g.id)}')">Удалить</button></div>`}<details class="v78-goal-history"><summary>История пополнений · ${(g.deposits||[]).length}</summary>${(g.deposits||[]).length?(g.deposits||[]).slice().reverse().map(d=>`<div class="v78-goal-history-row"><span>${esc(v77DateLabel(d.date))} · ${esc(d.who||'Семья')}</span><b>+${money2(d.amount)}</b></div>`).join(''):'<div class="v78-goal-history-row"><span>Прежняя накопленная сумма сохранена; детализация доступна для новых пополнений.</span></div>'}</details></div></div>`;
+  return `<div class="goal-card"><div class="goal-ring" style="background:conic-gradient(var(--green) 0 ${pct}%,#e8edf5 ${pct}% 100%)"><span>${Math.round(pct)}%</span></div><div class="goal-content"><h3> ${esc(g.name)}</h3><div class="goal-meta"><span>Накоплено <b>${money(saved)}</b></span><span>Цель <b>${money(target)}</b></span></div><div class="goal-progress"><i style="width:${pct}%"></i></div><div class="goal-meta"><span>Осталось <b>${money(left)}</b></span><span>В месяц <b>${money(monthly)}</b></span><span>${done?'Цель достигнута ':months?`Ориентир: <b>${months} мес.</b>`:'Срок не задан'}</span></div>${done?'':`<div class="goal-actions"><input class="goal-deposit" id="deposit_${esc(g.id)}" type="number" min="1" inputmode="decimal" placeholder="Сумма пополнения, ₽"><button class="btn primary" ${recordAction('goal-deposit',g.id)}>Добавить</button><button class="btn danger" ${recordAction('goal-delete',g.id)}>Удалить</button></div>`}<details class="v78-goal-history"><summary>История пополнений · ${(g.deposits||[]).length}</summary>${(g.deposits||[]).length?(g.deposits||[]).slice().reverse().map(d=>`<div class="v78-goal-history-row"><span>${esc(v77DateLabel(d.date))} · ${esc(d.who||'Семья')}</span><b>+${money2(d.amount)}</b></div>`).join(''):'<div class="v78-goal-history-row"><span>Прежняя накопленная сумма сохранена; детализация доступна для новых пополнений.</span></div>'}</details></div></div>`;
  }).join('')+'</div>';
 }
 
@@ -3216,7 +3362,7 @@ async function telegramNotify(kind,text){
 function updateTelegramSetting(key,value){
  if(!state.settings.notifications)state.settings.notifications=telegramSettings();
  state.settings.notifications[key]=Boolean(value);state.settings.updated_at=new Date().toISOString();
- saveLocal();localStorage.setItem(KEYS.pending,JSON.stringify(state));renderTelegramSettings();saveAll();
+ saveLocal();savePendingLocal();renderTelegramSettings();saveAll();
 }
 function renderTelegramSettings(){
  const n=telegramSettings(),ids={telegramEnabled:n.enabled,telegramCredit:n.creditReminder,telegramSalary:n.salaryReminder,telegramGoal:n.goalReminder,telegramTask:n.taskReminder,telegramSergey:n.sergey,telegramVictoria:n.victoria};
@@ -3246,14 +3392,14 @@ async function saveSettings(){
    });
    state.settings.updated_at=new Date().toISOString();
    saveLocal();
-   localStorage.setItem(KEYS.pending,JSON.stringify(state));
+   savePendingLocal();
    renderAll();
    const ok=await saveAll();
-   toast(ok?'✓ Настройки сохранены и синхронизированы':' Настройки сохранены на устройстве — облако пока недоступно');
+   toast(localSaveMessage(ok,'Настройки сохранены в облако'));
  }catch(err){
    console.error('save settings',err);
-   saveLocal();localStorage.setItem(KEYS.pending,JSON.stringify(state));
-   toast(' Настройки сохранены на этом устройстве');
+   saveLocal();savePendingLocal();
+   toast(localSaveMessage(false));
  }finally{
    if(btn){btn.disabled=false;btn.textContent=btn.dataset.originalText||'Сохранить настройки'}
  }
@@ -3832,7 +3978,7 @@ function renderDates(){
     const meta=b.kind==='wedding'?[`Свадьба ${b.date.slice(0,4)} года`,`Сейчас ${weddingYearsText(weddingYears(b))}`,`Следующая: ${weddingName(weddingNextYears(b))} свадьба`,d===0?'сегодня':d===1?'завтра':`через ${d} дн.`].join(' · '):[b.group||'',b.time?` ${b.time}`:'',d===0?'сегодня':d===1?'завтра':`через ${d} дн.`].filter(Boolean).join(' · ');
     const note=b.note&&b.note!==z.name?`<div class="birthday-note"> ${esc(b.note)}</div>`:'';
     const phoneBlock=phone?`<a class="birthday-phone" href="tel:${esc(v80PhoneHref(b.phone))}"> ${esc(phone)}</a>`:'';
-    const actions=fam?`<div class="birthday-actions"><button type="button" class="btn small" onclick="editBirthday('${esc(b.id)}')">Изменить</button><span class="birthday-family-badge">${b.kind==='wedding'?' Годовщина':' Семейная дата'}</span></div>`:`<div class="birthday-actions">${phone?`<a class="btn small primary" href="tel:${esc(v80PhoneHref(b.phone))}">Позвонить</a>`:`<span class="btn small disabled">Нет номера</span>`}<button type="button" class="btn small" onclick="editBirthday('${esc(b.id)}')">Изменить</button><button type="button" class="btn small danger" onclick="deleteBirthday('${esc(b.id)}')">Удалить</button></div>`;
+    const actions=fam?`<div class="birthday-actions"><button type="button" class="btn small" ${recordAction('birthday-edit',b.id)}>Изменить</button><span class="birthday-family-badge">${b.kind==='wedding'?' Годовщина':' Семейная дата'}</span></div>`:`<div class="birthday-actions">${phone?`<a class="btn small primary" href="tel:${esc(v80PhoneHref(b.phone))}">Позвонить</a>`:`<span class="btn small disabled">Нет номера</span>`}<button type="button" class="btn small" ${recordAction('birthday-edit',b.id)}>Изменить</button><button type="button" class="btn small danger" ${recordAction('birthday-delete',b.id)}>Удалить</button></div>`;
     return `<div class="birthday-row ${fam?'birthday-row-family':''}">
       <div class="birthday-date"><b>${day}</b><span>${month}</span></div>
       <div class="birthday-main"><div class="birthday-name-line"><b>${b.kind==='wedding'?' ':''}${esc(b.name)}</b>${z.symbol?`<span class="zodiac-pill" title="${esc(z.name)}">${z.symbol} ${esc(z.name)}</span>`:''}</div><span>${esc(meta)}</span>${phoneBlock}${note}</div>
@@ -3866,11 +4012,11 @@ function renderHomeChores(){
  card.style.display=chores.length?'':'none';
  const title=overdue.length?` ${overdue.length} просрочено`:(due.length?` На сегодня дел: ${due.length}`:'✓ Срочных дел нет');
  body.innerHTML=`<div class="v81-chore-dashboard"><div class="v81-chores-totals"><span>${title}</span><small>${soon.length?`На неделе впереди ещё ${soon.length}`:'Ближайшие задачи под контролем'}</small></div>`+
- (feed.length?`<div class="v81-chore-feed">${feed.map(c=>`<div class="v81-chore-alert ${choreStatus(c)}"><span class="v81-alert-icon">${choreStatus(c)==='overdue'?'!':choreStatus(c)==='today'?'●':'↻'}</span><div class="v81-alert-info"><strong>${esc(c.title)}</strong><small>${esc(c.assignee)} · ${esc(choreDateLabel(c.dueDate))} · ${esc(choreRepeat(c.recurrence))}</small></div><button type="button" class="v81-alert-done" onclick="completeChore('${esc(c.id)}')" aria-label="Отметить выполненным: ${esc(c.title)}">✓ Готово</button></div>`).join('')}</div>`:'<div class="v81-chores-calm">Новых напоминаний на ближайшую неделю нет.</div>')+
+ (feed.length?`<div class="v81-chore-feed">${feed.map(c=>`<div class="v81-chore-alert ${choreStatus(c)}"><span class="v81-alert-icon">${choreStatus(c)==='overdue'?'!':choreStatus(c)==='today'?'●':'↻'}</span><div class="v81-alert-info"><strong>${esc(c.title)}</strong><small>${esc(c.assignee)} · ${esc(choreDateLabel(c.dueDate))} · ${esc(choreRepeat(c.recurrence))}</small></div><button type="button" class="v81-alert-done" ${recordAction('chore-complete',c.id)} aria-label="Отметить выполненным: ${esc(c.title)}">✓ Готово</button></div>`).join('')}</div>`:'<div class="v81-chores-calm">Новых напоминаний на ближайшую неделю нет.</div>')+
  `<p class="v81-chore-footnote">Повторяющиеся дела получают новую дату после выполнения. Напоминания видны при открытом банке.</p></div>`;
 }
 function renderChoreSummary(){const e=document.getElementById('choresSummary');if(!e)return;const o=state.chores.filter(c=>choreStatus(c)==='overdue').length,t=state.chores.filter(c=>choreStatus(c)==='today').length,w=state.chores.filter(c=>c.dueDate<=choreWeekEnd()).length,u=state.chores.filter(c=>choreStatus(c)==='upcoming').length;e.innerHTML=`<div class="chore-stat ${o?'bad':''}"><small>Просрочено</small><b>${o}</b></div><div class="chore-stat ${t?'warn':''}"><small>Сегодня</small><b>${t}</b></div><div class="chore-stat"><small>Эта неделя</small><b>${w}</b></div><div class="chore-stat"><small>Впереди</small><b>${u}</b></div>`;const s=document.getElementById('choresHeroStatus');if(s)s.textContent=o?'Есть просроченные дела':t?'Сегодня есть дела':'Дом в порядке'}
-function renderChores(){const list=document.getElementById('choresList');if(!list)return;renderChoreSummary();let a=[...state.chores];if(choreFilter==='today')a=a.filter(c=>choreStatus(c)==='today');if(choreFilter==='week')a=a.filter(c=>c.dueDate<=choreWeekEnd());if(choreFilter==='overdue')a=a.filter(c=>choreStatus(c)==='overdue');a.sort((x,y)=>x.dueDate.localeCompare(y.dueDate)||x.title.localeCompare(y.title));document.querySelectorAll('.chore-filter').forEach(b=>b.classList.toggle('active',b.dataset.choreFilter===choreFilter));if(!a.length){list.innerHTML=`<div class="chores-empty"><div></div><b>${choreFilter==='overdue'?'Просроченных дел нет':choreFilter==='today'?'На сегодня дел нет':'Пока нет домашних дел'}</b><span>Добавьте первое дело — дальше приложение будет следить за сроками.</span></div>`;renderHomeChores();return}list.innerHTML=a.map(c=>{const s=choreStatus(c),cl=s==='overdue'?'red':s==='today'?'yellow':'green';return `<article class="chore-sticky ${cl}"><div class="chore-pin"></div><div class="chore-sticky-top"><span class="chore-assignee">${choreIcon(c.assignee)} ${esc(c.assignee)}</span><button class="chore-delete" onclick="deleteChore('${esc(c.id)}')" type="button" title="Удалить">×</button></div><h3>${esc(c.title)}</h3><div class="chore-date ${s}">${s==='overdue'?' ':s==='today'?' ':' '}${esc(choreDateLabel(c.dueDate))}</div><div class="chore-meta"><span>↻ ${esc(choreRepeat(c.recurrence))}</span>${c.lastDone?`<span>Последний раз: ${esc(choreDateLabel(c.lastDone))}</span>`:''}</div><button class="btn primary chore-done" onclick="completeChore('${esc(c.id)}')" type="button">✓ Выполнено</button></article>`}).join('');renderHomeChores()}
+function renderChores(){const list=document.getElementById('choresList');if(!list)return;renderChoreSummary();let a=[...state.chores];if(choreFilter==='today')a=a.filter(c=>choreStatus(c)==='today');if(choreFilter==='week')a=a.filter(c=>c.dueDate<=choreWeekEnd());if(choreFilter==='overdue')a=a.filter(c=>choreStatus(c)==='overdue');a.sort((x,y)=>x.dueDate.localeCompare(y.dueDate)||x.title.localeCompare(y.title));document.querySelectorAll('.chore-filter').forEach(b=>b.classList.toggle('active',b.dataset.choreFilter===choreFilter));if(!a.length){list.innerHTML=`<div class="chores-empty"><div></div><b>${choreFilter==='overdue'?'Просроченных дел нет':choreFilter==='today'?'На сегодня дел нет':'Пока нет домашних дел'}</b><span>Добавьте первое дело — дальше приложение будет следить за сроками.</span></div>`;renderHomeChores();return}list.innerHTML=a.map(c=>{const s=choreStatus(c),cl=s==='overdue'?'red':s==='today'?'yellow':'green';return `<article class="chore-sticky ${cl}"><div class="chore-pin"></div><div class="chore-sticky-top"><span class="chore-assignee">${choreIcon(c.assignee)} ${esc(c.assignee)}</span><button class="chore-delete" ${recordAction('chore-delete',c.id)} type="button" title="Удалить">×</button></div><h3>${esc(c.title)}</h3><div class="chore-date ${s}">${s==='overdue'?' ':s==='today'?' ':' '}${esc(choreDateLabel(c.dueDate))}</div><div class="chore-meta"><span>↻ ${esc(choreRepeat(c.recurrence))}</span>${c.lastDone?`<span>Последний раз: ${esc(choreDateLabel(c.lastDone))}</span>`:''}</div><button class="btn primary chore-done" ${recordAction('chore-complete',c.id)} type="button">✓ Выполнено</button></article>`}).join('');renderHomeChores()}
 function setChoreFilter(f){choreFilter=f;renderChores()}
 function addChore(){const title=document.getElementById('choreTitle')?.value.trim(),who=document.getElementById('choreWho')?.value||'Семья',due=document.getElementById('choreDue')?.value||today(),repeat=document.getElementById('choreRepeat')?.value||'weekly';if(!title){toast('Введите название дела');return}const now=new Date().toISOString();state.chores.push({id:uid(),title,assignee:who,dueDate:due,recurrence:repeat,lastDone:'',created_at:now,updated_at:now});saveAll();document.getElementById('choreTitle').value='';renderChores();toast('✓ Дело добавлено');telegramNotify('task',` Семейный банк
 
@@ -3947,7 +4093,7 @@ async function v84ConfirmRecurring(id,period){const r=v84Data().recurring.find(x
  // check again after confirm in case UI changed.
  if(v84RecurringConfirmed(r,period))return;
  const now=new Date().toISOString();state.entries.push({id:uid(),date,type:'expense',amount:r.amount,category:r.category,who:r.who||'Общее',store:r.name,comment:'Регулярный платёж · '+v84MonthLabel(period),pay:'Карта',recurringId:r.id,recurringPeriod:period,created_at:now,updated_at:now});
- renderAll();const ok=await saveAll();toast(ok?'Платёж внесён в расходы':'Платёж сохранён локально, ожидает облака');
+ renderAll();const ok=await saveAll();toast(localSaveMessage(ok,'Платёж внесён в расходы'));
 }
 let v84EditingAccountId='';
 function v84SaveAccount(){const name=(document.getElementById('v84AccountName')?.value||'').trim().slice(0,65),raw=document.getElementById('v84AccountAmount')?.value,amount=Number(raw);
@@ -3966,14 +4112,14 @@ function v84InitLists(){const b=document.getElementById('v84BudgetGroup'),r=docu
 }
 function v84RenderBudgets(){const root=document.getElementById('v84BudgetList');if(!root)return;v84InitLists();const m=v84ThisMonth(),budgets=v84Data().budgets;
  root.innerHTML=budgets.length?budgets.map(x=>{const spent=v84SpendGroup(m,x.group),pct=Math.round(spent/x.amount*100);const exceed=spent>x.amount;
- return `<div class="v84-row"><div class="v84-row-main"><b>${esc(x.group)}</b><small>${money(spent)} из ${money(x.amount)} · ${pct}% ${exceed?'· лимит превышен':''}</small><div class="v84-progress ${exceed?'over':''}"><i style="width:${Math.min(pct,100)}%"></i></div></div><button class="btn small danger" type="button" onclick="v84Remove('budgets','${esc(x.id)}')">Убрать</button></div>`}).join(''):'<div class="v84-empty">Лимиты пока не установлены. Начните с продуктов или детских занятий.</div>';
+ return `<div class="v84-row"><div class="v84-row-main"><b>${esc(x.group)}</b><small>${money(spent)} из ${money(x.amount)} · ${pct}% ${exceed?'· лимит превышен':''}</small><div class="v84-progress ${exceed?'over':''}"><i style="width:${Math.min(pct,100)}%"></i></div></div><button class="btn small danger" type="button" ${recordAction('intelligence-remove','budgets',x.id)}>Убрать</button></div>`}).join(''):'<div class="v84-empty">Лимиты пока не установлены. Начните с продуктов или детских занятий.</div>';
 }
 function v84RenderRecurring(){const root=document.getElementById('v84RecurringList');if(!root)return;v84InitLists();const m=v84ThisMonth(),rec=v84Data().recurring.slice().sort((a,b)=>Number(a.day)-Number(b.day));
  root.innerHTML=rec.length?rec.map(r=>{const paid=v84RecurringConfirmed(r,m),date=v84DateOfMonth(m,r.day),label=paid?'Подтверждено в истории':date<today()?'Ожидает подтверждения · срок прошёл':'Ожидаемый платёж';
- return `<div class="v84-row"><div class="v84-row-main"><b>${esc(r.name)}</b><small>${esc(r.category)} · ${v84NoticeDate(date)} · ${label}</small></div><strong class="v84-row-amount">${money(r.amount)}</strong>${paid?'<span class="v881-recurring-paid">Учтено в истории</span>':`<button class="btn small" type="button" onclick="v84LinkRecurring('${esc(r.id)}','${esc(m)}')">Связать расход</button><button class="btn primary small" type="button" onclick="v84ConfirmRecurring('${esc(r.id)}','${esc(m)}')">Отметить оплату</button>`}<button class="btn small danger" type="button" onclick="v84Remove('recurring','${esc(r.id)}')">Убрать</button></div>`}).join(''):'<div class="v84-empty">Добавьте ежемесячные расходы: связь, занятия, подписки, интернет. Ипотеку и Сплит здесь дублировать не нужно.</div>';
+ return `<div class="v84-row"><div class="v84-row-main"><b>${esc(r.name)}</b><small>${esc(r.category)} · ${v84NoticeDate(date)} · ${label}</small></div><strong class="v84-row-amount">${money(r.amount)}</strong>${paid?'<span class="v881-recurring-paid">Учтено в истории</span>':`<button class="btn small" type="button" ${recordAction('recurring-link',r.id,m)}>Связать расход</button><button class="btn primary small" type="button" ${recordAction('recurring-confirm',r.id,m)}>Отметить оплату</button>`}<button class="btn small danger" type="button" ${recordAction('intelligence-remove','recurring',r.id)}>Убрать</button></div>`}).join(''):'<div class="v84-empty">Добавьте ежемесячные расходы: связь, занятия, подписки, интернет. Ипотеку и Сплит здесь дублировать не нужно.</div>';
 }
 function v84RenderAccounts(){const root=document.getElementById('v84AccountsList');if(!root)return;const list=v84Data().accounts,total=list.reduce((a,x)=>a+(Number(x.amount)||0),0);
- root.innerHTML=list.length?`<div class="v84-row"><div class="v84-row-main"><b>Всего на введённых счетах</b><small>Ручные данные, актуальность зависит от последнего обновления</small></div><strong class="v84-row-amount">${money(total)}</strong></div>`+list.map(a=>`<div class="v84-row"><div class="v84-row-main"><b>${esc(a.name)}</b><small>Обновлено ${esc(new Date(a.updated_at).toLocaleDateString('ru-RU'))}</small></div><strong class="v84-row-amount">${money(a.amount)}</strong><button class="btn small" onclick="v84EditAccount('${esc(a.id)}')">Изменить</button><button class="btn small danger" onclick="v84Remove('accounts','${esc(a.id)}')">Убрать</button></div>`).join(''):'<div class="v84-empty">Пока нет ручных остатков. Это необязательный блок — результат месяца продолжит работать как раньше.</div>';
+ root.innerHTML=list.length?`<div class="v84-row"><div class="v84-row-main"><b>Всего на введённых счетах</b><small>Ручные данные, актуальность зависит от последнего обновления</small></div><strong class="v84-row-amount">${money(total)}</strong></div>`+list.map(a=>`<div class="v84-row"><div class="v84-row-main"><b>${esc(a.name)}</b><small>Обновлено ${esc(new Date(a.updated_at).toLocaleDateString('ru-RU'))}</small></div><strong class="v84-row-amount">${money(a.amount)}</strong><button class="btn small" ${recordAction('account-edit',a.id)}>Изменить</button><button class="btn small danger" ${recordAction('intelligence-remove','accounts',a.id)}>Убрать</button></div>`).join(''):'<div class="v84-empty">Пока нет ручных остатков. Это необязательный блок — результат месяца продолжит работать как раньше.</div>';
 }
 function v84RelevantRows(m){return v78ObligationRows(v78Obligations(m))}
 function v84PendingObligationsTo(date){const m=month(),next=new Date(m+'-01T12:00:00');next.setMonth(next.getMonth()+1);const months=[m,next.toISOString().slice(0,7)];return months.flatMap(x=>v84RelevantRows(x)).filter(r=>r.date>=today()&&r.date<=date&&!r.paid).reduce((n,r)=>n+Math.max(0,Number(r.amount)-(Number(r.allocated)||0)),0)}
@@ -3994,7 +4140,7 @@ function v84RenderNotices(){const root=document.getElementById('v84Notices');if(
  for(const x of v84Data().recurring){for(const period of [m,nm]){const due=v84DateOfMonth(period,x.day);if(due<=until&&!v84RecurringConfirmed(x,period))notices.push({date:due,title:'Регулярный платёж · '+x.name,detail:`${money(x.amount)} · ${v84NoticeDate(due)}`,page:'analytics',level:due<today()?'warn':'normal'})}}
  const family=(state.birthdays||[]).map(b=>({b,days:birthdayDays(b)})).filter(x=>Number.isFinite(x.days)&&x.days>=0&&x.days<=30);for(const x of family){const due=new Date(today()+'T12:00:00');due.setDate(due.getDate()+x.days);notices.push({date:due.toISOString().slice(0,10),title:'Важная дата · '+x.b.name,detail:x.days===0?'Сегодня':'Через '+x.days+' дн.',page:'dates',level:'normal'})}
  notices.sort((a,b)=>a.date.localeCompare(b.date)||(a.level==='danger'?-1:1));
- root.innerHTML=notices.length?`<div class="v84-notice-list">${notices.slice(0,5).map(x=>`<div class="v84-notice ${x.level}"><span class="v84-notice-dot"></span><div class="v84-notice-body"><b>${esc(x.title)}</b><small>${esc(x.detail)}</small></div><button type="button" class="btn small" onclick="go('${x.page}')">Открыть</button></div>`).join('')}</div>${notices.length>5?`<p class="v84-mini-note">Ещё ${notices.length-5} событий — в соответствующих разделах.</p>`:''}`:'<div class="v84-empty">В ближайшие 30 дней нет записанных событий, требующих внимания.</div>';
+ root.innerHTML=notices.length?`<div class="v84-notice-list">${notices.slice(0,5).map(x=>`<div class="v84-notice ${x.level}"><span class="v84-notice-dot"></span><div class="v84-notice-body"><b>${esc(x.title)}</b><small>${esc(x.detail)}</small></div><button type="button" class="btn small" ${recordAction('navigate',x.page)}>Открыть</button></div>`).join('')}</div>${notices.length>5?`<p class="v84-mini-note">Ещё ${notices.length-5} событий — в соответствующих разделах.</p>`:''}`:'<div class="v84-empty">В ближайшие 30 дней нет записанных событий, требующих внимания.</div>';
 }
 function v84ReportText(){const m=v84ThisMonth(),ex=expenses(m),inc=monthEntries(m).filter(e=>e.type==='income'),total=sum(ex),income=sum(inc),cats=Object.entries(aggregate(groupedExpenseEntries(ex),'category')).sort((a,b)=>b[1]-a[1]),ob=v78Obligations(m),budgets=v84Data().budgets;
  let lines=[`СЕМЕЙНЫЙ БАНК · ИТОГИ ${v84MonthLabel(m).toUpperCase()}`,'',`Доходы: ${money(income)}`,`Расходы: ${money(total)}`,`Результат месяца: ${money(income-total)}`,`Операций расходов: ${ex.length}`,'',`Три основные группы расходов:`];
@@ -4074,14 +4220,26 @@ document.getElementById('importFile').addEventListener('change',async e=>{
  const f=e.target.files?.[0];if(!f)return;
  try{
   if(f.size>15*1024*1024)throw new Error('Файл слишком большой (больше 15 МБ)');
-  const raw=JSON.parse(await f.text());
-  if(!raw||typeof raw!=='object'||!Array.isArray(raw.entries)||!raw.settings||typeof raw.settings!=='object')throw new Error('Это не резервная копия семейного банка');
+  const raw=validateBackup(JSON.parse(await f.text()));
   const incoming=normalize(raw),count=incoming.entries.length;
   if(!confirm(`Добавить данные из копии (${count} операций) к текущей истории? Существующие операции не будут заменены целиком.`))return;
-  try{localStorage.setItem('marichevy_pre_import_backup_v73',JSON.stringify({saved_at:new Date().toISOString(),data:state}))}catch(err){console.warn('pre-import backup',err)}
-  state=mergeStates(incoming,state); // Keep current settings on equal timestamps, merge the entire history.
-  renderAll();const ok=await saveAll();
-  toast(ok?'✓ Резервная копия объединена с текущими данными':' Импорт сохранён локально — облако не подтверждено');
+  const previousState=state,wasBlocked=localRecoveryBlocked;
+  const previousDisk=new Map([KEYS.state,KEYS.pending,LOCAL_BACKUP_KEY].map(key=>[key,localStorage.getItem(key)]));
+  const merged=mergeStates(incoming,state);validateBackup(merged);
+  // Without a durable rollback copy, importing must not change memory or disk.
+  const previousImport=localStorage.getItem(LOCAL_PREIMPORT_KEY);
+  if(previousImport!==null){try{parseLocalState(previousImport,true)}catch{preserveDamagedLocal(LOCAL_PREIMPORT_KEY,previousImport)}}
+  localStorage.setItem(LOCAL_PREIMPORT_KEY,JSON.stringify({saved_at:new Date().toISOString(),data:state}));
+  try{
+   state=merged;localRecoveryBlocked=false;
+   if(!saveLocal()||!savePendingLocal())throw new Error('Не удалось сохранить импорт. Восстанавливаем предыдущую копию.');
+  }catch(err){
+   state=previousState;localRecoveryBlocked=wasBlocked;
+   for(const [key,value] of previousDisk)try{if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value)}catch{localRecoveryBlocked=true;localRecoveryNotice='Импорт остановлен. Для восстановления сохранена копия перед импортом.'}
+   v89StorageFailed=true;throw err;
+  }
+  renderAll();const ok=session?await saveAll():false;
+  toast(localSaveMessage(ok,'Резервная копия объединена с текущими данными'));
  }catch(err){toast('Ошибка импорта: '+String(err.message||'неверный файл'))}
  finally{e.target.value=''}
 });
@@ -4120,9 +4278,9 @@ async function syncFromCloud(){
    const merged=pending?mergeStates(cloud,pending):cloud;
    const changed=JSON.stringify(merged)!==before;
    state=merged;
-   saveLocal();
+   if(!saveLocal()){updateSync('Не удалось сохранить локальную копию — скачайте JSON');return false}
    if(pending){
-     localStorage.setItem(KEYS.pending,JSON.stringify(state));
+     if(!savePendingLocal())return false;
      await pushCloud(true);
    }else{
      localStorage.removeItem(KEYS.pending);
@@ -4152,7 +4310,7 @@ async function verifyCachedSession(allowRefresh=true){
 async function boot(){
  initForm();
  try{session=JSON.parse(localStorage.getItem(KEYS.session)||'null')}catch{session=null}
- if(normalizeAnimalEntries()){saveLocal();if(session)localStorage.setItem(KEYS.pending,JSON.stringify(state))}
+ if(normalizeAnimalEntries()){saveLocal();if(session)savePendingLocal()}
  // Never show cached household finances before verifying the session server-side.
  showGate();
  if(session){
@@ -4165,6 +4323,7 @@ async function boot(){
    setStatus('Вход не выполнен',false);showGate();
   }
  }else setStatus('Вход не выполнен',false);
+ if(localRecoveryNotice){updateSync(localRecoveryNotice);toast(localRecoveryNotice)}
 }
 // v73 Signature dashboard preference is purely presentational and stored separately.
 function toggleV73Overview(){
@@ -4225,7 +4384,7 @@ function v86RenderCalendar(){
  document.querySelectorAll('[data-v86-filter]').forEach(b=>{const active=b.dataset.v86Filter===v86CalendarFilter;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))});
  const subset=data.filter(x=>v86CalendarFilter==='all'||(v86CalendarFilter==='paid'?x.paid:!x.paid));
  list.innerHTML=subset.length?subset.map(x=>{const [_,mo,day]=x.date.match(/^(\d{4})-(\d{2})-(\d{2})$/)||[];const label=x.paid?'Учтено':x.part?'Частично':x.date<today()?'Срок прошёл':'Ожидается';const cls=x.paid?'paid':x.part?'part':x.date<today()?'late':'';
-  return `<div class="v86-calendar-row"><div class="v86-calendar-date"><strong>${esc(String(Number(day)||'—'))}</strong><span>${esc(new Date(x.date+'T12:00:00').toLocaleDateString('ru-RU',{month:'short'}))}</span></div><div class="v86-calendar-description"><b>${esc(x.title)}</b><small>${esc(x.subtitle)}</small></div><strong class="v86-calendar-sum">${money(x.amount)}</strong><span class="v86-state ${cls}">${label}</span>${x.kind==='regular'&&!x.paid?`<div class="v881-cal-actions"><button class="btn small" type="button" onclick="v84LinkRecurring('${esc(x.recurringId)}','${esc(x.period)}')">Связать расход</button><button class="btn primary small" type="button" onclick="v84ConfirmRecurring('${esc(x.recurringId)}','${esc(x.period)}')">Отметить оплату</button></div>`:''}</div>`}).join(''):'<div class="v84-empty">Для этого фильтра платежей нет.</div>';
+  return `<div class="v86-calendar-row"><div class="v86-calendar-date"><strong>${esc(String(Number(day)||'—'))}</strong><span>${esc(new Date(x.date+'T12:00:00').toLocaleDateString('ru-RU',{month:'short'}))}</span></div><div class="v86-calendar-description"><b>${esc(x.title)}</b><small>${esc(x.subtitle)}</small></div><strong class="v86-calendar-sum">${money(x.amount)}</strong><span class="v86-state ${cls}">${label}</span>${x.kind==='regular'&&!x.paid?`<div class="v881-cal-actions"><button class="btn small" type="button" ${recordAction('recurring-link',x.recurringId,x.period)}>Связать расход</button><button class="btn primary small" type="button" ${recordAction('recurring-confirm',x.recurringId,x.period)}>Отметить оплату</button></div>`:''}</div>`}).join(''):'<div class="v84-empty">Для этого фильтра платежей нет.</div>';
 }
 function v86CurrentAccounts(){const list=v84Data().accounts;return {items:list,total:list.length?list.reduce((n,a)=>n+(Number(a.amount)||0),0):null,latest:list.reduce((s,a)=>String(a.updated_at||'')>s?String(a.updated_at||''):s,'')}}
 function v86Forecast(){
@@ -4277,7 +4436,7 @@ function v86ReminderEvents(){
 }
 function v86RenderReminders(){
  const root=document.getElementById('v84Notices');if(!root)return;const events=v86ReminderEvents(),now=today();
- root.innerHTML=events.length?`<div class="v84-notice-list">${events.slice(0,4).map(e=>{const delta=v86DateDelta(now,e.date);const label=delta<0?`Просрочено · ${-delta} дн.`:delta===0?'Сегодня':delta===1?'Завтра':`Через ${delta} дн.`;return `<div class="v84-notice ${delta<0?'danger':''}"><span class="v84-notice-dot"></span><div class="v84-notice-body"><b>${esc(e.title)}</b><small>${esc(label)} · ${esc(e.meta)}</small></div><button type="button" class="btn small" onclick="go('${e.route}')">Открыть</button></div>`}).join('')}</div>${events.length>4?`<p class="v84-mini-note">Ещё ${events.length-4} события — в разделах «Домашние дела», «Кредиты и рассрочки» и «Важные даты».</p>`:''}`:'<div class="v84-empty">В ближайшие 14 дней нет дел или платежей, требующих внимания.</div>';
+ root.innerHTML=events.length?`<div class="v84-notice-list">${events.slice(0,4).map(e=>{const delta=v86DateDelta(now,e.date);const label=delta<0?`Просрочено · ${-delta} дн.`:delta===0?'Сегодня':delta===1?'Завтра':`Через ${delta} дн.`;return `<div class="v84-notice ${delta<0?'danger':''}"><span class="v84-notice-dot"></span><div class="v84-notice-body"><b>${esc(e.title)}</b><small>${esc(label)} · ${esc(e.meta)}</small></div><button type="button" class="btn small" ${recordAction('navigate',e.route)}>Открыть</button></div>`}).join('')}</div>${events.length>4?`<p class="v84-mini-note">Ещё ${events.length-4} события — в разделах «Домашние дела», «Кредиты и рассрочки» и «Важные даты».</p>`:''}`:'<div class="v84-empty">В ближайшие 14 дней нет дел или платежей, требующих внимания.</div>';
 }
 function v86RenderAll(){v86RenderPulse();v86RenderCalendar();v86RenderCompare();v86RenderReminders()}
 
