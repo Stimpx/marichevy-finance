@@ -2663,57 +2663,100 @@ function mergeStates(...sources){
  }
  return out;
 }
-async function fetchCloudState(){
- if(!(await ensureToken()))return null;
- const r=await api('/rest/v1/family_state?household_id=eq.'+encodeURIComponent(CONFIG.household)+'&select=data,updated_at',{headers:{Authorization:'Bearer '+session.access_token}});
- if(r.status===401&&await refreshSession())return fetchCloudState();
- if(!r.ok)throw new Error('Ошибка загрузки облачных данных: HTTP '+r.status);
- const rows=await r.json();return rows[0]?.data?normalize(rows[0].data):null;
+// Writes require the server CAS protocol. Legacy rows remain readable only.
+let cloudReadMeta={revision:null,protocol:0};
+function readPendingLocal(){
+ const raw=localStorage.getItem(KEYS.pending);
+ return raw===null?null:normalize(parseLocalState(raw));
 }
-async function pullCloud(){
- if(!(await ensureToken()))return false;
- try{
-  const cloud=await fetchCloudState();
-  let pending=null;try{const raw=JSON.parse(localStorage.getItem(KEYS.pending)||'null');if(raw&&typeof raw==='object')pending=normalize(raw)}catch{pending=null}
-  if(cloud){
-   if(pending){state=mergeStates(cloud,pending);saveLocal();savePendingLocal();await pushCloud(true)}
-   else{state=cloud;saveLocal();localStorage.removeItem(KEYS.pending)}
-  }else{if(pending)state=mergeStates(state,pending);saveLocal();await pushCloud(true)}
-  return true;
- }catch(err){console.error(err);updateSync(' Облако временно недоступно — работаем с локальной копией');return false}
+async function fetchCloudState(){
+ if(!(await ensureToken()))throw new Error('Требуется вход');
+ cloudReadMeta={revision:null,protocol:0};
+ const path='/rest/v1/family_state?household_id=eq.'+encodeURIComponent(CONFIG.household)+'&select=';
+ let r;
+ for(let attempt=0;attempt<2;attempt++){
+  r=await api(path+'data,updated_at,sync_revision,sync_protocol,last_request_id',{headers:{Authorization:'Bearer '+session.access_token}});
+  if(r.status!==401||attempt||!(await refreshSession()))break;
+ }
+ // An old schema is never a reason to fall back to blind writes.
+ let legacy=false;
+ if(r.status===400){legacy=true;r=await api(path+'data,updated_at',{headers:{Authorization:'Bearer '+session.access_token}})}
+ if(!r.ok)throw new Error('Ошибка загрузки облачных данных: HTTP '+r.status);
+ const rows=await r.json(),row=rows[0];
+ if(!row?.data)return null;
+ validateBackup(row.data);
+ if(!legacy&&Number.isSafeInteger(row.sync_revision)&&row.sync_revision>=0)cloudReadMeta={revision:row.sync_revision,protocol:row.sync_protocol};
+ return normalize(row.data);
+}
+async function pullCloud(){return syncFromCloud()}
+function cloudJSONEqual(a,b){
+ if(a===b)return true;
+ if(a===null||b===null||typeof a!=='object'||typeof b!=='object')return false;
+ if(Array.isArray(a)||Array.isArray(b))return Array.isArray(a)&&Array.isArray(b)&&a.length===b.length&&a.every((v,i)=>cloudJSONEqual(v,b[i]));
+ const keys=Object.keys(a);return keys.length===Object.keys(b).length&&keys.every(k=>Object.hasOwn(b,k)&&cloudJSONEqual(a[k],b[k]));
+}
+function cloudContainsFields(actual,expected){
+ if(expected===null||typeof expected!=='object'||Array.isArray(expected))return cloudJSONEqual(actual,expected);
+ return actual!==null&&typeof actual==='object'&&Object.keys(expected).every(k=>Object.hasOwn(actual,k)&&cloudContainsFields(actual[k],expected[k]));
 }
 function verifiedCloudContains(actual,written){
  if(!actual||!written)return false;
- for(const key of ['entries','goals','birthdays','boardItems','chores','installments']){
-  const map=new Map((actual[key]||[]).map(item=>[item.id,item]));
-  for(const item of (written[key]||[])){
+ const rowsMatch=(have,want,tombstones={})=>{
+  const map=new Map((have||[]).map(x=>[x.id,x]));
+  return (want||[]).every(item=>{
    const found=map.get(item.id);
-   if(!found||String(stamp(found))<String(stamp(item)))return false;if(key==='installments')for(const [partId,entryId] of Object.entries(item.links||{})){if(found.links?.[partId]!==entryId)return false;}
-  }
+   if(tombstones[item.id]&&String(tombstones[item.id])>=String(stamp(item)))return true;
+   if(!found||String(stamp(found))<String(stamp(item)))return false;
+   return String(stamp(found))>String(stamp(item))||cloudContainsFields(found,item);
+  });
+ };
+ const tombstonesMatch=(have,want)=>Object.entries(want||{}).every(([id,at])=>have?.[id]&&String(have[id])>=String(at));
+ const collections={entries:'deletedEntries',goals:'deletedGoals',birthdays:'deletedBirthdays',boardItems:'deletedBoardItems',chores:'deletedChores',installments:'deletedInstallments'};
+ for(const [key,deleted] of Object.entries(collections)){
+  if(!rowsMatch(actual[key],written[key],actual[deleted])||!tombstonesMatch(actual[deleted],written[deleted]))return false;
  }
- for(const key of ['deletedEntries','deletedGoals','deletedBirthdays','deletedBoardItems','deletedChores','deletedInstallments']){
-  const actualT=actual[key]||{};
-  for(const [id,at] of Object.entries(written[key]||{}))if(!actualT[id]||String(actualT[id])<String(at))return false;
+ for(const key of ['budgets','recurring','accounts']){
+  if(!rowsMatch(actual.intelligence?.[key],written.intelligence?.[key],actual.intelligence?.deleted?.[key])||!tombstonesMatch(actual.intelligence?.deleted?.[key],written.intelligence?.deleted?.[key]))return false;
  }
- return String(actual.settings?.updated_at||'')>=String(written.settings?.updated_at||'');
+ const a=String(actual.settings?.updated_at||''),w=String(written.settings?.updated_at||'');
+ if(a<w||(a===w&&!cloudContainsFields(actual.settings,written.settings)))return false;
+ const known=new Set([...Object.keys(collections),...Object.values(collections),'settings','intelligence']);
+ for(const key of Object.keys(written))if(!known.has(key)&&!cloudContainsFields(actual[key],written[key]))return false;
+ for(const key of Object.keys(written.intelligence||{}))if(!['budgets','recurring','accounts','deleted'].includes(key)&&!cloudContainsFields(actual.intelligence?.[key],written.intelligence[key]))return false;
+ return true;
+}
+function preserveUnconfirmedSync(message){
+ const localOK=saveLocal(),pendingOK=savePendingLocal();
+ v89StorageFailed=!localOK||!pendingOK;
+ updateSync(localOK&&pendingOK?message:'Не удалось сохранить изменения на устройстве — скачайте JSON');
+ return false;
 }
 async function pushCloud(initial=false){
- if(!(await ensureToken()))return false;
+ if(!(await ensureToken()))return preserveUnconfirmedSync('Только на этом устройстве — войдите для облака');
  saving=true;updateSync('Сохраняем в облако…');
  try{
-  const cloud=await fetchCloudState();if(cloud)state=mergeStates(cloud,state);
-  const requestSerial=mutationSerial;
-  const payload={household_id:CONFIG.household,data:state,updated_by:session.user?.id||null};
-  let r=await api('/rest/v1/family_state?on_conflict=household_id',{method:'POST',headers:{Authorization:'Bearer '+session.access_token,Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify(payload)});
-  if(r.status===401&&await refreshSession())return pushCloud(initial);
-  if(!r.ok)throw new Error('HTTP '+r.status);
-  const verified=await fetchCloudState();if(!verifiedCloudContains(verified,payload.data))throw new Error('Изменения не подтверждены чтением облака');
-  state=mergeStates(verified,state);
-  const localOK=saveLocal();
-  if(requestSerial!==mutationSerial){savePendingLocal();updateSync(v89StorageFailed?'Не удалось сохранить очередь изменений — скачайте JSON':'Есть новые изменения — завершаем синхронизацию');return false;}
-  if(!localOK){savePendingLocal();updateSync('Запись подтверждена облаком, но локальное сохранение не удалось — скачайте JSON');return true;}
-  localStorage.removeItem(KEYS.pending);updateSync(' Синхронизировано');return true;
- }catch(err){console.error(err);const localOK=saveLocal(),pendingOK=savePendingLocal();updateSync(localOK&&pendingOK?'Не синхронизировано — данные сохранены на устройстве':'Не удалось сохранить изменения на устройстве — скачайте JSON');return false}
+  for(let attempt=0;attempt<5;attempt++){
+   const cloud=await fetchCloudState(),pending=readPendingLocal();
+   state=mergeStates(cloud,pending,state);
+   if(cloudReadMeta.protocol!==2||cloudReadMeta.revision===null)return preserveUnconfirmedSync('Сохранено на устройстве — облачная запись ждёт безопасного обновления сервера');
+   validateBackup(state);
+   const requestSerial=mutationSerial,expected=cloudReadMeta.revision;
+   const requestId=crypto.randomUUID?crypto.randomUUID():Array.from(crypto.getRandomValues(new Uint8Array(16)),(v,i)=>((i===6?(v&15)|64:i===8?(v&63)|128:v)+256).toString(16).slice(1)).join('').replace(/(.{8})(.{4})(.{4})(.{4})(.{12})/,'$1-$2-$3-$4-$5');
+   // Freeze the bytes being acknowledged; state can change while awaiting HTTP.
+   const snapshot=JSON.parse(JSON.stringify(state));
+   const r=await api('/rest/v1/rpc/family_state_cas',{method:'POST',headers:{Authorization:'Bearer '+session.access_token},body:JSON.stringify({p_household_id:CONFIG.household,p_expected_revision:expected,p_data:snapshot,p_request_id:requestId})});
+   if(!r.ok)throw new Error('Облачная запись: HTTP '+r.status);
+   const ack=await r.json();
+   if(ack.status==='conflict')continue;
+   if(ack.status!=='written'||ack.protocol!==2||!Number.isSafeInteger(ack.revision)||ack.revision<=expected||ack.request_id!==requestId||!cloudJSONEqual(ack.data,snapshot))throw new Error('Сервер не подтвердил полный снимок изменений');
+   state=mergeStates(ack.data,state);
+   const localOK=saveLocal();
+   if(requestSerial!==mutationSerial)return preserveUnconfirmedSync('Есть новые изменения — завершаем синхронизацию');
+   if(!localOK)return preserveUnconfirmedSync('Облако подтвердило запись; локальное сохранение не удалось — скачайте JSON');
+   localStorage.removeItem(KEYS.pending);updateSync('Синхронизировано');return true;
+  }
+  return preserveUnconfirmedSync('Сохранено на устройстве — изменения другого устройства требуют повторной синхронизации');
+ }catch(err){console.warn('Cloud sync failed',err.message);return preserveUnconfirmedSync('Не синхронизировано — данные сохранены на устройстве')}
  finally{saving=false}
 }
 let saveQueue=Promise.resolve();
@@ -3767,7 +3810,7 @@ function v77PayPart(id,partId){
  const i=v77FindInstallment(id),part=v77FindPart(i,partId);if(!i||!part||installmentPaid(i,part))return;
  if(!window.confirm('Создать расход '+money2(part.amount)+' по покупке «'+i.title+'»? Если он уже есть в истории, выберите «Из истории» вместо этого.'))return;
  const who='Не указано',now=new Date().toISOString();
- const e={id:uid(),date:part.date>today()?today():part.date,type:'expense',amount:part.amount,category:'Кредит',who,store:i.provider||V77_KINDS[i.kind],pay:'Карта',comment:'Оплата частями · '+i.title,from:'',to:'',installmentId:i.id,installmentPartId:part.id,created_at:now,updated_at:now};
+ const e={id:'installment:'+encodeURIComponent(i.id)+':'+encodeURIComponent(part.id),paymentKey:'installment:'+encodeURIComponent(i.id)+':'+encodeURIComponent(part.id),date:part.date>today()?today():part.date,type:'expense',amount:part.amount,category:'Кредит',who,store:i.provider||V77_KINDS[i.kind],pay:'Карта',comment:'Оплата частями · '+i.title,from:'',to:'',installmentId:i.id,installmentPartId:part.id,created_at:now,updated_at:now};
  state.entries.push(e);i.links=i.links||{};i.links[part.id]=e.id;i.updated_at=now;
  saveAll();renderAll();toast('✓ Оплата записана в расходы один раз');
 }
@@ -4045,7 +4088,7 @@ const V84_PERSON_COLORS=Object.freeze({'Сергей':'#3f69e8','Виктори�
 function v84PersonColor(name){return V84_PERSON_COLORS[name]||'#6986bf'}
 function v84NormalizeIntelligence(x){
  const a=x&&typeof x==='object'?x:{},types=['budgets','recurring','accounts'];
- const out={budgets:[],recurring:[],accounts:[],deleted:{budgets:{},recurring:{},accounts:{}}};
+ const out={...a,budgets:[],recurring:[],accounts:[],deleted:{...(a.deleted||{}),budgets:{},recurring:{},accounts:{}}};
  for(const t of types){
   out[t]=(Array.isArray(a[t])?a[t]:[]).filter(v=>v&&typeof v==='object'&&typeof v.id==='string').map(v=>({...v,amount:Number(v.amount)||0,updated_at:String(v.updated_at||v.created_at||'1970-01-01T00:00:00Z')}));
   const d=a.deleted?.[t];out.deleted[t]=(d&&typeof d==='object'&&!Array.isArray(d))?{...d}:{};
@@ -4053,8 +4096,10 @@ function v84NormalizeIntelligence(x){
  return out;
 }
 function v84MergeIntelligence(sources){
- const out=v84NormalizeIntelligence(null);
+ const extensions=sources.filter(s=>s?.intelligence).reduce((all,s)=>({...all,...s.intelligence,deleted:{...(all.deleted||{}),...(s.intelligence.deleted||{})}}),{});
+ const out=v84NormalizeIntelligence(extensions);
  for(const key of ['budgets','recurring','accounts']){
+  out.deleted[key]={};
   const records=new Map();
   for(const s of sources){const a=v84NormalizeIntelligence(s?.intelligence);
    for(const [id,at] of Object.entries(a.deleted[key]))if(!out.deleted[key][id]||String(at)>String(out.deleted[key][id]))out.deleted[key][id]=at;
@@ -4098,7 +4143,7 @@ async function v84ConfirmRecurring(id,period){const r=v84Data().recurring.find(x
  const date=today();if(!confirm(`Вы действительно оплатили «${r.name}» на ${money(r.amount)}? Будет создан один расход датой ${v84NoticeDate(date)}${period!==date.slice(0,7)?' за плановый месяц '+v84MonthLabel(period):''}. Если расход уже внесён — отмените и используйте «Связать расход».`))return;
  // check again after confirm in case UI changed.
  if(v84RecurringConfirmed(r,period))return;
- const now=new Date().toISOString();state.entries.push({id:uid(),date,type:'expense',amount:r.amount,category:r.category,who:r.who||'Общее',store:r.name,comment:'Регулярный платёж · '+v84MonthLabel(period),pay:'Карта',recurringId:r.id,recurringPeriod:period,created_at:now,updated_at:now});
+ const now=new Date().toISOString();state.entries.push({id:'recurring:'+encodeURIComponent(r.id)+':'+period,paymentKey:'recurring:'+encodeURIComponent(r.id)+':'+period,date,type:'expense',amount:r.amount,category:r.category,who:r.who||'Общее',store:r.name,comment:'Регулярный платёж · '+v84MonthLabel(period),pay:'Карта',recurringId:r.id,recurringPeriod:period,created_at:now,updated_at:now});
  renderAll();const ok=await saveAll();toast(localSaveMessage(ok,'Платёж внесён в расходы'));
 }
 let v84EditingAccountId='';
@@ -4272,30 +4317,23 @@ function startCloudSync(){
 }
 function stopCloudSync(){if(cloudSyncTimer){clearInterval(cloudSyncTimer);cloudSyncTimer=null}}
 async function syncFromCloud(){
- if(!session||saving||cloudSyncBusy)return false;
+ if(!session||cloudSyncBusy)return false;
  cloudSyncBusy=true;
- try{
-   const cloud=await fetchCloudState();
-   if(!cloud)return false;
-   let pending=null;
-   try{const raw=JSON.parse(localStorage.getItem(KEYS.pending)||'null');if(raw&&typeof raw==='object')pending=normalize(raw)}catch{pending=null}
-   const before=JSON.stringify(state);
-   // Pending/local changes always participate in the merge before cloud data can win.
-   const merged=pending?mergeStates(cloud,pending):cloud;
-   const changed=JSON.stringify(merged)!==before;
-   state=merged;
-   if(!saveLocal()){updateSync('Не удалось сохранить локальную копию — скачайте JSON');return false}
-   if(pending){
-     if(!savePendingLocal())return false;
-     await pushCloud(true);
-   }else{
-     localStorage.removeItem(KEYS.pending);
-   }
-   if(changed){renderAll();toast(' Семейные данные обновлены')}
-   updateSync(' Синхронизировано');
-   return true;
- }catch(e){console.warn('cloud sync',e);updateSync(' Не удалось обновить облако');return false}
- finally{cloudSyncBusy=false}
+ const job=async()=>{
+  try{
+   const readSerial=mutationSerial,cloud=await fetchCloudState(),pending=readPendingLocal();
+   if(!cloud)return preserveUnconfirmedSync('Сохранено на устройстве — облачная копия пока недоступна');
+   const before=JSON.stringify(state),hasChanges=!!pending||readSerial!==mutationSerial;
+   state=hasChanges?mergeStates(cloud,pending,state):cloud;
+   if(!saveLocal())return preserveUnconfirmedSync('Не удалось сохранить локальную копию — скачайте JSON');
+   if(JSON.stringify(state)!==before)renderAll();
+   if(hasChanges){if(!savePendingLocal())return false;return await pushCloud(true)}
+   if(cloudReadMeta.protocol!==2){updateSync('Облачная копия прочитана — безопасная запись ждёт обновления сервера');return false}
+   updateSync('Синхронизировано');return true;
+  }catch(e){console.warn('Cloud read failed',e.message);return preserveUnconfirmedSync('Не удалось обновить облако — данные сохранены на устройстве')}
+ };
+ saveQueue=saveQueue.then(job,job);
+ try{return await saveQueue}finally{cloudSyncBusy=false}
 }
 async function verifyCachedSession(allowRefresh=true){
  if(!session?.access_token)return false;
