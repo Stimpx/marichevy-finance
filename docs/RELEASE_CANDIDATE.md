@@ -28,7 +28,7 @@ The layout sweep covers all 11 sections (home, purchase form, history, analytics
 | External HTTPS preview | Not provisioned. Needs authorized isolated hosting/access; never publish private client or real operations as the demo. |
 | Browser access | Chromium available. Owner checks in Safari and Yandex Browser remain. |
 | Focused checks | 19 sync, 15 isolated PostgreSQL, 18 finance, 7 form, 30 storage, 3 staging, 4 bundle; 1 UI sweep with 144 viewport/section checks. The integrated run passed 82 non-database tests. Database setup encountered transient init-server readiness; after waiting for the final TCP listener, all 15 database tests passed (9.662 s). Total: 97 passed across those runs; no skipped tests. Final bundle checks were also repeated after packaging updates. |
-| Repository access | GitHub HTTPS / API access returned 401 during preparation. PR2 `a23f840` is local; PR1 `4aa` was previously verified remotely. No write retries until access is restored; local diff fallback must be preserved. Final app PR4 `fd83e47` remains local; no outgoing publication. |
+| Repository access | Normal GitHub access recovered and all stage 2–5 branches were pushed without force. Draft PRs #2, #3, #4 and #5 now exist with predecessor-branch bases. Main is unchanged. A sanitized recovery ZIP and standalone offline demo are available on the PR5 branch; no production deployment. |
 | Publication | None. Owner approval required before changing the personal bank. |
 
 ## Backup, manual update, rollback
@@ -50,3 +50,5 @@ Application commit: `fd83e47` (PR4). `index.html` SHA-256:
 PR5 adds packaging/tests/docs only; no further app change. Test logs are preserved
 outside the checkout as review artifacts. The PostgreSQL runner fix changes only
 test startup, not SQL or the application. No production authorization is implied.
+
+Standalone owner review: `preview/safe-demo.html` is generated from the same sanitized demo transform, with an embedded favicon. It needs no server or account. This is fictional local-only review, not a hosted backend or production release.
