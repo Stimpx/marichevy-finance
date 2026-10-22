@@ -3,12 +3,7 @@
 <html lang="ru" data-build="v94-expense-buckets" data-ui-version="94">
 <head><style>
 #eGroup{display:none!important}
-.v90-chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.v90-chips .btn{min-height:44px;white-space:normal;text-align:left}
-#v90Categories{margin:10px 0}#v90Categories summary{cursor:pointer;padding:10px 0;font-weight:650}#v90Search{width:100%;margin:8px 0}
-#today .form-grid{align-items:start}#today .field:has(#eCategory){grid-column:1/-1}#today input,#today select{font-size:16px;max-width:100%}
-#today .field:has(#eAmount){grid-column:1/-1}#eAmount{font-size:28px!important;font-weight:700}
-#today .field:has(#eSubcategory){grid-column:1/-1}#v90Save{min-height:48px}
-@media(max-width:600px){#today .form-grid{grid-template-columns:minmax(0,1fr)}.v90-chips .btn{flex:1 1 42%}}
+
 </style>
 <!-- v70 HOME TASKS: domestic chores + in-app reminders, based on v69 -->
 <meta charset="utf-8"/>
@@ -285,11 +280,6 @@ h1,h2,h3,.btn,.kpi strong,.goal-title{letter-spacing:-.01em}.field label{font-we
 .section.active .section-head{margin-bottom:16px}
 .section.active .form-grid{row-gap:var(--space-form)}
 .section.active .actions{margin-top:var(--space-action)}
-
-/* Добавить: форма читается уровнями — поля → комментарий → действия */
-#today > .card:first-child .form-grid{row-gap:16px}
-#today > .card:first-child .actions{margin-top:20px}
-#today > .card:first-child .field.full{margin-top:2px}
 
 /* Аналитика: показатели — самостоятельные карточки, а не одна слипшаяся колонка */
 #analytics #aStats{
@@ -673,7 +663,6 @@ button,input,select,textarea{font-size:inherit}
 #nav button[data-page="goals"]{color:#becbe8}
 #nav button.active .v81-nav-svg{color:#a5b8ff}
 .v81-optional,.v81-field-note{color:#8290a7;font-size:11px;font-weight:500}
-#today .v81-detail-field{min-width:0}
 #eSubcategory,#eBeneficiary,#xSubcategory,#xBeneficiary{width:100%;min-height:48px}
 .v81-row-subcategory{display:block;margin-top:4px;color:#7e8ba1;font-size:11px;line-height:1.35;white-space:normal}
 .v81-life-card{margin-bottom:20px;background:linear-gradient(135deg,#ffffff,#f9fbff);border:1px solid #e0e7f3}
@@ -797,48 +786,14 @@ button,input,select,textarea{font-size:inherit}
 #v81HeroReminder[data-level="today"] .v82-reminder-copy small{color:#8a7b5c}
 #v81HeroReminder[data-level="upcoming"] .v82-reminder-copy small{color:#647d9c}
 #v81HeroReminder .v82-reminder-action{flex:0 0 auto;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:800;color:inherit;border-radius:10px;background:rgba(255,255,255,.7);padding:9px 12px;border:1px solid rgba(190,169,157,.28)}
-/* A deliberate field grid: grid controls FIELD wrappers (label + input + hint). */
-#today .card:first-child{border-top:3px solid #6c83f5;box-shadow:0 10px 32px rgba(30,47,83,.055)}
-#today .form-grid{
- display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;
- column-gap:15px;row-gap:20px;align-items:start;
- margin-top:22px;min-width:0;
-}
-#today .form-grid>.field{min-width:0;grid-column:auto!important;align-self:start;margin:0}
-#today .form-grid>.field.full{grid-column:1/-1!important}
-#today .form-grid>.field.v82-wide{grid-column:span 2!important}
-#today .form-grid>.field>label{display:block;min-height:20px;font-size:13px;font-weight:780;line-height:1.4;color:#687992;margin-bottom:8px;letter-spacing:0}
-#today .form-grid>.field :is(input,select,textarea){
- display:block;width:100%;max-width:100%;min-width:0;min-height:53px;box-sizing:border-box;
- padding:12px 15px;border-radius:15px;border:1px solid #d9e3f1;
- background-color:#f9fbff;color:#223651;line-height:1.45;font-size:15px;
- box-shadow:none;transition:border-color .16s ease,box-shadow .16s ease,background-color .16s ease;
-}
-#today .form-grid>.field :is(input,select,textarea):focus{outline:none;background:#fff;border-color:#7892ef;box-shadow:0 0 0 3px rgba(106,131,244,.16)}
-#today .form-grid>.field :is(input,select,textarea)::placeholder{color:#96a1b2;opacity:1}
-#today .form-grid>.field select{padding-right:42px!important;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23586d8d' stroke-width='2.1' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;background-size:18px}
-#today .form-grid>.field input[type="date"]{min-width:0;color-scheme:light;}
-#today .form-grid>.field input[type="date"]::-webkit-calendar-picker-indicator{cursor:pointer;opacity:.7}
-#today .form-grid>.field :is(.v74-cat-help,.v81-field-note){display:block;margin-top:7px;line-height:1.35;font-size:11px;color:#8391a5;max-width:100%}
-#today .form-grid>.field.v82-wide :is(input,select){width:100%}
-#today .actions{margin-top:23px;gap:11px;align-items:center}
-#today .actions .btn{min-height:47px;border-radius:13px;padding:12px 18px;font-size:13px}
-#today .actions .btn.primary{min-width:208px}
-#today .card:first-child>.hint{margin:6px 0 0;line-height:1.55}
 @media(max-width:1380px){
  #home .hero .quick{grid-template-columns:repeat(2,minmax(0,1fr))!important}
- #today .form-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
- #today .form-grid>.field.v82-wide{grid-column:span 1!important}
 }
 @media(max-width:760px){
  #home .hero .quick{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px}
  #home .hero .quick button{min-height:105px;padding:13px;border-radius:15px}
  #home .hero .quick button b{font-size:12px}
  #home .hero .quick button small{font-size:10px}
- #today .form-grid{grid-template-columns:1fr!important;row-gap:15px;margin-top:18px}
- #today .form-grid>.field.v82-wide{grid-column:1/-1!important}
- #today .form-grid>.field :is(input,select,textarea){min-height:51px;font-size:16px}
- #today .actions .btn{min-height:49px;padding:12px}
  #v81HeroReminder:not([hidden]){gap:10px;padding:11px 12px;border-radius:14px}
  #v81HeroReminder .v82-reminder-mark{flex-basis:32px;width:32px;height:32px}
  #v81HeroReminder .v82-reminder-copy strong{font-size:12px}
@@ -1236,24 +1191,16 @@ body{font-feature-settings:'kern' 1,'liga' 1}
 .today-weather.weather-offline{border-color:#eadfbc}
 .today-weather.weather-offline .weather-refresh{background:#fff5df;color:#a9741a}
 .weather-refresh{min-width:38px;min-height:38px}
-#today .card:first-child{border-top:3px solid #6e83f4}
-#today .form-grid{grid-template-columns:repeat(4,minmax(0,1fr));align-items:end}
-#today #eCategory{width:100%}
-#today .form-grid>.field{min-width:0}
-#today .actions .primary{min-width:210px}
 #history .table th:last-child{min-width:130px}
 #analytics #aCats{padding-right:3px}
 /* Bottom sheet defaults hidden on wide viewports */
 .v74-more-shade,.v74-more-panel{display:none}
-@media(max-width:1260px){#history .filters{grid-template-columns:repeat(3,minmax(0,1fr))}#history .filters input:first-child{grid-column:1/-1}#today .form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:1260px){#history .filters{grid-template-columns:repeat(3,minmax(0,1fr))}#history .filters input:first-child{grid-column:1/-1}}
 @media(max-width:900px) and (min-width:761px){.top{flex-wrap:wrap}.grid2,.grid3{gap:14px!important}}
 @media(max-width:760px){
  html{scroll-padding-bottom:110px}
  #history .filters{grid-template-columns:repeat(2,minmax(0,1fr))}
  #history .filters input:first-child{grid-column:1/-1}
- #today .form-grid{grid-template-columns:1fr}
- #today .actions{display:grid;grid-template-columns:1fr 1fr}
- #today .actions .primary{min-width:0}
  #analytics .grid3{grid-template-columns:1fr!important}
  #analytics .grid3>div{padding:16px;border-radius:17px}
  .mobile-nav{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;overflow:visible!important;gap:3px!important;padding:7px 5px!important;align-items:stretch;max-height:none}
@@ -1289,9 +1236,7 @@ button:focus-visible,.btn:focus-visible,a:focus-visible,[role="button"]:focus-vi
 #eGroup{font-weight:700;color:#254377}
 .v75-settings-note{padding:13px 15px;border:1px solid #dbe6ff;border-radius:14px;background:#f5f8ff;color:#465b80;font-size:12px;line-height:1.6;margin:12px 0}
 .v75-auth-note{padding:9px 11px;background:#f1f6ff;border-radius:11px;color:#40577e;font-size:12px;margin:12px 0}
-#syncStatus{line-height:1.55;overflow-wrap:anywhere}
-#today .field input,#today .field select,#history .filters input,#history .filters select{font-size:16px}
-#today .actions .btn.primary{box-shadow:0 11px 24px rgba(63,109,246,.18)}
+#syncStatus{line-height:1.55;overflow-wrap:anywhere}#history .filters input,#history .filters select{font-size:16px}
 #history .filters{display:flex;align-items:center;flex-wrap:wrap}
 #history .filters>*{min-height:44px;flex:1 1 148px}
 #history .filters #fSearch{flex:2 1 250px}
@@ -1307,14 +1252,12 @@ button:focus-visible,.btn:focus-visible,a:focus-visible,[role="button"]:focus-vi
  #history .filters>*{width:100%;min-width:0}
  #history .filters #fSearch{grid-column:1/-1}
  #history .filters .v75-all-dates{grid-column:1/-1}
- #today .actions{display:grid;grid-template-columns:1fr 1fr}
- #today .actions .btn{min-width:0}
  #settings .actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}
  #settings .actions .btn{font-size:12px;text-align:center;display:flex;justify-content:center;align-items:center}
  .v74-more-panel button,#mobileNav button{min-height:48px}
  .v74-more-panel{padding-bottom:max(20px,env(safe-area-inset-bottom))}
 }
-@media(max-width:370px){#settings .actions{grid-template-columns:1fr}#today .actions{grid-template-columns:1fr}}
+@media(max-width:370px){#settings .actions{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 
 
@@ -1555,40 +1498,17 @@ button:focus-visible,.btn:focus-visible,a:focus-visible,[role="button"]:focus-vi
 </style>
 <style>
 /* v91: final scoped layout, after legacy rules. */
-#today .v91-entry{max-width:820px;margin:0 auto 24px!important;border:1px solid #e3e7ec!important;border-radius:24px!important;padding:28px!important;background:#fff;box-shadow:0 8px 30px #162c4610!important}
-#today .v91-head h2{font-size:26px;font-weight:700;letter-spacing:-.6px;margin:5px 0 6px}#today .v91-head p{color:#718096;font-size:14px;margin:0}.v91-kicker{font-size:10px;letter-spacing:1.5px;color:#6a778b;font-weight:650}
-#today .v91-entry .form-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:18px!important;margin-top:22px!important}
-#today .v91-entry .form-grid>.field{grid-column:auto!important;min-width:0!important}
-#today .v91-entry .form-grid>.field.full{grid-column:1/-1!important}
-#today .v91-entry .field label{font-size:13px!important;color:#48566a!important;font-weight:600!important}
-#today .v91-entry .field input,#today .v91-entry .field select{font-size:16px!important;min-height:50px!important;border-radius:12px!important;background-color:#fafbfc!important;border-color:#e0e5eb!important;font-weight:400!important}
-#today .v91-entry #eAmount{font-size:24px!important;font-weight:600!important;height:50px!important;padding:8px 14px!important}
-#today .v91-entry [hidden]{display:none!important}
-#today .v91-entry .v90-chips{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0!important}
-#today .v91-entry .v90-chips button{display:flex;align-items:center;justify-content:center;min-width:0;min-height:48px;padding:10px 8px!important;border:1px solid #e3e8ee!important;border-radius:12px!important;background:#f7f8fa!important;color:#415068!important;font-size:13px!important;font-weight:550!important;box-shadow:none!important;line-height:1.3;text-align:center;white-space:normal}
-#today .v91-entry .v90-chips button.primary{background:#edf1ff!important;border-color:#8999e7!important;color:#304dc1!important}
-#today .v91-entry button:focus-visible,#today .v91-entry summary:focus-visible{outline:3px solid #91a9ed;outline-offset:3px}
-#v90Categories{display:flex;flex-direction:column;margin:6px 0 0!important}#v90Search{order:-1}#today .v91-link{align-self:flex-start;background:none;color:#415fc3;font-size:13px;padding:8px 0;min-height:40px}
-#today .v91-entry #v90Extra{border-top:1px solid #e9edf1;padding-top:16px;margin-top:0}#today .v91-entry summary{font-size:14px;cursor:pointer;color:#43536b;padding:4px 0}#v90Extra summary span{font-size:12px;color:#8590a0;margin-left:8px}
-#today .v91-actions{margin-top:20px!important;display:flex;gap:10px}#today .v91-actions .btn{font-size:14px!important;font-weight:600!important;min-height:48px;border-radius:12px!important}#today .v91-actions .primary{background:#304fc7!important;box-shadow:none!important;flex:1}
-#today .v91-templates{border-top:1px solid #edf0f4;margin-top:20px;padding-top:16px;display:flex;align-items:center;flex-wrap:wrap;gap:8px}#today .v91-templates span{font-size:11px;color:#8390a0;margin-right:4px}#today .v91-templates button{background:#f5f7fa;color:#52627b;font-size:12px;font-weight:500;border-radius:8px;padding:8px 10px;min-height:36px}
+
 #today>.card:not(.v91-entry){max-width:820px;margin:0 auto!important}
-@media(max-width:760px){#today .v91-entry{padding:20px!important;border-radius:20px!important}#today .v91-entry .v90-chips{grid-template-columns:repeat(2,minmax(0,1fr))}#today .v91-head h2{font-size:23px}.top{flex-wrap:wrap}.top .userbar{max-width:100%;overflow-wrap:anywhere}.main{padding-bottom:110px!important}#v90Extra summary span{display:none}}
-@media(max-width:380px){#today .v91-entry{padding:15px!important}#today .v91-entry .form-grid{column-gap:10px!important}#today .v91-entry .field select{padding-left:10px!important}#today .v91-templates span{width:100%}}
+@media(max-width:760px){.top{flex-wrap:wrap}.top .userbar{max-width:100%;overflow-wrap:anywhere}.main{padding-bottom:110px!important}}
+
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style><style>
 .v91-transaction{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:16px 0;border-bottom:1px solid #e8edf3}.v91-transaction:last-child{border-bottom:0}.v91-transaction-main{min-width:0}.v91-transaction-main b{font-size:15px;font-weight:600}.v91-transaction-main small{display:block;color:#738198;font-size:12px;margin-top:4px;overflow-wrap:anywhere}.v91-transaction-main p{font-size:13px;margin:6px 0 0;color:#526079}.v91-transaction>strong{font-size:16px;white-space:nowrap}.v91-row-actions{grid-column:1/-1;display:flex;gap:8px}.v91-row-actions .btn{min-height:36px;font-weight:500;font-size:12px;box-shadow:none}
 </style><style>
 @media(max-width:1024px){.side{display:none!important}.main{margin-left:0!important;width:100%!important;padding:20px 20px 110px!important}.mobile-nav{position:fixed!important;display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr));left:8px;right:8px;bottom:8px;background:#111e35;padding:8px;border-radius:18px;z-index:50}.mobile-nav button{background:transparent;color:#cbd5e1;font-size:11px;padding:7px}.mobile-nav button.active{color:#fff}.top{flex-wrap:wrap}.userbar{max-width:100%}}
-@media(max-width:600px){.main{padding:12px 10px 110px!important}#today .v91-entry{padding:16px!important}#today .v91-entry .v91-form{gap:12px!important;margin-top:16px!important}#today .v91-kicker{display:none}#today .v91-head p{font-size:13px;margin-bottom:0}#today .v91-entry .field label{margin-bottom:5px!important}#today .v91-entry .v90-chips button{min-height:44px}#today .v91-entry #v90Extra{padding-top:10px}#today .v91-actions{margin-top:14px!important}.v91-transaction>strong{font-size:14px}}
-</style><style>/* v92: purchase search and intrinsic sizing across devices */
-#today .v91-category{display:flex!important;flex-direction:column;gap:10px}
-#today .v91-category #v90Search{order:0;margin:0!important;min-width:0;width:100%;padding:12px 14px!important}
-#today #v92SearchHint{display:block;font-size:12px;line-height:1.5;color:#697588}
-#today .v91-entry .v90-chips button{flex-direction:column;gap:5px}
-#today .v91-entry .v90-chips button small{font-size:10px;font-weight:400;color:#78849a;line-height:1.35}
-#today #v92Selected{margin:0;padding:12px 14px;border:1px solid #dbe4f3;border-radius:12px;background:#f3f6fc;color:#344d75;font-size:13px;line-height:1.5;overflow-wrap:anywhere}
-#today #v90Categories{margin:0!important}
+@media(max-width:600px){.main{padding:12px 10px 110px!important}.v91-transaction>strong{font-size:14px}}
+</style><style>
 .main,.section,.card,.field,.kpi,.goal-card,.people-card{min-width:0}
 .form-grid>*{min-width:0}input,select,textarea{max-width:100%;box-sizing:border-box}
 .section h2,.section h3,.section p,.section .hint{overflow-wrap:anywhere}
@@ -1599,7 +1519,6 @@ button:focus-visible,.btn:focus-visible,a:focus-visible,[role="button"]:focus-vi
  .actions{flex-wrap:wrap}.actions .btn{white-space:normal;overflow-wrap:anywhere}
  .field input,.field select,.field textarea{font-size:16px!important;min-width:0}
  .modal{max-height:calc(100dvh - 24px);overflow-y:auto}
- #today .v91-entry .v90-chips{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 </style>
 <style>
@@ -1619,7 +1538,42 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 .donut-ring .donut-center{inset:23%;width:auto;height:auto;max-width:54%;text-align:center;white-space:nowrap;font-variant-numeric:tabular-nums;font-size:18px;line-height:1.2}
 @media(max-width:1100px){#chores .chores-layout{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:600px){#chores .chores-form,#history .filters{grid-template-columns:minmax(0,1fr)}.field input,.field select,.field textarea,.filters input,.filters select{font-size:16px}}
-</style></head>
+</style>
+<style id="v95ExpenseStyle">
+#today .v91-entry{max-width:1120px;margin:0 auto 24px;border:1px solid #e3e7ec;border-radius:24px;padding:28px;background:#fff;box-shadow:0 8px 30px #162c4610}
+#today .v91-head h2{font-size:26px;font-weight:700;letter-spacing:-.6px;margin:5px 0 6px}
+#today .v91-head p{color:#718096;font-size:14px;margin:0}
+#today .v91-kicker{font-size:10px;letter-spacing:1.5px;color:#6a778b;font-weight:650}
+#today .v91-form{display:grid;grid-template-columns:170px minmax(180px,1.6fr) minmax(140px,1fr) minmax(150px,1fr);align-items:start;gap:16px;margin-top:22px}
+#today .v91-form>.field{grid-column:auto;min-width:0;margin:0}
+#today .v91-form>.field.full{grid-column:1/-1}
+#today .v91-form .field label{display:block;font-size:13px;color:#48566a;font-weight:600;min-height:20px;margin-bottom:7px;line-height:1.4}
+#today .v91-form input,#today .v91-form select{width:100%;min-width:0;font-size:16px;min-height:50px;border-radius:12px;background-color:#fafbfc;border:1px solid #e0e5eb;font-weight:400;padding:10px 14px}
+#today .v91-form #eAmount{font-size:24px;font-weight:600;height:50px}
+#today .v91-form .v95-operation{max-width:280px}
+#today .v91-form .v95-operation select{min-height:40px;font-size:14px}
+#today .v91-form #v90Search{margin:0;padding:12px 14px}
+#today .v91-form .v90-chips{display:flex;flex-wrap:wrap;gap:7px;margin:9px 0 0}
+#today .v91-form .v90-chips button{display:flex;align-items:center;justify-content:center;min-width:0;min-height:36px;padding:7px 11px;border:1px solid #e3e8ee;border-radius:9px;background:#f7f8fa;color:#415068;font-size:12px;font-weight:550;box-shadow:none;line-height:1.3;text-align:center;white-space:normal}
+#today .v91-form .v90-chips button.primary{background:#edf1ff;border-color:#8999e7;color:#304dc1}
+#today .v95-suggestions small{color:var(--muted);font-size:11px}
+#today #v92Selected{font-size:11px;line-height:1.4;margin:7px 0 0;overflow-wrap:anywhere}
+#today #v90Categories{margin-top:8px}
+#today .v91-link{background:none;color:#415fc3;font-size:12px;padding:5px 0;min-height:30px}
+#today #v90Extra{border-top:1px solid #e9edf1;padding-top:16px}
+#today #v90Extra summary{font-size:14px;cursor:pointer;color:#43536b;padding:4px 0}
+#today #v90Extra summary span{font-size:12px;color:#8590a0;margin-left:8px}
+#today #v90Extra .form-grid{display:grid;margin-top:14px;gap:14px;grid-template-columns:repeat(2,minmax(0,1fr))}
+#today #v90Extra .field.full{grid-column:1/-1}
+#today .v91-actions{display:flex;align-items:center;gap:10px;margin-top:20px}
+#today .v91-actions .btn{flex:0 0 auto;font-size:14px;font-weight:600;min-height:48px;border-radius:12px}
+#today .v91-actions .primary{background:#304fc7;box-shadow:none;flex:1 1 auto}
+#today .v91-entry button:focus-visible,#today .v91-entry summary:focus-visible{outline:3px solid #91a9ed;outline-offset:3px}
+@media(max-width:1000px){#today .v91-form{grid-template-columns:repeat(2,minmax(0,1fr))}#today .v91-form>.v95-amount,#today .v91-form>.v91-category{grid-column:1/-1}}
+@media(max-width:600px){#today .v91-entry{padding:16px;border-radius:20px}#today .v91-form{gap:12px 10px;margin-top:16px}#today .v91-head h2{font-size:24px}#today .v91-head p{font-size:12px}#today .v91-kicker{display:none}#today .v91-form .field label{font-size:12px}#today .v91-form .v90-chips button{font-size:11px;padding:6px 9px}#today .v91-actions{margin-top:16px}#today #v90Extra summary span{display:none}}
+@media(max-width:440px){#today #v90Extra .form-grid{grid-template-columns:1fr}}
+</style>
+</head>
 <body>
 <noscript><div style="padding:14px;background:#fff3cd;color:#664d03;text-align:center;font:600 14px/1.4 system-ui">Для работы «Маричевы · Траты.Банк» необходимо включить JavaScript.</div></noscript>
 <div class="auth-gate" id="authGate">
@@ -1804,25 +1758,26 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 </section>
 <section class="section" id="today">
 <div class="card v91-entry">
-<div class="v91-head"><div><span class="v91-kicker">СЕМЕЙНЫЙ БЮДЖЕТ</span><h2>Новая запись</h2><p>Пара деталей — и покупка в истории.</p></div></div>
+<div class="v91-head"><div><span class="v91-kicker">СЕМЕЙНЫЙ БЮДЖЕТ</span><h2>Новая запись</h2><p>Сумма, покупка и для кого — остальное по желанию.</p></div></div>
 <div class="form-grid v91-form">
-<div class="field"><label for="eType">Операция</label><select id="eType"><option value="expense">Расход</option><option value="income">Доход</option><option value="transfer">Перевод между своими счетами</option><option value="cash">Снятие наличных</option></select></div>
-<div class="field"><label for="eAmount">Сумма, ₽</label><input id="eAmount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="0" /></div>
-<div class="field expense-field full v91-category"><label for="v90Search">На что потратили?</label><input id="v90Search" type="search" maxlength="200" placeholder="Например: жвачка, хлеб, бензин" autocomplete="off" aria-describedby="v92SearchHint"><small id="v92SearchHint" role="status" aria-live="polite"></small><div id="v90Quick" class="v90-chips"></div><div id="v90Categories"><button type="button" class="v91-link" id="v91All" onclick="v91Toggle()" aria-expanded="false" aria-controls="v90Quick">Все категории</button><div id="v90Results" hidden></div></div><div id="v93CreditHelp" hidden class="hint"><b>Платёж по кредиту или рассрочке</b><p>Если обязательство уже есть в разделе кредитов, отметьте оплату в его графике — так платёж свяжется с ним.</p><button type="button" class="btn" onclick="go('loans')">Открыть кредиты и рассрочки</button><label for="v93CreditAccounting">Для отдельного платежа подтвердите учёт</label><select id="v93CreditAccounting"><option value="">Выберите вариант</option><option value="payment">Учитываю расходами только платежи; полная покупка не записана</option><option value="full">Полная стоимость покупки уже записана расходом</option></select></div><p id="v92Selected" role="status" hidden></p><select id="eCategory" aria-label="Выбранная категория" hidden></select><select id="eGroup" hidden></select></div>
-<div class="field expense-field full" id="v81BeneficiaryField"><label for="eBeneficiary">Для кого покупка?</label><select id="eBeneficiary"></select><small class="v81-field-note">Кому купили, а не кто приложил карту.</small></div>
+<div class="field full v95-operation"><label for="eType">Операция</label><select id="eType"><option value="expense">Расход</option><option value="income">Доход</option><option value="transfer">Перевод между своими счетами</option><option value="cash">Снятие наличных</option></select></div>
+<div class="field v95-amount"><label for="eAmount">Сколько, ₽</label><input id="eAmount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="0" /></div>
+<div class="field expense-field v91-category"><label for="v90Search">Что купили?</label><input id="v90Search" type="search" maxlength="200" placeholder="Молоко, обед, корм…" autocomplete="off" aria-describedby="v92SearchHint"><div id="v93CreditHelp" hidden class="hint"><b>Платёж по кредиту или рассрочке</b><p>Если обязательство уже есть в разделе кредитов, отметьте оплату в его графике — так платёж свяжется с ним.</p><button type="button" class="btn" onclick="go('loans')">Открыть кредиты и рассрочки</button><label for="v93CreditAccounting">Для отдельного платежа подтвердите учёт</label><select id="v93CreditAccounting"><option value="">Выберите вариант</option><option value="payment">Учитываю расходами только платежи; полная покупка не записана</option><option value="full">Полная стоимость покупки уже записана расходом</option></select></div><p id="v92Selected" role="status" hidden></p><select id="eCategory" aria-label="Выбранная категория" hidden></select><select id="eGroup" hidden></select></div>
+<div class="field expense-field" id="v81BeneficiaryField"><label for="eBeneficiary">Для кого?</label><select id="eBeneficiary"></select></div>
+<div class="field expense-field"><label for="eStore">Где? · необязательно</label><input id="eStore" placeholder="Магазин или место"></div>
+<div class="field expense-field full v95-suggestions"><small id="v92SearchHint" role="status" aria-live="polite"></small><div id="v90Quick" class="v90-chips"></div><div id="v90Categories"><button type="button" class="v91-link" id="v91All" onclick="v91Toggle()" aria-expanded="false" aria-controls="v90Quick">Все категории</button><div id="v90Results" hidden></div></div></div>
 <div class="field full income-field" id="v86WhoField"><label id="eWhoLabel" for="eWho">Кто получил доход?</label><select id="eWho"></select></div>
 <div class="field full income-field"><label for="eIncomeSource">Источник дохода</label><input id="eIncomeSource" placeholder="Зарплата, премия…"></div>
 <div class="field transfer-field"><label for="eFrom">Откуда</label><select id="eFrom"><option>Карта</option><option>Наличные</option><option>Накопления</option></select></div>
 <div class="field transfer-field"><label for="eTo">Куда</label><select id="eTo"><option>Накопления</option><option>Карта</option><option>Наличные</option></select></div>
-<details class="field full" id="v90Extra"><summary>Добавить детали <span>место, описание, дата</span></summary><div class="form-grid">
-<div class="field expense-field"><label for="eStore">Где купили?</label><input id="eStore" placeholder="Магазин или место"></div>
-<div class="field"><label for="eComment" id="eCommentLabel">Что купили / заметка</label><input id="eComment" maxlength="200" placeholder="Например: продукты на неделю"></div>
+<details class="field full" id="v90Extra"><summary>Детали <span>дата, оплата, комментарий</span></summary><div class="form-grid">
+<div class="field"><label for="eComment" id="eCommentLabel">Комментарий · необязательно</label><input id="eComment" maxlength="200" placeholder="Например: продукты на неделю"></div>
 <div class="field"><label for="eDate">Дата</label><input id="eDate" type="date"></div>
 <div class="field expense-field"><label for="ePay">Как оплатили?</label><select id="ePay"><option>Карта</option><option>Наличные</option><option>СБП</option><option>Перевод</option></select></div>
 <div class="field expense-field full v81-detail-field" id="v81DetailField"><label for="eSubcategory">Уточнение · необязательно</label><select id="eSubcategory"></select></div>
 </div></details></div>
 <div class="actions v91-actions"><button class="btn primary" id="v90Save" onclick="addEntry()">Сохранить расход</button><button class="btn" onclick="clearEntry()">Очистить</button></div><div id="saveMsg" role="status" aria-live="polite"></div>
-<div id="v90Templates" class="v91-templates"><span>Быстрая запись</span><button type="button" onclick="v90Template(0)">Обед Алисы</button><button type="button" onclick="v90Template(1)">Английский Алисы</button><button type="button" onclick="v90Template(2)">Вкусняшки</button></div>
+<div id="v90Templates" hidden></div>
 </div>
 <div class="card">
 <h2>Операции за день</h2>
@@ -2229,30 +2184,41 @@ function v92Matches(query){
 let v91Expanded=false;
 let v92AutoDescription="";
 function v91Toggle(){v91Expanded=!v91Expanded;document.getElementById('v90Search').value='';v90Paint()}
-function v90Choose(key){
+function v90Choose(key,detail='',description=''){
  const q=document.getElementById('v90Search').value.trim();
  const isCategory=V90_CATEGORIES.some(x=>[x[0],x[1]].some(label=>v92Norm(label)===v92Norm(q)));
  const comment=document.getElementById('eComment');
  if(q&&!isCategory&&(!comment.value.trim()||comment.value===v92AutoDescription)){comment.value=q.slice(0,200);v92AutoDescription=comment.value;}
- document.getElementById('eCategory').value=key;v81FillDetails('e',key);v91Expanded=false;
+ document.getElementById('eCategory').value=key;v81FillDetails('e',key,detail);if(description&&!q){comment.value=description;v92AutoDescription=description;}v91Expanded=false;
  document.getElementById('v90Search').value='';v90Paint();
 }
 function v90Paint(){
  const selected=document.getElementById('eCategory').value,q=document.getElementById('v90Search').value.trim();
- const frequent=['Кредит','Продукты','Вкусняшки','Рестораны и кафе','Школа и занятия','Дом','Животные'];
- const matches=v92Matches(q),hasQuery=Boolean(q);
- const items=hasQuery?(matches.length?matches:V90_CATEGORIES.map(x=>({key:x[0],label:x[1]}))):V90_CATEGORIES.filter(x=>v91Expanded||frequent.includes(x[0])||x[0]===selected).map(x=>({key:x[0],label:x[1]}));
- document.getElementById('v90Quick').innerHTML=items.map(({key,label,reason})=>`<button type="button" class="btn small ${selected===key?'primary':''}" aria-pressed="${selected===key}" data-cat="${esc(key)}"><span>${esc(label)}</span>${hasQuery&&reason?`<small>${esc(reason)}</small>`:''}</button>`).join('');
- document.getElementById('v90Search').hidden=false;
+ const variants=[
+  {key:'Продукты',label:'Продукты'},
+  {key:'Вкусняшки',label:'Вкусняшки'},
+  {key:'Школа и занятия',label:'Школьное питание',detail:'Школьное питание'},
+  {key:'Школа и занятия',label:'Английский',detail:'Английский язык'},
+  {key:'Школа и занятия',label:'Танцы',detail:'Танцы'},
+  {key:'Животные',label:'Корм питомцу',detail:'Корм'},
+  {key:'Подарки',label:'Подарок'},
+  {key:'Рестораны и кафе',label:'Ресторан',detail:'Ресторан'},
+  {key:'Рестораны и кафе',label:'Чаевые',description:'Чаевые'}
+ ];
+ const matches=v92Matches(q),hasQuery=Boolean(q),allCategories=V90_CATEGORIES.map(([key,label])=>({key,label}));
+ let items=hasQuery?(matches.length?matches:allCategories):(v91Expanded?allCategories:variants);
+ if(hasQuery&&matches.length){const relevant=variants.filter(x=>v92Norm(x.label).includes(v92Norm(q))||v92Norm(q).includes(v92Norm(x.label)));items=[...relevant,...items.filter(x=>!relevant.some(v=>v.key===x.key))]}
+ const currentDetail=document.getElementById('eSubcategory').value;
+ document.getElementById('v90Quick').innerHTML=items.map(({key,label,detail},i)=>{const active=selected===key&&(!detail||currentDetail===detail);return `<button type="button" class="btn small ${active?'primary':''}" aria-pressed="${active}" data-cat="${esc(key)}" data-choice="${i}"><span>${esc(label)}</span></button>`}).join('');
  const hint=document.getElementById('v92SearchHint');
- if(hint)hint.textContent=hasQuery?(matches.length?(matches.length===1?'Подходит эта категория — нажмите, чтобы выбрать.':'Выберите подходящий вариант: назначение покупки может отличаться.'):'Пока не знаю эту покупку. Выберите категорию — сохранённое описание поможет в следующий раз.'):'Напишите покупку или выберите категорию ниже.';
- const status=document.getElementById('v92Selected');
- if(status){status.hidden=!selected;status.textContent=selected?'Категория: '+(V90_CATEGORIES.find(x=>x[0]===selected)?.[1]||selected)+(document.getElementById('eComment').value?' · Описание: '+document.getElementById('eComment').value:''):''}
+ hint.textContent=hasQuery?(matches.length?'Выберите подходящий вариант.':'Выберите категорию для этой покупки.'):'Быстрые варианты или поиск покупки';
+ const status=document.getElementById('v92Selected');status.hidden=!selected;
+ status.textContent=selected?'Выбрано: '+(V90_CATEGORIES.find(x=>x[0]===selected)?.[1]||selected)+(currentDetail?' · '+currentDetail:''):'';
  document.getElementById('v93CreditHelp').hidden=selected!=='Кредит';
- const all=document.getElementById('v91All');all.textContent=v91Expanded?'Частые категории':'Все категории';all.setAttribute('aria-expanded',String(v91Expanded));
- document.querySelectorAll('#v90Quick [data-cat]').forEach(b=>b.onclick=()=>v90Choose(b.dataset.cat));
+ const all=document.getElementById('v91All');all.textContent=v91Expanded?'Быстрые варианты':'Все категории';all.setAttribute('aria-expanded',String(v91Expanded));
+ document.querySelectorAll('#v90Quick [data-choice]').forEach(b=>b.onclick=()=>{const item=items[Number(b.dataset.choice)];v90Choose(item.key,item.detail||'',item.description||'')});
 }
-function v90Template(i){openEntry();const t=[['Школа и занятия','Школьное питание','Алиса','Школа','Обед'],['Школа и занятия','Английский язык','Алиса','','Английский'],['Вкусняшки','','Не указано','','']][i];v90Choose(t[0]);v81FillDetails('e',t[0],t[1],t[2]);document.getElementById('eStore').value=t[3];document.getElementById('eComment').value=t[4];document.getElementById('eAmount').focus()}
+function v90Template(i){openEntry();const t=[['Школа и занятия','Школьное питание','Алиса','Школа','Обед'],['Школа и занятия','Английский язык','Алиса','','Английский'],['Вкусняшки','','Общее','','']][i];v90Choose(t[0]);v81FillDetails('e',t[0],t[1],t[2]);document.getElementById('eStore').value=t[3];document.getElementById('eComment').value=t[4];document.getElementById('eAmount').focus()}
 const INCOME_PEOPLE=['Сергей','Виктория','Майя','Алиса'];
 // Existing category values MUST NOT be renamed in persisted expenses.
 const CATS=['Вкусняшки','Школа и занятия','Авто и транспорт','Продукты','Супермаркеты','Рестораны и кафе','Жильё','ЖКХ','Электричество','Вода и газ','Интернет','Мобильная связь','Дети','Образование','Аптека и медицина','Животные','ТО','Бензин','Парковка','Кредит','Ремонт','Страховка','Налог','Шины','Транспорт','Такси','Одежда','Красота','Маркетплейсы','Дом','Развлечения','Подписки','Путешествия','Подарки','Банковские комиссии','Хобби','Дача','Работа','Благотворительность','Прочее', 'Мойка','Платные дороги','Штрафы','Запчасти','Автострахование','Транспортный налог'];
@@ -2846,11 +2812,11 @@ function v81DetailOptions(category){return V81_SUBCATEGORIES[String(category||''
 function v81BeneficiaryOptions(){return ['Не указано','Общее','Сергей','Виктория','Алиса','Майя','Дени','Макс','Оба ребёнка','Все питомцы']}
 function v81FillDetails(prefix,category,detail='',beneficiary){
  const sub=document.getElementById(prefix+'Subcategory'),who=document.getElementById(prefix+'Beneficiary');if(!sub||!who)return;
- const target=beneficiary===undefined?(who.value||'Не указано'):(beneficiary||'Не указано');
+ const target=beneficiary===undefined?(who.value||(prefix==='e'?'Общее':'Не указано')):(beneficiary||(prefix==='e'?'Общее':'Не указано'));
  const values=['',...v81DetailOptions(category)];if(detail&&!values.includes(detail))values.push(detail);
  sub.innerHTML=values.map(x=>`<option value="${esc(x)}">${x?esc(x):'Без уточнения'}</option>`).join('');sub.value=detail;
- const choices=v81BeneficiaryOptions();if(!choices.includes(target))choices.push(target);
- who.innerHTML=choices.map(x=>`<option value="${esc(x)}">${esc(x==='Общее'?'Всей семье':x)}</option>`).join('');who.value=target;
+ const choices=prefix==='e'?['Общее',...['Сергей','Виктория','Алиса','Майя'],...PEOPLE.filter(x=>!['Общее','Сергей','Виктория','Алиса','Майя'].includes(x))]:v81BeneficiaryOptions();if(!choices.includes(target))choices.push(target);
+ who.innerHTML=choices.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');who.value=target;
 }
 function v81EntryDetailText(e){return [e.category,e.subcategory].filter(Boolean).join(' / ')}
 function v81EntrySubjectText(e){return String(e.beneficiary||'')}
@@ -2893,6 +2859,7 @@ function initForm(){
 }
 function updateEntryForm(){
  const type=document.getElementById('eType').value;
+ document.querySelector('.v91-form').dataset.entryType=type;
  document.querySelectorAll('.expense-field').forEach(el=>el.style.display=type==='expense'?'block':'none');
  document.querySelectorAll('.income-field').forEach(el=>el.style.display=type==='income'?'block':'none');
  document.querySelectorAll('.transfer-field').forEach(el=>el.style.display=type==='transfer'?'block':'none');
@@ -2908,7 +2875,7 @@ function updateEntryForm(){
  if(store) store.placeholder=type==='expense'?'Пятёрочка, Ozon, аптека...':'';
 }
 function openEntry(type='expense'){go('today');document.getElementById('eType').value=type;updateEntryForm();document.getElementById('eAmount').focus()}
-function clearEntry(){['eAmount','eStore','eIncomeSource','eComment','v90Search','v93CreditAccounting'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});document.getElementById('eDate').value=today();document.getElementById('eType').value='expense';updateEntryForm();document.getElementById('eCategory').value='';v81FillDetails('e','','','Не указано');v90Paint()}
+function clearEntry(){['eAmount','eStore','eIncomeSource','eComment','v90Search','v93CreditAccounting'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});document.getElementById('eDate').value=today();document.getElementById('eType').value='expense';updateEntryForm();document.getElementById('eCategory').value='';v81FillDetails('e','','','Общее');v90Paint()}
 let v90Saving=false;
 async function addEntry(){
  if(v90Saving)return;
