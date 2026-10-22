@@ -65,3 +65,22 @@ PR1 implementation evidence (same environment, 2026-10-21):
 Continuation: two additional tests reproduced discarded unknown top-level and
 settings fields on the initial PR1 code. Both failed before the compatibility
 fix; all 30 storage/browser tests now pass (13.4s), plus the 3 staging tests.
+
+## Candidate regression (PR2–PR5)
+
+Run `python -m unittest discover -s tests -v` once after integration. The current
+suite contains 97 tests: storage 30, staging server 3, client CAS 19, local
+PostgreSQL 15, financial integrity 18, expense form 7, bundle 4, release layout 1
+(the last test performs 144 view/width checks). The PostgreSQL image must already
+be cached; see `docs/SYNC_SERVER.md`. No additional libraries are installed by the
+suite. All browser data is synthetic; every external request is blocked or handled
+by a strict in-memory protocol fixture. Protocol fixtures replace session/token
+checks only in their isolated browser, never in the delivered personal client.
+
+Focused commands: `python tests/test_sync_protocol.py -v`,
+`python tests/test_financial_integrity.py -v`,
+`python tests/test_expense_form.py -v`. These accept `--html PATH` for reproducing
+failures against an older client. Protocol baseline failures and the later
+unknown-intelligence regression were captured before each corresponding fix.
+Financial baseline reproduced 14 failed assertions; all 18 cases pass afterward.
+Green local tests do not establish hosted Supabase/RLS or actual Safari support.

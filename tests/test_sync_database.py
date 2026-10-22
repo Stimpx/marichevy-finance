@@ -51,8 +51,10 @@ class SyncDatabaseTests(unittest.TestCase):
                    "--name", cls.container, "--tmpfs", "/var/lib/postgresql/data",
                    "-e", "POSTGRES_HOST_AUTH_METHOD=trust", IMAGE)
         cls.addClassCleanup(lambda: cls.docker("rm", "--force", cls.container, check=False))
+        # The image starts a socket-only temporary server while initializing.
+        # Wait for the final TCP-listening server, not that transient readiness.
         for _ in range(100):
-            ready = cls.docker("exec", cls.container, "pg_isready", "-U", "postgres", check=False)
+            ready = cls.docker("exec", cls.container, "pg_isready", "-h", "127.0.0.1", "-U", "postgres", check=False)
             if ready.returncode == 0:
                 break
             time.sleep(.1)
