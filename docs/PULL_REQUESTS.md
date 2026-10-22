@@ -4,9 +4,7 @@ PR1 already exists: https://github.com/Stimpx/marichevy-finance/pull/1.
 Its head `4aa2c75` and updated body were verified on GitHub before the current
 credentials expired. Main was `bfc7ce5`; no merge or deployment was performed.
 
-The following are prepared **locally**, not claimed to exist on GitHub. HTTPS Git
-and API returned authentication failures (401); no alternate credentials or
-permission bypass is attempted. Restore the normal GitHub connection first.
+The prepared branches have now been pushed to GitHub using the normal connection after API authorization recovered (permissions.push=true). Draft PR creation and remote SHA verification are performed separately; no merge or deployment is authorized. The earlier 401 was not bypassed.
 
 ## Stage 2
 
@@ -71,7 +69,7 @@ Head: `codex/pr5-release-candidate`; base: `codex/pr4-simple-expense-form`.
 
 Adds a fail-closed anonymized offline demo generator, separate private installation
 package with manifests, release/owner instructions, candidate register and layout
-regression across 11 sections and nine widths. Archives stay outside git; the
+regression across 11 sections and nine widths. The private installation package stays outside git. A sanitized source-recovery ZIP is included under backups/ to permit direct GitHub download after ChatGPT artifact delivery failed. The
 private package is never served with the demo. This PR does not publish anything.
 
 Validation: bundle 4 tests; layout 144 checks inside one test; complete integrated
