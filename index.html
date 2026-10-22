@@ -2361,6 +2361,7 @@ function normalize(s){
  const deletedBirthdays=Array.isArray(s.deletedBirthdays)?Object.fromEntries(s.deletedBirthdays.map(id=>[id,new Date().toISOString()])):(s.deletedBirthdays||{});
  const deletedChores=Array.isArray(s.deletedChores)?Object.fromEntries(s.deletedChores.map(id=>[id,new Date().toISOString()])):(s.deletedChores||{});
  return {
+  ...s,
   intelligence:v84NormalizeIntelligence(s.intelligence),
   entries:Array.isArray(s.entries)?s.entries.map(e=>e?.type==='expense'?{...e,category:expenseCategory(e.category,e.who)}:e):[],
   goals:Array.isArray(s.goals)?s.goals:[],
@@ -2371,6 +2372,7 @@ function normalize(s){
   deletedInstallments:(s.deletedInstallments&&typeof s.deletedInstallments==='object'&&!Array.isArray(s.deletedInstallments))?s.deletedInstallments:{},
   deletedEntries,deletedGoals,deletedBirthdays:((deletedBirthdays&&typeof deletedBirthdays==='object')?deletedBirthdays:{}),deletedBoardItems:((s.deletedBoardItems&&typeof s.deletedBoardItems==='object')?s.deletedBoardItems:{}),deletedChores:((deletedChores&&typeof deletedChores==='object')?deletedChores:{}),
   settings:{
+  ...(s.settings||{}),
   loans:{...b.settings.loans,...(s.settings?.loans||{})},
   preferences:{...b.settings.preferences,...(s.settings?.preferences||{})},
   notifications:{...b.settings.notifications,...(s.settings?.notifications||{})},
@@ -2628,7 +2630,8 @@ async function ensureToken(){
 }
 function stamp(x){return x?.updated_at||x?.created_at||'1970-01-01T00:00:00.000Z'}
 function mergeStates(...sources){
- const out=blankState(),entryMap=new Map(),goalMap=new Map(),birthdayMap=new Map(),boardMap=new Map(),choreMap=new Map(),installmentMap=new Map(),deletedInstallments={},deletedEntries={},deletedGoals={},deletedBirthdays={},deletedBoardItems={},deletedChores={};
+ const extensions=sources.filter(s=>s&&typeof s==='object').reduce((all,s)=>({...all,...s}),{});
+ const out={...extensions,...blankState()},entryMap=new Map(),goalMap=new Map(),birthdayMap=new Map(),boardMap=new Map(),choreMap=new Map(),installmentMap=new Map(),deletedInstallments={},deletedEntries={},deletedGoals={},deletedBirthdays={},deletedBoardItems={},deletedChores={};
  for(const s of sources){
   if(!s||typeof s!=='object')continue;
   Object.entries(s.deletedInstallments||{}).forEach(([id,at])=>{if(!deletedInstallments[id]||String(at)>String(deletedInstallments[id]))deletedInstallments[id]=at});
@@ -2653,7 +2656,10 @@ function mergeStates(...sources){
  if(settingCandidates.length){
    const dated=settingCandidates.filter(x=>x.updated_at);
    const chosen=(dated.length?dated:settingCandidates).reduce((a,b)=>String(b.updated_at||'')>=String(a.updated_at||'')?b:a,settingCandidates[0]);
-   out.settings=normalize({settings:chosen}).settings;
+   const preserved=settingCandidates.reduce((all,s)=>({...all,...s}),{});
+   const settings={...preserved,...chosen};
+   for(const key of ['loans','preferences','notifications'])settings[key]={...settingCandidates.reduce((all,s)=>({...all,...(s[key]||{})}),{}),...(chosen[key]||{})};
+   out.settings=normalize({settings}).settings;
  }
  return out;
 }

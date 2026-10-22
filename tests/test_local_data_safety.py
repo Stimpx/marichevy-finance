@@ -246,6 +246,43 @@ class LocalDataSafety(unittest.TestCase):
             self.assertTrue(result['correctEditTarget'], result)
             self.assertTrue(result['editOpen'], result)
 
+    def test_import_export_preserves_unknown_root_and_settings_fields(self):
+        original = fixture()
+        original['localExtension'] = {'label': 'fictional-existing', 'values': [1, 2]}
+        original['settings']['ownerExtension'] = {'enabled': True}
+        self.open({PRIMARY: json.dumps(original)})
+        incoming = {'entries': [entry('fictional-extension', customRecord={'opaque': [3, 4]})],
+                    'settings': {'incomingExtension': {'version': 7}},
+                    'incomingRootExtension': {'untouched': 'fictional'}}
+        self.import_data(incoming)
+        with self.page.expect_download() as download:
+            self.page.evaluate('exportData()')
+        exported = json.loads(Path(download.value.path()).read_text())
+        self.assertEqual(exported.get('localExtension'), original['localExtension'])
+        self.assertEqual(exported.get('incomingRootExtension'), incoming['incomingRootExtension'])
+        self.assertEqual(exported['settings'].get('ownerExtension'), {'enabled': True})
+        self.assertEqual(exported['settings'].get('incomingExtension'), {'version': 7})
+        self.page.reload(wait_until='domcontentloaded')
+        self.assertEqual(self.page.evaluate('state.localExtension'), original['localExtension'])
+        self.assertEqual(self.page.evaluate("state.entries.find(e=>e.id==='fictional-extension').customRecord"),
+                         {'opaque': [3, 4]})
+
+    def test_merge_keeps_unknown_settings_from_both_snapshots(self):
+        self.open()
+        merged = self.page.evaluate('''() => {
+            const a=blankState(), b=blankState();
+            a.settings.updated_at='2026-10-21T00:00:00Z';a.settings.oldExtension={keep:1};
+            a.settings.preferences.olderPreference='fictional';a.oldRootExtension={keep:2};
+            b.settings.updated_at='2026-10-22T00:00:00Z';b.settings.newExtension={keep:3};
+            b.settings.preferences.newerPreference='fictional';b.newRootExtension={keep:4};
+            return mergeStates(a,b);
+        }''')
+        self.assertEqual(merged['settings'].get('oldExtension'), {'keep': 1})
+        self.assertEqual(merged['settings'].get('newExtension'), {'keep': 3})
+        self.assertEqual(merged['settings']['preferences'].get('olderPreference'), 'fictional')
+        self.assertEqual(merged.get('oldRootExtension'), {'keep': 2})
+        self.assertEqual(merged.get('newRootExtension'), {'keep': 4})
+
 
 MALFORMED_IMPORTS = {
     'invalid_json': '{',

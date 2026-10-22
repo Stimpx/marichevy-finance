@@ -61,3 +61,7 @@ tests and 27 failure reports; the same two original tests pass.
 PR1 implementation evidence (same environment, 2026-10-21):
 `python tests/test_local_data_safety.py -q` completed the expanded full suite of
 28 tests in 14.6 seconds, exit status 0 (`OK`), with no skips or harness errors.
+
+Continuation: two additional tests reproduced discarded unknown top-level and
+settings fields on the initial PR1 code. Both failed before the compatibility
+fix; all 30 storage/browser tests now pass (13.4s), plus the 3 staging tests.
