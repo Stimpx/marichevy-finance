@@ -44,7 +44,7 @@ def all_collections():
     state['birthdays'] = [dict(id='birthday', name='Fictional date', date='2000-01-01', updated_at=AT)]
     state['boardItems'] = [dict(id='board', text='Fictional note', author='Семья', type='message', created_at=AT, updated_at=AT)]
     state['chores'] = [dict(id='chore', title='Fictional chore', assignee='Семья', dueDate='2026-10-21', recurrence='once', updated_at=AT)]
-    state['installments'] = [dict(id='installment', title='Fictional purchase', kind='split', amount=17, updated_at=AT,
+    state['installments'] = [dict(id='installment', title='Fictional purchase', kind='split', accountingMode='payments', amount=17, updated_at=AT,
                                   parts=[dict(id='part', date='2026-10-21', amount=17)], links={})]
     state['intelligence']['budgets'] = [dict(id='budget', group='Продукты', amount=100, updated_at=AT)]
     state['intelligence']['recurring'] = [dict(id='recurring', name='Fictional payment', amount=17, category='Прочее', day=21, updated_at=AT)]

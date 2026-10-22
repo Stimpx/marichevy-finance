@@ -1947,10 +1947,10 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 <div class="section-head"><div><h2>Досрочное погашение</h2><div class="hint">Это отдельный пробный расчёт. Суммы отсюда не попадают в расходы, обязательства или историю платежей. Добавьте свой сценарий и удалите его в любой момент.</div></div></div>
 <div class="early-plan-head">
 <div class="early-base-payment"><small>Основной платёж по графику</small><b id="earlyBasePayment">—</b><span id="earlyBaseDate">—</span></div>
-<div class="early-total-payment"><small>Внесу в выбранную дату</small><b id="earlyTotalPayment">—</b><span>основной + досрочный</span></div>
+<div class="early-total-payment"><small>Первый досрочный взнос</small><b id="earlyTotalPayment">—</b><span>в тело и начисленные проценты</span></div>
 </div>
 <div class="early-plan-table">
-<div class="early-plan-row early-plan-head-row"><span>№</span><span>Дополнительно, ₽</span><span>Когда внести</span><span>Итого в дату</span><span></span></div>
+<div class="early-plan-row early-plan-head-row"><span>№</span><span>В тело досрочно, ₽</span><span>Когда внести</span><span>Взнос и проценты</span><span></span></div>
 <div id="earlyPlanRows"></div>
 </div>
 <div class="early-plan-actions">
@@ -1961,7 +1961,7 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 <div class="early-scenario-grid">
 <div class="early-scenario"><small>План досрочных платежей</small><b id="earlyPlanTotal">0 ₽</b><span id="earlyPlanCount">0 платежей</span></div>
 <div class="early-scenario"><small>Свободно на досрочное погашение</small><b id="earlyFreeMoney">0 ₽</b><span>по введённому вами плану</span></div>
-<div class="early-scenario"><small>Всего внесу в ближайшую дату</small><b id="earlyFirstTotal">—</b><span>основной + дополнительный</span></div>
+<div class="early-scenario"><small>В дату первого досрочного платежа</small><b id="earlyFirstTotal">—</b><span>досрочно в тело + начисленные проценты</span></div>
 <div class="early-scenario"><small>Новый остаток после первого взноса</small><b id="earlyFirstBalance">—</b><span>ориентир по модели</span></div>
 </div>
 <div class="actions"><button class="btn primary" onclick="renderEarlyRepayment()" type="button">Рассчитать весь план</button></div>
@@ -2165,14 +2165,9 @@ function v86ExpenseTarget(e){
  if(['Общее','Семья','Семья / общее','Общие расходы'].includes(target))return 'Общее';
  return target||'Не указано';
 }
-function v94ExpenseBucket(e){
- const category=String(e.category||'').trim();
- if(category==='Кредит'||e.installmentId||e.installmentPartId)return 'Кредиты и рассрочки';
- if(category==='Авто и транспорт'||carCategory(e))return 'Автомобиль';
- const person=v86ExpenseTarget(e);return person==='Дени'?'Денни':person;
-}
+function v94ExpenseBucket(e){return v86ExpenseTarget(e)}
 function v86TargetTotals(entries){
- const totals={'Сергей':0,'Виктория':0,'Алиса':0,'Майя':0,'Макс':0,'Денни':0,'Кредиты и рассрочки':0,'Автомобиль':0,'Общее':0};
+ const totals={'Сергей':0,'Виктория':0,'Алиса':0,'Майя':0,'Макс':0,'Дени':0,'Общее':0};
  for(const e of entries){const key=v94ExpenseBucket(e);totals[key]=(totals[key]||0)+(Number(e.amount)||0)}
  return Object.entries(totals).sort((a,b)=>b[1]-a[1]);
 }
@@ -2985,7 +2980,7 @@ function v78Obligations(m){
  const groups=(state.installments||[]).map(i=>{
   const parts=(i.parts||[]).filter(p=>String(p.date||'').startsWith(valid));
   const planned=parts.reduce((n,p)=>n+v77Cents(p.amount),0)/100;
-  const paid=parts.reduce((n,p)=>n+(installmentPaid(i,p)?v77Cents(p.amount):0),0)/100;
+  const paid=parts.reduce((n,p)=>n+v77Cents(installmentAllocated(i,p)),0)/100;
   return {title:i.title||V77_KINDS[i.kind]||'Рассрочка',kind:i.kind||'installment',planned,paid,parts};
  }).filter(x=>x.parts.length);
  const planned=Math.round((mortgagePlanned+groups.reduce((n,g)=>n+g.planned,0))*100)/100;
@@ -3002,8 +2997,8 @@ function v78ObligationRows(o){
   items.push({kind:'mortgage',date:r.payDate,title:'Ипотека · УралСиб',subtitle:v77DateLabel(r.payDate)+' · по графику банка',amount:r.payment,allocated,partial:allocated>.001&&!fullyPaid,paid:fullyPaid,late:r.payDate<todayKey&&!fullyPaid});
  }
  for(const group of o.groups)for(const p of group.parts){
-  const paid=!!installmentLinkedEntry((state.installments||[]).find(i=>(i.parts||[]).some(part=>part.id===p.id)),p);
-  items.push({kind:'installment',date:p.date,title:group.title,subtitle:v77DateLabel(p.date)+' · '+(V77_KINDS[group.kind]||'Оплата частями'),amount:p.amount,paid,late:p.date<todayKey&&!paid});
+  const plan=(state.installments||[]).find(i=>(i.parts||[]).some(part=>part===p)),allocated=installmentAllocated(plan,p),paid=installmentPaid(plan,p);
+  items.push({kind:'installment',date:p.date,title:group.title,subtitle:v77DateLabel(p.date)+' · '+(V77_KINDS[group.kind]||'Оплата частями'),installmentId:plan?.id,installmentPartId:p.id,amount:p.amount,allocated,partial:allocated>0&&!paid,paid,late:p.date<todayKey&&!paid});
  }
  return items.sort((a,b)=>a.date.localeCompare(b.date));
 }
@@ -3210,7 +3205,7 @@ function renderToday(){const arr=state.entries.filter(e=>e.date===today()).sort(
 
 function renderHistory(){
  const q=document.getElementById('fSearch').value.trim().toLowerCase(),who=document.getElementById('fWho').value,cat=document.getElementById('fCat').value,group=document.getElementById('fGroup')?.value||'',type=document.getElementById('fType').value,m=document.getElementById('fMonth').value;
- const arr=state.entries.filter(e=>(!m||String(e.date||'').startsWith(m))&&(!who||e.who===who)&&(!cat||e.category===cat)&&(!group||(e.type==='expense'&&expenseGroup(e.category)===group))&&(!type||e.type===type)&&(!q||[e.store,e.comment,e.category,e.subcategory,e.beneficiary,e.who,e.date].join(' ').toLowerCase().includes(q))).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||''))||String(b.created_at||'').localeCompare(String(a.created_at||'')));
+ const arr=state.entries.filter(e=>(!m||String(e.date||'').startsWith(m))&&(!who||(e.type==='expense'?v86ExpenseTarget(e):e.who)===who)&&(!cat||e.category===cat)&&(!group||(e.type==='expense'&&expenseGroup(e.category)===group))&&(!type||e.type===type)&&(!q||[e.store,e.comment,e.category,e.subcategory,e.beneficiary,e.who,e.date].join(' ').toLowerCase().includes(q))).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||''))||String(b.created_at||'').localeCompare(String(a.created_at||'')));
  const count=document.getElementById('historyCount');if(count)count.textContent=arr.length+' '+(arr.length%10===1&&arr.length%100!==11?'операция':([2,3,4].includes(arr.length%10)&&![12,13,14].includes(arr.length%100)?'операции':'операций'))+' найдено';
  const safeFull=(v)=>esc(String(v??''));
  document.getElementById('historyBody').innerHTML=arr.map(e=>{
@@ -3678,8 +3673,8 @@ function addEarlyPaymentRow(amount=0,date=''){
  const row=document.createElement('div');
  row.className='early-plan-row';row.dataset.extraRow='1';
  row.innerHTML=`<span class="early-plan-num"></span>
-   <div class="field-inline v77-extra-field"><label>Дополнительная сумма</label><div class="v77-money-entry"><input class="early-plan-amount" type="number" min="0" step="1000" value="${amount>0?Math.round(amount):''}" placeholder="Например, 50000" inputmode="decimal" aria-label="Дополнительная сумма досрочного платежа"><span>₽</span></div></div>
-   <div class="field-inline"><label>Дата</label><input class="early-plan-date" type="date" value="${useDate}" min="2026-09-01" max="${loanScheduleData().slice(-1)[0]?.payDate||'2041-09-02'}"></div>
+   <div class="field-inline v77-extra-field"><label>Досрочно в тело</label><div class="v77-money-entry"><input class="early-plan-amount" type="number" min="0" step="1000" value="${amount>0?Math.round(amount):''}" placeholder="Например, 50000" inputmode="decimal" aria-label="Дополнительная сумма досрочного платежа"><span>₽</span></div></div>
+   <div class="field-inline"><label>Дата</label><input class="early-plan-date" type="date" value="${useDate}" min="2026-09-02" max="${loanScheduleData().slice(-1)[0]?.payDate||'2041-09-02'}"></div>
    <div class="early-plan-total">—</div>
    <button type="button" class="btn small danger" aria-label="Удалить досрочный платёж" onclick="this.closest('.early-plan-row').remove();refreshEarlyPlan()">Удалить</button>`;
  wrap.appendChild(row);
@@ -3694,13 +3689,11 @@ function resetEarlyPayments(){
 }
 function renderEarlyPlanRows(){
  const wrap=document.getElementById('earlyPlanRows');if(!wrap)return;
+ const sim=simulateEarlyPlan(getEarlyPayments(),document.getElementById('earlyMode')?.value||'term'),available=(sim?.rows||[]).filter(r=>r.kind==='extra'||r.kind==='unused');
  [...wrap.querySelectorAll('.early-plan-row[data-extra-row]')].forEach((row,i)=>{
-   const n=row.querySelector('.early-plan-num');if(n)n.textContent=i+1;
-   const amount=Math.max(0,Number(row.querySelector('.early-plan-amount')?.value)||0);
-   const date=row.querySelector('.early-plan-date')?.value||'';
-   const base=loanScheduleData().find(r=>r.payDate>=date);
-   const total=base?Number(base.payment||0)+amount:amount;
-   const out=row.querySelector('.early-plan-total');if(out)out.textContent=money2(total);
+  const n=row.querySelector('.early-plan-num');if(n)n.textContent=i+1;
+  const amount=Math.max(0,Number(row.querySelector('.early-plan-amount')?.value)||0),date=row.querySelector('.early-plan-date')?.value||'',index=available.findIndex(r=>r.date===date&&r.requested===amount),payment=index>=0?available.splice(index,1)[0]:null;
+  const out=row.querySelector('.early-plan-total');if(out)out.textContent=payment?money2(payment.total)+(payment.unused>0?' · не использовано '+money2(payment.unused):''):'—';
  });
 }
 function refreshEarlyPlan(){
@@ -3711,50 +3704,63 @@ function refreshEarlyPlan(){
  const baseEl=document.getElementById('earlyBasePayment'),dateEl=document.getElementById('earlyBaseDate');
  if(baseEl)baseEl.textContent=base?money2(base.payment):'—';
  if(dateEl)dateEl.textContent=base?`до ${fmtDate(base.payDate)}`:'—';
- const firstTotal=first&&base?Number(base.payment)+first.amount:0;
+ const sim=first?simulateEarlyPlan(extras,document.getElementById('earlyMode')?.value||'term'):null,firstRow=sim?.rows.find(r=>r.kind==='extra');
+ const firstTotal=firstRow?.total||0;
  const totalEl=document.getElementById('earlyTotalPayment');if(totalEl)totalEl.textContent=first?money2(firstTotal):'—';
- const planTotal=extras.reduce((a,x)=>a+x.amount,0);
+ const planTotal=sim?.totalExtra||0;
  const pEl=document.getElementById('earlyPlanTotal');if(pEl)pEl.textContent=money2(planTotal);
  const cEl=document.getElementById('earlyPlanCount');if(cEl)cEl.textContent=`${extras.length} ${extras.length===1?'платёж':extras.length<5?'платежа':'платежей'}`;
  const freeEl=document.getElementById('earlyFreeMoney');if(freeEl)freeEl.textContent=money2(planTotal);
  const ft=document.getElementById('earlyFirstTotal');if(ft)ft.textContent=first?money2(firstTotal):'—';
  if(first){
    const idx=rows.findIndex(r=>r.payDate>=first.date), prevBal=idx>0?rows[idx-1].balance:4500000;
-   const fb=document.getElementById('earlyFirstBalance');if(fb)fb.textContent=money2(Math.max(0,prevBal-first.amount));
+   const fb=document.getElementById('earlyFirstBalance');if(fb)fb.textContent=money2(sim?.firstBalance??prevBal);
  }else{const fb=document.getElementById('earlyFirstBalance');if(fb)fb.textContent='—'}
 }
 function simulateEarlyPlan(extras,mode){
- const base=loanScheduleData();if(!extras.length||!base.length)return null;
- const sorted=[...extras].sort((a,b)=>a.date.localeCompare(b.date));const firstIndex=Math.max(0,base.findIndex(r=>r.payDate>=sorted[0].date));
- let bal=firstIndex>0?base[firstIndex-1].balance:4500000;let cursor=firstIndex>0?parseEarlyDate(base[firstIndex-1].payDate):parseEarlyDate('2026-09-02');let ei=0;let interest=0,totalExtra=0,rows=[];
- for(let i=firstIndex;i<base.length&&bal>0.005;i++){
-  const bank=base[i],end=parseEarlyDate(bank.payDate),baseStart=i>0?base[i-1].balance:4500000,baseInterest=Number(bank.interest)||0,totalDays=Math.max(1,(end-cursor)/86400000);let periodStart=cursor,periodInterest=0;
-  while(ei<sorted.length&&parseEarlyDate(sorted[ei].date)<=end){const ex=sorted[ei],ed=parseEarlyDate(ex.date);if(ed>=periodStart){const days=Math.max(0,(ed-periodStart)/86400000);const accrued=baseInterest*(days/totalDays)*(bal/Math.max(baseStart,1));periodInterest+=accrued;bal=Math.max(0,Math.round((bal-ex.amount)*100)/100);totalExtra+=ex.amount;rows.push({date:ex.date,kind:'extra',scheduled:0,extra:ex.amount,total:ex.amount,interest:accrued,body:ex.amount,balance:bal});periodStart=ed}ei++;if(bal<=0.005)break}
-  if(bal<=0.005)break;
-  const daysAfter=Math.max(0,(end-periodStart)/86400000);periodInterest+=baseInterest*(daysAfter/totalDays)*(bal/Math.max(baseStart,1));interest+=periodInterest;
-  let payment=Number(bank.payment)||85885;
-  if(mode==='payment'){
-    const remaining=Math.max(1,base.length-i);const monthly=.22/12;const annuity=bal*monthly/(1-Math.pow(1+monthly,-remaining));payment=Math.min(payment,Math.round(annuity*100)/100);
+ const base=loanScheduleData(),round=n=>Math.round((n+Number.EPSILON)*100)/100;
+ if(!base.length||!Array.isArray(extras))return null;
+ const sorted=extras.map(x=>({date:String(x.date||''),amount:Number(x.amount)})).sort((a,b)=>a.date.localeCompare(b.date));
+ if(sorted.some(x=>!/^\d{4}-\d{2}-\d{2}$/.test(x.date)||!Number.isFinite(x.amount)||x.amount<0||x.date<'2026-09-02'||x.date>base[base.length-1].payDate))return null;
+ const positive=sorted.filter(x=>x.amount>0),firstIndex=positive.length?base.findIndex(r=>r.payDate>=positive[0].date):0;
+ if(firstIndex<0)return null;
+ let bal=firstIndex>0?base[firstIndex-1].balance:4500000,ei=0,interest=0,totalExtra=0,totalUnused=0,totalCharges=0,rows=[];
+ for(let i=firstIndex;i<base.length&&bal>.005;i++){
+  const bank=base[i],start=parseEarlyDate(i>0?base[i-1].payDate:'2026-09-02'),end=parseEarlyDate(bank.payDate),baseStart=i>0?base[i-1].balance:4500000,totalDays=Math.max(1,(end-start)/86400000);
+  let cursor=start;
+  while(ei<positive.length&&parseEarlyDate(positive[ei].date)<=end){
+   const ex=positive[ei++],date=parseEarlyDate(ex.date),days=Math.max(0,(date-cursor)/86400000),accrued=round(Number(bank.interest)*(days/totalDays)*(bal/Math.max(baseStart,1))),applied=Math.min(bal,round(ex.amount)),unused=round(ex.amount-applied);
+   interest=round(interest+accrued);totalExtra=round(totalExtra+applied);totalUnused=round(totalUnused+unused);bal=round(Math.max(0,bal-applied));
+   rows.push({date:ex.date,kind:'extra',scheduled:0,extra:applied,requested:ex.amount,unused,total:round(applied+accrued),interest:accrued,charges:0,body:applied,balance:bal});cursor=date;
+   if(bal<=.005)break;
   }
-  const actual=Math.min(payment,Math.round((bal+periodInterest)*100)/100);const body=Math.max(0,Math.round((actual-periodInterest)*100)/100);bal=Math.max(0,Math.round((bal-body)*100)/100);rows.push({date:bank.payDate,kind:'scheduled',scheduled:actual,extra:0,total:actual,interest:periodInterest,body,balance:bal});cursor=end;
+  if(bal<=.005)break;
+  const accrued=round(Number(bank.interest)*(Math.max(0,(end-cursor)/86400000)/totalDays)*(bal/Math.max(baseStart,1))),charges=round(Math.max(0,Number(bank.payment)-Number(bank.body)-Number(bank.interest)));
+  let payment=Number(bank.payment);
+  if(mode==='payment'&&totalExtra>0){const remaining=Math.max(1,base.length-i),rate=Number(bank.interest)/Math.max(baseStart,1),annuity=rate>0?bal*rate/(1-Math.pow(1+rate,-remaining)):bal/remaining;payment=Math.min(payment,round(annuity+charges))}
+  const body=round(Math.min(bal,Math.max(0,payment-accrued-charges))),actual=round(body+accrued+charges);
+  bal=round(Math.max(0,bal-body));interest=round(interest+accrued);totalCharges=round(totalCharges+charges);
+  rows.push({date:bank.payDate,kind:'scheduled',scheduled:actual,extra:0,unused:0,total:actual,interest:accrued,charges,body,balance:bal});
  }
- const last=rows[rows.length-1],oldInterest=base.slice(firstIndex).reduce((a,r)=>a+(Number(r.interest)||0),0),oldScheduledCount=base.length-firstIndex,newScheduled=rows.filter(r=>r.kind==='scheduled');
- return {rows,oldInterest,totalInterest:interest,totalExtra,endDate:last?.date||base[base.length-1].payDate,monthsSaved:Math.max(0,oldScheduledCount-newScheduled.length),firstBalance:rows.find(r=>r.kind==='extra')?.balance||null,oldEndDate:base[base.length-1].payDate};
+ // Later planned extras after payoff remain unused; they are never principal.
+ for(;ei<positive.length;ei++){const ex=positive[ei];totalUnused=round(totalUnused+ex.amount);rows.push({date:ex.date,kind:'unused',scheduled:0,extra:0,requested:ex.amount,unused:ex.amount,total:0,interest:0,charges:0,body:0,balance:bal})}
+ const paidRows=rows.filter(r=>r.kind!=='unused'),last=paidRows[paidRows.length-1],oldInterest=round(base.slice(firstIndex).reduce((a,r)=>a+Number(r.interest),0)),oldScheduledCount=base.length-firstIndex,newScheduled=rows.filter(r=>r.kind==='scheduled');
+ return {rows,oldInterest,totalInterest:interest,totalExtra,totalUnused,totalCharges,totalCash:round(rows.reduce((n,r)=>n+r.total,0)),remainingBalance:bal,endDate:last?.date||base[base.length-1].payDate,monthsSaved:Math.max(0,oldScheduledCount-newScheduled.length),firstBalance:rows.find(r=>r.kind==='extra')?.balance??null,oldEndDate:base[base.length-1].payDate};
 }
 
 function renderEarlyRepayment(){
  const out=document.getElementById('earlyResult');if(!out)return;const extras=getEarlyPayments(),mode=document.getElementById('earlyMode')?.value||'term';
  if(!extras.length){out.innerHTML='<div class="form-note">Добавьте свободную сумму и дату. Можно создать несколько досрочных платежей — например 50 000 ₽ в ноябре и 100 000 ₽ в январе.</div>';refreshEarlyPlan();return}
  const sim=simulateEarlyPlan(extras,mode);if(!sim){out.innerHTML='<div class="form-note">Проверьте даты и суммы досрочных платежей.</div>';return}
- const save=Math.max(0,sim.oldInterest-sim.totalInterest),scheduled=sim.rows.filter(r=>r.kind==='scheduled'),firstExtra=sim.rows.find(r=>r.kind==='extra'),nextScheduled=scheduled[0],firstTotal=firstExtra&&nextScheduled?firstExtra.extra+nextScheduled.scheduled:firstExtra?.extra||0,last=sim.rows[sim.rows.length-1],endDate=last?fmtDate(last.date):'—';
+ const save=Math.max(0,sim.oldInterest-sim.totalInterest),scheduled=sim.rows.filter(r=>r.kind==='scheduled'),firstExtra=sim.rows.find(r=>r.kind==='extra'),nextScheduled=scheduled[0],firstTotal=firstExtra?.total||0,last=sim.rows[sim.rows.length-1],endDate=fmtDate(sim.endDate);
  const oldMonths=sim.oldEndDate?Math.max(0,Math.round((parseEarlyDate(sim.oldEndDate)-parseEarlyDate(firstUpcomingLoanRow()?.payDate||sim.oldEndDate))/30.4375/86400000)):0;
- const paymentText=mode==='payment'?(nextScheduled?money2(nextScheduled.scheduled):'—'):(nextScheduled?money2(nextScheduled.scheduled):money2(state.settings?.loans?.loan1||85885));
- const preview=sim.rows.slice(0,14).map(r=>`<tr><td>${fmtDate(r.date)}</td><td>${r.kind==='extra'?' Досрочно':'По графику'}</td><td>${money2(r.scheduled)}</td><td>${money2(r.extra)}</td><td><b>${money2(r.total)}</b></td><td>${money2(r.balance)}</td></tr>`).join('');
- out.innerHTML=`<div class="early-grid"><div><small>Ваши досрочные платежи</small><b>${money2(sim.totalExtra)}</b><span>сверх обязательных</span></div><div><small>Экономия процентов</small><b>${money2(save)}</b><span>ориентир по модели</span></div><div><small>Было</small><b>${fmtDate(sim.oldEndDate)}</b><span>банковский график</span></div><div><small>Станет</small><b>${endDate}</b><span>${sim.monthsSaved>0?`примерно −${sim.monthsSaved} мес.`:'срок почти не меняется'}</span></div></div>
+ const paymentText=mode==='payment'?(nextScheduled?money2(nextScheduled.scheduled):'—'):(nextScheduled?money2(nextScheduled.scheduled):'Закрыт по модели');
+ const preview=sim.rows.slice(0,14).map(r=>`<tr><td>${fmtDate(r.date)}</td><td>${r.kind==='extra'?'Досрочно':r.kind==='unused'?'Не использовано':'По графику'}</td><td>${money2(r.scheduled)}</td><td>${money2(r.extra)}</td><td>${money2(r.interest)}</td><td>${money2(r.charges)}</td><td>${money2(r.unused)}</td><td><b>${money2(r.total)}</b></td><td>${money2(r.balance)}</td></tr>`).join('');
+ out.innerHTML=`<div class="early-grid"><div><small>Ваши досрочные платежи</small><b>${money2(sim.totalExtra)}</b><span>применено в тело · не использовано ${money2(sim.totalUnused)}</span></div><div><small>Экономия процентов</small><b>${money2(save)}</b><span>ориентир по модели</span></div><div><small>Было</small><b>${fmtDate(sim.oldEndDate)}</b><span>банковский график</span></div><div><small>Станет</small><b>${endDate}</b><span>${sim.monthsSaved>0?`примерно −${sim.monthsSaved} мес.`:'срок почти не меняется'}</span></div></div>
  <div class="early-explain"><strong>${mode==='term'?'Как это работает':'Что изменится в платеже'}</strong><div style="margin-top:5px;color:#42516a;line-height:1.5;font-size:13px">${mode==='term'?`Обязательный платёж остаётся по графику. Ваши свободные деньги идут дополнительно в тело кредита. Поэтому 1 ₽ почти ничего не меняет — заметный эффект появляется только при существенных и регулярных досрочных платежах.`:`Срок стараемся сохранить близким к банковскому, а после досрочного погашения пересчитываем ориентир ежемесячного платежа. Фактический платёж определит банк.`}</div></div>
- <div class="scenario-compare"><div><small>Обычный платёж</small><b>${money2(nextScheduled?.scheduled||85885)}</b><span>по выбранной ближайшей дате</span></div><div class="win"><small>${mode==='term'?'С вашим планом':'Ориентир после пересчёта'}</small><b>${paymentText}</b><span>${mode==='term'?'плюс ваши свободные деньги в указанные даты':'расчётная сумма после досрочного погашения'}</span></div></div>
- <div class="form-note"><b>Важно:</b>это сценарный расчёт, а не обещание банка. УралСиб может получить другой результат из-за даты зачисления, дневного начисления процентов и округлений. Чем точнее даты и суммы вашего плана, тем полезнее сравнение.</div>
- <div class="early-preview"><div class="early-preview-head"><b>Первые изменения по вашему плану</b><span>обязательные и дополнительные платежи отдельно</span></div><div class="table-wrap"><table class="table"><thead><tr><th>Дата</th><th>Тип</th><th>Основной</th><th>Дополнительно</th><th>Всего</th><th>Остаток</th></tr></thead><tbody>${preview}</tbody></table></div></div>`;
+ <div class="scenario-compare"><div><small>Обычный платёж</small><b>${money2(loanScheduleData().find(r=>r.payDate>=(firstExtra?.date||today()))?.payment||0)}</b><span>по выбранной ближайшей дате</span></div><div class="win"><small>${mode==='term'?'С вашим планом':'Ориентир после пересчёта'}</small><b>${paymentText}</b><span>${mode==='term'?'плюс ваши свободные деньги в указанные даты':'расчётная сумма после досрочного погашения'}</span></div></div>
+ <div class="form-note"><b>Важно:</b>это сценарный расчёт, а не обещание банка. УралСиб может получить другой результат из-за даты зачисления, дневного начисления процентов и округлений. Досрочная сумма означает взнос в тело; начисленные до этой даты проценты показаны отдельно и включены в общую сумму. Превышение остатка не применяется в тело. Прочие начисления банковского графика не уменьшают основной долг. Это оценка: сумму полного закрытия и дополнительные начисления подтвердит банк.</div>
+ <div class="early-preview"><div class="early-preview-head"><b>Первые изменения по вашему плану</b><span>обязательные и дополнительные платежи отдельно</span></div><div class="table-wrap"><table class="table"><thead><tr><th>Дата</th><th>Тип</th><th>Основной</th><th>В тело досрочно</th><th>Проценты</th><th>Прочие начисления</th><th>Не использовано</th><th>Всего</th><th>Остаток</th></tr></thead><tbody>${preview}</tbody></table></div></div>`;
 }
 
 function toggleLoanSchedule(){const x=document.getElementById('loanScheduleWrap');if(x)x.style.display=x.style.display==='none'?'block':'none'}
@@ -3777,11 +3783,15 @@ function v77Parts(total,count,date,period){
 }
 function v77EntryIsLinked(id){return (state.installments||[]).some(i=>Object.values(i.links||{}).includes(id))}
 function installmentLinkedEntry(i,part){
- const ref=i.links?.[part.id];return ref?(state.entries||[]).find(e=>e.id===ref&&e.type==='expense'):null;
+ const ref=i?.links?.[part.id];return ref?(state.entries||[]).find(e=>e.id===ref&&(e.type==='expense'||(e.type==='transfer'&&e.debtRepayment===true))):null;
 }
-function installmentPaid(i,part){return !!installmentLinkedEntry(i,part)}
+function installmentAllocated(i,part){
+ const e=installmentLinkedEntry(i,part),amount=Number(e?.amount)||0;
+ return Math.max(0,Math.min(v77Cents(part.amount),v77Cents(amount)))/100;
+}
+function installmentPaid(i,part){return v77Cents(installmentAllocated(i,part))>=v77Cents(part.amount)}
 function installmentUpcoming(){
- return (state.installments||[]).flatMap(i=>(i.parts||[]).filter(p=>!installmentPaid(i,p)).map(p=>({id:i.id,partId:p.id,name:i.title||V77_KINDS[i.kind]||'Рассрочка',date:p.date,amount:Number(p.amount)||0}))).sort((a,b)=>a.date.localeCompare(b.date));
+ return (state.installments||[]).flatMap(i=>(i.parts||[]).filter(p=>!installmentPaid(i,p)).map(p=>({id:i.id,partId:p.id,name:i.title||V77_KINDS[i.kind]||'Рассрочка',date:p.date,amount:Math.max(0,(Number(p.amount)||0)-installmentAllocated(i,p))}))).sort((a,b)=>a.date.localeCompare(b.date));
 }
 function v77DateLabel(date){return /^\d{4}-\d{2}-\d{2}$/.test(date)?new Date(date+'T12:00:00').toLocaleDateString('ru-RU',{day:'numeric',month:'short',year:'numeric'}):'—'}
 function v77Form(show){const e=document.getElementById('v77InstallmentForm');if(e){e.hidden=!show;if(show){document.getElementById('v77FirstDate').value||=today();e.scrollIntoView({behavior:'smooth',block:'nearest'})}}}
@@ -3808,11 +3818,18 @@ function v77LinkPayment(id,partId,entryId){
 }
 function v77PayPart(id,partId){
  const i=v77FindInstallment(id),part=v77FindPart(i,partId);if(!i||!part||installmentPaid(i,part))return;
- if(!window.confirm('Создать расход '+money2(part.amount)+' по покупке «'+i.title+'»? Если он уже есть в истории, выберите «Из истории» вместо этого.'))return;
+ if(installmentLinkedEntry(i,part)){toast('Часть оплачена частично. Измените связанную операцию в истории; новая оплата автоматически не создаётся.');return}
+ let accountingMode=i.accountingMode;
+ if(!['payments','purchase'].includes(accountingMode)){
+  const choice=window.prompt('Как учитывать эту покупку? Введите 1 — считаем расходы по платежам; 2 — покупка уже записана целиком, оплата только погашает долг. Отмена не создаёт операцию.','');
+  accountingMode=choice==='1'?'payments':choice==='2'?'purchase':null;
+  if(!['payments','purchase'].includes(accountingMode)){toast('Выберите способ учёта: 1 или 2');return}
+ }
+ if(!window.confirm((accountingMode==='purchase'?'Записать погашение долга ':'Создать расход ')+money2(part.amount)+' по покупке «'+i.title+'» датой сегодня? Если оплата уже есть в истории, отмените и выберите «Из истории».'))return;
  const who='Не указано',now=new Date().toISOString();
- const e={id:'installment:'+encodeURIComponent(i.id)+':'+encodeURIComponent(part.id),paymentKey:'installment:'+encodeURIComponent(i.id)+':'+encodeURIComponent(part.id),date:part.date>today()?today():part.date,type:'expense',amount:part.amount,category:'Кредит',who,store:i.provider||V77_KINDS[i.kind],pay:'Карта',comment:'Оплата частями · '+i.title,from:'',to:'',installmentId:i.id,installmentPartId:part.id,created_at:now,updated_at:now};
- state.entries.push(e);i.links=i.links||{};i.links[part.id]=e.id;i.updated_at=now;
- saveAll();renderAll();toast('✓ Оплата записана в расходы один раз');
+ const e={id:'installment:'+encodeURIComponent(i.id)+':'+encodeURIComponent(part.id),paymentKey:'installment:'+encodeURIComponent(i.id)+':'+encodeURIComponent(part.id),date:today(),scheduledDate:part.date,type:accountingMode==='purchase'?'transfer':'expense',debtRepayment:accountingMode==='purchase',accountingMode,amount:part.amount,category:'Кредит',who,store:i.provider||V77_KINDS[i.kind],pay:'Карта',comment:'Оплата частями · '+i.title,from:'',to:'',installmentId:i.id,installmentPartId:part.id,created_at:now,updated_at:now};
+ state.entries.push(e);i.links=i.links||{};i.links[part.id]=e.id;i.accountingMode=accountingMode;i.updated_at=now;
+ saveAll();renderAll();toast(accountingMode==='purchase'?'✓ Погашение долга записано без нового расхода':'✓ Оплата записана в расходы один раз');
 }
 function v77ShowMatches(id,partId){const i=v77FindInstallment(id),part=v77FindPart(i,partId);const box=document.getElementById('v77Matches_'+partId);if(!box||!part)return;
  const candidates=v77CandidateExpenses(i,part);
@@ -3829,15 +3846,15 @@ function v77UpdatePart(id,partId,date,amount){const i=v77FindInstallment(id),p=v
 }
 function renderInstallments(){
  const summary=document.getElementById('v77InstallmentSummary'),list=document.getElementById('v77InstallmentList');if(!summary||!list)return;
- const all=state.installments||[],upcoming=installmentUpcoming(),total=all.reduce((a,i)=>a+(i.parts||[]).reduce((s,p)=>s+(installmentPaid(i,p)?0:Number(p.amount)||0),0),0),paid=all.reduce((a,i)=>a+(i.parts||[]).reduce((s,p)=>s+(installmentPaid(i,p)?Number(p.amount)||0:0),0),0),late=upcoming.filter(p=>p.date<today()).length;
+ const all=state.installments||[],upcoming=installmentUpcoming(),total=all.reduce((a,i)=>a+(i.parts||[]).reduce((s,p)=>s+Math.max(0,(Number(p.amount)||0)-installmentAllocated(i,p)),0),0),paid=all.reduce((a,i)=>a+(i.parts||[]).reduce((s,p)=>s+installmentAllocated(i,p),0),0),late=upcoming.filter(p=>p.date<today()).length;
  summary.innerHTML=`<div><small>Осталось по покупкам частями</small><b>${money2(total)}</b></div><div><small>Оплачено по отмеченным частям</small><b>${money2(paid)}</b></div><div><small>Ближайший платёж</small><b>${upcoming.length?v77DateLabel(upcoming[0].date):'—'}</b></div><div><small>Просроченных частей</small><b>${late}</b></div>`;
  if(!all.length){list.innerHTML='<div class="v77-empty"><b>Покупок частями пока нет</b><p>Добавьте Яндекс Сплит или рассрочку: сроки и оплаты будут видны в одном месте.</p></div>';return}
  list.innerHTML=all.slice().sort((a,b)=>String(b.created_at).localeCompare(String(a.created_at))).map(i=>{
-  const paidParts=i.parts.filter(p=>installmentPaid(i,p)),left=i.parts.filter(p=>!installmentPaid(i,p)),remaining=left.reduce((a,p)=>a+Number(p.amount),0),next=left.slice().sort((a,b)=>a.date.localeCompare(b.date))[0];
+  const paidParts=i.parts.filter(p=>installmentPaid(i,p)),left=i.parts.filter(p=>!installmentPaid(i,p)),remaining=left.reduce((a,p)=>a+Math.max(0,Number(p.amount)-installmentAllocated(i,p)),0),next=left.slice().sort((a,b)=>a.date.localeCompare(b.date))[0];
   const status=left.length?(next?.date<today()?'Есть просрочка':'Активна'):'Закрыта';
   return `<article class="v77-installment-card"><div class="v77-installment-top"><div><span class="v77-kind">${esc(V77_KINDS[i.kind]||'Покупка частями')}</span><h3>${esc(i.title)}</h3><small>${esc(i.provider||'Без указания сервиса')}</small></div><div class="v77-installment-status ${left.length?(next?.date<today()?'late':'active'):'done'}">${status}</div></div>
    <div class="v77-installment-metrics"><div><small>Осталось</small><b>${money2(remaining)}</b></div><div><small>Оплачено</small><b>${paidParts.length} из ${i.parts.length}</b></div><div><small>Следующий платёж</small><b>${next?v77DateLabel(next.date):'Все оплачены'}</b></div></div>
-   <details class="v77-installment-details"><summary>График платежей и история <span>⌄</span></summary><div class="v77-part-list">${i.parts.map((p,index)=>{const linked=installmentLinkedEntry(i,p);return `<div class="v77-part ${linked?'paid':''}"><div><strong>Часть ${index+1} · ${money2(p.amount)}</strong><small>${v77DateLabel(p.date)} ${linked?'· ✓ Учтено в расходах':'· Ожидает оплаты'}</small></div><div class="v77-part-actions">${linked?`<button class="btn small" type="button" data-v77-op="history">История ↗</button>`:`<button class="btn small primary" type="button" data-v77-pay="${esc(i.id)}" data-v77-part="${esc(p.id)}">Записать оплату</button><button class="btn small" type="button" data-v77-match="${esc(i.id)}" data-v77-part="${esc(p.id)}">Из истории</button>`}</div>${linked?'':`<div class="v77-change-date"><label>Дата по вашему графику <input type="date" data-v77-date="${esc(i.id)}" data-v77-part="${esc(p.id)}" value="${esc(p.date)}"></label><button class="btn small" data-v77-save-date="${esc(i.id)}" data-v77-part="${esc(p.id)}" type="button">Сохранить дату</button></div>`}<div id="v77Matches_${esc(p.id)}" class="v77-matches" hidden></div>`}).join('')}</div><div class="v77-plan-foot">${i.kind==='card'?'Для кредитной карты это упрощённый план, без расчёта процентов и минимального платежа. Сверяйте выписку банка.':'Плановый график; реальные расходы появляются только после отметки оплаты.'}<button class="btn small danger" type="button" data-v77-delete="${esc(i.id)}">Удалить план</button></div></details>
+   <details class="v77-installment-details"><summary>График платежей и история <span>⌄</span></summary><div class="v77-part-list">${i.parts.map((p,index)=>{const linked=installmentLinkedEntry(i,p),allocated=installmentAllocated(i,p),fullyPaid=installmentPaid(i,p);return `<div class="v77-part ${fullyPaid?'paid':''}"><div><strong>Часть ${index+1} · ${money2(p.amount)}</strong><small>${v77DateLabel(p.date)} ${fullyPaid?'· ✓ Оплачено':allocated>0?'· Частично: '+money2(allocated)+' · остаток '+money2(Number(p.amount)-allocated):'· Ожидает оплаты'}</small></div><div class="v77-part-actions">${linked?`<button class="btn small" type="button" data-v77-op="history">История ↗</button>`:`<button class="btn small primary" type="button" data-v77-pay="${esc(i.id)}" data-v77-part="${esc(p.id)}">Записать оплату</button><button class="btn small" type="button" data-v77-match="${esc(i.id)}" data-v77-part="${esc(p.id)}">Из истории</button>`}</div>${linked?'':`<div class="v77-change-date"><label>Дата по вашему графику <input type="date" data-v77-date="${esc(i.id)}" data-v77-part="${esc(p.id)}" value="${esc(p.date)}"></label><button class="btn small" data-v77-save-date="${esc(i.id)}" data-v77-part="${esc(p.id)}" type="button">Сохранить дату</button></div>`}<div id="v77Matches_${esc(p.id)}" class="v77-matches" hidden></div>`}).join('')}</div><div class="v77-plan-foot">${i.kind==='card'?'Для кредитной карты это упрощённый план, без расчёта процентов и минимального платежа. Сверяйте выписку банка.':'Плановый график; реальные расходы появляются только после отметки оплаты.'}<button class="btn small danger" type="button" data-v77-delete="${esc(i.id)}">Удалить план</button></div></details>
   </article>`;
  }).join('');
 }
@@ -4120,7 +4137,7 @@ function v84LinkRecurring(id,period){
  const matches=state.entries.filter(e=>e.type==='expense'&&!e.recurringId&&String(e.date||'').startsWith(period)&&Math.abs(Number(e.amount)-Number(r.amount))<.011).sort((a,b)=>String(b.date).localeCompare(String(a.date)));
  if(!matches.length){toast('В этом месяце нет свободного расхода с точно такой суммой. Можно подтвердить новую оплату.');return}
  const modal=document.getElementById('v84DrillModal');document.getElementById('v84DrillPeriod').textContent='Привязка ранее внесённого расхода';document.getElementById('v84DrillTitle').textContent='Выберите оплату · '+r.name;
- document.getElementById('v84DrillBody').innerHTML='<p class="v84-mini-note">Привязка не создаёт новую операцию и не меняет её сумму или дату. Выберите только соответствующий платёж.</p>'+matches.map(e=>`<div class="v84-row"><div class="v84-row-main"><b>${esc(e.store||e.category)}</b><small>${esc(e.date)} · ${esc(e.who)} · ${esc(e.comment||'')}</small></div><strong class="v84-row-amount">${money(e.amount)}</strong><button class="btn primary small" type="button" data-v84-link="${esc(e.id)}">Связать</button></div>`).join('');
+ document.getElementById('v84DrillBody').innerHTML='<p class="v84-mini-note">Привязка не создаёт новую операцию и не меняет её сумму или дату. Выберите только соответствующий платёж.</p>'+matches.map(e=>`<div class="v84-row"><div class="v84-row-main"><b>${esc(e.store||e.category)}</b><small>${esc(e.date)} · ${esc(e.type==='expense'?v86ExpenseTarget(e):e.who)} · ${esc(e.comment||'')}</small></div><strong class="v84-row-amount">${money(e.amount)}</strong><button class="btn primary small" type="button" data-v84-link="${esc(e.id)}">Связать</button></div>`).join('');
  document.querySelectorAll('#v84DrillBody [data-v84-link]').forEach(btn=>btn.addEventListener('click',()=>{const e=state.entries.find(x=>x.id===btn.dataset.v84Link);if(!e||e.recurringId||v84RecurringConfirmed(r,period))return;e.recurringId=r.id;e.recurringPeriod=period;e.updated_at=new Date().toISOString();v84CloseDrill();saveAll();renderAll();toast('Существующая оплата привязана — без дубля')}));
  modal.classList.add('open');modal.setAttribute('aria-hidden','false');modal.querySelector('.v84-modal').focus();
 }
@@ -4410,9 +4427,11 @@ function v86CalendarEvents(m){
  const ob=v78Obligations(m);
  for(const row of v78ObligationRows(ob)){
   const allocated=Number(row.allocated)||0;
-  items.push({key:'loan:'+row.kind+':'+row.date+':'+row.title,kind:row.kind,date:row.date,title:row.title,subtitle:row.subtitle,amount:Number(row.amount)||0,paid:!!row.paid,part:!!row.partial,allocated:allocated,link:'loans'});
+  items.push({key:row.kind==='installment'?'installment:'+row.installmentId+':'+row.installmentPartId:'loan:'+row.kind+':'+row.date+':'+row.title,kind:row.kind,date:row.date,title:row.title,subtitle:row.subtitle,amount:Number(row.amount)||0,paid:!!row.paid,part:!!row.partial,allocated:allocated,link:'loans',installmentId:row.installmentId,installmentPartId:row.installmentPartId});
  }
  for(const r of v84Data().recurring){
+  const linkedPlan=(state.installments||[]).find(i=>i.id===r.installmentId),linkedPart=(linkedPlan?.parts||[]).find(p=>p.id===r.installmentPartId&&String(p.date).startsWith(m));
+  if(linkedPart)continue;
   const date=v84DateOfMonth(m,r.day),paid=v84RecurringConfirmed(r,m);
   items.push({key:'regular:'+r.id+':'+m,kind:'regular',date,title:r.name||'Регулярный платёж',subtitle:'Повторяющийся платёж · '+(r.category||'Без категории'),amount:Number(r.amount)||0,paid,allocated:paid?(Number(r.amount)||0):0,link:'analytics',recurringId:r.id,period:m});
  }
@@ -4432,19 +4451,27 @@ function v86RenderCalendar(){
 }
 function v86CurrentAccounts(){const list=v84Data().accounts;return {items:list,total:list.length?list.reduce((n,a)=>n+(Number(a.amount)||0),0):null,latest:list.reduce((s,a)=>String(a.updated_at||'')>s?String(a.updated_at||''):s,'')}}
 function v86Forecast(){
- const now=today(),target=v84NextPayDate()||v84DateOfMonth(now.slice(0,7),31);
- const end=target<now?now:target;
- // Include all months between today and payday; the reporting window is short but can cross year end.
- const from=now.slice(0,7),to=end.slice(0,7);let cursor=new Date(from+'-01T12:00:00Z');const events=[];
- for(let i=0;i<4;i++){
-  const m=cursor.toISOString().slice(0,7);if(m>to)break;
-  events.push(...v86CalendarEvents(m).filter(x=>x.date>=now&&x.date<=end&&!x.paid));
-  cursor=new Date(Date.UTC(cursor.getUTCFullYear(),cursor.getUTCMonth()+1,1,12));
+ const now=today(),target=v84NextPayDate()||v84DateOfMonth(now.slice(0,7),31),end=target<now?now:target,to=end.slice(0,7);
+ // Recurring plans have no historical activation date: include overdue current-period payments,
+ // plus explicitly stored older installment/mortgage dates, without inventing past recurrences.
+ const months=new Set([now.slice(0,7)]);
+ for(const i of state.installments||[])for(const p of i.parts||[])if(String(p.date)<=end)months.add(String(p.date).slice(0,7));
+ for(const row of loanScheduleData())if(row.payDate<=end)months.add(row.payDate.slice(0,7));
+ let cursor=new Date(now.slice(0,7)+'-01T12:00:00Z');
+ while(cursor.toISOString().slice(0,7)<=to){months.add(cursor.toISOString().slice(0,7));cursor.setUTCMonth(cursor.getUTCMonth()+1)}
+ const unique=new Map();
+ for(const m of [...months].sort())for(const e of v86CalendarEvents(m)){
+  if(e.paid||e.date>end||(e.kind==='regular'&&m<now.slice(0,7)))continue;
+  if(e.kind==='regular'){
+   const linked=state.entries.find(x=>x.recurringId===e.recurringId&&x.recurringPeriod===e.period);
+   if(linked&&(state.installments||[]).some(i=>Object.values(i.links||{}).includes(linked.id)))continue;
+  }
+  unique.set(e.key,e);
  }
- const mortgage=events.filter(e=>e.kind==='mortgage'||e.kind==='installment').reduce((n,e)=>n+Math.max(0,e.amount-e.allocated),0);
- const regular=events.filter(e=>e.kind==='regular').reduce((n,e)=>n+e.amount,0);
- const accounts=v86CurrentAccounts();
- return {date:end,accounts,mortgage,regular,obligations:mortgage+regular,estimate:accounts.total===null?null:accounts.total-mortgage-regular,events};
+ const events=[...unique.values()],remaining=e=>Math.max(0,e.amount-e.allocated);
+ const mortgage=events.filter(e=>e.kind==='mortgage'||e.kind==='installment').reduce((n,e)=>n+remaining(e),0);
+ const regular=events.filter(e=>e.kind==='regular').reduce((n,e)=>n+remaining(e),0),overdue=events.filter(e=>e.date<now).reduce((n,e)=>n+remaining(e),0),accounts=v86CurrentAccounts();
+ return {date:end,accounts,mortgage,regular,overdue,obligations:mortgage+regular,estimate:accounts.total===null?null:accounts.total-mortgage-regular,events};
 }
 function v86RenderPulse(){
  const root=document.getElementById('v84PulseNumbers');if(!root)return;const m=homeMonth(),monthIncome=sum(monthEntries(m).filter(e=>e.type==='income')),spent=sum(expenses(m)),ob=v78Obligations(m),forecast=v86Forecast(),chosenCurrent=m===month();
@@ -4457,7 +4484,7 @@ function v86RenderPulse(){
  ];
  root.innerHTML=rows.map(([label,value,desc])=>`<div class="v84-pulse-stat"><small>${esc(label)}</small><strong>${esc(value)}</strong><span>${esc(desc)}</span></div>`).join('');
  const details=document.getElementById('v86PulseBreakdown');if(details)details.innerHTML=`<div><small>Ипотека и рассрочки до ${esc(v86ReadableDate(forecast.date))}</small><b>${money(forecast.mortgage)} ещё не подтверждено</b></div><div><small>Регулярные платежи до ${esc(v86ReadableDate(forecast.date))}</small><b>${money(forecast.regular)} запланировано</b></div>`;
- const narrative=document.getElementById('v84PulseNarrative');if(narrative)narrative.textContent=forecast.accounts.total===null?'Для прогноза укажите текущие остатки в «Настройках». Результат месяца не является балансом банковских счетов.':`Прогноз учитывает вручную указанные остатки и не подтверждённые платежи до ${v86ReadableDate(forecast.date)}. Не учитывает повседневные будущие покупки, изменения доходов и возможное пересечение регулярных платежей с другими графиками.`;
+ const narrative=document.getElementById('v84PulseNarrative');if(narrative)narrative.textContent=forecast.accounts.total===null?'Для прогноза укажите текущие остатки в «Настройках». Результат месяца не является балансом банковских счетов.':`Прогноз учитывает вручную указанные остатки и не подтверждённые платежи до ${v86ReadableDate(forecast.date)}. Включены просроченные неподтверждённые платежи: ${money(forecast.overdue)}. Регулярные платежи прошлых месяцев без сохранённого графика не восстанавливаются автоматически. Совпадение суммы не означает дубликат; связывайте один платёж явно. Повседневные будущие покупки и изменения доходов не учтены.`;
 }
 function v86SpendGroupToDay(m,lastDay){return sum(expenses(m).filter(e=>Number(String(e.date).slice(8,10))<=lastDay))}
 function v86RenderCompare(){
@@ -4487,11 +4514,10 @@ function v86RenderAll(){v86RenderPulse();v86RenderCalendar();v86RenderCompare();
 
 /* v87: Scenario-only family advisor. Never writes synthetic expense operations. */
 function v87AdvisorMonths(){
- const current=month();const months=[];const first=current+'-01T12:00:00';
+ const current=month(),months=[],first=current+'-01T12:00:00';
  for(let i=1;i<=3;i++){const d=new Date(first);d.setMonth(d.getMonth()-i);months.push(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`)}
- let available=months.filter(m=>monthEntries(m).length>0);
- let provisional=false;
- if(!available.length && monthEntries(current).length){available=[current];provisional=true}
+ let available=months.filter(m=>expenses(m).length>0),provisional=false;
+ if(!available.length&&expenses(current).length){available=[current];provisional=true}
  return {months:available,provisional,current};
 }
 function v87AdvisorData(){
@@ -4537,13 +4563,14 @@ function v87RenderAdvisor(){
  if(!d.months.length){status.textContent='Недостаточно данных: внесите доходы и расходы хотя бы за один месяц. Когда появятся завершённые месяцы, расчёт станет информативнее.';metrics.innerHTML='';guide.innerHTML='<div class="v87-advisor-empty">Сначала заполните семейную историю операций. Советник не будет придумывать цифры.</div>';return}
  const sample=d.months.map(v84MonthLabel).join(', ');
  status.textContent=d.provisional?`Предварительный сценарий: данные только за текущий, ещё не законченный месяц (${sample}). Это не средняя зарплата.`:`Основа: ${d.months.length} ${d.months.length===1?'завершённый месяц':'завершённых месяца'} (${sample}). ${d.months.length<2?'Для устойчивых рекомендаций желательно хотя бы 2–3 полностью записанных месяца.':'Проверьте полноту расходов и зарплат каждого месяца.'}`;
+ if(!d.hasIncome&&!d.partialIncome)status.textContent+=' Доходы не внесены: сравнение с зарплатой недоступно.';
  if(d.partialIncome)status.textContent+=' Доходы внесены не во все месяцы: сравнение с зарплатой скрыто.';
  if(d.monthsMissingExpenses.length)status.textContent+=' Есть месяцы без расходов; средняя сумма может быть занижена.';
- const tiles=[['Средние расходы',money(d.spent),'По внесённым расходам; проверьте полноту истории'],['Средние доходы',d.hasIncome?money(d.income):'Нет записей','Необходима полная история зарплат'],['На цели и резерв',money(d.goalMonthly+d.reserve),`${money(d.goalMonthly)} цели · ${money(d.reserve)} резерв`],['Ориентир дохода семьи',money(d.required),`После условной экономии ${money(d.projectedSaving)}`]];
+ const tiles=[['Средние расходы',money(d.spent),'По внесённым расходам; проверьте полноту истории'],['Средние доходы',d.hasIncome?money(d.income):d.partialIncome?'Неполные данные':'Нет записей','Необходима полная история зарплат'],['На цели и резерв',money(d.goalMonthly+d.reserve),`${money(d.goalMonthly)} цели · ${money(d.reserve)} резерв`],['Ориентир дохода семьи',money(d.required),`После условной экономии ${money(d.projectedSaving)}`]];
  metrics.innerHTML=tiles.map(([name,value,note])=>`<div class="v87-metric"><small>${esc(name)}</small><strong>${esc(value)}</strong><span>${esc(note)}</span></div>`).join('');
  const items=Object.entries(d.byCategory).sort((a,b)=>b[1]-a[1]).slice(0,4);
  let lines=`<div class="v87-note"><h3>Как получился расчёт</h3><p>Расходы <b>${money(d.spent)}</b> − условная экономия <b>${money(d.projectedSaving)}</b> + взносы на действующие цели <b>${money(d.goalMonthly)}</b> + дополнительный резерв <b>${money(d.reserve)}</b> = <b>${money(d.required)} в месяц</b>.</p>`;
- if(d.hasIncome){const gap=d.income-d.required;lines+=`<p>${gap>=0?`При среднем зафиксированном доходе после такого плана остаётся <b>${money(gap)}</b>.`:`Чтобы выполнять такой план без сокращения взносов, семейный доход должен вырасти примерно на <b>${money(-gap)} в месяц</b>.`} Это расчёт по записям, не прогноз зарплаты.</p>`}else lines+=d.partialIncome?'<p>Доходы внесены не за все выбранные месяцы. Сравнение с зарплатой скрыто до заполнения истории.</p>':'<p>Доходы не внесены: сравнить план с реальной зарплатой пока нельзя.</p>';
+ if(d.hasIncome){const gap=d.income-d.required;lines+=`<p>${gap>=0?`При среднем зафиксированном доходе после такого плана остаётся <b>${money(gap)}</b>.`:`Чтобы выполнять такой план без сокращения взносов, семейный доход должен вырасти примерно на <b>${money(-gap)} в месяц</b>.`} Наличие записей не подтверждает полноту доходов. Это расчёт по записям, не прогноз зарплаты.</p>`}else lines+=d.partialIncome?'<p>Доходы внесены не за все выбранные месяцы. Сравнение с зарплатой скрыто до заполнения истории.</p>':'<p>Доходы не внесены: сравнить план с реальной зарплатой пока нельзя.</p>';
  if(d.goals.length)lines+=`<p>Учитываются ${d.goals.length} ${d.goals.length===1?'незакрытая цель':'незакрытых целей'} с заданными ежемесячными взносами. <a href="#" onclick="event.preventDefault();go('goals')">Изменить цели</a></p>`;
  else lines+='<p>Взносы на цели сейчас равны нулю. Добавьте плановую сумму в разделе «Цели и накопления».</p>';
  if(items.length&&d.cut>0)lines+=`<p>Пример гибких расходов, которые можно пересмотреть: ${items.map(([n,v])=>`${esc(n)} (${money(v)})`).join(', ')}. Снижение на ${d.cut}% — только ваш сценарий, а не автоматическая рекомендация отказываться от нужных покупок.</p>`;
