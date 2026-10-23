@@ -34,6 +34,21 @@ def inventory():
             'triggers': [], 'routines': [], 'event_triggers': []}
 
 
+SAFE_MEMBERSHIP_SOURCE = '\n SELECT EXISTS (SELECT 1 FROM public.household_members hm WHERE hm.household_id = p_household_id AND hm.user_id = p_user_id);\n'
+
+
+def membership_review(**changes):
+    helper = dict(schema='public', name='is_household_member',
+                  arguments='p_household_id uuid, p_user_id uuid', returns='boolean', owner='postgres',
+                  language='sql', security_definer=True, volatility='v', definition_md5='a' * 32,
+                  matches_inventory_hash=False, body_safe_for_review=True,
+                  body_for_review=SAFE_MEMBERSHIP_SOURCE, search_path_allowlisted=True,
+                  search_path_names=['public'])
+    helper.update(changes)
+    return {'format': 'marichevy-membership-review-v1', 'catalog_only': True,
+            'helper_count': 1, 'helper': helper}
+
+
 class FakeTransport:
     def __init__(self, *answers):
         self.answers, self.calls = list(answers), []
@@ -119,6 +134,63 @@ class ProductionInspectorTests(unittest.TestCase):
         self.assertEqual(self.inspect(transport)['inventory'], inventory())
         self.assertEqual(len(transport.calls), 2)
 
+    def test_membership_review_is_fixed_readonly_and_has_safe_own_report(self):
+        review = membership_review(unexpected_secret=TOKEN)
+        transport = FakeTransport((200, project()), (201, [{'membership_review': review}]))
+        with patch.object(Path, 'read_text', return_value=CONFIG):
+            result = inspector.ProductionSchemaInspector(TOKEN, transport).inspect(membership_review=True)
+        self.assertEqual(transport.calls[1][3], {'query': inspector.MEMBERSHIP_SQL, 'read_only': True})
+        self.assertNotIn('inventory', result)
+        self.assertEqual(result['membership_review']['helper']['body_for_review'], SAFE_MEMBERSHIP_SOURCE)
+        self.assertEqual(result['query_sha256'], hashlib.sha256(inspector.MEMBERSHIP_SQL.encode()).hexdigest())
+        self.assertNotIn(TOKEN, json.dumps(result))
+        self.assertFalse(result['authorization_tested'])
+
+    def test_membership_review_wrong_identity_stops_before_query(self):
+        transport = FakeTransport((200, project(name='marichevy-finance-staging')))
+        with patch.object(Path, 'read_text', return_value=CONFIG), self.assertRaises(inspector.InspectionError):
+            inspector.ProductionSchemaInspector(TOKEN, transport).inspect(membership_review=True)
+        self.assertEqual(len(transport.calls), 1)
+
+    def test_membership_review_unsafe_response_never_saved(self):
+        variants = [membership_review(body_for_review="select 'SYNTHETIC_SECRET'"),
+                    membership_review(body_for_review='select 123456789'),
+                    membership_review(body_for_review='select /* SYNTHETIC_SECRET */ true'),
+                    membership_review(body_for_review='select $$SYNTHETIC_SECRET$$'),
+                    membership_review(body_for_review='select SYNTHETIC_SECRET'),
+                    membership_review(body_safe_for_review=False, body_for_review='select true'),
+                    membership_review(search_path_names=['SYNTHETIC_SECRET']),
+                    membership_review(search_path_allowlisted=False, search_path_names=['public'])]
+        for review in variants:
+            with self.subTest(review=review), self.assertRaises(inspector.InspectionError) as raised:
+                inspector.ProductionSchemaInspector._membership_report(project(), review)
+            self.assertNotIn('SYNTHETIC_SECRET', str(raised.exception))
+        withheld = membership_review(body_safe_for_review=False, body_for_review=None,
+                                     search_path_allowlisted=False, search_path_names=None)
+        self.assertIsNone(inspector.ProductionSchemaInspector._membership_report(project(), withheld)
+                          ['membership_review']['helper']['body_for_review'])
+
+    def test_membership_missing_or_ambiguous_helper_rejected(self):
+        for review in [None, {}, {**membership_review(), 'helper_count': 0},
+                       {**membership_review(), 'helper_count': 2},
+                       {**membership_review(), 'catalog_only': False},
+                       membership_review(name='other'), membership_review(definition_md5='invalid')]:
+            with self.subTest(review=review), self.assertRaises(inspector.InspectionError):
+                inspector.ProductionSchemaInspector._membership_report(project(), review)
+
+    def test_membership_cli_defaults_to_distinct_private_report(self):
+        report = inspector.ProductionSchemaInspector._membership_report(project(), membership_review())
+        with patch.dict(inspector.os.environ, {inspector.TOKEN_NAME: TOKEN}), \
+                patch.object(inspector.ProductionSchemaInspector, 'inspect', return_value=report) as method, \
+                patch('sys.argv', ['inspect_production_schema.py', '--membership-review']), \
+                patch.object(Path, 'mkdir', return_value=None), \
+                patch.object(Path, 'write_text', autospec=True, return_value=0) as write, \
+                redirect_stdout(io.StringIO()):
+            self.assertEqual(inspector.main(), 0)
+        method.assert_called_once_with(membership_review=True)
+        self.assertEqual(write.call_args.args[0], Path('/workspace/artifacts/production-membership-review-PRIVATE.json'))
+        self.assertIn('membership_review', json.loads(write.call_args.args[1]))
+
     def test_missing_catalog_marker_or_collections_is_not_success(self):
         bad_inventory = inventory()
         del bad_inventory['tables']
@@ -166,6 +238,8 @@ class InspectionTransportBoundaryTests(unittest.TestCase):
             ('POST', inspector.PROJECT_URL + '/database/query', {'query': 'SELECT * FROM auth.users', 'read_only': True}),
             ('POST', inspector.PROJECT_URL + '/database/query', {'query': inspector.INVENTORY_SQL, 'read_only': False}),
             ('POST', inspector.PROJECT_URL + '/database/query', {'query': inspector.INVENTORY_SQL, 'read_only': True, 'parameters': []}),
+            ('POST', inspector.PROJECT_URL + '/database/query', {'query': inspector.MEMBERSHIP_SQL, 'read_only': False}),
+            ('POST', inspector.PROJECT_URL + '/database/query', {'query': inspector.MEMBERSHIP_SQL + ' SELECT * FROM auth.users;', 'read_only': True}),
             ('GET', inspector.PROJECT_URL + '/../other', None),
             ('GET', inspector.PROJECT_URL + '?include=secrets', None),
             ('GET', inspector.PROJECT_URL + '#fragment', None),
@@ -185,6 +259,13 @@ class InspectionTransportBoundaryTests(unittest.TestCase):
         sent = self.transport.opener.calls[0]
         self.assertEqual(sent.get_header('Authorization'), 'Bearer ' + TOKEN)
         self.assertEqual(json.loads(sent.data), {'query': inspector.INVENTORY_SQL, 'read_only': True})
+
+    def test_transport_accepts_only_exact_membership_query(self):
+        self.transport.opener = FakeOpener(Response({'safe': True}, 201))
+        self.assertEqual(self.transport.request('POST', inspector.PROJECT_URL + '/database/query', {},
+                         {'query': inspector.MEMBERSHIP_SQL, 'read_only': True}), (201, {'safe': True}))
+        self.assertEqual(json.loads(self.transport.opener.calls[0].data),
+                         {'query': inspector.MEMBERSHIP_SQL, 'read_only': True})
 
     def test_network_error_is_scrubbed(self):
         self.transport.opener = FakeOpener(error=URLError(TOKEN))
@@ -266,6 +347,50 @@ class InventorySQLLocalDatabase(unittest.TestCase):
             routine = next(r for r in result['routines'] if r['name'] == 'private_body_fixture')
             self.assertRegex(routine['source_md5'], r'^[0-9a-f]{32}$')
             self.assertNotIn('source', routine)
+        finally:
+            fixture.doClassCleanups()
+
+    def test_membership_query_withholds_unsupported_source_search_path_and_secrets(self):
+        fixture = database_harness.SyncDatabaseTests
+        fixture.setUpClass()
+        try:
+            fixture.sql('CREATE TABLE public.household_members (household_id uuid, user_id uuid);')
+            signature = 'public.is_household_member(p_household_id uuid, p_user_id uuid)'
+            def review(source, path='public'):
+                fixture.sql('CREATE OR REPLACE FUNCTION ' + signature
+                            + ' RETURNS boolean LANGUAGE sql SECURITY DEFINER SET search_path = '
+                            + path + ' AS ' + database_harness.literal(source) + ';')
+                return json.loads(fixture.sql(inspector.MEMBERSHIP_SQL))
+
+            result = review(SAFE_MEMBERSHIP_SOURCE)
+            self.assertTrue(result['catalog_only'])
+            self.assertEqual(result['helper_count'], 1)
+            self.assertEqual(result['helper']['body_for_review'], SAFE_MEMBERSHIP_SOURCE)
+            self.assertTrue(result['helper']['body_safe_for_review'])
+            self.assertEqual(result['helper']['search_path_names'], ['public'])
+            for source in ["SELECT 'PRIVATE_MEMBERSHIP_SOURCE_DO_NOT_RETURN' IS NOT NULL",
+                           'SELECT true /* PRIVATE_MEMBERSHIP_SOURCE_DO_NOT_RETURN */',
+                           'SELECT true -- PRIVATE_MEMBERSHIP_SOURCE_DO_NOT_RETURN',
+                           'SELECT $$PRIVATE_MEMBERSHIP_SOURCE_DO_NOT_RETURN$$ IS NOT NULL',
+                           'SELECT 123456789 > 0', 'SELECT length(\'PRIVATE_MEMBERSHIP_SOURCE_DO_NOT_RETURN\') > 0',
+                           'SELECT true' + ' ' * 2001]:
+                with self.subTest(source=source):
+                    result = review(source)
+                    self.assertFalse(result['helper']['body_safe_for_review'])
+                    self.assertIsNone(result['helper']['body_for_review'])
+                    self.assertNotIn('PRIVATE_MEMBERSHIP_SOURCE_DO_NOT_RETURN', json.dumps(result))
+            result = review(SAFE_MEMBERSHIP_SOURCE, 'public, auth, pg_catalog')
+            self.assertTrue(result['helper']['search_path_allowlisted'])
+            self.assertEqual(result['helper']['search_path_names'], ['public', 'auth', 'pg_catalog'])
+            result = review(SAFE_MEMBERSHIP_SOURCE, '"PRIVATE_PATH_DO_NOT_RETURN"')
+            self.assertFalse(result['helper']['search_path_allowlisted'])
+            self.assertIsNone(result['helper']['search_path_names'])
+            self.assertNotIn('PRIVATE_PATH_DO_NOT_RETURN', json.dumps(result))
+            inspector.ProductionSchemaInspector._membership_report(project(), result)
+            fixture.sql('DROP FUNCTION public.is_household_member(uuid,uuid);')
+            result = json.loads(fixture.sql(inspector.MEMBERSHIP_SQL))
+            self.assertEqual(result['helper_count'], 0)
+            self.assertIsNone(result['helper'])
         finally:
             fixture.doClassCleanups()
 

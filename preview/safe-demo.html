@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="ru" data-build="v94-expense-buckets" data-ui-version="94">
+<html lang="ru" data-build="v95-rc1-cas-expense" data-ui-version="95">
 <head><meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: blob:; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2216%22%20fill%3D%22%23315fc7%22%2F%3E%3Cpath%20d%3D%22M14%2030%2032%2016%2050%2030M20%2029v20h24V29M28%2049V36h8v13%22%20fill%3D%22none%22%20stroke%3D%22white%22%20stroke-width%3D%224%22%2F%3E%3C%2Fsvg%3E"><script>
 (() => {
@@ -24,7 +24,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
 <meta content="#0b1220" name="theme-color"/>
-<title>Семейный Банк · демо · Траты.Банк · v94</title>
+<title>Семейный Банк · демо · Траты.Банк · v95-rc1</title>
 
 
 
@@ -4748,11 +4748,11 @@ function v88FeedbackPayload(){
  const type=document.getElementById('v88FeedbackType')?.value||'idea';
  const section=document.getElementById('v88FeedbackSection')?.value||'';
  const message=document.getElementById('v88FeedbackMessage')?.value?.trim()||'';
- return {type,section,message,appVersion:'v94',familyEdition:true};
+ return {type,section,message,appVersion:'v95-rc1',familyEdition:true};
 }
 function v88FeedbackText(){
  const p=v88FeedbackPayload();const labels={idea:'Новая функция',improvement:'Улучшить существующее',bug:'Сообщить об ошибке',design:'Дизайн и удобство'};
- return `Обратная связь · Семейный Банк\nВерсия: v88.1\nТип: ${labels[p.type]||p.type}\nРаздел: ${p.section||'Весь банк'}\n\n${p.message}\n`;
+ return `Обратная связь · Семейный Банк\nВерсия: ${p.appVersion}\nТип: ${labels[p.type]||p.type}\nРаздел: ${p.section||'Весь банк'}\n\n${p.message}\n`;
 }
 async function v88CopyFeedback(){
  if(!v88FeedbackPayload().message){v88FeedbackStatus('Сначала опишите ваше предложение.','error');return}

@@ -2,7 +2,7 @@
 """Read production schema metadata only, using a narrowly scoped inspection token.
 
 This tool cannot apply SQL, reveal API keys or read application/authentication rows.
-Its two possible requests are a project identity GET and one fixed catalog SELECT.
+Its possible requests are a project identity GET and two fixed catalog SELECTs.
 The token is provided only through PRODUCTION_SUPABASE_INSPECTION_TOKEN.
 """
 from __future__ import annotations
@@ -166,6 +166,58 @@ SELECT pg_catalog.jsonb_build_object(
 ) AS inventory;"""
 
 
+MEMBERSHIP_WORDS = frozenset('select exists from where and or not true false as public household_members household_id user_id p_household_id p_user_id auth uid hm m member membership 1'.split())
+SEARCH_PATH_NAMES = frozenset(('public', 'auth', 'pg_catalog', 'pg_temp', 'extensions'))
+MEMBERSHIP_SQL = r"""WITH helper AS (
+  SELECT p.*, n.nspname, l.lanname FROM pg_catalog.pg_proc p
+  JOIN pg_catalog.pg_namespace n ON n.oid=p.pronamespace
+  JOIN pg_catalog.pg_language l ON l.oid=p.prolang
+  WHERE n.nspname='public' AND p.proname='is_household_member'
+    AND pg_catalog.oidvectortypes(p.proargtypes)='uuid, uuid' AND p.prokind='f'
+), reviewed AS (
+  SELECT h.*,
+    (pg_catalog.length(h.prosrc) BETWEEN 1 AND 2000
+      AND h.prosrc ~ '^[A-Za-z0-9_[:space:]().=,;]+$'
+      AND NOT EXISTS (
+        SELECT FROM pg_catalog.regexp_matches(pg_catalog.lower(h.prosrc), '[a-z_][a-z_0-9]*|[0-9]+', 'g') w
+        WHERE w[1] NOT IN ('select','exists','from','where','and','or','not','true','false','as',
+          'public','household_members','household_id','user_id','p_household_id','p_user_id',
+          'auth','uid','hm','m','member','membership','1')
+      )) AS body_safe,
+    ARRAY(SELECT pg_catalog.regexp_replace(pg_catalog.lower(v), '[[:space:]"]', '', 'g')
+      FROM pg_catalog.unnest(h.proconfig) v WHERE v LIKE 'search_path=%') AS search_paths
+  FROM helper h
+)
+SELECT pg_catalog.jsonb_build_object(
+  'format', 'marichevy-membership-review-v1', 'catalog_only', true,
+  'helper_count', (SELECT pg_catalog.count(*) FROM reviewed),
+  'helper', (SELECT pg_catalog.jsonb_build_object(
+    'schema', h.nspname, 'name', h.proname,
+    'arguments', pg_catalog.pg_get_function_identity_arguments(h.oid),
+    'returns', pg_catalog.pg_get_function_result(h.oid),
+    'owner', pg_catalog.pg_get_userbyid(h.proowner),
+    'language', h.lanname, 'security_definer', h.prosecdef, 'volatility', h.provolatile,
+    'definition_md5', pg_catalog.md5(pg_catalog.pg_get_functiondef(h.oid)),
+    'matches_inventory_hash', pg_catalog.md5(pg_catalog.pg_get_functiondef(h.oid))='ee70441dfc53e994de80474ad6fb344a',
+    'body_safe_for_review', h.body_safe,
+    'body_for_review', CASE WHEN h.body_safe THEN h.prosrc ELSE NULL END,
+    'search_path_allowlisted', pg_catalog.cardinality(h.search_paths)=1 AND NOT EXISTS (
+      SELECT FROM pg_catalog.unnest(pg_catalog.string_to_array(pg_catalog.substr(h.search_paths[1],13),',')) part
+      WHERE part NOT IN ('public','auth','pg_catalog','pg_temp','extensions')),
+    'search_path_names', CASE WHEN pg_catalog.cardinality(h.search_paths)=1 AND NOT EXISTS (
+      SELECT FROM pg_catalog.unnest(pg_catalog.string_to_array(pg_catalog.substr(h.search_paths[1],13),',')) part
+      WHERE part NOT IN ('public','auth','pg_catalog','pg_temp','extensions'))
+      THEN pg_catalog.string_to_array(pg_catalog.substr(h.search_paths[1],13),',') ELSE NULL END
+  ) FROM reviewed h LIMIT 1)
+) AS membership_review;"""
+
+
+def membership_source_safe(source):
+    return (isinstance(source, str) and 1 <= len(source) <= 2000
+            and re.fullmatch(r'[A-Za-z0-9_\s().=,;]+', source) is not None
+            and set(re.findall(r'[a-z_][a-z_0-9]*|[0-9]+', source.lower())) <= MEMBERSHIP_WORDS)
+
+
 class InspectionError(RuntimeError):
     """Only agent-authored, credential-free messages reach the report/stdout."""
 
@@ -189,7 +241,8 @@ class Transport:
     def request(self, method, url, headers, body=None):
         allowed = (method == 'GET' and url == PROJECT_URL and body is None) or (
             method == 'POST' and url == PROJECT_URL + '/database/query'
-            and body == {'query': INVENTORY_SQL, 'read_only': True})
+            and body in ({'query': INVENTORY_SQL, 'read_only': True},
+                         {'query': MEMBERSHIP_SQL, 'read_only': True}))
         if not allowed:
             raise InspectionError("Request is outside the fixed read-only inspection boundary")
         request = Request(url, method=method, headers={"Content-Type": "application/json", **headers},
@@ -215,7 +268,7 @@ class ProductionSchemaInspector:
         self.token = token
         self.transport = transport or Transport()
 
-    def inspect(self):
+    def inspect(self, membership_review=False):
         configured_project_ref((ROOT / 'index.html').read_text())
         headers = {"Authorization": "Bearer " + self.token}
         status, project = self.transport.request('GET', PROJECT_URL, headers)
@@ -226,12 +279,15 @@ class ProductionSchemaInspector:
             raise InspectionError("Production project ref/name mismatch; no catalog query was sent")
         if project.get('status') != 'ACTIVE_HEALTHY':
             raise InspectionError("Production project is not ACTIVE_HEALTHY; no catalog query was sent")
+        query = MEMBERSHIP_SQL if membership_review else INVENTORY_SQL
         status, rows = self.transport.request('POST', PROJECT_URL + '/database/query', headers,
-            {'query': INVENTORY_SQL, 'read_only': True})
+            {'query': query, 'read_only': True})
         if status not in (200, 201):
             raise InspectionError("Read-only catalog request returned HTTP " + str(status))
         if not isinstance(rows, list) or len(rows) != 1 or not isinstance(rows[0], dict):
             raise InspectionError("Read-only catalog result shape is unexpected")
+        if membership_review:
+            return self._membership_report(project, rows[0].get('membership_review'))
         inventory = rows[0].get('inventory')
         if not isinstance(inventory, dict) or inventory.get('format') != 'marichevy-schema-inventory-v1' \
                 or inventory.get('catalog_only') is not True:
@@ -250,15 +306,55 @@ class ProductionSchemaInspector:
                     'Runtime PostgREST exposed-schema configuration may differ from observed DB setting.']}
 
 
+    @staticmethod
+    def _membership_report(project, review):
+        if not isinstance(review, dict) or review.get('format') != 'marichevy-membership-review-v1' \
+                or review.get('catalog_only') is not True or review.get('helper_count') != 1:
+            raise InspectionError('Membership catalog result has no unique helper')
+        helper = review.get('helper')
+        if not isinstance(helper, dict) or helper.get('schema') != 'public' \
+                or helper.get('name') != 'is_household_member' \
+                or not re.fullmatch(r'[0-9a-f]{32}', str(helper.get('definition_md5', ''))):
+            raise InspectionError('Membership catalog result has unexpected helper metadata')
+        if helper.get('body_safe_for_review') is True:
+            if not membership_source_safe(helper.get('body_for_review')):
+                raise InspectionError('Membership source was not within the fixed review vocabulary')
+        elif helper.get('body_for_review') is not None:
+            raise InspectionError('Unsupported membership source must not be returned')
+        names = helper.get('search_path_names')
+        if helper.get('search_path_allowlisted') is True:
+            if not isinstance(names, list) or not names or any(name not in SEARCH_PATH_NAMES for name in names):
+                raise InspectionError('Membership search_path was not within the fixed review vocabulary')
+        elif names is not None:
+            raise InspectionError('Unsupported membership search_path must not be returned')
+        # Copy only known fields; an unexpected remote field must never become a report credential leak.
+        safe_keys = ('schema', 'name', 'arguments', 'returns', 'owner', 'language', 'security_definer',
+                     'volatility', 'definition_md5', 'matches_inventory_hash', 'body_safe_for_review',
+                     'body_for_review', 'search_path_allowlisted', 'search_path_names')
+        return {'outcome': 'inspected', 'read_only': True,
+                'project': {key: project.get(key) for key in ('ref', 'name', 'status', 'region')},
+                'query_sha256': hashlib.sha256(MEMBERSHIP_SQL.encode()).hexdigest(),
+                'membership_review': {'format': review['format'], 'catalog_only': True, 'helper_count': 1,
+                                      'helper': {key: helper.get(key) for key in safe_keys}},
+                'data_rows_read': False, 'schema_changed': False, 'api_keys_revealed': False,
+                'authorization_tested': False,
+                'limitations': ['Catalog-only helper review does not prove hosted authorization behavior.',
+                    'Unsupported source or search_path is withheld rather than returned.']}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--report', type=Path, default=Path('/workspace/artifacts/production-schema-inventory-PRIVATE.json'))
+    parser.add_argument('--membership-review', action='store_true', help='Review only the fixed membership helper using a strict source vocabulary')
+    parser.add_argument('--report', type=Path)
     args = parser.parse_args()
+    if args.report is None:
+        args.report = Path('/workspace/artifacts/production-membership-review-PRIVATE.json' if args.membership_review
+                           else '/workspace/artifacts/production-schema-inventory-PRIVATE.json')
     observed_at = datetime.now(timezone.utc).isoformat()
     try:
-        report = ProductionSchemaInspector(os.environ.get(TOKEN_NAME)).inspect()
+        report = ProductionSchemaInspector(os.environ.get(TOKEN_NAME)).inspect(membership_review=args.membership_review)
         result = 0
-        message = 'Read-only production schema inventory completed; private report: ' + str(args.report)
+        message = 'Read-only production catalog inspection completed; private report: ' + str(args.report)
     except InspectionError as error:
         report = {'outcome': 'blocked', 'project_ref': PROJECT_REF, 'safe_error': str(error),
                   'data_rows_read': False, 'schema_changed': False, 'api_keys_revealed': False}

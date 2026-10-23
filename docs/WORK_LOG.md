@@ -215,3 +215,62 @@ webhook Authorization/TGARGS, RLS WITH CHECK/USING, CHECK и экраниров�
 После уточнения helper/CSP и метаданных упаковки32 целевых helper/runner/bundle
 проверки прошли (0.328s). Повтор146 клиентских тестов после этих инструментальных
 изменений не требовался: SHA клиента не менялся и совпадает с hosted evidence.
+
+## Фактическая production-схема и v95-rc1 · 23 октября 2026
+
+После сохранения владельцем PRODUCTION_SUPABASE_INSPECTION_TOKEN выполнены
+фиксированный read-only inventory и безопасный review функции членства.
+Проверены точные project ref/name/Healthy; читались только каталоги, без
+семейных/auth строк и API keys. Рабочий PostgreSQL 17.11, четыре обычные таблицы
+с RLS и владельцем postgres. Четырёхколоночная family_state с NOT NULL/FK совместима
+с 001. Пять policies передают auth.uid(); DELETE policy отсутствует. Helper —
+SQL SECURITY DEFINER, EXISTS по household_members и двум переданным UUID,
+search_path=public, исходный md5 ee70441dfc53e994de80474ad6fb344a совпал.
+Неизвестные тела инструмент не возвращает.
+
+Обнаружены лишние TRUNCATE/TRIGGER у anon/authenticated и boolean lookup чужого
+членства при известных UUID. Это не доказательство HTTP TRUNCATE endpoint или
+обхода RLS истории. Выполнены исправления: 002 отзывает эти табличные возможности,
+003 закрывает anon и связывает обычный lookup с auth.uid(), сохраняя контракт
+service_role по проверенному JWT role. Неизвестная схема/функция/policies или
+остаточные унаследованные права вызывают откат. 18 локальных PostgreSQL проверок
+воспроизвели пробелы и подтвердили исправления, JSON/revision/FK/policies/CAS и
+service_role без UID. Production не изменён. Точные SHA и границы доказательств —
+PRODUCTION_SCHEMA_FINDINGS.md.
+
+Новая staging_membership_v2.sql развивает только известные две вымышленные семьи
+и три аккаунта до модели households/household_members, пяти policies, helper и
+FK/NOT NULL. Семейные и auth строки не заменяются. Старое membership сохраняется
+для проверки происхождения; пустая deliveries воспроизводит лишь schema/access,
+не неизвестные CHECK/default или Telegram. Девять локальных проверок прошли.
+Runner membership продолжает известную v2 после сбоя, повторяет guarded 002/003,
+сравнивает metadata+JSON hash и проверяет helper/права до смены паролей только
+fixture-аккаунтов. Все 35 unit-проверок прошли за 0.025s.
+
+Первый staging token удалён владельцем после появления полного значения на
+снимке. Значение из чата не использовалось; сохранённый binding не означает
+действительный доступ. Для нового hosted-прогона запрошен replacement scoped
+токен только стенда. Старые 33 direct API и 9 browser результатов подтверждают
+fixture v1, а не новые v2/002/003.
+
+GitHub Pages и домен подтверждены read-only: legacy main:/, последняя успешная
+сборка/deployment bfc7ce5, публичный HTML побайтово совпал с v94. Прежняя статика
+сохранена в PRIVATE ZIP с проверенным manifest; это не семейный резерв.
+RELEASE_RUNBOOK.md описывает общий server-first/activation/Pages, условия
+остановки и раздельный возврат без старого дампа поверх новых операций.
+Merge, публикации или изменений DNS не было.
+
+Клиент обозначен v95-rc1, исправлена версия в тексте обратной связи. Логика
+финансов/синхронизации после 6927fc9 не менялась. Новый index.html SHA-256:
+9c5dbdddfe61a3d00926201e17e59f84df286413b47daaf93a44435db290c2a8.
+Общий регресс 212/212,84.274s, без skips; отдельно 35/35 runner, включая три
+поздние проверки. UI report со 144 checks имеет новый SHA. Старый hosted browser
+SHA обозначен как предыдущий; повтор обязателен после v2 и нового токена.
+Лог /tmp/marichevy-v95-rc1-regression.log.
+
+Для сопровождающего подготовлен read-only capture_local_queue.js: точный origin,
+allowlist финансовых ключей, raw строки и UTF-8/UTF-16LE хеши, без чтения сессии,
+сети или записи storage. Шесть Chromium тестов прошли, включая malformed JSON,
+одиночные суррогаты и гонку. Это не выполненный резерв устройств владельца.
+Реальные backup/restore, очереди обоих устройств, Safari/iPhone и Яндекс Browser,
+внешние writers и итоговое разрешение на публикацию остаются открыты.

@@ -141,48 +141,138 @@ class Staging:
             raise StagingError("Hosted assertion failed: " + label)
         self.checks.append(label)
 
-    def browser(self):
-        """Resume only known fictional fixture accounts; never reset real users."""
+    def _fixture(self, versions=(1, 2)):
+        """Inspect only the exact previously verified fictional installation."""
         inspected = self.inspect()
         inventory = inspected['inventory']
-        if inventory != {'public_relations': 2, 'auth_users': 3, 'fixture_exists': True}:
-            raise StagingError('Browser checks require exactly the existing two-family/three-user fixture')
+        if (inventory.get('auth_users') != 3 or inventory.get('fixture_exists') is not True
+                or inventory.get('public_relations') not in (2, 5)):
+            raise StagingError('Checks require exactly the known two-family/three-user fixture')
         marker = self.query('SELECT project_ref,project_name,fixture_version FROM marichevy_staging.fixture_registry', read_only=True)
-        if marker != [{'project_ref': PROJECT_REF, 'project_name': PROJECT_NAME, 'fixture_version': 1}]:
-            raise StagingError('Staging fixture marker does not match the expected installation')
-        members = self.query("""SELECT m.household_id,m.user_id,u.email,
-            u.raw_app_meta_data->>'marichevy_staging_run' AS run_id
-            FROM public.staging_membership m JOIN auth.users u ON u.id=m.user_id
-            ORDER BY m.household_id,m.user_id""", read_only=True)
+        if (len(marker) != 1 or marker[0].get('project_ref') != PROJECT_REF
+                or marker[0].get('project_name') != PROJECT_NAME
+                or marker[0].get('fixture_version') not in versions):
+            raise StagingError('Staging fixture marker does not match the expected installation/version')
+        version = marker[0]['fixture_version']
+        if inventory['public_relations'] != {1: 2, 2: 5}[version]:
+            raise StagingError('Staging relation count disagrees with the fixture version')
+        membership_table = {1: 'staging_membership', 2: 'household_members'}[version]
+        members = self.query("SELECT m.household_id,m.user_id,u.email, "
+            "u.raw_app_meta_data->>'marichevy_staging_run' AS run_id "
+            "FROM public." + membership_table + " m JOIN auth.users u ON u.id=m.user_id "
+            "ORDER BY m.household_id,m.user_id", read_only=True)
         if len(members) != 3 or len({member.get('run_id') for member in members}) != 1:
             raise StagingError('Unknown fixture membership; no account password will be changed')
         for member in members:
-            run = member.get('run_id') or ''
-            email = member.get('email') or ''
+            run, email = member.get('run_id') or '', member.get('email') or ''
             if not re.fullmatch('[0-9a-f]{32}', run) or not re.fullmatch('stage-' + run + '-[012]@example[.]invalid', email):
                 raise StagingError('Refusing to change a non-fixture authentication account')
+            try:
+                uuid.UUID(member['user_id']); uuid.UUID(member['household_id'])
+            except (KeyError, ValueError, TypeError, AttributeError):
+                raise StagingError('Invalid fictional membership identifiers') from None
+        if len({member['email'] for member in members}) != 3 or len({member['user_id'] for member in members}) != 3:
+            raise StagingError('Expected three distinct fictional accounts')
         groups = {}
         for member in members:
             groups.setdefault(member['household_id'], []).append(member)
         if sorted(len(group) for group in groups.values()) != [1, 2]:
             raise StagingError('Expected two fictional households with two/one members')
+        relations = self.query("""SELECT array_agg(c.relname::text ORDER BY c.relname) AS tables
+            FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
+            WHERE n.nspname='public' AND c.relkind IN ('r','p','v','m','f')""", read_only=True)
+        expected = {1: ['family_state', 'staging_membership'],
+                    2: ['family_chore_deliveries', 'family_state', 'household_members', 'households', 'staging_membership']}[version]
+        if relations != [{'tables': expected}]:
+            raise StagingError('Unexpected public relation names; no fixture account will be changed')
+        family_metadata = self.query("""SELECT household_id,sync_protocol,sync_revision,
+            updated_at,updated_by,last_request_id,md5(data::text) AS data_md5
+            FROM public.family_state ORDER BY household_id""", read_only=True)
+        if (len(family_metadata) != 2
+                or {row.get('household_id') for row in family_metadata} != set(groups)
+                or any(row.get('sync_protocol') != 2 or type(row.get('sync_revision')) is not int
+                       or row['sync_revision'] < 0 or not row.get('updated_at')
+                       or not re.fullmatch('[0-9a-f]{32}', row.get('data_md5') or '') for row in family_metadata)):
+            raise StagingError('Expected two protected fictional family snapshots with valid revision metadata')
+        if version == 2:
+            retained = self.query('SELECT household_id,user_id FROM public.staging_membership ORDER BY household_id,user_id', read_only=True)
+            expected_pairs = [{'household_id': member['household_id'], 'user_id': member['user_id']} for member in members]
+            if retained != expected_pairs:
+                raise StagingError('V2 membership differs from the preserved fictional provenance')
+            if self.query('SELECT count(*) AS deliveries FROM public.family_chore_deliveries', read_only=True) != [{'deliveries': 0}]:
+                raise StagingError('Expected an empty fictional delivery fixture; no messages are tested')
         own_household, own = next((house, group) for house, group in groups.items() if len(group) == 2)
         outsider = next(group[0] for group in groups.values() if len(group) == 1)
+        return {'inspected': inspected, 'fixture_version': version, 'members': [*own, outsider],
+                'own_household': own_household, 'other_household': outsider['household_id'],
+                'family_metadata': family_metadata}
+
+    def _fixture_credentials(self, fixture, *, sessions=False):
         public_key, admin_key = self.keys()
         headers = {'apikey': admin_key}
         if not admin_key.startswith('sb_secret_'):
             headers['Authorization'] = 'Bearer ' + admin_key
-        credentials = []
-        for member in [*own, outsider]:
+        credentials, tokens = [], []
+        for index, member in enumerate(fixture['members']):
             password = secrets.token_urlsafe(36)
             status, result = self.transport.request('PUT', PROJECT_URL + '/auth/v1/admin/users/' + member['user_id'],
                 headers, {'password': password})
-            self.check('fixture-only password renewed', status == 200 and isinstance(result, dict)
+            self.check('fixture-only password renewed ' + str(index + 1), status == 200 and isinstance(result, dict)
                        and result.get('id') == member['user_id'])
             credentials.append({'email': member['email'], 'password': password})
+            if sessions:
+                status, session = self.transport.request('POST', PROJECT_URL + '/auth/v1/token?grant_type=password',
+                    {'apikey': public_key}, {'email': member['email'], 'password': password})
+                self.check('fictional session identity ' + str(index + 1), status == 200 and isinstance(session, dict)
+                    and bool(session.get('access_token')) and session.get('user', {}).get('id') == member['user_id'])
+                tokens.append(session['access_token'])
+        return public_key, credentials, tokens, admin_key
+
+    def _verify_hardening(self):
+        capabilities = self.query("""SELECT t.name AS table_name,r.name AS role_name,
+            has_table_privilege(r.name,format('public.%I',t.name),'TRUNCATE') AS can_truncate,
+            has_table_privilege(r.name,format('public.%I',t.name),'TRIGGER') AS can_trigger
+            FROM unnest(ARRAY['family_state','households','household_members','family_chore_deliveries']) t(name)
+            CROSS JOIN unnest(ARRAY['anon','authenticated']) r(name) ORDER BY t.name,r.name""", read_only=True)
+        expected = {(table, role) for table in ['family_state','households','household_members','family_chore_deliveries']
+                    for role in ['anon','authenticated']}
+        self.check('V2 anonymous/authenticated lack TRUNCATE and TRIGGER capabilities',
+            {(row.get('table_name'), row.get('role_name')) for row in capabilities} == expected
+            and len(capabilities) == 8 and all(row.get('can_truncate') is False and row.get('can_trigger') is False for row in capabilities))
+        try:
+            reviewed = (ROOT / 'server/003_bound_membership_lookup.sql').read_text()
+        except OSError:
+            raise StagingError('Missing reviewed membership lookup SQL; hardening is unverified') from None
+        bodies = re.findall(r'AS \$membership\$(.*?)\$membership\$;', reviewed, flags=re.S)
+        if len(bodies) != 1:
+            raise StagingError('Reviewed membership function marker changed; no account will be renewed')
+        expected_hash = hashlib.md5(re.sub(r'\s', '', bodies[0]).lower().encode()).hexdigest()
+        helpers = self.query("""SELECT pg_get_userbyid(p.proowner) AS owner,p.prosecdef AS security_definer,
+            p.provolatile::text AS volatility,p.proleakproof AS leakproof,p.proconfig AS configuration,
+            p.proargnames AS arguments,p.pronargdefaults AS default_arguments,p.provariadic AS variadic,
+            l.lanname AS language,md5(regexp_replace(lower(p.prosrc),'[[:space:]]','','g')) AS normalized_source_md5,
+            (SELECT count(*) FROM pg_proc q WHERE q.pronamespace='public'::regnamespace AND q.proname='is_household_member') AS overloads,
+            has_function_privilege('anon',p.oid,'EXECUTE') AS anon_execute,
+            has_function_privilege('authenticated',p.oid,'EXECUTE') AS authenticated_execute,
+            has_function_privilege('service_role',p.oid,'EXECUTE') AS service_execute
+            FROM pg_proc p JOIN pg_language l ON l.oid=p.prolang
+            WHERE p.oid=to_regprocedure('public.is_household_member(uuid,uuid)')""", read_only=True)
+        expected_helper = {'owner': 'postgres', 'security_definer': True, 'volatility': 'v', 'leakproof': False,
+            'configuration': ['search_path=pg_catalog, public'], 'arguments': ['p_household_id','p_user_id'],
+            'default_arguments': 0, 'variadic': 0, 'language': 'sql', 'normalized_source_md5': expected_hash,
+            'overloads': 1, 'anon_execute': False, 'authenticated_execute': True, 'service_execute': True}
+        self.check('V2 exact reviewed self-bound helper and execution grants verified', helpers == [expected_helper])
+        return {'helper_normalized_source_md5': expected_hash,
+                'helper_sql_sha256': hashlib.sha256(reviewed.encode()).hexdigest()}
+
+    def browser(self):
+        """Resume only exact V1 or V2 synthetic fixtures; never reset real users."""
+        fixture = self._fixture()
+        hardening = self._verify_hardening() if fixture['fixture_version'] == 2 else None
+        public_key, credentials, _, _ = self._fixture_credentials(fixture)
         from staging_browser import BrowserCheckError, verify_browser_flow
         try:
-            browser_result = verify_browser_flow(self.transport, public_key, own_household, credentials)
+            browser_result = verify_browser_flow(self.transport, public_key, fixture['own_household'], credentials)
         except BrowserCheckError as error:
             self.checks.extend(error.checks_completed)
             self.browser_diagnostics = error.diagnostics
@@ -190,11 +280,132 @@ class Staging:
         except ValueError:
             raise StagingError('Staging client sanitization failed; no browser check was accepted') from None
         self.checks.extend(browser_result['checks'])
-        return {**inspected, 'outcome': 'passed', 'checks': self.checks,
+        return {**fixture['inspected'], 'outcome': 'passed', 'checks': self.checks,
+                'fixture_version': fixture['fixture_version'], 'hardening_verified': hardening is not None,
+                'hardening': hardening,
                 'fixture_only': True, 'production_tested': False,
                 'browser': browser_result,
                 'client_sha256': hashlib.sha256((ROOT / 'index.html').read_bytes()).hexdigest(),
                 'network_path': 'real verified HTTPS forwarded through Playwright route bridge; native CORS untested'}
+
+    def membership(self):
+        """Nondestructively evolve verified V1, then verify the supported V2 API."""
+        before = self._fixture(versions=(1, 2))
+        evolution_applied = before['fixture_version'] == 1
+        sql_files = ['staging_membership_v2.sql', '002_restrict_table_capabilities.sql', '003_bound_membership_lookup.sql']
+        hashes = {}
+        try:
+            sources = {name: (ROOT / 'server' / name).read_text() for name in sql_files}
+        except OSError:
+            raise StagingError('Missing reviewed V2 SQL files; no fixture migration was started') from None
+        for name, source in sources.items():
+            hashes[name] = hashlib.sha256(source.encode()).hexdigest()
+            if name == 'staging_membership_v2.sql' and not evolution_applied:
+                continue
+            if name == 'staging_membership_v2.sql':
+                source = "BEGIN; SET LOCAL marichevy.staging_project_ref='" + PROJECT_REF + "';\n" + source + "\nCOMMIT;"
+            self.query(source)
+        fixture = self._fixture(versions=(2,))
+        self.check('V2 migration preserves family JSON and revision metadata', before['family_metadata'] == fixture['family_metadata'])
+        self.check('V2 migration preserves all fictional membership identities',
+            before['members'] == fixture['members'])
+        hardening = self._verify_hardening()
+        self.query("NOTIFY pgrst, 'reload schema';")
+        public_key, _, sessions, admin_key = self._fixture_credentials(fixture, sessions=True)
+        house, other = fixture['own_household'], fixture['other_household']
+        users = [member['user_id'] for member in fixture['members']]
+        def api(method, path, who=0, body=None, extra=None):
+            headers = {'apikey': public_key, 'Prefer': 'return=representation', **(extra or {})}
+            if who is not None:
+                headers['Authorization'] = 'Bearer ' + sessions[who]
+            return self.transport.request(method, PROJECT_URL + path, headers, body)
+        def read(table, columns, filter_query='', who=0):
+            order = {'household_members': 'household_id,user_id', 'households': 'id', 'family_state': 'household_id'}[table]
+            return api('GET', '/rest/v1/' + table + '?select=' + columns + filter_query + '&order=' + order, who)
+        for attempt in range(15):
+            status, own_houses = read('households', 'id,name', '&id=eq.' + house)
+            if status == 200 and isinstance(own_houses, list) and len(own_houses) == 1:
+                break
+            if status not in (404, 503):
+                raise StagingError('V2 household read failed: HTTP ' + str(status))
+            time.sleep(1)
+        self.check('V2 own household visible', status == 200 and len(own_houses) == 1 and own_houses[0].get('id') == house)
+        self.check('V2 foreign household invisible', read('households', 'id,name', '&id=eq.' + house, 2) == (200, []))
+        own_members = read('household_members', 'household_id,user_id,role', '&household_id=eq.' + house)
+        self.check('V2 family members visible to own member', own_members[0] == 200 and isinstance(own_members[1], list)
+            and {row.get('user_id') for row in own_members[1]} == set(users[:2]))
+        self.check('V2 family members invisible to foreign family', read('household_members', 'user_id', '&household_id=eq.' + house, 2) == (200, []))
+        status, own_rows = read('family_state', '*', '&household_id=eq.' + house)
+        self.check('V2 own family snapshot visible', status == 200 and isinstance(own_rows, list) and len(own_rows) == 1)
+        self.check('V2 second member sees same snapshot', read('family_state', '*', '&household_id=eq.' + house, 1) == (200, own_rows))
+        self.check('V2 foreign family snapshot invisible', read('family_state', '*', '&household_id=eq.' + house, 2) == (200, []))
+        for table, columns in [('family_state', 'household_id'), ('household_members', 'user_id'), ('households', 'id')]:
+            status, rows = read(table, columns, who=None)
+            self.check('V2 anonymous ' + table + ' exposes no rows', status in (401, 403) or (status == 200 and rows == []))
+        baselines = {'households': own_houses, 'household_members': own_members[1]}
+        for table, identifier, create, update in [
+            ('households', '&id=eq.' + house, {'id': str(uuid.uuid4()), 'name': 'Forbidden fictional household'}, {'name': 'Forbidden change'}),
+            ('household_members', '&household_id=eq.' + house, {'household_id': house, 'user_id': users[2], 'role': 'member'}, {'role': 'owner'})]:
+            for method, body in [('POST', create), ('PATCH', update), ('DELETE', None)]:
+                path = '/rest/v1/' + table + ('?select=*' if method == 'POST' else '?select=*' + identifier)
+                status, rows = api(method, path, body=body)
+                self.check('V2 member cannot ' + method + ' ' + table,
+                    status in (401, 403) or (method != 'POST' and status == 200 and rows == []))
+        self.check('V2 denied household mutations preserve rows', read('households', 'id,name', '&id=eq.' + house) == (200, baselines['households']))
+        self.check('V2 denied membership mutations preserve rows', read('household_members', 'household_id,user_id,role', '&household_id=eq.' + house) == (200, baselines['household_members']))
+        for who, user_id, target_house, expected, label in [
+            (0, users[0], house, True, 'own self'), (0, users[0], other, False, 'foreign self'),
+            (2, users[0], house, False, 'other user'), (None, users[0], house, None, 'anonymous')]:
+            status, value = api('POST', '/rest/v1/rpc/is_household_member', who,
+                {'p_household_id': target_house, 'p_user_id': user_id})
+            self.check('V2 helper bounded lookup ' + label,
+                status in (401, 403) if who is None else status == 200 and value is expected)
+        service_headers = {'apikey': admin_key}
+        if not admin_key.startswith('sb_secret_'):
+            service_headers['Authorization'] = 'Bearer ' + admin_key
+        status, value = self.transport.request('POST', PROJECT_URL + '/rest/v1/rpc/is_household_member', service_headers,
+            {'p_household_id': house, 'p_user_id': users[0]})
+        self.check('V2 helper preserves service-role lookup without user identity', status == 200 and value is True)
+        for who in (2, None):
+            status, value = api('POST', '/rest/v1/rpc/family_state_cas', who,
+                {'p_household_id': house, 'p_expected_revision': own_rows[0]['sync_revision'],
+                 'p_data': own_rows[0]['data'], 'p_request_id': str(uuid.uuid4())})
+            self.check('V2 foreign/anonymous CAS denied ' + str(who),
+                status in (401, 403) if who is None else status == 200 and isinstance(value, dict) and value.get('status') == 'not_found')
+        self.check('V2 denied requests preserve complete family snapshot', read('family_state', '*', '&household_id=eq.' + house) == (200, own_rows))
+        receipt = str(uuid.uuid4())
+        status, ack = api('POST', '/rest/v1/rpc/family_state_cas', body={
+            'p_household_id': house, 'p_expected_revision': own_rows[0]['sync_revision'],
+            'p_data': own_rows[0]['data'], 'p_request_id': receipt})
+        self.check('V2 own CAS accepts exact snapshot with server revision', status == 200 and isinstance(ack, dict)
+            and ack.get('status') == 'written' and ack.get('protocol') == 2
+            and ack.get('revision') == own_rows[0]['sync_revision'] + 1
+            and ack.get('request_id') == receipt and ack.get('data') == own_rows[0]['data'])
+        final_status, final_rows = read('family_state', '*', '&household_id=eq.' + house)
+        self.check('V2 own CAS preserves JSON and attributes real writer', final_status == 200 and len(final_rows) == 1
+            and final_rows[0].get('data') == own_rows[0]['data'] and final_rows[0].get('sync_revision') == ack['revision']
+            and final_rows[0].get('updated_by') == users[0])
+        self.check('V2 second member sees acknowledged version', read('family_state', '*', '&household_id=eq.' + house, 1) == (200, final_rows))
+        for method, path, body in [
+            ('PATCH', '/rest/v1/family_state?household_id=eq.' + house, {'data': {}}),
+            ('POST', '/rest/v1/family_state?on_conflict=household_id', {'household_id': house, 'data': {}})]:
+            status, _ = api(method, path, body=body, extra={'Prefer': 'resolution=merge-duplicates,return=representation'})
+            self.check('V2 legacy own ' + method + ' rejected', status == 409)
+        status, value = api('DELETE', '/rest/v1/family_state?household_id=eq.' + house)
+        self.check('V2 own DELETE filtered by production-shaped RLS', status in (401, 403, 409) or (status == 200 and value == []))
+        for method, body in [('PATCH', {'data': {}}), ('DELETE', None)]:
+            status, value = api(method, '/rest/v1/family_state?household_id=eq.' + house, who=2, body=body)
+            self.check('V2 foreign direct ' + method + ' changes nothing', status in (401, 403) or (status == 200 and value == []))
+        self.check('V2 rejected legacy requests preserve acknowledged snapshot', read('family_state', '*', '&household_id=eq.' + house) == (200, final_rows))
+        self.check('V2 delivery fixture remains empty', self.query('SELECT count(*) AS deliveries FROM public.family_chore_deliveries', read_only=True) == [{'deliveries': 0}])
+        return {**fixture['inspected'], 'outcome': 'passed', 'checks': self.checks,
+                'fixture_version': 2, 'fixture_only': True, 'production_tested': False,
+                'migration_preserved_family_metadata': True, 'sql_sha256': hashes,
+                'evolution_applied': evolution_applied, 'hardening_verified': True, 'hardening': hardening,
+                'helper_lookup': 'self-bound authenticated lookups; anonymous execution denied',
+                'capability_validation': 'effective catalog privileges; no generic SQL/TRUNCATE RPC is exposed or fabricated',
+                'limitations': ['Existing V1 33-check report is separate historical evidence.',
+                    'Empty delivery schema only; no notification or payment is sent.']}
 
     def run(self):
         inspected = self.inspect()
@@ -329,7 +540,7 @@ class Staging:
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=["inspect", "run", "browser"])
+    parser.add_argument("command", choices=["inspect", "run", "browser", "membership"])
     parser.add_argument("--report", type=Path, default=Path("/workspace/artifacts/supabase-staging-report.json"))
     args = parser.parse_args()
     staging = None

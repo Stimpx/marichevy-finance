@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="ru" data-build="v94-expense-buckets" data-ui-version="94">
+<html lang="ru" data-build="v95-rc1-cas-expense" data-ui-version="95">
 <head><style>
 #eGroup{display:none!important}
 
@@ -9,7 +9,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
 <meta content="#0b1220" name="theme-color"/>
-<title>Маричевы · Траты.Банк · v94</title>
+<title>Маричевы · Траты.Банк · v95-rc1</title>
 
 
 
@@ -4757,11 +4757,11 @@ function v88FeedbackPayload(){
  const type=document.getElementById('v88FeedbackType')?.value||'idea';
  const section=document.getElementById('v88FeedbackSection')?.value||'';
  const message=document.getElementById('v88FeedbackMessage')?.value?.trim()||'';
- return {type,section,message,appVersion:'v94',familyEdition:true};
+ return {type,section,message,appVersion:'v95-rc1',familyEdition:true};
 }
 function v88FeedbackText(){
  const p=v88FeedbackPayload();const labels={idea:'Новая функция',improvement:'Улучшить существующее',bug:'Сообщить об ошибке',design:'Дизайн и удобство'};
- return `Обратная связь · Семейный Банк\nВерсия: v88.1\nТип: ${labels[p.type]||p.type}\nРаздел: ${p.section||'Весь банк'}\n\n${p.message}\n`;
+ return `Обратная связь · Семейный Банк\nВерсия: ${p.appVersion}\nТип: ${labels[p.type]||p.type}\nРаздел: ${p.section||'Весь банк'}\n\n${p.message}\n`;
 }
 async function v88CopyFeedback(){
  if(!v88FeedbackPayload().message){v88FeedbackStatus('Сначала опишите ваше предложение.','error');return}

@@ -8,7 +8,9 @@
 - Dashboard по снимку: Healthy, GitHub не подключён, миграций нет.
 
 После подключения scoped token проект также проверен через Management API.
-Настройка и hosted-проверки выполнены: подробности в RELEASE_CANDIDATE.md.
+Hosted-проверки fixture v1 выполнены: подробности в RELEASE_CANDIDATE.md.
+После появления токена на снимке владелец удалил его. Прежний токен не использовать;
+сейчас ожидается новый scoped token для проверки модели членства v2 и hardening.
 Реальную семейную историю на стенд не копировать. Рабочий проект не менять.
 
 ## Единственное защищённое подключение
@@ -43,6 +45,7 @@ Secret `STAGING_SUPABASE_MANAGEMENT_TOKEN`, destination `api.supabase.com`.
 
 ```sh
 python3 tools/supabase_staging.py inspect
+python3 tools/supabase_staging.py membership --report /workspace/artifacts/supabase-membership-v2-report.json
 python3 tools/supabase_staging.py browser --report /workspace/artifacts/supabase-browser-report.json
 ```
 
@@ -75,9 +78,19 @@ JSON и возврат/повторную активацию протокола 
 
 ## Границы проверки
 
-Схема членства стенда явно синтетическая. Даже успешный hosted-прогон не проверяет
-неизвестную схему/права/функции production и не заменяет частный семейный резерв,
-проверку восстановления реальной истории или приёмку устройств.
+`membership` проверяет происхождение трёх известных фиктивных аккаунтов и двух
+семей, затем развивает fixture v1 до v2 без замены семейных JSON/revisions. Новая
+модель воспроизводит изученные production households/household_members, helper,
+пять RLS-политик и FK. Далее применяет точные 002/003 и проверяет настоящий
+PostgREST: права, ограниченный lookup, собственный CAS и отказы чужих writers.
+Повтор на известной v2 сохраняет данные и повторяет hardening/checks; неизвестный
+состав таблиц/пользователей останавливает runner. Удалять fixture для повтора нельзя.
+
+Пустая deliveries в v2 воспроизводит только столбцы/PK/доступ; неизвестные CHECK/
+defaults и доставка Telegram не проверяются. Старая staging_membership сохранена
+для происхождения fixture; поэтому public-таблиц пять. Это не миграция production.
+Успех hosted не заменяет частный семейный резерв, проверку восстановления реальной
+истории, проверку внешних writers или приёмку настоящих устройств.
 
 Локальные проверки новых файлов:
 

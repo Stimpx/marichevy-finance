@@ -69,7 +69,7 @@ fix; all 30 storage/browser tests now pass (13.4s), plus the 3 staging tests.
 ## Candidate regression (PR2–PR5)
 
 Run `python -m unittest discover -s tests -v` once after integration. The current
-suite contains 97 tests: storage 30, staging server 3, client CAS 19, local
+baseline PR5 suite contained 97 tests: storage 30, staging server 3, client CAS 19, local
 PostgreSQL 15, financial integrity 18, expense form 7, bundle 4, release layout 1
 (the last test performs 144 view/width checks). The PostgreSQL image must already
 be cached; see `docs/SYNC_SERVER.md`. No additional libraries are installed by the
@@ -104,3 +104,24 @@ bootstrap на текущем стенде не нужно. `browser` прове
 Обычный unittest по-прежнему использует синтетические/локальные зависимости,
 не вызывает hosted runner и не копирует реальные данные. Подключение и
 ограничения — docs/STAGING_SETUP.md; точные SHA/результаты — RELEASE_CANDIDATE.
+
+## v95-rc1: фактическая схема и частные очереди
+
+После read-only production inventory подготовлены 002/003 hardening и
+production-shaped эволюция только фиктивного стенда. Новый общий прогон прошёл
+212/212,84.274s, без skips; в нём 22 inspector, 18 permissions, 9 fixture-v2,
+6 local-queue capture и остальные клиентские/финансовые проверки. Три финальных
+runner-теста добавлены после загрузки общего набора; весь runner затем отдельно
+прошёл35/35,0.025s. Указывать247 как число разных тестов нельзя.
+
+```sh
+PYTHONPATH=tests python3 -m unittest test_production_permissions test_staging_membership_v2 -v
+PYTHONPATH=tests python3 -m unittest test_production_schema_inspector test_supabase_staging_runner -v
+PYTHONPATH=tests python3 -m unittest test_local_queue_capture -v
+```
+
+Queue-capture тесты перехватывают точный production origin внутри Playwright и
+отдают локальную синтетическую страницу. Во внешний production не обращаются,
+его storage не читают. Проверяют реальные загрузки PRIVATE JSON, raw UTF-16,
+хеши, отсутствие чтения сессии/изменения storage и отказ при гонке/неверном origin.
+002/003 локально исполняются в PostgreSQL16; это не заменяет Supabase17/PostgREST.
