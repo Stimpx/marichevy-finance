@@ -47,6 +47,11 @@ SHA-256 текущего `index.html`: `9eaf36ce1d5c308f389174438e6b90192f4237bc
 следующий шаг — New project для отдельного marichevy-finance-staging с проверкой
 бесплатного плана до создания. Секреты не передаются в чат/репозиторий.
 
+Отдельный FREE-стенд уже создан владельцем: `marichevy-finance-staging`, ref
+`iqpoxphtvtogjowruufe`. Подготовлены fixture и инструмент настоящих HTTP-проверок;
+подключение scoped token ещё ожидается. Порядок — [STAGING_SETUP.md](STAGING_SETUP.md).
+Локальные тесты новых инструментов не являются результатом hosted Supabase.
+
 ---
 
 # Release candidate review — NOT PUBLISHED

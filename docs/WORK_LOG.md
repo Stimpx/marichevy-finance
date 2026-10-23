@@ -106,3 +106,40 @@ transform секции на мобильном, иначе она меняла c
 остаются доступны. Приватный и обезличенный ZIP пересобраны; каждый manifest и
 BUILD.source_sha256 проверены. Это артефакты кандидата, не реальный семейный резерв.
 Логи скопированы в /workspace/artifacts/validation/ для сохранения в среде.
+
+## Подключение отдельного Supabase-стенда · 23 октября 2026
+
+Владелец создал marichevy-finance-staging в b2b_up FREE. На снимке Healthy,
+No repository connected, No migrations; ref iqpoxphtvtogjowruufe, URL
+https://iqpoxphtvtogjowruufe.supabase.co. Это данные Dashboard владельца,
+не проверка удалённого API. В среде нет Supabase bindings и переменных.
+
+Современная форма Access Tokens поддерживает Resource access Project с выбором
+одного стенда и Expires in 24 hours. Уточнено прежнее предположение о правах:
+legacy account-wide token не требуется. Минимум по актуальному исходному каталогу
+Supabase Studio: Project Settings Read, Database Read-write, API Keys Read,
+API Key Secrets Read; остальные None. Токен в переписку не запрашивался.
+
+В черновик среды добавлены защищённое требование
+STAGING_SUPABASE_MANAGEMENT_TOKEN (destination api.supabase.com), точные custom
+сетевые адреса api.supabase.com и iqpoxphtvtogjowruufe.supabase.co; прежние presets
+и install_script сохранены. start_skill обновлён с инструкциями подключения.
+Сохранение подтверждено; это не применённая конфигурация/секрет и не публикация.
+
+Добавлены server/staging_fixture.sql, tools/supabase_staging.py, два целевых
+тестовых файла и docs/STAGING_SETUP.md. Fixture отказывается заменять существующие
+таблицы, использует закрытый маркер и явные RLS/grants; auth.users не изменяет.
+Runner проверяет точные project ref/name/Healthy до запросов, не принимает другой
+проект или redirect/traversal, сохраняет секреты только в памяти и заменяет
+старый report безопасным blocked/failed при ошибке. Будущий run создаёт три
+вымышленных Auth-аккаунта, две семьи, проверяет прямой PostgREST/CAS/RLS, повтор,
+legacy-отказы и синтетические backup/rollback; НЕ production и НЕ реальную историю.
+
+Локально: совместный прогон новых проверок 23/23 (6 PostgreSQL-fixture + 17 unit),
+3.768s, затем добавлена проверка сброса допуска после проваленной перепроверки
+проекта и все 18 unit прошли. Логи /tmp/marichevy-staging-preparation-tests.log и
+/tmp/marichevy-staging-runner-tests.log. Полный прежний клиентский регресс не
+повторялся: index.html, production CAS SQL и условия клиентских тестов не менялись.
+Hosted-проверки НЕ запускались, ожидается защищённый scoped token и применение
+сетевых настроек. Инструмент inspect без binding подтвердил только безопасный
+отказ Missing protected environment binding, а не состояние удалённого проекта.
