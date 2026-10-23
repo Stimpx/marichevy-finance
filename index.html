@@ -1,20 +1,15 @@
 <!DOCTYPE html>
 
-<html lang="ru" data-build="v94-expense-buckets" data-ui-version="94">
+<html lang="ru" data-build="v95-rc1-cas-expense" data-ui-version="95">
 <head><style>
 #eGroup{display:none!important}
-.v90-chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.v90-chips .btn{min-height:44px;white-space:normal;text-align:left}
-#v90Categories{margin:10px 0}#v90Categories summary{cursor:pointer;padding:10px 0;font-weight:650}#v90Search{width:100%;margin:8px 0}
-#today .form-grid{align-items:start}#today .field:has(#eCategory){grid-column:1/-1}#today input,#today select{font-size:16px;max-width:100%}
-#today .field:has(#eAmount){grid-column:1/-1}#eAmount{font-size:28px!important;font-weight:700}
-#today .field:has(#eSubcategory){grid-column:1/-1}#v90Save{min-height:48px}
-@media(max-width:600px){#today .form-grid{grid-template-columns:minmax(0,1fr)}.v90-chips .btn{flex:1 1 42%}}
+
 </style>
 <!-- v70 HOME TASKS: domestic chores + in-app reminders, based on v69 -->
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
 <meta content="#0b1220" name="theme-color"/>
-<title>Маричевы · Траты.Банк · v94</title>
+<title>Маричевы · Траты.Банк · v95-rc1</title>
 
 
 
@@ -285,11 +280,6 @@ h1,h2,h3,.btn,.kpi strong,.goal-title{letter-spacing:-.01em}.field label{font-we
 .section.active .section-head{margin-bottom:16px}
 .section.active .form-grid{row-gap:var(--space-form)}
 .section.active .actions{margin-top:var(--space-action)}
-
-/* Добавить: форма читается уровнями — поля → комментарий → действия */
-#today > .card:first-child .form-grid{row-gap:16px}
-#today > .card:first-child .actions{margin-top:20px}
-#today > .card:first-child .field.full{margin-top:2px}
 
 /* Аналитика: показатели — самостоятельные карточки, а не одна слипшаяся колонка */
 #analytics #aStats{
@@ -673,7 +663,6 @@ button,input,select,textarea{font-size:inherit}
 #nav button[data-page="goals"]{color:#becbe8}
 #nav button.active .v81-nav-svg{color:#a5b8ff}
 .v81-optional,.v81-field-note{color:#8290a7;font-size:11px;font-weight:500}
-#today .v81-detail-field{min-width:0}
 #eSubcategory,#eBeneficiary,#xSubcategory,#xBeneficiary{width:100%;min-height:48px}
 .v81-row-subcategory{display:block;margin-top:4px;color:#7e8ba1;font-size:11px;line-height:1.35;white-space:normal}
 .v81-life-card{margin-bottom:20px;background:linear-gradient(135deg,#ffffff,#f9fbff);border:1px solid #e0e7f3}
@@ -797,48 +786,14 @@ button,input,select,textarea{font-size:inherit}
 #v81HeroReminder[data-level="today"] .v82-reminder-copy small{color:#8a7b5c}
 #v81HeroReminder[data-level="upcoming"] .v82-reminder-copy small{color:#647d9c}
 #v81HeroReminder .v82-reminder-action{flex:0 0 auto;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:800;color:inherit;border-radius:10px;background:rgba(255,255,255,.7);padding:9px 12px;border:1px solid rgba(190,169,157,.28)}
-/* A deliberate field grid: grid controls FIELD wrappers (label + input + hint). */
-#today .card:first-child{border-top:3px solid #6c83f5;box-shadow:0 10px 32px rgba(30,47,83,.055)}
-#today .form-grid{
- display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;
- column-gap:15px;row-gap:20px;align-items:start;
- margin-top:22px;min-width:0;
-}
-#today .form-grid>.field{min-width:0;grid-column:auto!important;align-self:start;margin:0}
-#today .form-grid>.field.full{grid-column:1/-1!important}
-#today .form-grid>.field.v82-wide{grid-column:span 2!important}
-#today .form-grid>.field>label{display:block;min-height:20px;font-size:13px;font-weight:780;line-height:1.4;color:#687992;margin-bottom:8px;letter-spacing:0}
-#today .form-grid>.field :is(input,select,textarea){
- display:block;width:100%;max-width:100%;min-width:0;min-height:53px;box-sizing:border-box;
- padding:12px 15px;border-radius:15px;border:1px solid #d9e3f1;
- background-color:#f9fbff;color:#223651;line-height:1.45;font-size:15px;
- box-shadow:none;transition:border-color .16s ease,box-shadow .16s ease,background-color .16s ease;
-}
-#today .form-grid>.field :is(input,select,textarea):focus{outline:none;background:#fff;border-color:#7892ef;box-shadow:0 0 0 3px rgba(106,131,244,.16)}
-#today .form-grid>.field :is(input,select,textarea)::placeholder{color:#96a1b2;opacity:1}
-#today .form-grid>.field select{padding-right:42px!important;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23586d8d' stroke-width='2.1' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;background-size:18px}
-#today .form-grid>.field input[type="date"]{min-width:0;color-scheme:light;}
-#today .form-grid>.field input[type="date"]::-webkit-calendar-picker-indicator{cursor:pointer;opacity:.7}
-#today .form-grid>.field :is(.v74-cat-help,.v81-field-note){display:block;margin-top:7px;line-height:1.35;font-size:11px;color:#8391a5;max-width:100%}
-#today .form-grid>.field.v82-wide :is(input,select){width:100%}
-#today .actions{margin-top:23px;gap:11px;align-items:center}
-#today .actions .btn{min-height:47px;border-radius:13px;padding:12px 18px;font-size:13px}
-#today .actions .btn.primary{min-width:208px}
-#today .card:first-child>.hint{margin:6px 0 0;line-height:1.55}
 @media(max-width:1380px){
  #home .hero .quick{grid-template-columns:repeat(2,minmax(0,1fr))!important}
- #today .form-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
- #today .form-grid>.field.v82-wide{grid-column:span 1!important}
 }
 @media(max-width:760px){
  #home .hero .quick{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px}
  #home .hero .quick button{min-height:105px;padding:13px;border-radius:15px}
  #home .hero .quick button b{font-size:12px}
  #home .hero .quick button small{font-size:10px}
- #today .form-grid{grid-template-columns:1fr!important;row-gap:15px;margin-top:18px}
- #today .form-grid>.field.v82-wide{grid-column:1/-1!important}
- #today .form-grid>.field :is(input,select,textarea){min-height:51px;font-size:16px}
- #today .actions .btn{min-height:49px;padding:12px}
  #v81HeroReminder:not([hidden]){gap:10px;padding:11px 12px;border-radius:14px}
  #v81HeroReminder .v82-reminder-mark{flex-basis:32px;width:32px;height:32px}
  #v81HeroReminder .v82-reminder-copy strong{font-size:12px}
@@ -1236,24 +1191,16 @@ body{font-feature-settings:'kern' 1,'liga' 1}
 .today-weather.weather-offline{border-color:#eadfbc}
 .today-weather.weather-offline .weather-refresh{background:#fff5df;color:#a9741a}
 .weather-refresh{min-width:38px;min-height:38px}
-#today .card:first-child{border-top:3px solid #6e83f4}
-#today .form-grid{grid-template-columns:repeat(4,minmax(0,1fr));align-items:end}
-#today #eCategory{width:100%}
-#today .form-grid>.field{min-width:0}
-#today .actions .primary{min-width:210px}
 #history .table th:last-child{min-width:130px}
 #analytics #aCats{padding-right:3px}
 /* Bottom sheet defaults hidden on wide viewports */
 .v74-more-shade,.v74-more-panel{display:none}
-@media(max-width:1260px){#history .filters{grid-template-columns:repeat(3,minmax(0,1fr))}#history .filters input:first-child{grid-column:1/-1}#today .form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:1260px){#history .filters{grid-template-columns:repeat(3,minmax(0,1fr))}#history .filters input:first-child{grid-column:1/-1}}
 @media(max-width:900px) and (min-width:761px){.top{flex-wrap:wrap}.grid2,.grid3{gap:14px!important}}
 @media(max-width:760px){
  html{scroll-padding-bottom:110px}
  #history .filters{grid-template-columns:repeat(2,minmax(0,1fr))}
  #history .filters input:first-child{grid-column:1/-1}
- #today .form-grid{grid-template-columns:1fr}
- #today .actions{display:grid;grid-template-columns:1fr 1fr}
- #today .actions .primary{min-width:0}
  #analytics .grid3{grid-template-columns:1fr!important}
  #analytics .grid3>div{padding:16px;border-radius:17px}
  .mobile-nav{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;overflow:visible!important;gap:3px!important;padding:7px 5px!important;align-items:stretch;max-height:none}
@@ -1289,9 +1236,7 @@ button:focus-visible,.btn:focus-visible,a:focus-visible,[role="button"]:focus-vi
 #eGroup{font-weight:700;color:#254377}
 .v75-settings-note{padding:13px 15px;border:1px solid #dbe6ff;border-radius:14px;background:#f5f8ff;color:#465b80;font-size:12px;line-height:1.6;margin:12px 0}
 .v75-auth-note{padding:9px 11px;background:#f1f6ff;border-radius:11px;color:#40577e;font-size:12px;margin:12px 0}
-#syncStatus{line-height:1.55;overflow-wrap:anywhere}
-#today .field input,#today .field select,#history .filters input,#history .filters select{font-size:16px}
-#today .actions .btn.primary{box-shadow:0 11px 24px rgba(63,109,246,.18)}
+#syncStatus{line-height:1.55;overflow-wrap:anywhere}#history .filters input,#history .filters select{font-size:16px}
 #history .filters{display:flex;align-items:center;flex-wrap:wrap}
 #history .filters>*{min-height:44px;flex:1 1 148px}
 #history .filters #fSearch{flex:2 1 250px}
@@ -1307,14 +1252,12 @@ button:focus-visible,.btn:focus-visible,a:focus-visible,[role="button"]:focus-vi
  #history .filters>*{width:100%;min-width:0}
  #history .filters #fSearch{grid-column:1/-1}
  #history .filters .v75-all-dates{grid-column:1/-1}
- #today .actions{display:grid;grid-template-columns:1fr 1fr}
- #today .actions .btn{min-width:0}
  #settings .actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}
  #settings .actions .btn{font-size:12px;text-align:center;display:flex;justify-content:center;align-items:center}
  .v74-more-panel button,#mobileNav button{min-height:48px}
  .v74-more-panel{padding-bottom:max(20px,env(safe-area-inset-bottom))}
 }
-@media(max-width:370px){#settings .actions{grid-template-columns:1fr}#today .actions{grid-template-columns:1fr}}
+@media(max-width:370px){#settings .actions{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 
 
@@ -1555,40 +1498,17 @@ button:focus-visible,.btn:focus-visible,a:focus-visible,[role="button"]:focus-vi
 </style>
 <style>
 /* v91: final scoped layout, after legacy rules. */
-#today .v91-entry{max-width:820px;margin:0 auto 24px!important;border:1px solid #e3e7ec!important;border-radius:24px!important;padding:28px!important;background:#fff;box-shadow:0 8px 30px #162c4610!important}
-#today .v91-head h2{font-size:26px;font-weight:700;letter-spacing:-.6px;margin:5px 0 6px}#today .v91-head p{color:#718096;font-size:14px;margin:0}.v91-kicker{font-size:10px;letter-spacing:1.5px;color:#6a778b;font-weight:650}
-#today .v91-entry .form-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:18px!important;margin-top:22px!important}
-#today .v91-entry .form-grid>.field{grid-column:auto!important;min-width:0!important}
-#today .v91-entry .form-grid>.field.full{grid-column:1/-1!important}
-#today .v91-entry .field label{font-size:13px!important;color:#48566a!important;font-weight:600!important}
-#today .v91-entry .field input,#today .v91-entry .field select{font-size:16px!important;min-height:50px!important;border-radius:12px!important;background-color:#fafbfc!important;border-color:#e0e5eb!important;font-weight:400!important}
-#today .v91-entry #eAmount{font-size:24px!important;font-weight:600!important;height:50px!important;padding:8px 14px!important}
-#today .v91-entry [hidden]{display:none!important}
-#today .v91-entry .v90-chips{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0!important}
-#today .v91-entry .v90-chips button{display:flex;align-items:center;justify-content:center;min-width:0;min-height:48px;padding:10px 8px!important;border:1px solid #e3e8ee!important;border-radius:12px!important;background:#f7f8fa!important;color:#415068!important;font-size:13px!important;font-weight:550!important;box-shadow:none!important;line-height:1.3;text-align:center;white-space:normal}
-#today .v91-entry .v90-chips button.primary{background:#edf1ff!important;border-color:#8999e7!important;color:#304dc1!important}
-#today .v91-entry button:focus-visible,#today .v91-entry summary:focus-visible{outline:3px solid #91a9ed;outline-offset:3px}
-#v90Categories{display:flex;flex-direction:column;margin:6px 0 0!important}#v90Search{order:-1}#today .v91-link{align-self:flex-start;background:none;color:#415fc3;font-size:13px;padding:8px 0;min-height:40px}
-#today .v91-entry #v90Extra{border-top:1px solid #e9edf1;padding-top:16px;margin-top:0}#today .v91-entry summary{font-size:14px;cursor:pointer;color:#43536b;padding:4px 0}#v90Extra summary span{font-size:12px;color:#8590a0;margin-left:8px}
-#today .v91-actions{margin-top:20px!important;display:flex;gap:10px}#today .v91-actions .btn{font-size:14px!important;font-weight:600!important;min-height:48px;border-radius:12px!important}#today .v91-actions .primary{background:#304fc7!important;box-shadow:none!important;flex:1}
-#today .v91-templates{border-top:1px solid #edf0f4;margin-top:20px;padding-top:16px;display:flex;align-items:center;flex-wrap:wrap;gap:8px}#today .v91-templates span{font-size:11px;color:#8390a0;margin-right:4px}#today .v91-templates button{background:#f5f7fa;color:#52627b;font-size:12px;font-weight:500;border-radius:8px;padding:8px 10px;min-height:36px}
+
 #today>.card:not(.v91-entry){max-width:820px;margin:0 auto!important}
-@media(max-width:760px){#today .v91-entry{padding:20px!important;border-radius:20px!important}#today .v91-entry .v90-chips{grid-template-columns:repeat(2,minmax(0,1fr))}#today .v91-head h2{font-size:23px}.top{flex-wrap:wrap}.top .userbar{max-width:100%;overflow-wrap:anywhere}.main{padding-bottom:110px!important}#v90Extra summary span{display:none}}
-@media(max-width:380px){#today .v91-entry{padding:15px!important}#today .v91-entry .form-grid{column-gap:10px!important}#today .v91-entry .field select{padding-left:10px!important}#today .v91-templates span{width:100%}}
+@media(max-width:760px){.top{flex-wrap:wrap}.top .userbar{max-width:100%;overflow-wrap:anywhere}.main{padding-bottom:110px!important}}
+
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style><style>
 .v91-transaction{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:16px 0;border-bottom:1px solid #e8edf3}.v91-transaction:last-child{border-bottom:0}.v91-transaction-main{min-width:0}.v91-transaction-main b{font-size:15px;font-weight:600}.v91-transaction-main small{display:block;color:#738198;font-size:12px;margin-top:4px;overflow-wrap:anywhere}.v91-transaction-main p{font-size:13px;margin:6px 0 0;color:#526079}.v91-transaction>strong{font-size:16px;white-space:nowrap}.v91-row-actions{grid-column:1/-1;display:flex;gap:8px}.v91-row-actions .btn{min-height:36px;font-weight:500;font-size:12px;box-shadow:none}
 </style><style>
 @media(max-width:1024px){.side{display:none!important}.main{margin-left:0!important;width:100%!important;padding:20px 20px 110px!important}.mobile-nav{position:fixed!important;display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr));left:8px;right:8px;bottom:8px;background:#111e35;padding:8px;border-radius:18px;z-index:50}.mobile-nav button{background:transparent;color:#cbd5e1;font-size:11px;padding:7px}.mobile-nav button.active{color:#fff}.top{flex-wrap:wrap}.userbar{max-width:100%}}
-@media(max-width:600px){.main{padding:12px 10px 110px!important}#today .v91-entry{padding:16px!important}#today .v91-entry .v91-form{gap:12px!important;margin-top:16px!important}#today .v91-kicker{display:none}#today .v91-head p{font-size:13px;margin-bottom:0}#today .v91-entry .field label{margin-bottom:5px!important}#today .v91-entry .v90-chips button{min-height:44px}#today .v91-entry #v90Extra{padding-top:10px}#today .v91-actions{margin-top:14px!important}.v91-transaction>strong{font-size:14px}}
-</style><style>/* v92: purchase search and intrinsic sizing across devices */
-#today .v91-category{display:flex!important;flex-direction:column;gap:10px}
-#today .v91-category #v90Search{order:0;margin:0!important;min-width:0;width:100%;padding:12px 14px!important}
-#today #v92SearchHint{display:block;font-size:12px;line-height:1.5;color:#697588}
-#today .v91-entry .v90-chips button{flex-direction:column;gap:5px}
-#today .v91-entry .v90-chips button small{font-size:10px;font-weight:400;color:#78849a;line-height:1.35}
-#today #v92Selected{margin:0;padding:12px 14px;border:1px solid #dbe4f3;border-radius:12px;background:#f3f6fc;color:#344d75;font-size:13px;line-height:1.5;overflow-wrap:anywhere}
-#today #v90Categories{margin:0!important}
+@media(max-width:600px){.main{padding:12px 10px 110px!important}.v91-transaction>strong{font-size:14px}}
+</style><style>
 .main,.section,.card,.field,.kpi,.goal-card,.people-card{min-width:0}
 .form-grid>*{min-width:0}input,select,textarea{max-width:100%;box-sizing:border-box}
 .section h2,.section h3,.section p,.section .hint{overflow-wrap:anywhere}
@@ -1599,7 +1519,6 @@ button:focus-visible,.btn:focus-visible,a:focus-visible,[role="button"]:focus-vi
  .actions{flex-wrap:wrap}.actions .btn{white-space:normal;overflow-wrap:anywhere}
  .field input,.field select,.field textarea{font-size:16px!important;min-width:0}
  .modal{max-height:calc(100dvh - 24px);overflow-y:auto}
- #today .v91-entry .v90-chips{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 </style>
 <style>
@@ -1619,7 +1538,43 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 .donut-ring .donut-center{inset:23%;width:auto;height:auto;max-width:54%;text-align:center;white-space:nowrap;font-variant-numeric:tabular-nums;font-size:18px;line-height:1.2}
 @media(max-width:1100px){#chores .chores-layout{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:600px){#chores .chores-form,#history .filters{grid-template-columns:minmax(0,1fr)}.field input,.field select,.field textarea,.filters input,.filters select{font-size:16px}}
-</style></head>
+</style>
+<style id="v95ExpenseStyle">
+#today .v91-entry{max-width:1120px;margin:0 auto 24px;border:1px solid #e3e7ec;border-radius:24px;padding:28px;background:#fff;box-shadow:0 8px 30px #162c4610}
+#today .v91-head h2{font-size:26px;font-weight:700;letter-spacing:-.6px;margin:5px 0 6px}
+#today .v91-head p{color:#718096;font-size:14px;margin:0}
+#today .v91-kicker{font-size:10px;letter-spacing:1.5px;color:#6a778b;font-weight:650}
+#today .v91-form{display:grid;grid-template-columns:170px minmax(180px,1.6fr) minmax(140px,1fr) minmax(150px,1fr);align-items:start;gap:16px;margin-top:22px}
+#today .v91-form>.field{grid-column:auto;min-width:0;margin:0}
+#today .v91-form>.field.full{grid-column:1/-1}
+#today .v91-form .field label{display:block;font-size:13px;color:#48566a;font-weight:600;min-height:20px;margin-bottom:7px;line-height:1.4}
+#today .v91-form input,#today .v91-form select{width:100%;min-width:0;font-size:16px;min-height:50px;border-radius:12px;background-color:#fafbfc;border:1px solid #e0e5eb;font-weight:400;padding:10px 14px}
+#today .v91-form #eAmount{font-size:24px;font-weight:600;height:50px}
+#today .v91-form .v95-operation{max-width:280px}
+#today .v91-form .v95-operation select{min-height:40px;font-size:14px}
+#today .v91-form #v90Search{margin:0;padding:12px 14px}
+#today .v91-form .v90-chips{display:flex;flex-wrap:wrap;gap:7px;margin:9px 0 0}
+#today .v91-form .v90-chips button{display:flex;align-items:center;justify-content:center;min-width:0;min-height:36px;padding:7px 11px;border:1px solid #e3e8ee;border-radius:9px;background:#f7f8fa;color:#415068;font-size:12px;font-weight:550;box-shadow:none;line-height:1.3;text-align:center;white-space:normal}
+#today .v91-form .v90-chips button.primary{background:#edf1ff;border-color:#8999e7;color:#304dc1}
+#today .v95-suggestions small{color:var(--muted);font-size:11px}
+#today #v92Selected{font-size:11px;line-height:1.4;margin:7px 0 0;overflow-wrap:anywhere}
+#today #v90Categories{margin-top:8px}
+#today .v91-link{background:none;color:#415fc3;font-size:12px;padding:5px 0;min-height:30px}
+#today #v90Extra{border-top:1px solid #e9edf1;padding-top:16px}
+#today #v90Extra summary{font-size:14px;cursor:pointer;color:#43536b;padding:4px 0}
+#today #v90Extra summary span{font-size:12px;color:#8590a0;margin-left:8px}
+#today #v90Extra .form-grid{display:grid;margin-top:14px;gap:14px;grid-template-columns:repeat(2,minmax(0,1fr))}
+#today #v90Extra .field.full{grid-column:1/-1}
+#today .v91-actions{display:flex;align-items:center;gap:10px;margin-top:20px}
+#today .v91-actions .btn{flex:0 0 auto;font-size:14px;font-weight:600;min-height:48px;border-radius:12px}
+#today .v91-actions .primary{background:#304fc7;box-shadow:none;flex:1 1 auto}
+#today .v91-entry button:focus-visible,#today .v91-entry summary:focus-visible{outline:3px solid #91a9ed;outline-offset:3px}
+@media(max-width:1000px){#today .v91-form{grid-template-columns:repeat(2,minmax(0,1fr))}#today .v91-form>.v95-amount,#today .v91-form>.v91-category{grid-column:1/-1}}
+@media(max-width:600px){#today .v91-entry{padding:16px;border-radius:20px}#today .v91-form{gap:12px 10px;margin-top:16px}#today .v91-head h2{font-size:24px}#today .v91-head p{font-size:12px}#today .v91-kicker{display:none}#today .v91-form .field label{font-size:12px}#today .v91-form .v90-chips button{font-size:11px;padding:6px 9px}#today .v91-actions{margin-top:16px}#today #v90Extra summary span{display:none}}
+@media(max-width:600px){#today.active{animation:none;transform:none}#today.active .v91-actions{position:fixed;left:16px;right:16px;bottom:calc(86px + env(safe-area-inset-bottom));z-index:49;margin:0;padding:8px;background:#fff;border:1px solid #e3e7ec;border-radius:16px;box-shadow:0 4px 18px #162c4620}#today.active .v91-entry{padding-bottom:100px}}
+@media(max-width:440px){#today #v90Extra .form-grid{grid-template-columns:1fr}}
+</style>
+</head>
 <body>
 <noscript><div style="padding:14px;background:#fff3cd;color:#664d03;text-align:center;font:600 14px/1.4 system-ui">Для работы «Маричевы · Траты.Банк» необходимо включить JavaScript.</div></noscript>
 <div class="auth-gate" id="authGate">
@@ -1804,25 +1759,26 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 </section>
 <section class="section" id="today">
 <div class="card v91-entry">
-<div class="v91-head"><div><span class="v91-kicker">СЕМЕЙНЫЙ БЮДЖЕТ</span><h2>Новая запись</h2><p>Пара деталей — и покупка в истории.</p></div></div>
+<div class="v91-head"><div><span class="v91-kicker">СЕМЕЙНЫЙ БЮДЖЕТ</span><h2>Новая запись</h2><p>Сумма, покупка и для кого — остальное по желанию.</p></div></div>
 <div class="form-grid v91-form">
-<div class="field"><label for="eType">Операция</label><select id="eType"><option value="expense">Расход</option><option value="income">Доход</option><option value="transfer">Перевод между своими счетами</option><option value="cash">Снятие наличных</option></select></div>
-<div class="field"><label for="eAmount">Сумма, ₽</label><input id="eAmount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="0" /></div>
-<div class="field expense-field full v91-category"><label for="v90Search">На что потратили?</label><input id="v90Search" type="search" maxlength="200" placeholder="Например: жвачка, хлеб, бензин" autocomplete="off" aria-describedby="v92SearchHint"><small id="v92SearchHint" role="status" aria-live="polite"></small><div id="v90Quick" class="v90-chips"></div><div id="v90Categories"><button type="button" class="v91-link" id="v91All" onclick="v91Toggle()" aria-expanded="false" aria-controls="v90Quick">Все категории</button><div id="v90Results" hidden></div></div><div id="v93CreditHelp" hidden class="hint"><b>Платёж по кредиту или рассрочке</b><p>Если обязательство уже есть в разделе кредитов, отметьте оплату в его графике — так платёж свяжется с ним.</p><button type="button" class="btn" onclick="go('loans')">Открыть кредиты и рассрочки</button><label for="v93CreditAccounting">Для отдельного платежа подтвердите учёт</label><select id="v93CreditAccounting"><option value="">Выберите вариант</option><option value="payment">Учитываю расходами только платежи; полная покупка не записана</option><option value="full">Полная стоимость покупки уже записана расходом</option></select></div><p id="v92Selected" role="status" hidden></p><select id="eCategory" aria-label="Выбранная категория" hidden></select><select id="eGroup" hidden></select></div>
-<div class="field expense-field full" id="v81BeneficiaryField"><label for="eBeneficiary">Для кого покупка?</label><select id="eBeneficiary"></select><small class="v81-field-note">Кому купили, а не кто приложил карту.</small></div>
+<div class="field full v95-operation"><label for="eType">Операция</label><select id="eType"><option value="expense">Расход</option><option value="income">Доход</option><option value="transfer">Перевод между своими счетами</option><option value="cash">Снятие наличных</option></select></div>
+<div class="field v95-amount"><label for="eAmount">Сколько, ₽</label><input id="eAmount" type="text" maxlength="24" inputmode="decimal" placeholder="0" /></div>
+<div class="field expense-field v91-category"><label for="v90Search">Что купили?</label><input id="v90Search" type="search" maxlength="200" placeholder="Молоко, обед, корм…" autocomplete="off" aria-describedby="v92SearchHint"><div id="v93CreditHelp" hidden class="hint"><b>Платёж по кредиту или рассрочке</b><p>Если обязательство уже есть в разделе кредитов, отметьте оплату в его графике — так платёж свяжется с ним.</p><button type="button" class="btn" onclick="go('loans')">Открыть кредиты и рассрочки</button><label for="v93CreditAccounting">Для отдельного платежа подтвердите учёт</label><select id="v93CreditAccounting"><option value="">Выберите вариант</option><option value="payment">Учитываю расходами только платежи; полная покупка не записана</option><option value="full">Полная стоимость покупки уже записана расходом</option></select></div><p id="v92Selected" role="status" hidden></p><select id="eCategory" aria-label="Выбранная категория" hidden></select><select id="eGroup" hidden></select></div>
+<div class="field expense-field" id="v81BeneficiaryField"><label for="eBeneficiary">Для кого?</label><select id="eBeneficiary"></select></div>
+<div class="field expense-field"><label for="eStore">Где? · необязательно</label><input id="eStore" placeholder="Магазин или место"></div>
+<div class="field expense-field full v95-suggestions"><small id="v92SearchHint" role="status" aria-live="polite"></small><div id="v90Quick" class="v90-chips"></div><div id="v90Categories"><button type="button" class="v91-link" id="v91All" onclick="v91Toggle()" aria-expanded="false" aria-controls="v90Quick">Все категории</button><div id="v90Results" hidden></div></div></div>
 <div class="field full income-field" id="v86WhoField"><label id="eWhoLabel" for="eWho">Кто получил доход?</label><select id="eWho"></select></div>
 <div class="field full income-field"><label for="eIncomeSource">Источник дохода</label><input id="eIncomeSource" placeholder="Зарплата, премия…"></div>
 <div class="field transfer-field"><label for="eFrom">Откуда</label><select id="eFrom"><option>Карта</option><option>Наличные</option><option>Накопления</option></select></div>
 <div class="field transfer-field"><label for="eTo">Куда</label><select id="eTo"><option>Накопления</option><option>Карта</option><option>Наличные</option></select></div>
-<details class="field full" id="v90Extra"><summary>Добавить детали <span>место, описание, дата</span></summary><div class="form-grid">
-<div class="field expense-field"><label for="eStore">Где купили?</label><input id="eStore" placeholder="Магазин или место"></div>
-<div class="field"><label for="eComment" id="eCommentLabel">Что купили / заметка</label><input id="eComment" maxlength="200" placeholder="Например: продукты на неделю"></div>
+<details class="field full" id="v90Extra"><summary>Детали <span>дата, оплата, комментарий</span></summary><div class="form-grid">
+<div class="field"><label for="eComment" id="eCommentLabel">Комментарий · необязательно</label><input id="eComment" maxlength="200" placeholder="Например: продукты на неделю"></div>
 <div class="field"><label for="eDate">Дата</label><input id="eDate" type="date"></div>
 <div class="field expense-field"><label for="ePay">Как оплатили?</label><select id="ePay"><option>Карта</option><option>Наличные</option><option>СБП</option><option>Перевод</option></select></div>
 <div class="field expense-field full v81-detail-field" id="v81DetailField"><label for="eSubcategory">Уточнение · необязательно</label><select id="eSubcategory"></select></div>
 </div></details></div>
 <div class="actions v91-actions"><button class="btn primary" id="v90Save" onclick="addEntry()">Сохранить расход</button><button class="btn" onclick="clearEntry()">Очистить</button></div><div id="saveMsg" role="status" aria-live="polite"></div>
-<div id="v90Templates" class="v91-templates"><span>Быстрая запись</span><button type="button" onclick="v90Template(0)">Обед Алисы</button><button type="button" onclick="v90Template(1)">Английский Алисы</button><button type="button" onclick="v90Template(2)">Вкусняшки</button></div>
+<div id="v90Templates" hidden></div>
 </div>
 <div class="card">
 <h2>Операции за день</h2>
@@ -1947,10 +1903,10 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 <div class="section-head"><div><h2>Досрочное погашение</h2><div class="hint">Это отдельный пробный расчёт. Суммы отсюда не попадают в расходы, обязательства или историю платежей. Добавьте свой сценарий и удалите его в любой момент.</div></div></div>
 <div class="early-plan-head">
 <div class="early-base-payment"><small>Основной платёж по графику</small><b id="earlyBasePayment">—</b><span id="earlyBaseDate">—</span></div>
-<div class="early-total-payment"><small>Внесу в выбранную дату</small><b id="earlyTotalPayment">—</b><span>основной + досрочный</span></div>
+<div class="early-total-payment"><small>Первый досрочный взнос</small><b id="earlyTotalPayment">—</b><span>в тело и начисленные проценты</span></div>
 </div>
 <div class="early-plan-table">
-<div class="early-plan-row early-plan-head-row"><span>№</span><span>Дополнительно, ₽</span><span>Когда внести</span><span>Итого в дату</span><span></span></div>
+<div class="early-plan-row early-plan-head-row"><span>№</span><span>В тело досрочно, ₽</span><span>Когда внести</span><span>Взнос и проценты</span><span></span></div>
 <div id="earlyPlanRows"></div>
 </div>
 <div class="early-plan-actions">
@@ -1961,7 +1917,7 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 <div class="early-scenario-grid">
 <div class="early-scenario"><small>План досрочных платежей</small><b id="earlyPlanTotal">0 ₽</b><span id="earlyPlanCount">0 платежей</span></div>
 <div class="early-scenario"><small>Свободно на досрочное погашение</small><b id="earlyFreeMoney">0 ₽</b><span>по введённому вами плану</span></div>
-<div class="early-scenario"><small>Всего внесу в ближайшую дату</small><b id="earlyFirstTotal">—</b><span>основной + дополнительный</span></div>
+<div class="early-scenario"><small>В дату первого досрочного платежа</small><b id="earlyFirstTotal">—</b><span>досрочно в тело + начисленные проценты</span></div>
 <div class="early-scenario"><small>Новый остаток после первого взноса</small><b id="earlyFirstBalance">—</b><span>ориентир по модели</span></div>
 </div>
 <div class="actions"><button class="btn primary" onclick="renderEarlyRepayment()" type="button">Рассчитать весь план</button></div>
@@ -2021,7 +1977,7 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 <section class="section" id="settings">
 <div class="card">
   <h2>Настройки и данные</h2>
-  <div class="success" role="status" aria-live="polite" id="syncStatus">Проверяем состояние...</div><div class="v75-settings-note">Личная история остаётся в семейной базе. Перед обновлением сайта и на общем компьютере рекомендуем экспорт JSON.</div>
+  <div class="success" role="status" aria-live="polite" id="syncStatus">Проверяем состояние...</div><button type="button" class="btn small" onclick="downloadSyncConflict()">Скачать варианты конфликта</button><div class="v75-settings-note">Личная история остаётся в семейной базе. Перед обновлением сайта и на общем компьютере рекомендуем экспорт JSON.</div>
   <div class="form-grid" style="margin-top:16px">
     <div class="field"><label>День зарплаты</label><input data-setting="preferences.payday" inputmode="numeric" max="31" min="1" placeholder="Например 10" type="number"/></div>
   </div>
@@ -2153,6 +2109,8 @@ const CONFIG=Object.freeze({
   household:'646073c7-6a89-4077-b000-ea0cb287e2c9'
 });
 const KEYS={state:'marichevy_state_v10',session:'marichevy_session_v10',pending:'marichevy_pending_v10'};
+const CLOUD_BASE_KEY=KEYS.state+'_cloud_base_v1';
+const CLOUD_CONFLICT_KEY=KEYS.state+'_cloud_conflict_v1';
 const PEOPLE=['Сергей','Виктория','Майя','Алиса','Дени','Макс','Общее'];
 const EXPENSE_PEOPLE=PEOPLE;
 // v86.2: beneficiary always takes priority; preserve original named allocation in legacy `who`.
@@ -2165,14 +2123,9 @@ function v86ExpenseTarget(e){
  if(['Общее','Семья','Семья / общее','Общие расходы'].includes(target))return 'Общее';
  return target||'Не указано';
 }
-function v94ExpenseBucket(e){
- const category=String(e.category||'').trim();
- if(category==='Кредит'||e.installmentId||e.installmentPartId)return 'Кредиты и рассрочки';
- if(category==='Авто и транспорт'||carCategory(e))return 'Автомобиль';
- const person=v86ExpenseTarget(e);return person==='Дени'?'Денни':person;
-}
+function v94ExpenseBucket(e){return v86ExpenseTarget(e)}
 function v86TargetTotals(entries){
- const totals={'Сергей':0,'Виктория':0,'Алиса':0,'Майя':0,'Макс':0,'Денни':0,'Кредиты и рассрочки':0,'Автомобиль':0,'Общее':0};
+ const totals={'Сергей':0,'Виктория':0,'Алиса':0,'Майя':0,'Макс':0,'Дени':0,'Общее':0};
  for(const e of entries){const key=v94ExpenseBucket(e);totals[key]=(totals[key]||0)+(Number(e.amount)||0)}
  return Object.entries(totals).sort((a,b)=>b[1]-a[1]);
 }
@@ -2234,30 +2187,41 @@ function v92Matches(query){
 let v91Expanded=false;
 let v92AutoDescription="";
 function v91Toggle(){v91Expanded=!v91Expanded;document.getElementById('v90Search').value='';v90Paint()}
-function v90Choose(key){
+function v90Choose(key,detail='',description=''){
  const q=document.getElementById('v90Search').value.trim();
  const isCategory=V90_CATEGORIES.some(x=>[x[0],x[1]].some(label=>v92Norm(label)===v92Norm(q)));
  const comment=document.getElementById('eComment');
  if(q&&!isCategory&&(!comment.value.trim()||comment.value===v92AutoDescription)){comment.value=q.slice(0,200);v92AutoDescription=comment.value;}
- document.getElementById('eCategory').value=key;v81FillDetails('e',key);v91Expanded=false;
+ document.getElementById('eCategory').value=key;v81FillDetails('e',key,detail);if(description&&!q){comment.value=description;v92AutoDescription=description;}v91Expanded=false;
  document.getElementById('v90Search').value='';v90Paint();
 }
 function v90Paint(){
  const selected=document.getElementById('eCategory').value,q=document.getElementById('v90Search').value.trim();
- const frequent=['Кредит','Продукты','Вкусняшки','Рестораны и кафе','Школа и занятия','Дом','Животные'];
- const matches=v92Matches(q),hasQuery=Boolean(q);
- const items=hasQuery?(matches.length?matches:V90_CATEGORIES.map(x=>({key:x[0],label:x[1]}))):V90_CATEGORIES.filter(x=>v91Expanded||frequent.includes(x[0])||x[0]===selected).map(x=>({key:x[0],label:x[1]}));
- document.getElementById('v90Quick').innerHTML=items.map(({key,label,reason})=>`<button type="button" class="btn small ${selected===key?'primary':''}" aria-pressed="${selected===key}" data-cat="${esc(key)}"><span>${esc(label)}</span>${hasQuery&&reason?`<small>${esc(reason)}</small>`:''}</button>`).join('');
- document.getElementById('v90Search').hidden=false;
+ const variants=[
+  {key:'Продукты',label:'Продукты'},
+  {key:'Вкусняшки',label:'Вкусняшки'},
+  {key:'Школа и занятия',label:'Школьное питание',detail:'Школьное питание'},
+  {key:'Школа и занятия',label:'Английский',detail:'Английский язык'},
+  {key:'Школа и занятия',label:'Танцы',detail:'Танцы'},
+  {key:'Животные',label:'Корм питомцу',detail:'Корм'},
+  {key:'Подарки',label:'Подарок'},
+  {key:'Рестораны и кафе',label:'Ресторан',detail:'Ресторан'},
+  {key:'Рестораны и кафе',label:'Чаевые',description:'Чаевые'}
+ ];
+ const matches=v92Matches(q),hasQuery=Boolean(q),allCategories=V90_CATEGORIES.map(([key,label])=>({key,label}));
+ let items=hasQuery?(matches.length?matches:allCategories):(v91Expanded?allCategories:variants);
+ if(hasQuery&&matches.length){const relevant=variants.filter(x=>v92Norm(x.label).includes(v92Norm(q))||v92Norm(q).includes(v92Norm(x.label)));items=[...relevant,...items.filter(x=>!relevant.some(v=>v.key===x.key))]}
+ const currentDetail=document.getElementById('eSubcategory').value;
+ document.getElementById('v90Quick').innerHTML=items.map(({key,label,detail},i)=>{const active=selected===key&&(!detail||currentDetail===detail);return `<button type="button" class="btn small ${active?'primary':''}" aria-pressed="${active}" data-cat="${esc(key)}" data-choice="${i}"><span>${esc(label)}</span></button>`}).join('');
  const hint=document.getElementById('v92SearchHint');
- if(hint)hint.textContent=hasQuery?(matches.length?(matches.length===1?'Подходит эта категория — нажмите, чтобы выбрать.':'Выберите подходящий вариант: назначение покупки может отличаться.'):'Пока не знаю эту покупку. Выберите категорию — сохранённое описание поможет в следующий раз.'):'Напишите покупку или выберите категорию ниже.';
- const status=document.getElementById('v92Selected');
- if(status){status.hidden=!selected;status.textContent=selected?'Категория: '+(V90_CATEGORIES.find(x=>x[0]===selected)?.[1]||selected)+(document.getElementById('eComment').value?' · Описание: '+document.getElementById('eComment').value:''):''}
+ hint.textContent=hasQuery?(matches.length?'Выберите подходящий вариант.':'Выберите категорию для этой покупки.'):'Быстрые варианты или поиск покупки';
+ const status=document.getElementById('v92Selected');status.hidden=!selected;
+ status.textContent=selected?'Выбрано: '+(V90_CATEGORIES.find(x=>x[0]===selected)?.[1]||selected)+(currentDetail?' · '+currentDetail:''):'';
  document.getElementById('v93CreditHelp').hidden=selected!=='Кредит';
- const all=document.getElementById('v91All');all.textContent=v91Expanded?'Частые категории':'Все категории';all.setAttribute('aria-expanded',String(v91Expanded));
- document.querySelectorAll('#v90Quick [data-cat]').forEach(b=>b.onclick=()=>v90Choose(b.dataset.cat));
+ const all=document.getElementById('v91All');all.textContent=v91Expanded?'Быстрые варианты':'Все категории';all.setAttribute('aria-expanded',String(v91Expanded));
+ document.querySelectorAll('#v90Quick [data-choice]').forEach(b=>b.onclick=()=>{const item=items[Number(b.dataset.choice)];v90Choose(item.key,item.detail||'',item.description||'')});
 }
-function v90Template(i){openEntry();const t=[['Школа и занятия','Школьное питание','Алиса','Школа','Обед'],['Школа и занятия','Английский язык','Алиса','','Английский'],['Вкусняшки','','Не указано','','']][i];v90Choose(t[0]);v81FillDetails('e',t[0],t[1],t[2]);document.getElementById('eStore').value=t[3];document.getElementById('eComment').value=t[4];document.getElementById('eAmount').focus()}
+function v90Template(i){openEntry();const t=[['Школа и занятия','Школьное питание','Алиса','Школа','Обед'],['Школа и занятия','Английский язык','Алиса','','Английский'],['Вкусняшки','','Общее','','']][i];v90Choose(t[0]);v81FillDetails('e',t[0],t[1],t[2]);document.getElementById('eStore').value=t[3];document.getElementById('eComment').value=t[4];document.getElementById('eAmount').focus()}
 const INCOME_PEOPLE=['Сергей','Виктория','Майя','Алиса'];
 // Existing category values MUST NOT be renamed in persisted expenses.
 const CATS=['Вкусняшки','Школа и занятия','Авто и транспорт','Продукты','Супермаркеты','Рестораны и кафе','Жильё','ЖКХ','Электричество','Вода и газ','Интернет','Мобильная связь','Дети','Образование','Аптека и медицина','Животные','ТО','Бензин','Парковка','Кредит','Ремонт','Страховка','Налог','Шины','Транспорт','Такси','Одежда','Красота','Маркетплейсы','Дом','Развлечения','Подписки','Путешествия','Подарки','Банковские комиссии','Хобби','Дача','Работа','Благотворительность','Прочее', 'Мойка','Платные дороги','Штрафы','Запчасти','Автострахование','Транспортный налог'];
@@ -2309,6 +2273,10 @@ const NAV={
 
 const CHORE_REPEAT_LABELS={once:'Не повторять',daily:'Каждый день',weekly:'Раз в неделю',biweekly:'Раз в 2 недели',monthly:'Раз в месяц',yearly:'Раз в год'};
 var v89StorageFailed=false;
+var localRecoveryBlocked=false;
+var localRecoveryNotice='';
+const LOCAL_BACKUP_KEY='marichevy_state_backup_v44';
+const LOCAL_PREIMPORT_KEY='marichevy_pre_import_backup_v73';
 let state=loadLocal();
 let session=null;
 let editId=null;
@@ -2337,7 +2305,7 @@ function expenseCategory(category,who){return category||'Прочее'}
 
 
 let choreFilter='today';
-function normalizeChore(c){if(!c||typeof c!=='object')return null;const title=String(c.title||'').trim();if(!title)return null;const due=String(c.dueDate||c.due||today()).slice(0,10);const repeat=CHORE_REPEAT_LABELS[c.recurrence]?c.recurrence:(CHORE_REPEAT_LABELS[c.repeat]?c.repeat:'weekly');return {id:String(c.id||uid()),title,assignee:String(c.assignee||c.who||'Семья'),dueDate:due,recurrence:repeat,lastDone:String(c.lastDone||''),created_at:String(c.created_at||new Date().toISOString()),updated_at:String(c.updated_at||c.created_at||new Date().toISOString())}}
+function normalizeChore(c){if(!c||typeof c!=='object')return null;const title=String(c.title||'').trim();if(!title)return null;const due=String(c.dueDate||c.due||today()).slice(0,10);const repeat=CHORE_REPEAT_LABELS[c.recurrence]?c.recurrence:(CHORE_REPEAT_LABELS[c.repeat]?c.repeat:'weekly');return {...c,id:String(c.id||uid()),title,assignee:String(c.assignee||c.who||'Семья'),dueDate:due,recurrence:repeat,lastDone:String(c.lastDone||''),created_at:String(c.created_at||new Date().toISOString()),updated_at:String(c.updated_at||c.created_at||new Date().toISOString())}}
 function choreAddDays(s,n){const [y,m,d]=s.split('-').map(Number),x=new Date(Date.UTC(y,m-1,d));x.setUTCDate(x.getUTCDate()+n);return x.toISOString().slice(0,10)}
 function choreAddMonth(s){const [y,m,d]=s.split('-').map(Number),x=new Date(Date.UTC(y,m-1,1));x.setUTCMonth(x.getUTCMonth()+1);const last=new Date(Date.UTC(x.getUTCFullYear(),x.getUTCMonth()+1,0)).getUTCDate();x.setUTCDate(Math.min(d,last));return x.toISOString().slice(0,10)}
 function choreStatus(c){const t=today();return c.dueDate<t?'overdue':c.dueDate===t?'today':'upcoming'}
@@ -2357,6 +2325,7 @@ function normalize(s){
  const deletedBirthdays=Array.isArray(s.deletedBirthdays)?Object.fromEntries(s.deletedBirthdays.map(id=>[id,new Date().toISOString()])):(s.deletedBirthdays||{});
  const deletedChores=Array.isArray(s.deletedChores)?Object.fromEntries(s.deletedChores.map(id=>[id,new Date().toISOString()])):(s.deletedChores||{});
  return {
+  ...s,
   intelligence:v84NormalizeIntelligence(s.intelligence),
   entries:Array.isArray(s.entries)?s.entries.map(e=>e?.type==='expense'?{...e,category:expenseCategory(e.category,e.who)}:e):[],
   goals:Array.isArray(s.goals)?s.goals:[],
@@ -2367,6 +2336,7 @@ function normalize(s){
   deletedInstallments:(s.deletedInstallments&&typeof s.deletedInstallments==='object'&&!Array.isArray(s.deletedInstallments))?s.deletedInstallments:{},
   deletedEntries,deletedGoals,deletedBirthdays:((deletedBirthdays&&typeof deletedBirthdays==='object')?deletedBirthdays:{}),deletedBoardItems:((s.deletedBoardItems&&typeof s.deletedBoardItems==='object')?s.deletedBoardItems:{}),deletedChores:((deletedChores&&typeof deletedChores==='object')?deletedChores:{}),
   settings:{
+  ...(s.settings||{}),
   loans:{...b.settings.loans,...(s.settings?.loans||{})},
   preferences:{...b.settings.preferences,...(s.settings?.preferences||{})},
   notifications:{...b.settings.notifications,...(s.settings?.notifications||{})},
@@ -2374,30 +2344,174 @@ function normalize(s){
  }
  }
 }
-function loadLocal(){try{return normalize(JSON.parse(localStorage.getItem(KEYS.state)||'null'))}catch{return blankState()}}
-function saveLocal(){
- let snapshot;
+// Validate structure, not a whitelist of historical categories or family members.
+function validateBackup(raw){
+ const object=x=>x!==null&&typeof x==='object'&&!Array.isArray(x);
+ const fail=path=>{throw new Error('Некорректные данные резервной копии: '+path)};
+ const id=(value,path)=>{if(typeof value!=='string'||!value.trim()||/[\u0000-\u001f\u007f]/.test(value)||['__proto__','prototype','constructor'].includes(value))fail(path)};
+ const text=(value,path)=>{if(value!==undefined&&value!==null&&typeof value!=='string')fail(path)};
+ const number=(value,path)=>{if(value!==undefined&&(value===null||!['number','string'].includes(typeof value)||String(value).trim()===''||!Number.isFinite(Number(value))))fail(path)};
+ const date=(value,path)=>{
+  text(value,path);if(value===undefined||value===null||value==='')return;
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(value))fail(path);
+  const parsed=new Date(value+'T12:00:00Z');if(!Number.isFinite(parsed.getTime())||parsed.toISOString().slice(0,10)!==value)fail(path);
+ };
+ const rows=(parent,key,check)=>{
+  if(parent[key]===undefined)return;
+  if(!Array.isArray(parent[key]))fail(key);
+  const seen=new Set();parent[key].forEach((row,i)=>{const path=key+'['+i+']';if(!object(row))fail(path);id(row.id,path+'.id');if(seen.has(row.id))fail(path+'.id: повтор');seen.add(row.id);check(row,path)});
+ };
+ // Reject dangerous object keys before a merge can write through a prototype.
+ const visit=(value,depth=0)=>{
+  if(depth>50)fail('слишком глубокая структура');
+  if(value&&typeof value==='object')for(const key of Object.keys(value)){
+   if(['__proto__','prototype','constructor','toString','valueOf'].includes(key))fail('служебное имя свойства');
+   visit(value[key],depth+1);
+  }
+ };
+ if(!object(raw)||!Array.isArray(raw.entries)||!object(raw.settings))fail('entries / settings');
+ visit(raw);
+ rows(raw,'entries',(e,p)=>{
+  if(!['expense','income','transfer','cash'].includes(e.type))fail(p+'.type');
+  if(e.amount===undefined)fail(p+'.amount');number(e.amount,p+'.amount');
+  if(typeof e.date!=='string')fail(p+'.date');date(e.date,p+'.date');
+  for(const k of ['category','who','beneficiary','subcategory','store','pay','comment','from','to','created_at','updated_at','installmentId','installmentPartId','recurringId','recurringPeriod'])text(e[k],p+'.'+k);
+ });
+ rows(raw,'goals',(g,p)=>{
+  text(g.name,p+'.name');for(const k of ['target','saved','monthly'])number(g[k],p+'.'+k);
+  if(g.deposits!==undefined){if(!Array.isArray(g.deposits))fail(p+'.deposits');for(const d of g.deposits){if(!object(d))fail(p+'.deposits');number(d.amount,p+'.deposits.amount');date(d.date,p+'.deposits.date');text(d.who,p+'.deposits.who')}}
+ });
+ rows(raw,'birthdays',(b,p)=>{date(b.date,p+'.date');for(const k of ['name','phone','note','group','kind'])text(b[k],p+'.'+k)});
+ rows(raw,'boardItems',(b,p)=>{for(const k of ['text','title','author','who','created_at','updated_at'])text(b[k],p+'.'+k)});
+ rows(raw,'chores',(c,p)=>{for(const k of ['title','assignee','who','recurrence','repeat'])text(c[k],p+'.'+k);for(const k of ['dueDate','due','lastDone'])date(c[k],p+'.'+k)});
+ rows(raw,'installments',(i,p)=>{
+  for(const k of ['title','provider','kind','who','created_at','updated_at'])text(i[k],p+'.'+k);
+  for(const k of ['amount','total','count'])number(i[k],p+'.'+k);
+  rows(i,'parts',(part,path)=>{
+   if(part.amount===undefined)fail(path+'.amount');number(part.amount,path+'.amount');
+   if(typeof part.date!=='string'||!part.date)fail(path+'.date');date(part.date,path+'.date');
+  });
+  if(i.links!==undefined){if(!object(i.links))fail(p+'.links');for(const [part,entry] of Object.entries(i.links)){id(part,p+'.links');id(entry,p+'.links')}}
+ });
+ if(raw.intelligence!==undefined){
+  if(!object(raw.intelligence))fail('intelligence');
+  for(const key of ['budgets','recurring','accounts'])rows(raw.intelligence,key,(r,p)=>{number(r.amount,p+'.amount');number(r.day,p+'.day');for(const k of ['name','group','category','who','updated_at','created_at'])text(r[k],p+'.'+k)});
+  const deleted=raw.intelligence.deleted;if(deleted!==undefined){if(!object(deleted))fail('intelligence.deleted');for(const key of ['budgets','recurring','accounts'])if(deleted[key]!==undefined){if(!object(deleted[key]))fail('intelligence.deleted.'+key);for(const [keyId,at] of Object.entries(deleted[key])){id(keyId,'intelligence.deleted.id');text(at,'intelligence.deleted.at')}}}
+ }
+ for(const key of ['deletedEntries','deletedGoals','deletedBirthdays','deletedBoardItems','deletedChores','deletedInstallments']){
+  const deleted=raw[key];if(deleted===undefined)continue;
+  if(Array.isArray(deleted)){for(const value of deleted)id(value,key)}
+  else{if(!object(deleted))fail(key);for(const [keyId,at] of Object.entries(deleted)){id(keyId,key);text(at,key)}}
+ }
+ for(const key of ['loans','preferences','notifications'])if(raw.settings[key]!==undefined&&!object(raw.settings[key]))fail('settings.'+key);
+ return raw;
+}
+function parseLocalState(raw,wrapped=false){
+ const parsed=JSON.parse(raw);return validateBackup(wrapped?parsed?.data:parsed);
+}
+function preserveDamagedLocal(key,raw){
+ if(raw===null)return;
+ // Keep the first damaged bytes independently; never overwrite them silently.
+ const quarantine=key+'_corrupt_v1',previous=localStorage.getItem(quarantine);
+ if(previous!==null&&previous!==raw)throw new Error('Сначала скачайте резервную копию: сохранена другая повреждённая версия');
+ if(previous===null)localStorage.setItem(quarantine,raw);
+}
+function loadLocal(){
+ const recovered=[];let primary=null,pending=null,damaged=false;
  try{
-  snapshot=JSON.stringify(state);
+  primary=localStorage.getItem(KEYS.state);pending=localStorage.getItem(KEYS.pending);
+  if(primary!==null){try{recovered.push(parseLocalState(primary))}catch{damaged=true}}
+  if(pending!==null){try{recovered.push(parseLocalState(pending))}catch{damaged=true}}
+  if(!recovered.length)for(const key of [LOCAL_BACKUP_KEY,LOCAL_PREIMPORT_KEY]){
+   const raw=localStorage.getItem(key);if(raw===null)continue;
+   try{recovered.push(parseLocalState(raw,true));break}catch{damaged=true}
+  }
+  if(recovered.length){
+   if(primary===null||damaged)localRecoveryNotice='Локальная копия восстановлена. Проверьте данные и скачайте JSON.';
+   if(recovered.length===1)return normalize(recovered[0]);
+   // Either local write may fail independently. Their record clocks do not say
+   // which full snapshot contains the unsent edit; compare with the common base.
+   try{
+    const reconciled=reconcileCloudSnapshot(normalize(recovered[0]),normalize(recovered[1]),'local-recovery');
+    if(reconciled)return reconciled;
+   }catch{}
+   localRecoveryBlocked=true;v89StorageFailed=true;
+   localRecoveryNotice='Локальные копии расходятся. Обе сохранены, запись остановлена; скачайте варианты конфликта и согласуйте изменения.';
+   return normalize(recovered[1]);
+  }
+  if(damaged){localRecoveryBlocked=true;v89StorageFailed=true;localRecoveryNotice='Локальные данные повреждены. Запись остановлена; восстановите проверенную копию JSON.'}
+ }catch{localRecoveryBlocked=true;v89StorageFailed=true;localRecoveryNotice='Локальное хранилище недоступно. Не закрывайте вкладку; скачайте JSON.'}
+ return blankState();
+}
+function saveLocal(){
+ if(localRecoveryBlocked){v89StorageFailed=true;try{updateSync(localRecoveryNotice)}catch{}return false}
+ try{
+  validateBackup(state);
+  const snapshot=JSON.stringify(state),previous=localStorage.getItem(KEYS.state);
+  if(previous!==null&&previous!==snapshot){
+   let valid=false;try{parseLocalState(previous);valid=true}catch{}
+   if(valid){
+    // Rotate the previous committed state, not the state about to be written.
+    localStorage.setItem(LOCAL_BACKUP_KEY,JSON.stringify({saved_at:new Date().toISOString(),data:JSON.parse(previous)}));
+   }else preserveDamagedLocal(KEYS.state,previous);
+  }
   localStorage.setItem(KEYS.state,snapshot);
+  // A new installation gets a recovery copy; recovery never overwrites an old one.
+  const backup=localStorage.getItem(LOCAL_BACKUP_KEY);
+  let backupOK=false;if(backup!==null){try{parseLocalState(backup,true);backupOK=true}catch{preserveDamagedLocal(LOCAL_BACKUP_KEY,backup)}}
+  if(!backupOK)localStorage.setItem(LOCAL_BACKUP_KEY,JSON.stringify({saved_at:new Date().toISOString(),data:state}));
  }catch(e){
-  console.error('Local primary save failed',e);
+  console.error('Local save failed');
   v89StorageFailed=true;
   try{updateSync('Ошибка локального сохранения — скачайте резервную копию JSON')}catch(_e){}
   return false;
  }
- try{localStorage.setItem('marichevy_state_backup_v44',JSON.stringify({saved_at:new Date().toISOString(),data:state}))}
- catch(e){console.warn('Optional local backup failed',e)}
  v89StorageFailed=false;
  return true;
+}
+function localSaveMessage(cloudOK,success='Изменения сохранены'){
+ if(cloudOK)return success;
+ if(v89StorageFailed)return 'Не удалось надёжно сохранить изменения. Не закрывайте вкладку; скачайте JSON.';
+ return 'Сохранено на этом устройстве. Облако пока не подтвердило запись.';
+}
+function savePendingLocal(){
+ if(localRecoveryBlocked){v89StorageFailed=true;return false}
+ try{
+  const previous=localStorage.getItem(KEYS.pending);
+  if(previous!==null){try{parseLocalState(previous)}catch{preserveDamagedLocal(KEYS.pending,previous)}}
+  localStorage.setItem(KEYS.pending,JSON.stringify(state));return true;
+ }catch{v89StorageFailed=true;updateSync('Не удалось сохранить очередь изменений — скачайте JSON');return false}
 }
 function money(n){return new Intl.NumberFormat('ru-RU',{maximumFractionDigits:0}).format(Number(n)||0)+' ₽'}
 function today(){const p=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Moscow',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());const y=p.find(x=>x.type==='year').value,m=p.find(x=>x.type==='month').value,d=p.find(x=>x.type==='day').value;return `${y}-${m}-${d}`}
 function month(){return today().slice(0,7)}
 function homeMonth(){const v=document.getElementById('homeMonth')?.value;return /^\d{4}-\d{2}$/.test(v||'')?v:month()}
 function esc(x){return String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+// Data remains JSON in an HTML attribute, never JavaScript source in onclick.
+function recordAction(action,...args){return 'data-record-action="'+action+'" data-record-args="'+esc(JSON.stringify(args))+'"'}
+document.addEventListener('click',event=>{
+ const button=event.target.closest('[data-record-action]');if(!button||button.disabled)return;
+ let args;try{args=JSON.parse(button.dataset.recordArgs);if(!Array.isArray(args))return}catch{return}
+ switch(button.dataset.recordAction){
+  case 'entry-edit':openEdit(...args);break;
+  case 'entry-delete':deleteEntry(...args);break;
+  case 'board-delete':deleteBoardItem(...args);break;
+  case 'goal-deposit':addGoalDeposit(...args);break;
+  case 'goal-delete':deleteGoal(...args);break;
+  case 'birthday-edit':editBirthday(...args);break;
+  case 'birthday-delete':deleteBirthday(...args);break;
+  case 'chore-complete':completeChore(...args);break;
+  case 'chore-delete':deleteChore(...args);break;
+  case 'intelligence-remove':if(['budgets','recurring','accounts'].includes(args[0]))v84Remove(...args);break;
+  case 'account-edit':v84EditAccount(...args);break;
+  case 'recurring-link':v84LinkRecurring(...args);break;
+  case 'recurring-confirm':v84ConfirmRecurring(...args);break;
+  case 'drill':v84Drill(...args);break;
+  case 'navigate':if(Object.hasOwn(NAV,args[0]))go(...args);break;
+ }
+});
 function uid(){return crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2)}
-function typeName(t){return {expense:'Расход',income:'Доход',transfer:'Перевод',cash:'Наличные'}[t]||t}
+function typeName(t){const names={expense:'Расход',income:'Доход',transfer:'Перевод',cash:'Наличные'};return Object.hasOwn(names,t)?names[t]:'Неизвестный тип'}
 function isExpense(e){return e.type==='expense'}
 function monthEntries(m=month()){return state.entries.filter(e=>e.date?.startsWith(m))}
 function expenses(m=month()){return monthEntries(m).filter(isExpense)}
@@ -2433,10 +2547,23 @@ function setStatus(text,ok=true){
  document.getElementById('authBtn').textContent=ok?'Выйти':'Войти';
  document.getElementById('syncStatus').textContent=ok?' Облако подключено':' Требуется вход'
 }
-function api(path,options={}){return fetch(CONFIG.url+path,{...options,headers:{apikey:CONFIG.key,'Content-Type':'application/json',...(options.headers||{})}})}
-async function authApi(path,body){return fetch(CONFIG.url+path,{method:'POST',headers:{apikey:CONFIG.key,'Content-Type':'application/json'},body:JSON.stringify(body)})}
+async function api(path,options={}){
+ const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),20000);
+ try{return await fetch(CONFIG.url+path,{...options,signal:options.signal||controller.signal,headers:{apikey:CONFIG.key,'Content-Type':'application/json',...(options.headers||{})}})}
+ finally{clearTimeout(timeout)}
+}
+async function verifyHouseholdAccess(candidate){
+ if(!candidate?.access_token)return false;
+ const r=await api('/rest/v1/family_state?household_id=eq.'+encodeURIComponent(CONFIG.household)+'&select=household_id', {headers:{Authorization:'Bearer '+candidate.access_token}});
+ if(!r.ok)return false;
+ const rows=await r.json();
+ return Array.isArray(rows)&&rows.length===1&&rows[0].household_id===CONFIG.household;
+}
+let authEpoch=0;
+async function authApi(path,body){return api(path,{method:'POST',body:JSON.stringify(body)})}
 
 async function login(){
+ const epoch=authEpoch;
  const email=document.getElementById('loginEmail').value.trim(),password=document.getElementById('loginPassword').value;
  const err=document.getElementById('loginError'),btn=document.getElementById('loginBtn'); err.innerHTML='';
  if(!email||!password){err.innerHTML='<div class="error">Введите email и пароль.</div>';return}
@@ -2444,7 +2571,9 @@ async function login(){
  try{
   const r=await authApi('/auth/v1/token?grant_type=password',{email,password});
   const data=await r.json(); if(!r.ok)throw new Error(data.error_description||data.msg||'Не удалось войти');
-  session=data; localStorage.setItem(KEYS.session,JSON.stringify(data));
+  if(!(await verifyHouseholdAccess(data)))throw new Error('Нет доступа к этой семье. Локальные данные и очередь сохранены.');
+  if(epoch!==authEpoch)return;
+  authEpoch++;session=data; localStorage.setItem(KEYS.session,JSON.stringify(data));
   closeAuth();setStatus(email,true);showApp();startCloudSync();toast(' Вход выполнен');
  }catch(e){err.innerHTML='<div class="error">'+esc(e.message)+'</div>'}
  finally{btn.disabled=false;btn.textContent='Войти'}
@@ -2459,6 +2588,7 @@ function showGate(){
  document.getElementById('authGate').style.display='flex';
 }
 async function gateLogin(){
+ const epoch=authEpoch;
  const email=document.getElementById('gateEmail').value.trim();
  const password=document.getElementById('gatePassword').value;
  const err=document.getElementById('gateError');
@@ -2470,7 +2600,9 @@ async function gateLogin(){
   const r=await authApi('/auth/v1/token?grant_type=password',{email,password});
   const data=await r.json();
   if(!r.ok)throw new Error(data.error_description||data.msg||'Не удалось войти');
-  session=data;localStorage.setItem(KEYS.session,JSON.stringify(data));
+  if(!(await verifyHouseholdAccess(data)))throw new Error('Нет доступа к этой семье. Локальные данные и очередь сохранены.');
+  if(epoch!==authEpoch)return;
+  authEpoch++;session=data;localStorage.setItem(KEYS.session,JSON.stringify(data));
   setStatus(email,true);showApp();startCloudSync();
  }catch(e){
   // A failed cloud read must never turn a successful authentication into a logout.
@@ -2478,8 +2610,14 @@ async function gateLogin(){
  }finally{btn.disabled=false;btn.textContent='Войти'}
 }
 async function refreshSession(){
- if(!session?.refresh_token)return false;
- try{const r=await authApi('/auth/v1/token?grant_type=refresh_token',{refresh_token:session.refresh_token});const d=await r.json();if(!r.ok)throw new Error();session=d;localStorage.setItem(KEYS.session,JSON.stringify(d));return true}catch{return false}
+ const previous=session,epoch=authEpoch;
+ if(!previous?.refresh_token)return false;
+ try{
+  const r=await authApi('/auth/v1/token?grant_type=refresh_token',{refresh_token:previous.refresh_token});
+  const d=await r.json();
+  if(!r.ok||epoch!==authEpoch||session!==previous)return false;
+  session=d;localStorage.setItem(KEYS.session,JSON.stringify(d));return true;
+ }catch{return false}
 }
 async function ensureToken(){
  if(!session)return false;
@@ -2489,7 +2627,8 @@ async function ensureToken(){
 }
 function stamp(x){return x?.updated_at||x?.created_at||'1970-01-01T00:00:00.000Z'}
 function mergeStates(...sources){
- const out=blankState(),entryMap=new Map(),goalMap=new Map(),birthdayMap=new Map(),boardMap=new Map(),choreMap=new Map(),installmentMap=new Map(),deletedInstallments={},deletedEntries={},deletedGoals={},deletedBirthdays={},deletedBoardItems={},deletedChores={};
+ const extensions=sources.filter(s=>s&&typeof s==='object').reduce((all,s)=>({...all,...s}),{});
+ const out={...extensions,...blankState()},entryMap=new Map(),goalMap=new Map(),birthdayMap=new Map(),boardMap=new Map(),choreMap=new Map(),installmentMap=new Map(),deletedInstallments={},deletedEntries={},deletedGoals={},deletedBirthdays={},deletedBoardItems={},deletedChores={};
  for(const s of sources){
   if(!s||typeof s!=='object')continue;
   Object.entries(s.deletedInstallments||{}).forEach(([id,at])=>{if(!deletedInstallments[id]||String(at)>String(deletedInstallments[id]))deletedInstallments[id]=at});
@@ -2514,60 +2653,233 @@ function mergeStates(...sources){
  if(settingCandidates.length){
    const dated=settingCandidates.filter(x=>x.updated_at);
    const chosen=(dated.length?dated:settingCandidates).reduce((a,b)=>String(b.updated_at||'')>=String(a.updated_at||'')?b:a,settingCandidates[0]);
-   out.settings=normalize({settings:chosen}).settings;
+   const preserved=settingCandidates.reduce((all,s)=>({...all,...s}),{});
+   const settings={...preserved,...chosen};
+   for(const key of ['loans','preferences','notifications'])settings[key]={...settingCandidates.reduce((all,s)=>({...all,...(s[key]||{})}),{}),...(chosen[key]||{})};
+   out.settings=normalize({settings}).settings;
  }
  return out;
 }
-async function fetchCloudState(){
- if(!(await ensureToken()))return null;
- const r=await api('/rest/v1/family_state?household_id=eq.'+encodeURIComponent(CONFIG.household)+'&select=data,updated_at',{headers:{Authorization:'Bearer '+session.access_token}});
- if(r.status===401&&await refreshSession())return fetchCloudState();
- if(!r.ok)throw new Error('Ошибка загрузки облачных данных: HTTP '+r.status);
- const rows=await r.json();return rows[0]?.data?normalize(rows[0].data):null;
+// Writes require the server CAS protocol. Legacy rows remain readable only.
+let cloudReadMeta={revision:null,protocol:0};
+function readPendingLocal(){
+ const raw=localStorage.getItem(KEYS.pending);
+ return raw===null?null:normalize(parseLocalState(raw));
 }
-async function pullCloud(){
- if(!(await ensureToken()))return false;
- try{
-  const cloud=await fetchCloudState();
-  let pending=null;try{const raw=JSON.parse(localStorage.getItem(KEYS.pending)||'null');if(raw&&typeof raw==='object')pending=normalize(raw)}catch{pending=null}
-  if(cloud){
-   if(pending){state=mergeStates(cloud,pending);saveLocal();localStorage.setItem(KEYS.pending,JSON.stringify(state));await pushCloud(true)}
-   else{state=cloud;saveLocal();localStorage.removeItem(KEYS.pending)}
-  }else{if(pending)state=mergeStates(state,pending);saveLocal();await pushCloud(true)}
-  return true;
- }catch(err){console.error(err);updateSync(' Облако временно недоступно — работаем с локальной копией');return false}
+async function fetchCloudState(){
+ if(!(await ensureToken()))throw new Error('Требуется вход');
+ cloudReadMeta={revision:null,protocol:0};
+ const path='/rest/v1/family_state?household_id=eq.'+encodeURIComponent(CONFIG.household)+'&select=';
+ let r;
+ for(let attempt=0;attempt<2;attempt++){
+  r=await api(path+'data,updated_at,sync_revision,sync_protocol,last_request_id',{headers:{Authorization:'Bearer '+session.access_token}});
+  if(r.status!==401||attempt||!(await refreshSession()))break;
+ }
+ // An old schema is never a reason to fall back to blind writes.
+ let legacy=false;
+ if(r.status===400){legacy=true;r=await api(path+'data,updated_at',{headers:{Authorization:'Bearer '+session.access_token}})}
+ if(!r.ok)throw new Error('Ошибка загрузки облачных данных: HTTP '+r.status);
+ const rows=await r.json(),row=rows[0];
+ if(!row?.data)return null;
+ validateBackup(row.data);
+ if(!legacy&&Number.isSafeInteger(row.sync_revision)&&row.sync_revision>=0)cloudReadMeta={revision:row.sync_revision,protocol:row.sync_protocol};
+ return normalize(row.data);
+}
+async function pullCloud(){return syncFromCloud()}
+function cloudJSONEqual(a,b){
+ if(a===b)return true;
+ if(a===null||b===null||typeof a!=='object'||typeof b!=='object')return false;
+ if(Array.isArray(a)||Array.isArray(b))return Array.isArray(a)&&Array.isArray(b)&&a.length===b.length&&a.every((v,i)=>cloudJSONEqual(v,b[i]));
+ const keys=Object.keys(a);return keys.length===Object.keys(b).length&&keys.every(k=>Object.hasOwn(b,k)&&cloudJSONEqual(a[k],b[k]));
+}
+function cloudContainsFields(actual,expected){
+ if(expected===null||typeof expected!=='object'||Array.isArray(expected))return cloudJSONEqual(actual,expected);
+ return actual!==null&&typeof actual==='object'&&Object.keys(expected).every(k=>Object.hasOwn(actual,k)&&cloudContainsFields(actual[k],expected[k]));
 }
 function verifiedCloudContains(actual,written){
  if(!actual||!written)return false;
- for(const key of ['entries','goals','birthdays','boardItems','chores','installments']){
-  const map=new Map((actual[key]||[]).map(item=>[item.id,item]));
-  for(const item of (written[key]||[])){
+ const rowsMatch=(have,want,tombstones={})=>{
+  const map=new Map((have||[]).map(x=>[x.id,x]));
+  return (want||[]).every(item=>{
    const found=map.get(item.id);
-   if(!found||String(stamp(found))<String(stamp(item)))return false;if(key==='installments')for(const [partId,entryId] of Object.entries(item.links||{})){if(found.links?.[partId]!==entryId)return false;}
+   if(tombstones[item.id]&&String(tombstones[item.id])>=String(stamp(item)))return true;
+   if(!found||String(stamp(found))<String(stamp(item)))return false;
+   return String(stamp(found))>String(stamp(item))||cloudContainsFields(found,item);
+  });
+ };
+ const tombstonesMatch=(have,want)=>Object.entries(want||{}).every(([id,at])=>have?.[id]&&String(have[id])>=String(at));
+ const collections={entries:'deletedEntries',goals:'deletedGoals',birthdays:'deletedBirthdays',boardItems:'deletedBoardItems',chores:'deletedChores',installments:'deletedInstallments'};
+ for(const [key,deleted] of Object.entries(collections)){
+  if(!rowsMatch(actual[key],written[key],actual[deleted])||!tombstonesMatch(actual[deleted],written[deleted]))return false;
+ }
+ for(const key of ['budgets','recurring','accounts']){
+  if(!rowsMatch(actual.intelligence?.[key],written.intelligence?.[key],actual.intelligence?.deleted?.[key])||!tombstonesMatch(actual.intelligence?.deleted?.[key],written.intelligence?.deleted?.[key]))return false;
+ }
+ const a=String(actual.settings?.updated_at||''),w=String(written.settings?.updated_at||'');
+ if(a<w||(a===w&&!cloudContainsFields(actual.settings,written.settings)))return false;
+ const known=new Set([...Object.keys(collections),...Object.values(collections),'settings','intelligence']);
+ for(const key of Object.keys(written))if(!known.has(key)&&!cloudContainsFields(actual[key],written[key]))return false;
+ for(const key of Object.keys(written.intelligence||{}))if(!['budgets','recurring','accounts','deleted'].includes(key)&&!cloudContainsFields(actual.intelligence?.[key],written.intelligence[key]))return false;
+ return true;
+}
+// A durable common ancestor, scoped to this backend/household. Device clocks
+// must never choose between two changes to the same logical record.
+
+function rememberCloudBase(data){
+ localStorage.setItem(CLOUD_BASE_KEY,JSON.stringify({household:CONFIG.household,url:CONFIG.url,data}));
+}
+function reconcileCloudSnapshot(cloud,local,context='cloud'){
+ let base=null;
+ const raw=localStorage.getItem(CLOUD_BASE_KEY);
+ if(raw!==null){
+  const saved=JSON.parse(raw);
+  if(saved.household!==CONFIG.household||saved.url!==CONFIG.url)throw new Error('Локальная база принадлежит другой семье');
+  validateBackup(saved.data);base=normalize(saved.data);
+ }
+ const conflicts=[];
+ const merge=(b,r,l,path)=>{
+  if(l===undefined)return r;
+  if(r===undefined)return l;
+  if(cloudJSONEqual(r,l))return r;
+  const object=v=>v!==null&&typeof v==='object'&&!Array.isArray(v);
+  if(object(r)&&object(l)&&(b===undefined||object(b))){
+   const out={};
+   for(const key of new Set([...Object.keys(b||{}),...Object.keys(r),...Object.keys(l)])){
+    const value=merge(b?.[key],r[key],l[key],path+'.'+key);
+    if(value!==undefined)out[key]=value;
+   }
+   return out;
+  }
+  if(cloudJSONEqual(l,b))return r;
+  if(cloudJSONEqual(r,b))return l;
+  conflicts.push(path);return l;
+ };
+ const collections={entries:'deletedEntries',goals:'deletedGoals',birthdays:'deletedBirthdays',boardItems:'deletedBoardItems',chores:'deletedChores',installments:'deletedInstallments'};
+ const pack=(value)=>{
+  if(!value)return undefined;
+  const out=JSON.parse(JSON.stringify(value));
+  const packRows=(owner,key,deleted)=>{
+   const slots={};
+   for(const row of owner[key]||[])slots[row.id]={record:row};
+   for(const [id,at] of Object.entries(deleted||{}))slots[id]={...(slots[id]||{}),deleted:at};
+   delete owner[key];return slots;
+  };
+  const rows={};
+  for(const [key,del] of Object.entries(collections)){rows[key]=packRows(out,key,out[del]);delete out[del]}
+  out.intelligence=out.intelligence||{};
+  for(const key of ['budgets','recurring','accounts'])rows['intelligence_'+key]=packRows(out.intelligence,key,out.intelligence.deleted?.[key]);
+  if(out.intelligence.deleted){for(const key of ['budgets','recurring','accounts'])delete out.intelligence.deleted[key]}
+  return {rest:out,rows};
+ };
+ const bp=pack(base),rp=pack(cloud),lp=pack(local);
+ const b=bp?.rest,r=rp.rest,l=lp.rest;
+ const sameRecord=(a,b)=>{
+  if(cloudJSONEqual(a,b))return true;
+  if(!a?.record||!b?.record||a.deleted!==b.deleted)return false;
+  const strip=row=>{const copy={...row};delete copy.created_at;delete copy.updated_at;return copy};
+  return cloudJSONEqual(strip(a.record),strip(b.record));
+ };
+ // Records and their tombstones form one atomic unit: edit/delete conflicts
+ // cannot be hidden by recursively merging a tombstone with a live record.
+ const rows={};
+ for(const key of Object.keys(lp.rows)){
+  rows[key]={};
+  for(const id of new Set([...Object.keys(bp?.rows[key]||{}),...Object.keys(rp.rows[key]),...Object.keys(lp.rows[key])])){
+   const bv=bp?.rows[key]?.[id],rv=rp.rows[key][id],lv=lp.rows[key][id];
+   if(lv===undefined)rows[key][id]=rv;
+   else if(rv===undefined)rows[key][id]=lv;
+   else if(sameRecord(rv,lv))rows[key][id]=rv;
+   else if(sameRecord(lv,bv))rows[key][id]=rv;
+   else if(sameRecord(rv,bv))rows[key][id]=lv;
+   else {conflicts.push(key+':'+id);rows[key][id]=lv}
   }
  }
- for(const key of ['deletedEntries','deletedGoals','deletedBirthdays','deletedBoardItems','deletedChores','deletedInstallments']){
-  const actualT=actual[key]||{};
-  for(const [id,at] of Object.entries(written[key]||{}))if(!actualT[id]||String(actualT[id])<String(at))return false;
+ const result=merge(b,r,l,'state');
+ reconcileCloudSnapshot.conflicts=conflicts;
+ if(conflicts.length){
+  try{saveSyncConflict({format:'family-sync-conflict-v1',context,household:CONFIG.household,base,cloud,local,conflicts})}
+  catch{updateSync('Конфликт: не удалось сохранить копию вариантов. Очередь не удалена, облако не перезаписано. Скачайте JSON на обоих устройствах и не закрывайте вкладку.');return null}
+  updateSync('Конфликт изменений ('+conflicts.length+'). Локальная очередь и оба варианта сохранены, облако не перезаписано. В настройках скачайте варианты конфликта для согласования; не очищайте данные браузера.');
+  return null;
  }
- return String(actual.settings?.updated_at||'')>=String(written.settings?.updated_at||'');
+ result.intelligence=result.intelligence||{};result.intelligence.deleted=result.intelligence.deleted||{};
+ for(const [key,slots] of Object.entries(rows)){
+  const nested=key.startsWith('intelligence_'),name=nested?key.slice(13):key;
+  const owner=nested?result.intelligence:result,deleted={};owner[name]=[];
+  for(const [id,slot] of Object.entries(slots)){
+   if(!slot)continue;
+   if(slot.record)owner[name].push(slot.record);
+   if(slot.deleted!==undefined)deleted[id]=slot.deleted;
+  }
+  if(nested)result.intelligence.deleted[name]=deleted;else result[collections[key]]=deleted;
+ }
+ return normalize(result);
+}
+function saveSyncConflict(packet){
+ const raw=JSON.stringify(packet),previous=localStorage.getItem(CLOUD_CONFLICT_KEY);
+ if(previous!==null){
+  try{if(cloudJSONEqual(JSON.parse(previous),packet))return}catch{}
+  const prefix=CLOUD_CONFLICT_KEY+'_archive_';
+  const retained=Object.keys(localStorage).some(key=>key.startsWith(prefix)&&localStorage.getItem(key)===previous);
+  if(!retained)localStorage.setItem(prefix+uid(),previous);
+ }
+ // Never replace the previous unresolved variants until their archive is safe.
+ localStorage.setItem(CLOUD_CONFLICT_KEY,raw);
+}
+function downloadSyncConflict(){
+ try{
+  const raw=localStorage.getItem(CLOUD_CONFLICT_KEY);
+  if(!raw){toast('Сохранённых вариантов конфликта нет');return}
+  const packet=JSON.parse(raw),prefix=CLOUD_CONFLICT_KEY+'_archive_';
+  const previous=Object.keys(localStorage).filter(key=>key.startsWith(prefix)).sort().map(key=>{
+   const saved=localStorage.getItem(key);try{return JSON.parse(saved)}catch{return {format:'unreadable-conflict-bytes',raw:saved}}
+  });
+  if(previous.length)packet.previous_conflicts=previous;
+  const blob=new Blob([JSON.stringify(packet)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download='family-sync-conflict-PRIVATE.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);
+  toast('Варианты конфликта скачаны. Это частная копия для согласования, не файл обычного импорта.');
+ }catch{toast('Не удалось скачать варианты конфликта — сохраните JSON на обоих устройствах')}
+}
+function preserveUnconfirmedSync(message){
+ const localOK=saveLocal(),pendingOK=savePendingLocal();
+ v89StorageFailed=!localOK||!pendingOK;
+ updateSync(localOK&&pendingOK?message:'Не удалось сохранить изменения на устройстве — скачайте JSON');
+ return false;
 }
 async function pushCloud(initial=false){
- if(!(await ensureToken()))return false;
+ if(localRecoveryBlocked){updateSync(localRecoveryNotice||'Локальное восстановление требует согласования — облачная запись остановлена');return false}
+ const epoch=authEpoch;
+ if(!(await ensureToken()))return preserveUnconfirmedSync('Только на этом устройстве — войдите для облака');
  saving=true;updateSync('Сохраняем в облако…');
  try{
-  const cloud=await fetchCloudState();if(cloud)state=mergeStates(cloud,state);
-  const requestSerial=mutationSerial;
-  const payload={household_id:CONFIG.household,data:state,updated_by:session.user?.id||null};
-  let r=await api('/rest/v1/family_state?on_conflict=household_id',{method:'POST',headers:{Authorization:'Bearer '+session.access_token,Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify(payload)});
-  if(r.status===401&&await refreshSession())return pushCloud(initial);
-  if(!r.ok)throw new Error('HTTP '+r.status);
-  const verified=await fetchCloudState();if(!verifiedCloudContains(verified,payload.data))throw new Error('Изменения не подтверждены чтением облака');
-  state=mergeStates(verified,state);
-  saveLocal();
-  if(requestSerial!==mutationSerial){localStorage.setItem(KEYS.pending,JSON.stringify(state));updateSync(' Есть новые изменения — завершаем синхронизацию');return false;}
-  localStorage.removeItem(KEYS.pending);updateSync(' Синхронизировано');return true;
- }catch(err){console.error(err);saveLocal();localStorage.setItem(KEYS.pending,JSON.stringify(state));updateSync(' Не синхронизировано — данные сохранены на устройстве');return false}
+  for(let attempt=0;attempt<5;attempt++){
+   const cloud=await fetchCloudState(),pending=readPendingLocal();
+   if(epoch!==authEpoch)return false;
+   const reconciled=cloud?reconcileCloudSnapshot(cloud,state):state;
+   if(!reconciled)return false;state=reconciled;
+   if(cloud)rememberCloudBase(cloud);
+   if(cloudReadMeta.protocol!==2||cloudReadMeta.revision===null)return preserveUnconfirmedSync('Сохранено на устройстве — облачная запись ждёт безопасного обновления сервера');
+   validateBackup(state);
+   const requestSerial=mutationSerial,expected=cloudReadMeta.revision;
+   const requestId=crypto.randomUUID?crypto.randomUUID():Array.from(crypto.getRandomValues(new Uint8Array(16)),(v,i)=>((i===6?(v&15)|64:i===8?(v&63)|128:v)+256).toString(16).slice(1)).join('').replace(/(.{8})(.{4})(.{4})(.{4})(.{12})/,'$1-$2-$3-$4-$5');
+   // Freeze the bytes being acknowledged; state can change while awaiting HTTP.
+   const snapshot=JSON.parse(JSON.stringify(state));
+   const r=await api('/rest/v1/rpc/family_state_cas',{method:'POST',headers:{Authorization:'Bearer '+session.access_token},body:JSON.stringify({p_household_id:CONFIG.household,p_expected_revision:expected,p_data:snapshot,p_request_id:requestId})});
+   if(!r.ok)throw new Error('Облачная запись: HTTP '+r.status);
+   const ack=await r.json();
+   if(epoch!==authEpoch)return false;
+   if(ack.status==='conflict')continue;
+   if(ack.status!=='written'||ack.protocol!==2||!Number.isSafeInteger(ack.revision)||ack.revision<=expected||ack.request_id!==requestId||!cloudJSONEqual(ack.data,snapshot))throw new Error('Сервер не подтвердил полный снимок изменений');
+   rememberCloudBase(ack.data);
+   if(requestSerial!==mutationSerial)return preserveUnconfirmedSync('Есть новые изменения — завершаем синхронизацию');
+   state=normalize(ack.data);
+   const localOK=saveLocal();
+   if(!localOK)return preserveUnconfirmedSync('Облако подтвердило запись; локальное сохранение не удалось — скачайте JSON');
+   rememberCloudBase(ack.data);
+   localStorage.removeItem(KEYS.pending);updateSync('Синхронизировано');return true;
+  }
+  return preserveUnconfirmedSync('Сохранено на устройстве — изменения другого устройства требуют повторной синхронизации');
+ }catch(err){console.warn('Cloud sync failed',err.message);return preserveUnconfirmedSync('Не синхронизировано — данные сохранены на устройстве')}
  finally{saving=false}
 }
 let saveQueue=Promise.resolve();
@@ -2575,11 +2887,8 @@ let mutationSerial=0;
 function saveAll(){
  mutationSerial++;
  const localOK=saveLocal();
- let pendingOK=true;
- try{localStorage.setItem(KEYS.pending,JSON.stringify(state))}catch(e){
-  pendingOK=false;console.error('Pending sync storage failed',e);
-  updateSync('Нет места для очереди изменений — экспортируйте JSON');
- }
+ const pendingOK=savePendingLocal();
+ v89StorageFailed=!localOK||!pendingOK;
  if(!session){
   if(localOK&&pendingOK)updateSync('Только на этом устройстве — войдите для облака');
   return Promise.resolve(false);
@@ -2602,11 +2911,18 @@ async function manualCloudSync(){
 
 window.addEventListener('pagehide',()=>{try{saveLocal()}catch(e){console.warn('pagehide save',e)}},{capture:true});
 function logout(){
- stopCloudSync();session=null;localStorage.removeItem(KEYS.session);setStatus('Вход не выполнен',false);showGate();document.getElementById('gatePassword').value='';document.getElementById('gateEmail').value='';toast('Вы вышли. Для приватности закройте вкладку на общем устройстве.')
+ authEpoch++;stopCloudSync();session=null;localStorage.removeItem(KEYS.session);setStatus('Вход не выполнен',false);showGate();document.getElementById('gatePassword').value='';document.getElementById('gateEmail').value='';toast('Вы вышли. Для приватности закройте вкладку на общем устройстве.')
 }
 function openAuth(){document.getElementById('authModal').classList.add('open')}
 function closeAuth(){document.getElementById('authModal').classList.remove('open')}
-function toast(t){const x=document.createElement('div');x.textContent=t;x.style='position:fixed;right:18px;bottom:18px;z-index:200;background:#111a2d;color:#fff;padding:13px 16px;border-radius:13px;box-shadow:0 15px 40px #0003';document.body.appendChild(x);setTimeout(()=>x.remove(),2200)}
+function toast(t){
+ // Some older CRUD callers notify before saveAll(). Let its synchronous local
+ // writes finish, and never let a success notice mask a storage failure.
+ queueMicrotask(()=>{
+  const message=v89StorageFailed&&!/JSON|Резервная копия подготовлена|Ошибка|Не удалось/i.test(String(t))?localSaveMessage(false):t;
+  const x=document.createElement('div');x.textContent=message;x.style='position:fixed;right:18px;bottom:18px;z-index:200;background:#111a2d;color:#fff;padding:13px 16px;border-radius:13px;box-shadow:0 15px 40px #0003';document.body.appendChild(x);setTimeout(()=>x.remove(),2200);
+ });
+}
 function go(page){const sections=document.querySelectorAll('.section');sections.forEach(s=>{s.classList.remove('active');s.style.display='none'});const target=document.getElementById(page);if(!target||!target.classList.contains('section'))return;target.classList.add('active');target.style.display=page==='home'?'flex':'block';document.querySelectorAll('#nav button[data-page],#mobileNav button[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===page));const moreBtn=document.getElementById('v74MoreToggle');if(moreBtn)moreBtn.classList.toggle('active',['income','car','loans','goals','chores','dates','settings'].includes(page));document.getElementById('pageTitle').textContent=(NAV[page]||[page,''])[0];document.getElementById('pageSub').textContent=(NAV[page]||[page,''])[1];if(page==='history')renderHistory();if(page==='today')renderToday();if(page==='analytics')renderAnalytics();if(page==='income')renderIncome();if(page==='car')renderCar();if(page==='goals')renderGoals();if(page==='chores')renderChores();if(page==='dates')renderDates();if(page==='loans')renderLoans();if(page==='settings')settingsFields();v84RenderAll();window.scrollTo(0,0)}
 document.querySelectorAll('#nav button[data-page],#mobileNav button[data-page]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));
 
@@ -2658,11 +2974,11 @@ function v81DetailOptions(category){return V81_SUBCATEGORIES[String(category||''
 function v81BeneficiaryOptions(){return ['Не указано','Общее','Сергей','Виктория','Алиса','Майя','Дени','Макс','Оба ребёнка','Все питомцы']}
 function v81FillDetails(prefix,category,detail='',beneficiary){
  const sub=document.getElementById(prefix+'Subcategory'),who=document.getElementById(prefix+'Beneficiary');if(!sub||!who)return;
- const target=beneficiary===undefined?(who.value||'Не указано'):(beneficiary||'Не указано');
+ const target=beneficiary===undefined?(who.value||(prefix==='e'?'Общее':'Не указано')):(beneficiary||(prefix==='e'?'Общее':'Не указано'));
  const values=['',...v81DetailOptions(category)];if(detail&&!values.includes(detail))values.push(detail);
  sub.innerHTML=values.map(x=>`<option value="${esc(x)}">${x?esc(x):'Без уточнения'}</option>`).join('');sub.value=detail;
- const choices=v81BeneficiaryOptions();if(!choices.includes(target))choices.push(target);
- who.innerHTML=choices.map(x=>`<option value="${esc(x)}">${esc(x==='Общее'?'Всей семье':x)}</option>`).join('');who.value=target;
+ const choices=prefix==='e'?['Общее',...['Сергей','Виктория','Алиса','Майя'],...PEOPLE.filter(x=>!['Общее','Сергей','Виктория','Алиса','Майя'].includes(x))]:v81BeneficiaryOptions();if(!choices.includes(target))choices.push(target);
+ who.innerHTML=choices.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');who.value=target;
 }
 function v81EntryDetailText(e){return [e.category,e.subcategory].filter(Boolean).join(' / ')}
 function v81EntrySubjectText(e){return String(e.beneficiary||'')}
@@ -2705,6 +3021,7 @@ function initForm(){
 }
 function updateEntryForm(){
  const type=document.getElementById('eType').value;
+ document.querySelector('.v91-form').dataset.entryType=type;
  document.querySelectorAll('.expense-field').forEach(el=>el.style.display=type==='expense'?'block':'none');
  document.querySelectorAll('.income-field').forEach(el=>el.style.display=type==='income'?'block':'none');
  document.querySelectorAll('.transfer-field').forEach(el=>el.style.display=type==='transfer'?'block':'none');
@@ -2720,12 +3037,19 @@ function updateEntryForm(){
  if(store) store.placeholder=type==='expense'?'Пятёрочка, Ozon, аптека...':'';
 }
 function openEntry(type='expense'){go('today');document.getElementById('eType').value=type;updateEntryForm();document.getElementById('eAmount').focus()}
-function clearEntry(){['eAmount','eStore','eIncomeSource','eComment','v90Search','v93CreditAccounting'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});document.getElementById('eDate').value=today();document.getElementById('eType').value='expense';updateEntryForm();document.getElementById('eCategory').value='';v81FillDetails('e','','','Не указано');v90Paint()}
+function clearEntry(){['eAmount','eStore','eIncomeSource','eComment','v90Search','v93CreditAccounting'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});document.getElementById('eDate').value=today();document.getElementById('eType').value='expense';updateEntryForm();document.getElementById('eCategory').value='';v81FillDetails('e','','','Общее');v90Paint()}
 let v90Saving=false;
+function parseMoneyInput(value){
+ const text=String(value).trim();
+ if(!/^(?:\d+|\d{1,3}(?:[ \u00a0\u202f]\d{3})+)(?:[.,]\d{1,2})?$/.test(text))return NaN;
+ const [whole,fraction='']=text.replace(/[ \u00a0\u202f]/g,'').replace(',','.').split('.');
+ const cents=Number(whole)*100+Number(fraction.padEnd(2,'0'));
+ return Number.isSafeInteger(cents)?cents/100:NaN;
+}
 async function addEntry(){
  if(v90Saving)return;
- const amount=Number(document.getElementById('eAmount').value),type=document.getElementById('eType').value;
- if(!Number.isFinite(amount)||amount<=0){document.getElementById('saveMsg').innerHTML='<div class="error">Укажите корректную сумму больше нуля.</div>';return}
+ const amount=parseMoneyInput(document.getElementById('eAmount').value),type=document.getElementById('eType').value;
+ if(!Number.isFinite(amount)||amount<=0){document.getElementById('saveMsg').innerHTML='<div class="error">Укажите сумму больше нуля, например 1 250,50. Не больше двух знаков после запятой.</div>';return}
  const store=type==='income'?(document.getElementById('eIncomeSource')?.value.trim()||''):(type==='expense'?(document.getElementById('eStore')?.value.trim()||''):'');
  if(type==='expense'&&!document.getElementById('eCategory').value){toast('Выберите, на что потратили');return}
  if(type==='expense'&&document.getElementById('eCategory').value==='Кредит'){const mode=document.getElementById('v93CreditAccounting').value;if(mode!=='payment'){toast(mode==='full'?'Повторный расход не сохранён: покупка уже учтена. Нужен отдельный учёт погашения долга.':'Уточните способ учёта кредитного платежа');return}}
@@ -2735,19 +3059,21 @@ async function addEntry(){
  const e={id:uid(),date:document.getElementById('eDate').value||today(),type,amount,category,who,store,subcategory:type==='expense'?(document.getElementById('eSubcategory')?.value||''):'',beneficiary:type==='expense'?(document.getElementById('eBeneficiary')?.value||''):'',pay:type==='expense'?document.getElementById('ePay').value:'',comment:document.getElementById('eComment').value.trim(),from:type==='transfer'?document.getElementById('eFrom').value:'',to:type==='transfer'?document.getElementById('eTo').value:'',created_at:new Date().toISOString()};
  e.updated_at=e.created_at;v90Saving=true;document.getElementById('v90Save').disabled=true;state.entries.push(e);renderAll();
  let ok=false;try{ok=await saveAll()}finally{v90Saving=false;document.getElementById('v90Save').disabled=false}
- document.getElementById('saveMsg').innerHTML=ok?'<div class="success">✓ Операция сохранена в облако.</div>':'<div class="error">Облако временно недоступно. Операция сохранена локально и будет отправлена позже.</div>';
- if(!v89StorageFailed){clearEntry();if(!ok)document.getElementById('saveMsg').innerHTML='<div class="success">Сохранено на этом устройстве. Облако пока не подтвердило запись — повторно добавлять её не нужно.</div>'}
+ const durable=ok||!v89StorageFailed;
+ document.getElementById('saveMsg').innerHTML='<div class="'+(durable?'success':'error')+'"></div>';
+ document.getElementById('saveMsg').firstElementChild.textContent=localSaveMessage(ok,'Операция сохранена в облако.');
+ if(durable)clearEntry();
 }
 function deleteEntry(id){
  const e=state.entries.find(x=>x.id===id);if(!e)return;
  if(!confirm('Удалить операцию '+money(e.amount)+'?'))return;
- state.deletedEntries=state.deletedEntries||{};state.deletedEntries[id]=new Date().toISOString();state.entries=state.entries.filter(x=>x.id!==id);renderAll();saveAll().then(ok=>{if(!ok)toast(' Удаление пока только на устройстве')})
+ state.deletedEntries=state.deletedEntries||{};state.deletedEntries[id]=new Date().toISOString();state.entries=state.entries.filter(x=>x.id!==id);renderAll();saveAll().then(ok=>toast(localSaveMessage(ok,'Удаление сохранено')))
 }
 function openEdit(id){
  const e=state.entries.find(x=>x.id===id);if(!e)return;editId=id;
  document.getElementById('editForm').innerHTML=`<div class="form-grid">
  <div class="field"><label>Тип</label><select id="xType"><option value="expense">Расход</option><option value="income">Доход</option><option value="transfer">Перевод</option><option value="cash">Наличные</option></select></div>
- <div class="field"><label>Сумма</label><input id="xAmount" type="number" value="${e.amount}"></div>
+ <div class="field"><label>Сумма</label><input id="xAmount" type="text" inputmode="decimal" maxlength="24" value="${esc(e.amount)}"></div>
  <div class="field"><label>Категория</label><select id="xCat">${categoryOptions(e.category)}</select></div>
  <div class="field v81-edit-detail"><label for="xSubcategory">Уточнение расхода</label><select id="xSubcategory"></select></div>
  <div class="field v81-edit-detail"><label for="xBeneficiary">Для кого или чего?</label><select id="xBeneficiary"></select></div>
@@ -2763,9 +3089,9 @@ function openEdit(id){
 function closeEdit(){document.getElementById('editModal').classList.remove('open');editId=null}
 async function saveEdit(){
  const e=state.entries.find(x=>x.id===editId);if(!e)return;
- const amount=Number(document.getElementById('xAmount').value);if(!Number.isFinite(amount)||amount<=0){toast(' Укажите сумму больше нуля');return;} e.updated_at=new Date().toISOString();e.type=document.getElementById('xType').value;e.amount=amount;e.who=e.type==='income'?document.getElementById('xWho').value:(e.who||'Общее');e.category=e.type==='expense'?expenseCategory(document.getElementById('xCat').value,e.who):document.getElementById('xCat').value;e.date=document.getElementById('xDate').value;e.store=document.getElementById('xStore').value;e.comment=document.getElementById('xComment').value;
+ const amount=parseMoneyInput(document.getElementById('xAmount').value);if(!Number.isFinite(amount)||amount<=0){toast(' Укажите сумму больше нуля');return;} e.updated_at=new Date().toISOString();e.type=document.getElementById('xType').value;e.amount=amount;e.who=e.type==='income'?document.getElementById('xWho').value:(e.who||'Общее');e.category=e.type==='expense'?expenseCategory(document.getElementById('xCat').value,e.who):document.getElementById('xCat').value;e.date=document.getElementById('xDate').value;e.store=document.getElementById('xStore').value;e.comment=document.getElementById('xComment').value;
  if(e.type==='expense'){e.subcategory=document.getElementById('xSubcategory')?.value||'';e.beneficiary=document.getElementById('xBeneficiary')?.value||'';}else{delete e.subcategory;delete e.beneficiary;}
- closeEdit();renderAll();const ok=await saveAll();toast(ok?'✓ Изменения сохранены':' Изменения пока только на устройстве')
+ closeEdit();renderAll();const ok=await saveAll();toast(localSaveMessage(ok))
 }
 
 function animalNormalize(e){return e}
@@ -2790,7 +3116,7 @@ function v78Obligations(m){
  const groups=(state.installments||[]).map(i=>{
   const parts=(i.parts||[]).filter(p=>String(p.date||'').startsWith(valid));
   const planned=parts.reduce((n,p)=>n+v77Cents(p.amount),0)/100;
-  const paid=parts.reduce((n,p)=>n+(installmentPaid(i,p)?v77Cents(p.amount):0),0)/100;
+  const paid=parts.reduce((n,p)=>n+v77Cents(installmentAllocated(i,p)),0)/100;
   return {title:i.title||V77_KINDS[i.kind]||'Рассрочка',kind:i.kind||'installment',planned,paid,parts};
  }).filter(x=>x.parts.length);
  const planned=Math.round((mortgagePlanned+groups.reduce((n,g)=>n+g.planned,0))*100)/100;
@@ -2807,8 +3133,8 @@ function v78ObligationRows(o){
   items.push({kind:'mortgage',date:r.payDate,title:'Ипотека · УралСиб',subtitle:v77DateLabel(r.payDate)+' · по графику банка',amount:r.payment,allocated,partial:allocated>.001&&!fullyPaid,paid:fullyPaid,late:r.payDate<todayKey&&!fullyPaid});
  }
  for(const group of o.groups)for(const p of group.parts){
-  const paid=!!installmentLinkedEntry((state.installments||[]).find(i=>(i.parts||[]).some(part=>part.id===p.id)),p);
-  items.push({kind:'installment',date:p.date,title:group.title,subtitle:v77DateLabel(p.date)+' · '+(V77_KINDS[group.kind]||'Оплата частями'),amount:p.amount,paid,late:p.date<todayKey&&!paid});
+  const plan=(state.installments||[]).find(i=>(i.parts||[]).some(part=>part===p)),allocated=installmentAllocated(plan,p),paid=installmentPaid(plan,p);
+  items.push({kind:'installment',date:p.date,title:group.title,subtitle:v77DateLabel(p.date)+' · '+(V77_KINDS[group.kind]||'Оплата частями'),installmentId:plan?.id,installmentPartId:p.id,amount:p.amount,allocated,partial:allocated>0&&!paid,paid,late:p.date<todayKey&&!paid});
  }
  return items.sort((a,b)=>a.date.localeCompare(b.date));
 }
@@ -2890,7 +3216,7 @@ function renderFamilyBoard(){
         <div class="board-item-top"><div><b>${esc(author)}</b><span class="board-item-type">${note?'Финансовая заметка':'Сообщение семье'}</span></div><span>${esc(boardTimeLabel(x.created_at))}</span></div>
         <div class="board-item-text">${esc(x.text)}</div>
       </div>
-      <button class="board-delete" type="button" title="Удалить" aria-label="Удалить сообщение" onclick="deleteBoardItem('${esc(x.id)}')">×</button>
+      <button class="board-delete" type="button" title="Удалить" aria-label="Удалить сообщение" ${recordAction('board-delete',x.id)}>×</button>
     </article>`;
   }).join('');
 }
@@ -2902,7 +3228,7 @@ function addBoardItem(){
   state.boardItems.unshift({id:uid(),type,text,author:profile.name||'Семья',created_at:now,updated_at:now});
   document.getElementById('boardText').value='';
   renderFamilyBoard();renderFamilySpark();
-  saveAll().then(ok=>toast(ok?'✓ Опубликовано':' Сохранено на устройстве'));
+  saveAll().then(ok=>toast(localSaveMessage(ok,'Опубликовано')));
 }
 function deleteBoardItem(id){
   if(!id)return;
@@ -2991,7 +3317,7 @@ function renderHome(){
  const colors=entries.map(([k])=>v84GroupColor(k));
  let angle=0,grad=entries.length?entries.map(([,v],i)=>{const end=angle+(v/total)*360;const x=`${colors[i%colors.length]} ${angle}deg ${end}deg`;angle=end;return x}).join(','):'#dfe6f0 0 360deg';
  document.getElementById('donut').style.background=`conic-gradient(${grad})`;document.getElementById('donutTotal').textContent=money(exSum);
- document.getElementById('categoryLegend').innerHTML=entries.map(([k,v],i)=>`<button class="legend-row v84-legend-click" type="button" onclick="v84Drill('group',${JSON.stringify(k).replace(/"/g,'&quot;')},'home')"><i class="legend-dot" style="background:${colors[i%colors.length]}"></i><span>${esc(k)}</span><b>${money(v)} · ${Math.round(v/total*100)}% <span aria-hidden="true">↗</span></b></button>`).join('')||'<div class="empty">Расходов за месяц пока нет.</div>';
+ document.getElementById('categoryLegend').innerHTML=entries.map(([k,v],i)=>`<button class="legend-row v84-legend-click" type="button" ${recordAction('drill','group',k,'home')}><i class="legend-dot" style="background:${colors[i%colors.length]}"></i><span>${esc(k)}</span><b>${money(v)} · ${Math.round(v/total*100)}% <span aria-hidden="true">↗</span></b></button>`).join('')||'<div class="empty">Расходов за месяц пока нет.</div>';
  const SPECIAL_EXPENSE_GROUPS=Object.freeze({
    'Автомобиль':['ТО','Бензин','Парковка','Ремонт','Страховка','Налог','Шины','Мойка','Платные дороги','Штрафы','Запчасти'],
    'Кредитные платежи':['Кредит']
@@ -3002,20 +3328,20 @@ function renderHome(){
  const pmax=people.reduce((m,[,v])=>Math.max(m,v),1);
  const familyBars=document.getElementById('familyBars');
  if(familyBars){
-   const peopleHtml=people.map(([k,v])=>`<button type="button" class="bar-row v84-drill-bar" onclick="v84Drill('person',${JSON.stringify(k).replace(/"/g,'&quot;')},'home')"><div class="bar-top"><span>${esc(k)}</span><b>${money(v)}</b></div><div class="bar"><i style="width:${v/pmax*100}%;background:${v84PersonColor(k)}"></i></div></button>`).join('');
+   const peopleHtml=people.map(([k,v])=>`<button type="button" class="bar-row v84-drill-bar" ${recordAction('drill','person',k,'home')}><div class="bar-top"><span>${esc(k)}</span><b>${money(v)}</b></div><div class="bar"><i style="width:${v/pmax*100}%;background:${v84PersonColor(k)}"></i></div></button>`).join('');
    const breakdownSum=people.reduce((v,[,amount])=>v+amount,0);
    const summary=`<div class="spending-special-note v862-total-note">Всего по назначениям: <strong>${money(breakdownSum)}</strong> · ${Math.abs(breakdownSum-exSum)<0.01?'совпадает с расходами месяца':'проверьте записи'}</div>`;
    const specialHtml=`<div class="spending-special-title">Из них · отдельные статьи</div>`+specialRows.map(([k,v])=>`<div class="bar-row special-expense-row"><div class="bar-top"><span>${esc(k)}</span><b>${money(v)}</b></div><div class="bar"><i style="width:${v/pmax*100}%"></i></div></div>`).join('')+`<div class="spending-special-note">Автомобиль и кредитные платежи уже включены в суммы выше. Повторно прибавлять их не нужно.</div>`;
    familyBars.innerHTML=(peopleHtml||'<div class="empty">Пока нет расходов по назначению.</div>')+summary+specialHtml;
  }
  const recent=[...state.entries].sort((a,b)=>b.date.localeCompare(a.date)||String(b.created_at).localeCompare(String(a.created_at))).slice(0,8);
- document.getElementById('recent').innerHTML=recent.length?`<div class="table-wrap"><table class="table"><thead><tr><th>Дата</th><th>Операция</th><th>Для кого / источник</th><th>Сумма</th><th></th></tr></thead><tbody>${recent.map(e=>`<tr><td>${esc(e.date)}</td><td>${esc(e.store||e.category)}<br><small>${esc(e.comment||typeName(e.type))}</small></td><td>${esc(e.type==='expense'?v86ExpenseTarget(e):e.who||'—')}</td><td class="${e.type==='income'?'money-green':e.type==='expense'?'money-red':''}">${amountText(e)}</td><td><button class="btn small" onclick="openEdit('${e.id}')">Изменить</button> <button class="btn small danger" onclick="deleteEntry('${e.id}')">Удалить</button></td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">Операций пока нет.</div>'
+ document.getElementById('recent').innerHTML=recent.length?`<div class="table-wrap"><table class="table"><thead><tr><th>Дата</th><th>Операция</th><th>Для кого / источник</th><th>Сумма</th><th></th></tr></thead><tbody>${recent.map(e=>`<tr><td>${esc(e.date)}</td><td>${esc(e.store||e.category)}<br><small>${esc(e.comment||typeName(e.type))}</small></td><td>${esc(e.type==='expense'?v86ExpenseTarget(e):e.who||'—')}</td><td class="${e.type==='income'?'money-green':e.type==='expense'?'money-red':''}">${amountText(e)}</td><td><button class="btn small" ${recordAction('entry-edit',e.id)}>Изменить</button> <button class="btn small danger" ${recordAction('entry-delete',e.id)}>Удалить</button></td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">Операций пока нет.</div>'
 }
-function renderToday(){const arr=state.entries.filter(e=>e.date===today()).sort((a,b)=>String(b.created_at).localeCompare(String(a.created_at)));document.getElementById('todayList').innerHTML=arr.length?arr.map(e=>{const label=V90_CATEGORIES.find(x=>x[0]===e.category)?.[1]||e.category;return `<article class="v91-transaction"><div class="v91-transaction-main"><b>${esc(e.store||label||typeName(e.type))}</b><small>${esc([label,e.subcategory,e.type==='expense'?'Для: '+v86ExpenseTarget(e):e.who].filter(Boolean).join(' · '))}</small>${e.comment?`<p>${esc(e.comment)}</p>`:''}</div><strong class="${e.type==='income'?'money-green':e.type==='expense'?'money-red':''}">${amountText(e)}</strong><div class="v91-row-actions"><button class="btn small" onclick="openEdit('${esc(e.id)}')">Изменить</button><button class="btn small" onclick="deleteEntry('${esc(e.id)}')">Удалить</button></div></article>`}).join(''):'<div class="empty">За сегодня операций нет.</div>'}
+function renderToday(){const arr=state.entries.filter(e=>e.date===today()).sort((a,b)=>String(b.created_at).localeCompare(String(a.created_at)));document.getElementById('todayList').innerHTML=arr.length?arr.map(e=>{const label=V90_CATEGORIES.find(x=>x[0]===e.category)?.[1]||e.category;return `<article class="v91-transaction"><div class="v91-transaction-main"><b>${esc(e.store||label||typeName(e.type))}</b><small>${esc([label,e.subcategory,e.type==='expense'?'Для: '+v86ExpenseTarget(e):e.who].filter(Boolean).join(' · '))}</small>${e.comment?`<p>${esc(e.comment)}</p>`:''}</div><strong class="${e.type==='income'?'money-green':e.type==='expense'?'money-red':''}">${amountText(e)}</strong><div class="v91-row-actions"><button class="btn small" ${recordAction('entry-edit',e.id)}>Изменить</button><button class="btn small" ${recordAction('entry-delete',e.id)}>Удалить</button></div></article>`}).join(''):'<div class="empty">За сегодня операций нет.</div>'}
 
 function renderHistory(){
  const q=document.getElementById('fSearch').value.trim().toLowerCase(),who=document.getElementById('fWho').value,cat=document.getElementById('fCat').value,group=document.getElementById('fGroup')?.value||'',type=document.getElementById('fType').value,m=document.getElementById('fMonth').value;
- const arr=state.entries.filter(e=>(!m||String(e.date||'').startsWith(m))&&(!who||e.who===who)&&(!cat||e.category===cat)&&(!group||(e.type==='expense'&&expenseGroup(e.category)===group))&&(!type||e.type===type)&&(!q||[e.store,e.comment,e.category,e.subcategory,e.beneficiary,e.who,e.date].join(' ').toLowerCase().includes(q))).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||''))||String(b.created_at||'').localeCompare(String(a.created_at||'')));
+ const arr=state.entries.filter(e=>(!m||String(e.date||'').startsWith(m))&&(!who||(e.type==='expense'?v86ExpenseTarget(e):e.who)===who)&&(!cat||e.category===cat)&&(!group||(e.type==='expense'&&expenseGroup(e.category)===group))&&(!type||e.type===type)&&(!q||[e.store,e.comment,e.category,e.subcategory,e.beneficiary,e.who,e.date].join(' ').toLowerCase().includes(q))).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||''))||String(b.created_at||'').localeCompare(String(a.created_at||'')));
  const count=document.getElementById('historyCount');if(count)count.textContent=arr.length+' '+(arr.length%10===1&&arr.length%100!==11?'операция':([2,3,4].includes(arr.length%10)&&![12,13,14].includes(arr.length%100)?'операции':'операций'))+' найдено';
  const safeFull=(v)=>esc(String(v??''));
  document.getElementById('historyBody').innerHTML=arr.map(e=>{
@@ -3079,7 +3405,7 @@ function renderAnalytics(){
  const hint=document.getElementById('peopleChartHint'); if(hint) hint.textContent='Люди, питомцы и отдельные статьи · '+selectedLabel;
  const pmax=people[0]?.[1]||1;
  const personColors=people.map(([k])=>v84PersonColor(k));
- document.getElementById('aPeopleChart').innerHTML=people.map(([k,v],i)=>`<button type="button" class="bar-row v84-drill-bar" onclick="v84Drill('person',${JSON.stringify(k).replace(/"/g,'&quot;')},'analytics')" style="margin:15px 0"><div class="bar-top"><span><b>${esc(k)}</b></span><b>${money(v)} · ${total?Math.round(v/total*100):0}%</b></div><div class="bar" style="height:12px;margin-top:7px"><i style="width:${v/pmax*100}%;background:${personColors[i%personColors.length]}"></i></div></button>`).join('')||'<div class="empty">За выбранный месяц расходов пока нет.</div>';
+ document.getElementById('aPeopleChart').innerHTML=people.map(([k,v],i)=>`<button type="button" class="bar-row v84-drill-bar" ${recordAction('drill','person',k,'analytics')} style="margin:15px 0"><div class="bar-top"><span><b>${esc(k)}</b></span><b>${money(v)} · ${total?Math.round(v/total*100):0}%</b></div><div class="bar" style="height:12px;margin-top:7px"><i style="width:${v/pmax*100}%;background:${personColors[i%personColors.length]}"></i></div></button>`).join('')||'<div class="empty">За выбранный месяц расходов пока нет.</div>';
  let angle=0;
  const grad=people.length&&total?people.map(([k,v],i)=>{const end=angle+v/total*360;const part=`${personColors[i%personColors.length]} ${angle}deg ${end}deg`;angle=end;return part}).join(','):'#dfe6f0 0 360deg';
  const donut=document.getElementById('peopleDonut'); if(donut) donut.style.background=`conic-gradient(${grad})`;
@@ -3087,10 +3413,10 @@ function renderAnalytics(){
  document.getElementById('peopleLegend').innerHTML=people.map(([k,v],i)=>`<div class="legend-row"><i class="legend-dot" style="background:${personColors[i%personColors.length]}"></i><span>${esc(k)}</span><b>${money(v)} · ${total?Math.round(v/total*100):0}%</b></div>`).join('')||'<div class="empty">Нет расходов за выбранный месяц.</div>';
  document.getElementById('peopleCards').innerHTML=people.map(([k,v],i)=>`<div class="person-card"><div class="person-name">${esc(k)}</div><div class="person-sum">${money(v)}</div><div class="person-share">${total?Math.round(v/total*100):0}% от расходов</div><div class="person-bar"><i style="width:${total?v/total*100:0}%;background:${personColors[i%personColors.length]}"></i></div></div>`).join('')||'<div class="empty">Нет расходов за выбранный месяц.</div>';
  const catTotal=total||1;
- document.getElementById('aCatsDetails').innerHTML=Object.entries(aggregate(ex,'category')).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="v74-detail-row"><span>${esc(k)}</span><b>${money(v)}</b></div>`).join('')||'<div class="empty">Пока нет расходов</div>';document.getElementById('aCats').innerHTML=cats.map(([k,v])=>`<button type="button" class="bar-row v84-drill-bar" onclick="v84Drill('group',${JSON.stringify(k).replace(/"/g,'&quot;')},'analytics')"><div class="bar-top"><span>${esc(k)}</span><b>${money(v)}</b></div><div class="bar"><i style="width:${v/catTotal*100}%;background:${v84GroupColor(k)}"></i></div></button>`).join('')||'<div class="empty">Нет данных</div>';
+ document.getElementById('aCatsDetails').innerHTML=Object.entries(aggregate(ex,'category')).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="v74-detail-row"><span>${esc(k)}</span><b>${money(v)}</b></div>`).join('')||'<div class="empty">Пока нет расходов</div>';document.getElementById('aCats').innerHTML=cats.map(([k,v])=>`<button type="button" class="bar-row v84-drill-bar" ${recordAction('drill','group',k,'analytics')}><div class="bar-top"><span>${esc(k)}</span><b>${money(v)}</b></div><div class="bar"><i style="width:${v/catTotal*100}%;background:${v84GroupColor(k)}"></i></div></button>`).join('')||'<div class="empty">Нет данных</div>';
  document.getElementById('aStats').innerHTML=`<div class="kpi"><small>Всего расходов</small><strong>${money(total)}</strong></div><div class="kpi"><small>Операций</small><strong>${ex.length}</strong></div><div class="kpi"><small>Средняя покупка</small><strong>${money(ex.length?total/ex.length:0)}</strong></div><div class="kpi"><small>Дней с расходами</small><strong>${days}</strong></div>`;
 }
-function renderIncome(){const all=state.entries.filter(e=>e.type==='income');const sel=document.getElementById('incomeMonth');const m=sel?.value||month();const arr=all.filter(e=>e.date?.startsWith(m)&&INCOME_PEOPLE.includes(e.who)).sort((a,b)=>b.date.localeCompare(a.date));const by=aggregate(arr,'who');const ordered=INCOME_PEOPLE.map(p=>[p,by[p]||0]);const total=sum(arr);const label=new Date(m+'-01T12:00:00').toLocaleDateString('ru-RU',{month:'long',year:'numeric'});const hint=document.getElementById('incomePeopleChartHint');if(hint)hint.textContent='Доходы за '+label;const max=Math.max(...ordered.map(x=>x[1]),1);const chart=document.getElementById('incomePeopleChart');if(chart)chart.innerHTML=ordered.map(([p,v])=>`<div class="bar-row"><div class="bar-top"><b>${esc(p)}</b><span class="money-green">${money(v)}</span></div><div class="bar"><i style="width:${Math.max(0,Math.min(100,v/max*100))}%"></i></div></div>`).join('');const donut=document.getElementById('incomePeopleDonut');if(donut)donut.style.background=total?'conic-gradient('+ordered.map((x,i)=>{const a=ordered.slice(0,i).reduce((n,y)=>n+y[1],0)/total*360;const b=a+x[1]/total*360;const cols=['#496a9d','#76938b','#b1a18a','#9199aa','#aa90a5','#7296a0','#87909c'];return cols[i%cols.length]+' '+a+'deg '+b+'deg'}).join(',')+')':'conic-gradient(#e8edf5 0 360deg)';const dt=document.getElementById('incomePeopleDonutTotal');if(dt)dt.textContent=money(total);const legend=document.getElementById('incomePeopleLegend');if(legend)legend.innerHTML=ordered.filter(x=>x[1]>0).map(([p,v],i)=>`<div class="legend-row"><span class="legend-dot" style="background:${['#496a9d','#76938b','#b1a18a','#9199aa','#aa90a5','#7296a0','#87909c'][i%7]}"></span><span>${esc(p)}</span><b>${total?Math.round(v/total*100):0}% · ${money(v)}</b></div>`).join('')||'<div class="empty">Нет доходов за выбранный месяц.</div>';const cards=document.getElementById('incomePeopleCards');if(cards)cards.innerHTML=ordered.map(([p,v])=>`<div class="bar-row"><div class="bar-top"><b>${esc(p)}</b><span class="money-green">${money(v)} · ${total?Math.round(v/total*100):0}%</span></div><div class="bar"><i style="width:${total?Math.min(100,v/total*100):0}%"></i></div></div>`).join('');const list=document.getElementById('incomeList');list.innerHTML=arr.length?arr.map(e=>`<div class="bar-row"><div class="bar-top"><span>${esc(e.date)} · ${esc(e.store||e.category)} · ${esc(e.who)}</span><b class="money-green">+${money(e.amount)}</b></div><div>${esc(e.comment||'')}</div><div class="actions"><button class="btn small" onclick="openEdit('${e.id}')">Изменить</button><button class="btn small danger" onclick="deleteEntry('${e.id}')">Удалить</button></div></div>`).join(''):'<div class="empty">Нет доходов за выбранный месяц.</div>';}
+function renderIncome(){const all=state.entries.filter(e=>e.type==='income');const sel=document.getElementById('incomeMonth');const m=sel?.value||month();const arr=all.filter(e=>e.date?.startsWith(m)&&INCOME_PEOPLE.includes(e.who)).sort((a,b)=>b.date.localeCompare(a.date));const by=aggregate(arr,'who');const ordered=INCOME_PEOPLE.map(p=>[p,by[p]||0]);const total=sum(arr);const label=new Date(m+'-01T12:00:00').toLocaleDateString('ru-RU',{month:'long',year:'numeric'});const hint=document.getElementById('incomePeopleChartHint');if(hint)hint.textContent='Доходы за '+label;const max=Math.max(...ordered.map(x=>x[1]),1);const chart=document.getElementById('incomePeopleChart');if(chart)chart.innerHTML=ordered.map(([p,v])=>`<div class="bar-row"><div class="bar-top"><b>${esc(p)}</b><span class="money-green">${money(v)}</span></div><div class="bar"><i style="width:${Math.max(0,Math.min(100,v/max*100))}%"></i></div></div>`).join('');const donut=document.getElementById('incomePeopleDonut');if(donut)donut.style.background=total?'conic-gradient('+ordered.map((x,i)=>{const a=ordered.slice(0,i).reduce((n,y)=>n+y[1],0)/total*360;const b=a+x[1]/total*360;const cols=['#496a9d','#76938b','#b1a18a','#9199aa','#aa90a5','#7296a0','#87909c'];return cols[i%cols.length]+' '+a+'deg '+b+'deg'}).join(',')+')':'conic-gradient(#e8edf5 0 360deg)';const dt=document.getElementById('incomePeopleDonutTotal');if(dt)dt.textContent=money(total);const legend=document.getElementById('incomePeopleLegend');if(legend)legend.innerHTML=ordered.filter(x=>x[1]>0).map(([p,v],i)=>`<div class="legend-row"><span class="legend-dot" style="background:${['#496a9d','#76938b','#b1a18a','#9199aa','#aa90a5','#7296a0','#87909c'][i%7]}"></span><span>${esc(p)}</span><b>${total?Math.round(v/total*100):0}% · ${money(v)}</b></div>`).join('')||'<div class="empty">Нет доходов за выбранный месяц.</div>';const cards=document.getElementById('incomePeopleCards');if(cards)cards.innerHTML=ordered.map(([p,v])=>`<div class="bar-row"><div class="bar-top"><b>${esc(p)}</b><span class="money-green">${money(v)} · ${total?Math.round(v/total*100):0}%</span></div><div class="bar"><i style="width:${total?Math.min(100,v/total*100):0}%"></i></div></div>`).join('');const list=document.getElementById('incomeList');list.innerHTML=arr.length?arr.map(e=>`<div class="bar-row"><div class="bar-top"><span>${esc(e.date)} · ${esc(e.store||e.category)} · ${esc(e.who)}</span><b class="money-green">+${money(e.amount)}</b></div><div>${esc(e.comment||'')}</div><div class="actions"><button class="btn small" ${recordAction('entry-edit',e.id)}>Изменить</button><button class="btn small danger" ${recordAction('entry-delete',e.id)}>Удалить</button></div></div>`).join(''):'<div class="empty">Нет доходов за выбранный месяц.</div>';}
 function carMonthKey(){return document.getElementById('carMonth')?.value||month()}
 function carCategory(entry){
  if(entry.category==='Авто и транспорт')return carCategory({...entry,category:entry.subcategory||'',subcategory:''});
@@ -3160,7 +3486,7 @@ function renderGoals(){
  if(!goals.length){list.innerHTML='<div class="goal-empty"><div class="goal-icon"></div><b>Пока нет мечт</b><div class="hint" style="margin-top:5px">Создайте первую цель — например, отпуск или путешествие.</div></div>';return}
  list.innerHTML='<div class="goal-grid">'+goals.map(g=>{
   const target=Math.max(0,Number(g.target)||0),saved=Math.min(Math.max(0,Number(g.saved)||0),target),left=Math.max(0,target-saved),pct=target?Math.min(100,saved/target*100):0,monthly=Math.max(0,Number(g.monthly)||0),months=monthly>0&&left>0?Math.ceil(left/monthly):null,done=pct>=100;
-  return `<div class="goal-card"><div class="goal-ring" style="background:conic-gradient(var(--green) 0 ${pct}%,#e8edf5 ${pct}% 100%)"><span>${Math.round(pct)}%</span></div><div class="goal-content"><h3> ${esc(g.name)}</h3><div class="goal-meta"><span>Накоплено <b>${money(saved)}</b></span><span>Цель <b>${money(target)}</b></span></div><div class="goal-progress"><i style="width:${pct}%"></i></div><div class="goal-meta"><span>Осталось <b>${money(left)}</b></span><span>В месяц <b>${money(monthly)}</b></span><span>${done?'Цель достигнута ':months?`Ориентир: <b>${months} мес.</b>`:'Срок не задан'}</span></div>${done?'':`<div class="goal-actions"><input class="goal-deposit" id="deposit_${esc(g.id)}" type="number" min="1" inputmode="decimal" placeholder="Сумма пополнения, ₽"><button class="btn primary" onclick="addGoalDeposit('${esc(g.id)}')">Добавить</button><button class="btn danger" onclick="deleteGoal('${esc(g.id)}')">Удалить</button></div>`}<details class="v78-goal-history"><summary>История пополнений · ${(g.deposits||[]).length}</summary>${(g.deposits||[]).length?(g.deposits||[]).slice().reverse().map(d=>`<div class="v78-goal-history-row"><span>${esc(v77DateLabel(d.date))} · ${esc(d.who||'Семья')}</span><b>+${money2(d.amount)}</b></div>`).join(''):'<div class="v78-goal-history-row"><span>Прежняя накопленная сумма сохранена; детализация доступна для новых пополнений.</span></div>'}</details></div></div>`;
+  return `<div class="goal-card"><div class="goal-ring" style="background:conic-gradient(var(--green) 0 ${pct}%,#e8edf5 ${pct}% 100%)"><span>${Math.round(pct)}%</span></div><div class="goal-content"><h3> ${esc(g.name)}</h3><div class="goal-meta"><span>Накоплено <b>${money(saved)}</b></span><span>Цель <b>${money(target)}</b></span></div><div class="goal-progress"><i style="width:${pct}%"></i></div><div class="goal-meta"><span>Осталось <b>${money(left)}</b></span><span>В месяц <b>${money(monthly)}</b></span><span>${done?'Цель достигнута ':months?`Ориентир: <b>${months} мес.</b>`:'Срок не задан'}</span></div>${done?'':`<div class="goal-actions"><input class="goal-deposit" id="deposit_${esc(g.id)}" type="number" min="1" inputmode="decimal" placeholder="Сумма пополнения, ₽"><button class="btn primary" ${recordAction('goal-deposit',g.id)}>Добавить</button><button class="btn danger" ${recordAction('goal-delete',g.id)}>Удалить</button></div>`}<details class="v78-goal-history"><summary>История пополнений · ${(g.deposits||[]).length}</summary>${(g.deposits||[]).length?(g.deposits||[]).slice().reverse().map(d=>`<div class="v78-goal-history-row"><span>${esc(v77DateLabel(d.date))} · ${esc(d.who||'Семья')}</span><b>+${money2(d.amount)}</b></div>`).join(''):'<div class="v78-goal-history-row"><span>Прежняя накопленная сумма сохранена; детализация доступна для новых пополнений.</span></div>'}</details></div></div>`;
  }).join('')+'</div>';
 }
 
@@ -3216,7 +3542,7 @@ async function telegramNotify(kind,text){
 function updateTelegramSetting(key,value){
  if(!state.settings.notifications)state.settings.notifications=telegramSettings();
  state.settings.notifications[key]=Boolean(value);state.settings.updated_at=new Date().toISOString();
- saveLocal();localStorage.setItem(KEYS.pending,JSON.stringify(state));renderTelegramSettings();saveAll();
+ saveLocal();savePendingLocal();renderTelegramSettings();saveAll();
 }
 function renderTelegramSettings(){
  const n=telegramSettings(),ids={telegramEnabled:n.enabled,telegramCredit:n.creditReminder,telegramSalary:n.salaryReminder,telegramGoal:n.goalReminder,telegramTask:n.taskReminder,telegramSergey:n.sergey,telegramVictoria:n.victoria};
@@ -3246,14 +3572,14 @@ async function saveSettings(){
    });
    state.settings.updated_at=new Date().toISOString();
    saveLocal();
-   localStorage.setItem(KEYS.pending,JSON.stringify(state));
+   savePendingLocal();
    renderAll();
    const ok=await saveAll();
-   toast(ok?'✓ Настройки сохранены и синхронизированы':' Настройки сохранены на устройстве — облако пока недоступно');
+   toast(localSaveMessage(ok,'Настройки сохранены в облако'));
  }catch(err){
    console.error('save settings',err);
-   saveLocal();localStorage.setItem(KEYS.pending,JSON.stringify(state));
-   toast(' Настройки сохранены на этом устройстве');
+   saveLocal();savePendingLocal();
+   toast(localSaveMessage(false));
  }finally{
    if(btn){btn.disabled=false;btn.textContent=btn.dataset.originalText||'Сохранить настройки'}
  }
@@ -3483,8 +3809,8 @@ function addEarlyPaymentRow(amount=0,date=''){
  const row=document.createElement('div');
  row.className='early-plan-row';row.dataset.extraRow='1';
  row.innerHTML=`<span class="early-plan-num"></span>
-   <div class="field-inline v77-extra-field"><label>Дополнительная сумма</label><div class="v77-money-entry"><input class="early-plan-amount" type="number" min="0" step="1000" value="${amount>0?Math.round(amount):''}" placeholder="Например, 50000" inputmode="decimal" aria-label="Дополнительная сумма досрочного платежа"><span>₽</span></div></div>
-   <div class="field-inline"><label>Дата</label><input class="early-plan-date" type="date" value="${useDate}" min="2026-09-01" max="${loanScheduleData().slice(-1)[0]?.payDate||'2041-09-02'}"></div>
+   <div class="field-inline v77-extra-field"><label>Досрочно в тело</label><div class="v77-money-entry"><input class="early-plan-amount" type="number" min="0" step="1000" value="${amount>0?Math.round(amount):''}" placeholder="Например, 50000" inputmode="decimal" aria-label="Дополнительная сумма досрочного платежа"><span>₽</span></div></div>
+   <div class="field-inline"><label>Дата</label><input class="early-plan-date" type="date" value="${useDate}" min="2026-09-02" max="${loanScheduleData().slice(-1)[0]?.payDate||'2041-09-02'}"></div>
    <div class="early-plan-total">—</div>
    <button type="button" class="btn small danger" aria-label="Удалить досрочный платёж" onclick="this.closest('.early-plan-row').remove();refreshEarlyPlan()">Удалить</button>`;
  wrap.appendChild(row);
@@ -3499,13 +3825,11 @@ function resetEarlyPayments(){
 }
 function renderEarlyPlanRows(){
  const wrap=document.getElementById('earlyPlanRows');if(!wrap)return;
+ const sim=simulateEarlyPlan(getEarlyPayments(),document.getElementById('earlyMode')?.value||'term'),available=(sim?.rows||[]).filter(r=>r.kind==='extra'||r.kind==='unused');
  [...wrap.querySelectorAll('.early-plan-row[data-extra-row]')].forEach((row,i)=>{
-   const n=row.querySelector('.early-plan-num');if(n)n.textContent=i+1;
-   const amount=Math.max(0,Number(row.querySelector('.early-plan-amount')?.value)||0);
-   const date=row.querySelector('.early-plan-date')?.value||'';
-   const base=loanScheduleData().find(r=>r.payDate>=date);
-   const total=base?Number(base.payment||0)+amount:amount;
-   const out=row.querySelector('.early-plan-total');if(out)out.textContent=money2(total);
+  const n=row.querySelector('.early-plan-num');if(n)n.textContent=i+1;
+  const amount=Math.max(0,Number(row.querySelector('.early-plan-amount')?.value)||0),date=row.querySelector('.early-plan-date')?.value||'',index=available.findIndex(r=>r.date===date&&r.requested===amount),payment=index>=0?available.splice(index,1)[0]:null;
+  const out=row.querySelector('.early-plan-total');if(out)out.textContent=payment?money2(payment.total)+(payment.unused>0?' · не использовано '+money2(payment.unused):''):'—';
  });
 }
 function refreshEarlyPlan(){
@@ -3516,50 +3840,63 @@ function refreshEarlyPlan(){
  const baseEl=document.getElementById('earlyBasePayment'),dateEl=document.getElementById('earlyBaseDate');
  if(baseEl)baseEl.textContent=base?money2(base.payment):'—';
  if(dateEl)dateEl.textContent=base?`до ${fmtDate(base.payDate)}`:'—';
- const firstTotal=first&&base?Number(base.payment)+first.amount:0;
+ const sim=first?simulateEarlyPlan(extras,document.getElementById('earlyMode')?.value||'term'):null,firstRow=sim?.rows.find(r=>r.kind==='extra');
+ const firstTotal=firstRow?.total||0;
  const totalEl=document.getElementById('earlyTotalPayment');if(totalEl)totalEl.textContent=first?money2(firstTotal):'—';
- const planTotal=extras.reduce((a,x)=>a+x.amount,0);
+ const planTotal=sim?.totalExtra||0;
  const pEl=document.getElementById('earlyPlanTotal');if(pEl)pEl.textContent=money2(planTotal);
  const cEl=document.getElementById('earlyPlanCount');if(cEl)cEl.textContent=`${extras.length} ${extras.length===1?'платёж':extras.length<5?'платежа':'платежей'}`;
  const freeEl=document.getElementById('earlyFreeMoney');if(freeEl)freeEl.textContent=money2(planTotal);
  const ft=document.getElementById('earlyFirstTotal');if(ft)ft.textContent=first?money2(firstTotal):'—';
  if(first){
    const idx=rows.findIndex(r=>r.payDate>=first.date), prevBal=idx>0?rows[idx-1].balance:4500000;
-   const fb=document.getElementById('earlyFirstBalance');if(fb)fb.textContent=money2(Math.max(0,prevBal-first.amount));
+   const fb=document.getElementById('earlyFirstBalance');if(fb)fb.textContent=money2(sim?.firstBalance??prevBal);
  }else{const fb=document.getElementById('earlyFirstBalance');if(fb)fb.textContent='—'}
 }
 function simulateEarlyPlan(extras,mode){
- const base=loanScheduleData();if(!extras.length||!base.length)return null;
- const sorted=[...extras].sort((a,b)=>a.date.localeCompare(b.date));const firstIndex=Math.max(0,base.findIndex(r=>r.payDate>=sorted[0].date));
- let bal=firstIndex>0?base[firstIndex-1].balance:4500000;let cursor=firstIndex>0?parseEarlyDate(base[firstIndex-1].payDate):parseEarlyDate('2026-09-02');let ei=0;let interest=0,totalExtra=0,rows=[];
- for(let i=firstIndex;i<base.length&&bal>0.005;i++){
-  const bank=base[i],end=parseEarlyDate(bank.payDate),baseStart=i>0?base[i-1].balance:4500000,baseInterest=Number(bank.interest)||0,totalDays=Math.max(1,(end-cursor)/86400000);let periodStart=cursor,periodInterest=0;
-  while(ei<sorted.length&&parseEarlyDate(sorted[ei].date)<=end){const ex=sorted[ei],ed=parseEarlyDate(ex.date);if(ed>=periodStart){const days=Math.max(0,(ed-periodStart)/86400000);const accrued=baseInterest*(days/totalDays)*(bal/Math.max(baseStart,1));periodInterest+=accrued;bal=Math.max(0,Math.round((bal-ex.amount)*100)/100);totalExtra+=ex.amount;rows.push({date:ex.date,kind:'extra',scheduled:0,extra:ex.amount,total:ex.amount,interest:accrued,body:ex.amount,balance:bal});periodStart=ed}ei++;if(bal<=0.005)break}
-  if(bal<=0.005)break;
-  const daysAfter=Math.max(0,(end-periodStart)/86400000);periodInterest+=baseInterest*(daysAfter/totalDays)*(bal/Math.max(baseStart,1));interest+=periodInterest;
-  let payment=Number(bank.payment)||85885;
-  if(mode==='payment'){
-    const remaining=Math.max(1,base.length-i);const monthly=.22/12;const annuity=bal*monthly/(1-Math.pow(1+monthly,-remaining));payment=Math.min(payment,Math.round(annuity*100)/100);
+ const base=loanScheduleData(),round=n=>Math.round((n+Number.EPSILON)*100)/100;
+ if(!base.length||!Array.isArray(extras))return null;
+ const sorted=extras.map(x=>({date:String(x.date||''),amount:Number(x.amount)})).sort((a,b)=>a.date.localeCompare(b.date));
+ if(sorted.some(x=>!/^\d{4}-\d{2}-\d{2}$/.test(x.date)||!Number.isFinite(x.amount)||x.amount<0||x.date<'2026-09-02'||x.date>base[base.length-1].payDate))return null;
+ const positive=sorted.filter(x=>x.amount>0),firstIndex=positive.length?base.findIndex(r=>r.payDate>=positive[0].date):0;
+ if(firstIndex<0)return null;
+ let bal=firstIndex>0?base[firstIndex-1].balance:4500000,ei=0,interest=0,totalExtra=0,totalUnused=0,totalCharges=0,rows=[];
+ for(let i=firstIndex;i<base.length&&bal>.005;i++){
+  const bank=base[i],start=parseEarlyDate(i>0?base[i-1].payDate:'2026-09-02'),end=parseEarlyDate(bank.payDate),baseStart=i>0?base[i-1].balance:4500000,totalDays=Math.max(1,(end-start)/86400000);
+  let cursor=start;
+  while(ei<positive.length&&parseEarlyDate(positive[ei].date)<=end){
+   const ex=positive[ei++],date=parseEarlyDate(ex.date),days=Math.max(0,(date-cursor)/86400000),accrued=round(Number(bank.interest)*(days/totalDays)*(bal/Math.max(baseStart,1))),applied=Math.min(bal,round(ex.amount)),unused=round(ex.amount-applied);
+   interest=round(interest+accrued);totalExtra=round(totalExtra+applied);totalUnused=round(totalUnused+unused);bal=round(Math.max(0,bal-applied));
+   rows.push({date:ex.date,kind:'extra',scheduled:0,extra:applied,requested:ex.amount,unused,total:round(applied+accrued),interest:accrued,charges:0,body:applied,balance:bal});cursor=date;
+   if(bal<=.005)break;
   }
-  const actual=Math.min(payment,Math.round((bal+periodInterest)*100)/100);const body=Math.max(0,Math.round((actual-periodInterest)*100)/100);bal=Math.max(0,Math.round((bal-body)*100)/100);rows.push({date:bank.payDate,kind:'scheduled',scheduled:actual,extra:0,total:actual,interest:periodInterest,body,balance:bal});cursor=end;
+  if(bal<=.005)break;
+  const accrued=round(Number(bank.interest)*(Math.max(0,(end-cursor)/86400000)/totalDays)*(bal/Math.max(baseStart,1))),charges=round(Math.max(0,Number(bank.payment)-Number(bank.body)-Number(bank.interest)));
+  let payment=Number(bank.payment);
+  if(mode==='payment'&&totalExtra>0){const remaining=Math.max(1,base.length-i),rate=Number(bank.interest)/Math.max(baseStart,1),annuity=rate>0?bal*rate/(1-Math.pow(1+rate,-remaining)):bal/remaining;payment=Math.min(payment,round(annuity+charges))}
+  const body=round(Math.min(bal,Math.max(0,payment-accrued-charges))),actual=round(body+accrued+charges);
+  bal=round(Math.max(0,bal-body));interest=round(interest+accrued);totalCharges=round(totalCharges+charges);
+  rows.push({date:bank.payDate,kind:'scheduled',scheduled:actual,extra:0,unused:0,total:actual,interest:accrued,charges,body,balance:bal});
  }
- const last=rows[rows.length-1],oldInterest=base.slice(firstIndex).reduce((a,r)=>a+(Number(r.interest)||0),0),oldScheduledCount=base.length-firstIndex,newScheduled=rows.filter(r=>r.kind==='scheduled');
- return {rows,oldInterest,totalInterest:interest,totalExtra,endDate:last?.date||base[base.length-1].payDate,monthsSaved:Math.max(0,oldScheduledCount-newScheduled.length),firstBalance:rows.find(r=>r.kind==='extra')?.balance||null,oldEndDate:base[base.length-1].payDate};
+ // Later planned extras after payoff remain unused; they are never principal.
+ for(;ei<positive.length;ei++){const ex=positive[ei];totalUnused=round(totalUnused+ex.amount);rows.push({date:ex.date,kind:'unused',scheduled:0,extra:0,requested:ex.amount,unused:ex.amount,total:0,interest:0,charges:0,body:0,balance:bal})}
+ const paidRows=rows.filter(r=>r.kind!=='unused'),last=paidRows[paidRows.length-1],oldInterest=round(base.slice(firstIndex).reduce((a,r)=>a+Number(r.interest),0)),oldScheduledCount=base.length-firstIndex,newScheduled=rows.filter(r=>r.kind==='scheduled');
+ return {rows,oldInterest,totalInterest:interest,totalExtra,totalUnused,totalCharges,totalCash:round(rows.reduce((n,r)=>n+r.total,0)),remainingBalance:bal,endDate:last?.date||base[base.length-1].payDate,monthsSaved:Math.max(0,oldScheduledCount-newScheduled.length),firstBalance:rows.find(r=>r.kind==='extra')?.balance??null,oldEndDate:base[base.length-1].payDate};
 }
 
 function renderEarlyRepayment(){
  const out=document.getElementById('earlyResult');if(!out)return;const extras=getEarlyPayments(),mode=document.getElementById('earlyMode')?.value||'term';
  if(!extras.length){out.innerHTML='<div class="form-note">Добавьте свободную сумму и дату. Можно создать несколько досрочных платежей — например 50 000 ₽ в ноябре и 100 000 ₽ в январе.</div>';refreshEarlyPlan();return}
  const sim=simulateEarlyPlan(extras,mode);if(!sim){out.innerHTML='<div class="form-note">Проверьте даты и суммы досрочных платежей.</div>';return}
- const save=Math.max(0,sim.oldInterest-sim.totalInterest),scheduled=sim.rows.filter(r=>r.kind==='scheduled'),firstExtra=sim.rows.find(r=>r.kind==='extra'),nextScheduled=scheduled[0],firstTotal=firstExtra&&nextScheduled?firstExtra.extra+nextScheduled.scheduled:firstExtra?.extra||0,last=sim.rows[sim.rows.length-1],endDate=last?fmtDate(last.date):'—';
+ const save=Math.max(0,sim.oldInterest-sim.totalInterest),scheduled=sim.rows.filter(r=>r.kind==='scheduled'),firstExtra=sim.rows.find(r=>r.kind==='extra'),nextScheduled=scheduled[0],firstTotal=firstExtra?.total||0,last=sim.rows[sim.rows.length-1],endDate=fmtDate(sim.endDate);
  const oldMonths=sim.oldEndDate?Math.max(0,Math.round((parseEarlyDate(sim.oldEndDate)-parseEarlyDate(firstUpcomingLoanRow()?.payDate||sim.oldEndDate))/30.4375/86400000)):0;
- const paymentText=mode==='payment'?(nextScheduled?money2(nextScheduled.scheduled):'—'):(nextScheduled?money2(nextScheduled.scheduled):money2(state.settings?.loans?.loan1||85885));
- const preview=sim.rows.slice(0,14).map(r=>`<tr><td>${fmtDate(r.date)}</td><td>${r.kind==='extra'?' Досрочно':'По графику'}</td><td>${money2(r.scheduled)}</td><td>${money2(r.extra)}</td><td><b>${money2(r.total)}</b></td><td>${money2(r.balance)}</td></tr>`).join('');
- out.innerHTML=`<div class="early-grid"><div><small>Ваши досрочные платежи</small><b>${money2(sim.totalExtra)}</b><span>сверх обязательных</span></div><div><small>Экономия процентов</small><b>${money2(save)}</b><span>ориентир по модели</span></div><div><small>Было</small><b>${fmtDate(sim.oldEndDate)}</b><span>банковский график</span></div><div><small>Станет</small><b>${endDate}</b><span>${sim.monthsSaved>0?`примерно −${sim.monthsSaved} мес.`:'срок почти не меняется'}</span></div></div>
+ const paymentText=mode==='payment'?(nextScheduled?money2(nextScheduled.scheduled):'—'):(nextScheduled?money2(nextScheduled.scheduled):'Закрыт по модели');
+ const preview=sim.rows.slice(0,14).map(r=>`<tr><td>${fmtDate(r.date)}</td><td>${r.kind==='extra'?'Досрочно':r.kind==='unused'?'Не использовано':'По графику'}</td><td>${money2(r.scheduled)}</td><td>${money2(r.extra)}</td><td>${money2(r.interest)}</td><td>${money2(r.charges)}</td><td>${money2(r.unused)}</td><td><b>${money2(r.total)}</b></td><td>${money2(r.balance)}</td></tr>`).join('');
+ out.innerHTML=`<div class="early-grid"><div><small>Ваши досрочные платежи</small><b>${money2(sim.totalExtra)}</b><span>применено в тело · не использовано ${money2(sim.totalUnused)}</span></div><div><small>Экономия процентов</small><b>${money2(save)}</b><span>ориентир по модели</span></div><div><small>Было</small><b>${fmtDate(sim.oldEndDate)}</b><span>банковский график</span></div><div><small>Станет</small><b>${endDate}</b><span>${sim.monthsSaved>0?`примерно −${sim.monthsSaved} мес.`:'срок почти не меняется'}</span></div></div>
  <div class="early-explain"><strong>${mode==='term'?'Как это работает':'Что изменится в платеже'}</strong><div style="margin-top:5px;color:#42516a;line-height:1.5;font-size:13px">${mode==='term'?`Обязательный платёж остаётся по графику. Ваши свободные деньги идут дополнительно в тело кредита. Поэтому 1 ₽ почти ничего не меняет — заметный эффект появляется только при существенных и регулярных досрочных платежах.`:`Срок стараемся сохранить близким к банковскому, а после досрочного погашения пересчитываем ориентир ежемесячного платежа. Фактический платёж определит банк.`}</div></div>
- <div class="scenario-compare"><div><small>Обычный платёж</small><b>${money2(nextScheduled?.scheduled||85885)}</b><span>по выбранной ближайшей дате</span></div><div class="win"><small>${mode==='term'?'С вашим планом':'Ориентир после пересчёта'}</small><b>${paymentText}</b><span>${mode==='term'?'плюс ваши свободные деньги в указанные даты':'расчётная сумма после досрочного погашения'}</span></div></div>
- <div class="form-note"><b>Важно:</b>это сценарный расчёт, а не обещание банка. УралСиб может получить другой результат из-за даты зачисления, дневного начисления процентов и округлений. Чем точнее даты и суммы вашего плана, тем полезнее сравнение.</div>
- <div class="early-preview"><div class="early-preview-head"><b>Первые изменения по вашему плану</b><span>обязательные и дополнительные платежи отдельно</span></div><div class="table-wrap"><table class="table"><thead><tr><th>Дата</th><th>Тип</th><th>Основной</th><th>Дополнительно</th><th>Всего</th><th>Остаток</th></tr></thead><tbody>${preview}</tbody></table></div></div>`;
+ <div class="scenario-compare"><div><small>Обычный платёж</small><b>${money2(loanScheduleData().find(r=>r.payDate>=(firstExtra?.date||today()))?.payment||0)}</b><span>по выбранной ближайшей дате</span></div><div class="win"><small>${mode==='term'?'С вашим планом':'Ориентир после пересчёта'}</small><b>${paymentText}</b><span>${mode==='term'?'плюс ваши свободные деньги в указанные даты':'расчётная сумма после досрочного погашения'}</span></div></div>
+ <div class="form-note"><b>Важно:</b>это сценарный расчёт, а не обещание банка. УралСиб может получить другой результат из-за даты зачисления, дневного начисления процентов и округлений. Досрочная сумма означает взнос в тело; начисленные до этой даты проценты показаны отдельно и включены в общую сумму. Превышение остатка не применяется в тело. Прочие начисления банковского графика не уменьшают основной долг. Это оценка: сумму полного закрытия и дополнительные начисления подтвердит банк.</div>
+ <div class="early-preview"><div class="early-preview-head"><b>Первые изменения по вашему плану</b><span>обязательные и дополнительные платежи отдельно</span></div><div class="table-wrap"><table class="table"><thead><tr><th>Дата</th><th>Тип</th><th>Основной</th><th>В тело досрочно</th><th>Проценты</th><th>Прочие начисления</th><th>Не использовано</th><th>Всего</th><th>Остаток</th></tr></thead><tbody>${preview}</tbody></table></div></div>`;
 }
 
 function toggleLoanSchedule(){const x=document.getElementById('loanScheduleWrap');if(x)x.style.display=x.style.display==='none'?'block':'none'}
@@ -3582,11 +3919,15 @@ function v77Parts(total,count,date,period){
 }
 function v77EntryIsLinked(id){return (state.installments||[]).some(i=>Object.values(i.links||{}).includes(id))}
 function installmentLinkedEntry(i,part){
- const ref=i.links?.[part.id];return ref?(state.entries||[]).find(e=>e.id===ref&&e.type==='expense'):null;
+ const ref=i?.links?.[part.id];return ref?(state.entries||[]).find(e=>e.id===ref&&(e.type==='expense'||(e.type==='transfer'&&e.debtRepayment===true))):null;
 }
-function installmentPaid(i,part){return !!installmentLinkedEntry(i,part)}
+function installmentAllocated(i,part){
+ const e=installmentLinkedEntry(i,part),amount=Number(e?.amount)||0;
+ return Math.max(0,Math.min(v77Cents(part.amount),v77Cents(amount)))/100;
+}
+function installmentPaid(i,part){return v77Cents(installmentAllocated(i,part))>=v77Cents(part.amount)}
 function installmentUpcoming(){
- return (state.installments||[]).flatMap(i=>(i.parts||[]).filter(p=>!installmentPaid(i,p)).map(p=>({id:i.id,partId:p.id,name:i.title||V77_KINDS[i.kind]||'Рассрочка',date:p.date,amount:Number(p.amount)||0}))).sort((a,b)=>a.date.localeCompare(b.date));
+ return (state.installments||[]).flatMap(i=>(i.parts||[]).filter(p=>!installmentPaid(i,p)).map(p=>({id:i.id,partId:p.id,name:i.title||V77_KINDS[i.kind]||'Рассрочка',date:p.date,amount:Math.max(0,(Number(p.amount)||0)-installmentAllocated(i,p))}))).sort((a,b)=>a.date.localeCompare(b.date));
 }
 function v77DateLabel(date){return /^\d{4}-\d{2}-\d{2}$/.test(date)?new Date(date+'T12:00:00').toLocaleDateString('ru-RU',{day:'numeric',month:'short',year:'numeric'}):'—'}
 function v77Form(show){const e=document.getElementById('v77InstallmentForm');if(e){e.hidden=!show;if(show){document.getElementById('v77FirstDate').value||=today();e.scrollIntoView({behavior:'smooth',block:'nearest'})}}}
@@ -3613,11 +3954,18 @@ function v77LinkPayment(id,partId,entryId){
 }
 function v77PayPart(id,partId){
  const i=v77FindInstallment(id),part=v77FindPart(i,partId);if(!i||!part||installmentPaid(i,part))return;
- if(!window.confirm('Создать расход '+money2(part.amount)+' по покупке «'+i.title+'»? Если он уже есть в истории, выберите «Из истории» вместо этого.'))return;
+ if(installmentLinkedEntry(i,part)){toast('Часть оплачена частично. Измените связанную операцию в истории; новая оплата автоматически не создаётся.');return}
+ let accountingMode=i.accountingMode;
+ if(!['payments','purchase'].includes(accountingMode)){
+  const choice=window.prompt('Как учитывать эту покупку? Введите 1 — считаем расходы по платежам; 2 — покупка уже записана целиком, оплата только погашает долг. Отмена не создаёт операцию.','');
+  accountingMode=choice==='1'?'payments':choice==='2'?'purchase':null;
+  if(!['payments','purchase'].includes(accountingMode)){toast('Выберите способ учёта: 1 или 2');return}
+ }
+ if(!window.confirm((accountingMode==='purchase'?'Записать погашение долга ':'Создать расход ')+money2(part.amount)+' по покупке «'+i.title+'» датой сегодня? Если оплата уже есть в истории, отмените и выберите «Из истории».'))return;
  const who='Не указано',now=new Date().toISOString();
- const e={id:uid(),date:part.date>today()?today():part.date,type:'expense',amount:part.amount,category:'Кредит',who,store:i.provider||V77_KINDS[i.kind],pay:'Карта',comment:'Оплата частями · '+i.title,from:'',to:'',installmentId:i.id,installmentPartId:part.id,created_at:now,updated_at:now};
- state.entries.push(e);i.links=i.links||{};i.links[part.id]=e.id;i.updated_at=now;
- saveAll();renderAll();toast('✓ Оплата записана в расходы один раз');
+ const e={id:'installment:'+encodeURIComponent(i.id)+':'+encodeURIComponent(part.id),paymentKey:'installment:'+encodeURIComponent(i.id)+':'+encodeURIComponent(part.id),date:today(),scheduledDate:part.date,type:accountingMode==='purchase'?'transfer':'expense',debtRepayment:accountingMode==='purchase',accountingMode,amount:part.amount,category:'Кредит',who,store:i.provider||V77_KINDS[i.kind],pay:'Карта',comment:'Оплата частями · '+i.title,from:'',to:'',installmentId:i.id,installmentPartId:part.id,created_at:now,updated_at:now};
+ state.entries.push(e);i.links=i.links||{};i.links[part.id]=e.id;i.accountingMode=accountingMode;i.updated_at=now;
+ saveAll();renderAll();toast(accountingMode==='purchase'?'✓ Погашение долга записано без нового расхода':'✓ Оплата записана в расходы один раз');
 }
 function v77ShowMatches(id,partId){const i=v77FindInstallment(id),part=v77FindPart(i,partId);const box=document.getElementById('v77Matches_'+partId);if(!box||!part)return;
  const candidates=v77CandidateExpenses(i,part);
@@ -3634,15 +3982,15 @@ function v77UpdatePart(id,partId,date,amount){const i=v77FindInstallment(id),p=v
 }
 function renderInstallments(){
  const summary=document.getElementById('v77InstallmentSummary'),list=document.getElementById('v77InstallmentList');if(!summary||!list)return;
- const all=state.installments||[],upcoming=installmentUpcoming(),total=all.reduce((a,i)=>a+(i.parts||[]).reduce((s,p)=>s+(installmentPaid(i,p)?0:Number(p.amount)||0),0),0),paid=all.reduce((a,i)=>a+(i.parts||[]).reduce((s,p)=>s+(installmentPaid(i,p)?Number(p.amount)||0:0),0),0),late=upcoming.filter(p=>p.date<today()).length;
+ const all=state.installments||[],upcoming=installmentUpcoming(),total=all.reduce((a,i)=>a+(i.parts||[]).reduce((s,p)=>s+Math.max(0,(Number(p.amount)||0)-installmentAllocated(i,p)),0),0),paid=all.reduce((a,i)=>a+(i.parts||[]).reduce((s,p)=>s+installmentAllocated(i,p),0),0),late=upcoming.filter(p=>p.date<today()).length;
  summary.innerHTML=`<div><small>Осталось по покупкам частями</small><b>${money2(total)}</b></div><div><small>Оплачено по отмеченным частям</small><b>${money2(paid)}</b></div><div><small>Ближайший платёж</small><b>${upcoming.length?v77DateLabel(upcoming[0].date):'—'}</b></div><div><small>Просроченных частей</small><b>${late}</b></div>`;
  if(!all.length){list.innerHTML='<div class="v77-empty"><b>Покупок частями пока нет</b><p>Добавьте Яндекс Сплит или рассрочку: сроки и оплаты будут видны в одном месте.</p></div>';return}
  list.innerHTML=all.slice().sort((a,b)=>String(b.created_at).localeCompare(String(a.created_at))).map(i=>{
-  const paidParts=i.parts.filter(p=>installmentPaid(i,p)),left=i.parts.filter(p=>!installmentPaid(i,p)),remaining=left.reduce((a,p)=>a+Number(p.amount),0),next=left.slice().sort((a,b)=>a.date.localeCompare(b.date))[0];
+  const paidParts=i.parts.filter(p=>installmentPaid(i,p)),left=i.parts.filter(p=>!installmentPaid(i,p)),remaining=left.reduce((a,p)=>a+Math.max(0,Number(p.amount)-installmentAllocated(i,p)),0),next=left.slice().sort((a,b)=>a.date.localeCompare(b.date))[0];
   const status=left.length?(next?.date<today()?'Есть просрочка':'Активна'):'Закрыта';
   return `<article class="v77-installment-card"><div class="v77-installment-top"><div><span class="v77-kind">${esc(V77_KINDS[i.kind]||'Покупка частями')}</span><h3>${esc(i.title)}</h3><small>${esc(i.provider||'Без указания сервиса')}</small></div><div class="v77-installment-status ${left.length?(next?.date<today()?'late':'active'):'done'}">${status}</div></div>
    <div class="v77-installment-metrics"><div><small>Осталось</small><b>${money2(remaining)}</b></div><div><small>Оплачено</small><b>${paidParts.length} из ${i.parts.length}</b></div><div><small>Следующий платёж</small><b>${next?v77DateLabel(next.date):'Все оплачены'}</b></div></div>
-   <details class="v77-installment-details"><summary>График платежей и история <span>⌄</span></summary><div class="v77-part-list">${i.parts.map((p,index)=>{const linked=installmentLinkedEntry(i,p);return `<div class="v77-part ${linked?'paid':''}"><div><strong>Часть ${index+1} · ${money2(p.amount)}</strong><small>${v77DateLabel(p.date)} ${linked?'· ✓ Учтено в расходах':'· Ожидает оплаты'}</small></div><div class="v77-part-actions">${linked?`<button class="btn small" type="button" data-v77-op="history">История ↗</button>`:`<button class="btn small primary" type="button" data-v77-pay="${esc(i.id)}" data-v77-part="${esc(p.id)}">Записать оплату</button><button class="btn small" type="button" data-v77-match="${esc(i.id)}" data-v77-part="${esc(p.id)}">Из истории</button>`}</div>${linked?'':`<div class="v77-change-date"><label>Дата по вашему графику <input type="date" data-v77-date="${esc(i.id)}" data-v77-part="${esc(p.id)}" value="${esc(p.date)}"></label><button class="btn small" data-v77-save-date="${esc(i.id)}" data-v77-part="${esc(p.id)}" type="button">Сохранить дату</button></div>`}<div id="v77Matches_${esc(p.id)}" class="v77-matches" hidden></div>`}).join('')}</div><div class="v77-plan-foot">${i.kind==='card'?'Для кредитной карты это упрощённый план, без расчёта процентов и минимального платежа. Сверяйте выписку банка.':'Плановый график; реальные расходы появляются только после отметки оплаты.'}<button class="btn small danger" type="button" data-v77-delete="${esc(i.id)}">Удалить план</button></div></details>
+   <details class="v77-installment-details"><summary>График платежей и история <span>⌄</span></summary><div class="v77-part-list">${i.parts.map((p,index)=>{const linked=installmentLinkedEntry(i,p),allocated=installmentAllocated(i,p),fullyPaid=installmentPaid(i,p);return `<div class="v77-part ${fullyPaid?'paid':''}"><div><strong>Часть ${index+1} · ${money2(p.amount)}</strong><small>${v77DateLabel(p.date)} ${fullyPaid?'· ✓ Оплачено':allocated>0?'· Частично: '+money2(allocated)+' · остаток '+money2(Number(p.amount)-allocated):'· Ожидает оплаты'}</small></div><div class="v77-part-actions">${linked?`<button class="btn small" type="button" data-v77-op="history">История ↗</button>`:`<button class="btn small primary" type="button" data-v77-pay="${esc(i.id)}" data-v77-part="${esc(p.id)}">Записать оплату</button><button class="btn small" type="button" data-v77-match="${esc(i.id)}" data-v77-part="${esc(p.id)}">Из истории</button>`}</div>${linked?'':`<div class="v77-change-date"><label>Дата по вашему графику <input type="date" data-v77-date="${esc(i.id)}" data-v77-part="${esc(p.id)}" value="${esc(p.date)}"></label><button class="btn small" data-v77-save-date="${esc(i.id)}" data-v77-part="${esc(p.id)}" type="button">Сохранить дату</button></div>`}<div id="v77Matches_${esc(p.id)}" class="v77-matches" hidden></div>`}).join('')}</div><div class="v77-plan-foot">${i.kind==='card'?'Для кредитной карты это упрощённый план, без расчёта процентов и минимального платежа. Сверяйте выписку банка.':'Плановый график; реальные расходы появляются только после отметки оплаты.'}<button class="btn small danger" type="button" data-v77-delete="${esc(i.id)}">Удалить план</button></div></details>
   </article>`;
  }).join('');
 }
@@ -3832,7 +4180,7 @@ function renderDates(){
     const meta=b.kind==='wedding'?[`Свадьба ${b.date.slice(0,4)} года`,`Сейчас ${weddingYearsText(weddingYears(b))}`,`Следующая: ${weddingName(weddingNextYears(b))} свадьба`,d===0?'сегодня':d===1?'завтра':`через ${d} дн.`].join(' · '):[b.group||'',b.time?` ${b.time}`:'',d===0?'сегодня':d===1?'завтра':`через ${d} дн.`].filter(Boolean).join(' · ');
     const note=b.note&&b.note!==z.name?`<div class="birthday-note"> ${esc(b.note)}</div>`:'';
     const phoneBlock=phone?`<a class="birthday-phone" href="tel:${esc(v80PhoneHref(b.phone))}"> ${esc(phone)}</a>`:'';
-    const actions=fam?`<div class="birthday-actions"><button type="button" class="btn small" onclick="editBirthday('${esc(b.id)}')">Изменить</button><span class="birthday-family-badge">${b.kind==='wedding'?' Годовщина':' Семейная дата'}</span></div>`:`<div class="birthday-actions">${phone?`<a class="btn small primary" href="tel:${esc(v80PhoneHref(b.phone))}">Позвонить</a>`:`<span class="btn small disabled">Нет номера</span>`}<button type="button" class="btn small" onclick="editBirthday('${esc(b.id)}')">Изменить</button><button type="button" class="btn small danger" onclick="deleteBirthday('${esc(b.id)}')">Удалить</button></div>`;
+    const actions=fam?`<div class="birthday-actions"><button type="button" class="btn small" ${recordAction('birthday-edit',b.id)}>Изменить</button><span class="birthday-family-badge">${b.kind==='wedding'?' Годовщина':' Семейная дата'}</span></div>`:`<div class="birthday-actions">${phone?`<a class="btn small primary" href="tel:${esc(v80PhoneHref(b.phone))}">Позвонить</a>`:`<span class="btn small disabled">Нет номера</span>`}<button type="button" class="btn small" ${recordAction('birthday-edit',b.id)}>Изменить</button><button type="button" class="btn small danger" ${recordAction('birthday-delete',b.id)}>Удалить</button></div>`;
     return `<div class="birthday-row ${fam?'birthday-row-family':''}">
       <div class="birthday-date"><b>${day}</b><span>${month}</span></div>
       <div class="birthday-main"><div class="birthday-name-line"><b>${b.kind==='wedding'?' ':''}${esc(b.name)}</b>${z.symbol?`<span class="zodiac-pill" title="${esc(z.name)}">${z.symbol} ${esc(z.name)}</span>`:''}</div><span>${esc(meta)}</span>${phoneBlock}${note}</div>
@@ -3866,11 +4214,11 @@ function renderHomeChores(){
  card.style.display=chores.length?'':'none';
  const title=overdue.length?` ${overdue.length} просрочено`:(due.length?` На сегодня дел: ${due.length}`:'✓ Срочных дел нет');
  body.innerHTML=`<div class="v81-chore-dashboard"><div class="v81-chores-totals"><span>${title}</span><small>${soon.length?`На неделе впереди ещё ${soon.length}`:'Ближайшие задачи под контролем'}</small></div>`+
- (feed.length?`<div class="v81-chore-feed">${feed.map(c=>`<div class="v81-chore-alert ${choreStatus(c)}"><span class="v81-alert-icon">${choreStatus(c)==='overdue'?'!':choreStatus(c)==='today'?'●':'↻'}</span><div class="v81-alert-info"><strong>${esc(c.title)}</strong><small>${esc(c.assignee)} · ${esc(choreDateLabel(c.dueDate))} · ${esc(choreRepeat(c.recurrence))}</small></div><button type="button" class="v81-alert-done" onclick="completeChore('${esc(c.id)}')" aria-label="Отметить выполненным: ${esc(c.title)}">✓ Готово</button></div>`).join('')}</div>`:'<div class="v81-chores-calm">Новых напоминаний на ближайшую неделю нет.</div>')+
+ (feed.length?`<div class="v81-chore-feed">${feed.map(c=>`<div class="v81-chore-alert ${choreStatus(c)}"><span class="v81-alert-icon">${choreStatus(c)==='overdue'?'!':choreStatus(c)==='today'?'●':'↻'}</span><div class="v81-alert-info"><strong>${esc(c.title)}</strong><small>${esc(c.assignee)} · ${esc(choreDateLabel(c.dueDate))} · ${esc(choreRepeat(c.recurrence))}</small></div><button type="button" class="v81-alert-done" ${recordAction('chore-complete',c.id)} aria-label="Отметить выполненным: ${esc(c.title)}">✓ Готово</button></div>`).join('')}</div>`:'<div class="v81-chores-calm">Новых напоминаний на ближайшую неделю нет.</div>')+
  `<p class="v81-chore-footnote">Повторяющиеся дела получают новую дату после выполнения. Напоминания видны при открытом банке.</p></div>`;
 }
 function renderChoreSummary(){const e=document.getElementById('choresSummary');if(!e)return;const o=state.chores.filter(c=>choreStatus(c)==='overdue').length,t=state.chores.filter(c=>choreStatus(c)==='today').length,w=state.chores.filter(c=>c.dueDate<=choreWeekEnd()).length,u=state.chores.filter(c=>choreStatus(c)==='upcoming').length;e.innerHTML=`<div class="chore-stat ${o?'bad':''}"><small>Просрочено</small><b>${o}</b></div><div class="chore-stat ${t?'warn':''}"><small>Сегодня</small><b>${t}</b></div><div class="chore-stat"><small>Эта неделя</small><b>${w}</b></div><div class="chore-stat"><small>Впереди</small><b>${u}</b></div>`;const s=document.getElementById('choresHeroStatus');if(s)s.textContent=o?'Есть просроченные дела':t?'Сегодня есть дела':'Дом в порядке'}
-function renderChores(){const list=document.getElementById('choresList');if(!list)return;renderChoreSummary();let a=[...state.chores];if(choreFilter==='today')a=a.filter(c=>choreStatus(c)==='today');if(choreFilter==='week')a=a.filter(c=>c.dueDate<=choreWeekEnd());if(choreFilter==='overdue')a=a.filter(c=>choreStatus(c)==='overdue');a.sort((x,y)=>x.dueDate.localeCompare(y.dueDate)||x.title.localeCompare(y.title));document.querySelectorAll('.chore-filter').forEach(b=>b.classList.toggle('active',b.dataset.choreFilter===choreFilter));if(!a.length){list.innerHTML=`<div class="chores-empty"><div></div><b>${choreFilter==='overdue'?'Просроченных дел нет':choreFilter==='today'?'На сегодня дел нет':'Пока нет домашних дел'}</b><span>Добавьте первое дело — дальше приложение будет следить за сроками.</span></div>`;renderHomeChores();return}list.innerHTML=a.map(c=>{const s=choreStatus(c),cl=s==='overdue'?'red':s==='today'?'yellow':'green';return `<article class="chore-sticky ${cl}"><div class="chore-pin"></div><div class="chore-sticky-top"><span class="chore-assignee">${choreIcon(c.assignee)} ${esc(c.assignee)}</span><button class="chore-delete" onclick="deleteChore('${esc(c.id)}')" type="button" title="Удалить">×</button></div><h3>${esc(c.title)}</h3><div class="chore-date ${s}">${s==='overdue'?' ':s==='today'?' ':' '}${esc(choreDateLabel(c.dueDate))}</div><div class="chore-meta"><span>↻ ${esc(choreRepeat(c.recurrence))}</span>${c.lastDone?`<span>Последний раз: ${esc(choreDateLabel(c.lastDone))}</span>`:''}</div><button class="btn primary chore-done" onclick="completeChore('${esc(c.id)}')" type="button">✓ Выполнено</button></article>`}).join('');renderHomeChores()}
+function renderChores(){const list=document.getElementById('choresList');if(!list)return;renderChoreSummary();let a=[...state.chores];if(choreFilter==='today')a=a.filter(c=>choreStatus(c)==='today');if(choreFilter==='week')a=a.filter(c=>c.dueDate<=choreWeekEnd());if(choreFilter==='overdue')a=a.filter(c=>choreStatus(c)==='overdue');a.sort((x,y)=>x.dueDate.localeCompare(y.dueDate)||x.title.localeCompare(y.title));document.querySelectorAll('.chore-filter').forEach(b=>b.classList.toggle('active',b.dataset.choreFilter===choreFilter));if(!a.length){list.innerHTML=`<div class="chores-empty"><div></div><b>${choreFilter==='overdue'?'Просроченных дел нет':choreFilter==='today'?'На сегодня дел нет':'Пока нет домашних дел'}</b><span>Добавьте первое дело — дальше приложение будет следить за сроками.</span></div>`;renderHomeChores();return}list.innerHTML=a.map(c=>{const s=choreStatus(c),cl=s==='overdue'?'red':s==='today'?'yellow':'green';return `<article class="chore-sticky ${cl}"><div class="chore-pin"></div><div class="chore-sticky-top"><span class="chore-assignee">${choreIcon(c.assignee)} ${esc(c.assignee)}</span><button class="chore-delete" ${recordAction('chore-delete',c.id)} type="button" title="Удалить">×</button></div><h3>${esc(c.title)}</h3><div class="chore-date ${s}">${s==='overdue'?' ':s==='today'?' ':' '}${esc(choreDateLabel(c.dueDate))}</div><div class="chore-meta"><span>↻ ${esc(choreRepeat(c.recurrence))}</span>${c.lastDone?`<span>Последний раз: ${esc(choreDateLabel(c.lastDone))}</span>`:''}</div><button class="btn primary chore-done" ${recordAction('chore-complete',c.id)} type="button">✓ Выполнено</button></article>`}).join('');renderHomeChores()}
 function setChoreFilter(f){choreFilter=f;renderChores()}
 function addChore(){const title=document.getElementById('choreTitle')?.value.trim(),who=document.getElementById('choreWho')?.value||'Семья',due=document.getElementById('choreDue')?.value||today(),repeat=document.getElementById('choreRepeat')?.value||'weekly';if(!title){toast('Введите название дела');return}const now=new Date().toISOString();state.chores.push({id:uid(),title,assignee:who,dueDate:due,recurrence:repeat,lastDone:'',created_at:now,updated_at:now});saveAll();document.getElementById('choreTitle').value='';renderChores();toast('✓ Дело добавлено');telegramNotify('task',` Семейный банк
 
@@ -3893,7 +4241,7 @@ const V84_PERSON_COLORS=Object.freeze({'Сергей':'#3f69e8','Виктори�
 function v84PersonColor(name){return V84_PERSON_COLORS[name]||'#6986bf'}
 function v84NormalizeIntelligence(x){
  const a=x&&typeof x==='object'?x:{},types=['budgets','recurring','accounts'];
- const out={budgets:[],recurring:[],accounts:[],deleted:{budgets:{},recurring:{},accounts:{}}};
+ const out={...a,budgets:[],recurring:[],accounts:[],deleted:{...(a.deleted||{}),budgets:{},recurring:{},accounts:{}}};
  for(const t of types){
   out[t]=(Array.isArray(a[t])?a[t]:[]).filter(v=>v&&typeof v==='object'&&typeof v.id==='string').map(v=>({...v,amount:Number(v.amount)||0,updated_at:String(v.updated_at||v.created_at||'1970-01-01T00:00:00Z')}));
   const d=a.deleted?.[t];out.deleted[t]=(d&&typeof d==='object'&&!Array.isArray(d))?{...d}:{};
@@ -3901,8 +4249,10 @@ function v84NormalizeIntelligence(x){
  return out;
 }
 function v84MergeIntelligence(sources){
- const out=v84NormalizeIntelligence(null);
+ const extensions=sources.filter(s=>s?.intelligence).reduce((all,s)=>({...all,...s.intelligence,deleted:{...(all.deleted||{}),...(s.intelligence.deleted||{})}}),{});
+ const out=v84NormalizeIntelligence(extensions);
  for(const key of ['budgets','recurring','accounts']){
+  out.deleted[key]={};
   const records=new Map();
   for(const s of sources){const a=v84NormalizeIntelligence(s?.intelligence);
    for(const [id,at] of Object.entries(a.deleted[key]))if(!out.deleted[key][id]||String(at)>String(out.deleted[key][id]))out.deleted[key][id]=at;
@@ -3923,7 +4273,7 @@ function v84LinkRecurring(id,period){
  const matches=state.entries.filter(e=>e.type==='expense'&&!e.recurringId&&String(e.date||'').startsWith(period)&&Math.abs(Number(e.amount)-Number(r.amount))<.011).sort((a,b)=>String(b.date).localeCompare(String(a.date)));
  if(!matches.length){toast('В этом месяце нет свободного расхода с точно такой суммой. Можно подтвердить новую оплату.');return}
  const modal=document.getElementById('v84DrillModal');document.getElementById('v84DrillPeriod').textContent='Привязка ранее внесённого расхода';document.getElementById('v84DrillTitle').textContent='Выберите оплату · '+r.name;
- document.getElementById('v84DrillBody').innerHTML='<p class="v84-mini-note">Привязка не создаёт новую операцию и не меняет её сумму или дату. Выберите только соответствующий платёж.</p>'+matches.map(e=>`<div class="v84-row"><div class="v84-row-main"><b>${esc(e.store||e.category)}</b><small>${esc(e.date)} · ${esc(e.who)} · ${esc(e.comment||'')}</small></div><strong class="v84-row-amount">${money(e.amount)}</strong><button class="btn primary small" type="button" data-v84-link="${esc(e.id)}">Связать</button></div>`).join('');
+ document.getElementById('v84DrillBody').innerHTML='<p class="v84-mini-note">Привязка не создаёт новую операцию и не меняет её сумму или дату. Выберите только соответствующий платёж.</p>'+matches.map(e=>`<div class="v84-row"><div class="v84-row-main"><b>${esc(e.store||e.category)}</b><small>${esc(e.date)} · ${esc(e.type==='expense'?v86ExpenseTarget(e):e.who)} · ${esc(e.comment||'')}</small></div><strong class="v84-row-amount">${money(e.amount)}</strong><button class="btn primary small" type="button" data-v84-link="${esc(e.id)}">Связать</button></div>`).join('');
  document.querySelectorAll('#v84DrillBody [data-v84-link]').forEach(btn=>btn.addEventListener('click',()=>{const e=state.entries.find(x=>x.id===btn.dataset.v84Link);if(!e||e.recurringId||v84RecurringConfirmed(r,period))return;e.recurringId=r.id;e.recurringPeriod=period;e.updated_at=new Date().toISOString();v84CloseDrill();saveAll();renderAll();toast('Существующая оплата привязана — без дубля')}));
  modal.classList.add('open');modal.setAttribute('aria-hidden','false');modal.querySelector('.v84-modal').focus();
 }
@@ -3946,8 +4296,8 @@ async function v84ConfirmRecurring(id,period){const r=v84Data().recurring.find(x
  const date=today();if(!confirm(`Вы действительно оплатили «${r.name}» на ${money(r.amount)}? Будет создан один расход датой ${v84NoticeDate(date)}${period!==date.slice(0,7)?' за плановый месяц '+v84MonthLabel(period):''}. Если расход уже внесён — отмените и используйте «Связать расход».`))return;
  // check again after confirm in case UI changed.
  if(v84RecurringConfirmed(r,period))return;
- const now=new Date().toISOString();state.entries.push({id:uid(),date,type:'expense',amount:r.amount,category:r.category,who:r.who||'Общее',store:r.name,comment:'Регулярный платёж · '+v84MonthLabel(period),pay:'Карта',recurringId:r.id,recurringPeriod:period,created_at:now,updated_at:now});
- renderAll();const ok=await saveAll();toast(ok?'Платёж внесён в расходы':'Платёж сохранён локально, ожидает облака');
+ const now=new Date().toISOString();state.entries.push({id:'recurring:'+encodeURIComponent(r.id)+':'+period,paymentKey:'recurring:'+encodeURIComponent(r.id)+':'+period,date,type:'expense',amount:r.amount,category:r.category,who:r.who||'Общее',store:r.name,comment:'Регулярный платёж · '+v84MonthLabel(period),pay:'Карта',recurringId:r.id,recurringPeriod:period,created_at:now,updated_at:now});
+ renderAll();const ok=await saveAll();toast(localSaveMessage(ok,'Платёж внесён в расходы'));
 }
 let v84EditingAccountId='';
 function v84SaveAccount(){const name=(document.getElementById('v84AccountName')?.value||'').trim().slice(0,65),raw=document.getElementById('v84AccountAmount')?.value,amount=Number(raw);
@@ -3966,14 +4316,14 @@ function v84InitLists(){const b=document.getElementById('v84BudgetGroup'),r=docu
 }
 function v84RenderBudgets(){const root=document.getElementById('v84BudgetList');if(!root)return;v84InitLists();const m=v84ThisMonth(),budgets=v84Data().budgets;
  root.innerHTML=budgets.length?budgets.map(x=>{const spent=v84SpendGroup(m,x.group),pct=Math.round(spent/x.amount*100);const exceed=spent>x.amount;
- return `<div class="v84-row"><div class="v84-row-main"><b>${esc(x.group)}</b><small>${money(spent)} из ${money(x.amount)} · ${pct}% ${exceed?'· лимит превышен':''}</small><div class="v84-progress ${exceed?'over':''}"><i style="width:${Math.min(pct,100)}%"></i></div></div><button class="btn small danger" type="button" onclick="v84Remove('budgets','${esc(x.id)}')">Убрать</button></div>`}).join(''):'<div class="v84-empty">Лимиты пока не установлены. Начните с продуктов или детских занятий.</div>';
+ return `<div class="v84-row"><div class="v84-row-main"><b>${esc(x.group)}</b><small>${money(spent)} из ${money(x.amount)} · ${pct}% ${exceed?'· лимит превышен':''}</small><div class="v84-progress ${exceed?'over':''}"><i style="width:${Math.min(pct,100)}%"></i></div></div><button class="btn small danger" type="button" ${recordAction('intelligence-remove','budgets',x.id)}>Убрать</button></div>`}).join(''):'<div class="v84-empty">Лимиты пока не установлены. Начните с продуктов или детских занятий.</div>';
 }
 function v84RenderRecurring(){const root=document.getElementById('v84RecurringList');if(!root)return;v84InitLists();const m=v84ThisMonth(),rec=v84Data().recurring.slice().sort((a,b)=>Number(a.day)-Number(b.day));
  root.innerHTML=rec.length?rec.map(r=>{const paid=v84RecurringConfirmed(r,m),date=v84DateOfMonth(m,r.day),label=paid?'Подтверждено в истории':date<today()?'Ожидает подтверждения · срок прошёл':'Ожидаемый платёж';
- return `<div class="v84-row"><div class="v84-row-main"><b>${esc(r.name)}</b><small>${esc(r.category)} · ${v84NoticeDate(date)} · ${label}</small></div><strong class="v84-row-amount">${money(r.amount)}</strong>${paid?'<span class="v881-recurring-paid">Учтено в истории</span>':`<button class="btn small" type="button" onclick="v84LinkRecurring('${esc(r.id)}','${esc(m)}')">Связать расход</button><button class="btn primary small" type="button" onclick="v84ConfirmRecurring('${esc(r.id)}','${esc(m)}')">Отметить оплату</button>`}<button class="btn small danger" type="button" onclick="v84Remove('recurring','${esc(r.id)}')">Убрать</button></div>`}).join(''):'<div class="v84-empty">Добавьте ежемесячные расходы: связь, занятия, подписки, интернет. Ипотеку и Сплит здесь дублировать не нужно.</div>';
+ return `<div class="v84-row"><div class="v84-row-main"><b>${esc(r.name)}</b><small>${esc(r.category)} · ${v84NoticeDate(date)} · ${label}</small></div><strong class="v84-row-amount">${money(r.amount)}</strong>${paid?'<span class="v881-recurring-paid">Учтено в истории</span>':`<button class="btn small" type="button" ${recordAction('recurring-link',r.id,m)}>Связать расход</button><button class="btn primary small" type="button" ${recordAction('recurring-confirm',r.id,m)}>Отметить оплату</button>`}<button class="btn small danger" type="button" ${recordAction('intelligence-remove','recurring',r.id)}>Убрать</button></div>`}).join(''):'<div class="v84-empty">Добавьте ежемесячные расходы: связь, занятия, подписки, интернет. Ипотеку и Сплит здесь дублировать не нужно.</div>';
 }
 function v84RenderAccounts(){const root=document.getElementById('v84AccountsList');if(!root)return;const list=v84Data().accounts,total=list.reduce((a,x)=>a+(Number(x.amount)||0),0);
- root.innerHTML=list.length?`<div class="v84-row"><div class="v84-row-main"><b>Всего на введённых счетах</b><small>Ручные данные, актуальность зависит от последнего обновления</small></div><strong class="v84-row-amount">${money(total)}</strong></div>`+list.map(a=>`<div class="v84-row"><div class="v84-row-main"><b>${esc(a.name)}</b><small>Обновлено ${esc(new Date(a.updated_at).toLocaleDateString('ru-RU'))}</small></div><strong class="v84-row-amount">${money(a.amount)}</strong><button class="btn small" onclick="v84EditAccount('${esc(a.id)}')">Изменить</button><button class="btn small danger" onclick="v84Remove('accounts','${esc(a.id)}')">Убрать</button></div>`).join(''):'<div class="v84-empty">Пока нет ручных остатков. Это необязательный блок — результат месяца продолжит работать как раньше.</div>';
+ root.innerHTML=list.length?`<div class="v84-row"><div class="v84-row-main"><b>Всего на введённых счетах</b><small>Ручные данные, актуальность зависит от последнего обновления</small></div><strong class="v84-row-amount">${money(total)}</strong></div>`+list.map(a=>`<div class="v84-row"><div class="v84-row-main"><b>${esc(a.name)}</b><small>Обновлено ${esc(new Date(a.updated_at).toLocaleDateString('ru-RU'))}</small></div><strong class="v84-row-amount">${money(a.amount)}</strong><button class="btn small" ${recordAction('account-edit',a.id)}>Изменить</button><button class="btn small danger" ${recordAction('intelligence-remove','accounts',a.id)}>Убрать</button></div>`).join(''):'<div class="v84-empty">Пока нет ручных остатков. Это необязательный блок — результат месяца продолжит работать как раньше.</div>';
 }
 function v84RelevantRows(m){return v78ObligationRows(v78Obligations(m))}
 function v84PendingObligationsTo(date){const m=month(),next=new Date(m+'-01T12:00:00');next.setMonth(next.getMonth()+1);const months=[m,next.toISOString().slice(0,7)];return months.flatMap(x=>v84RelevantRows(x)).filter(r=>r.date>=today()&&r.date<=date&&!r.paid).reduce((n,r)=>n+Math.max(0,Number(r.amount)-(Number(r.allocated)||0)),0)}
@@ -3994,7 +4344,7 @@ function v84RenderNotices(){const root=document.getElementById('v84Notices');if(
  for(const x of v84Data().recurring){for(const period of [m,nm]){const due=v84DateOfMonth(period,x.day);if(due<=until&&!v84RecurringConfirmed(x,period))notices.push({date:due,title:'Регулярный платёж · '+x.name,detail:`${money(x.amount)} · ${v84NoticeDate(due)}`,page:'analytics',level:due<today()?'warn':'normal'})}}
  const family=(state.birthdays||[]).map(b=>({b,days:birthdayDays(b)})).filter(x=>Number.isFinite(x.days)&&x.days>=0&&x.days<=30);for(const x of family){const due=new Date(today()+'T12:00:00');due.setDate(due.getDate()+x.days);notices.push({date:due.toISOString().slice(0,10),title:'Важная дата · '+x.b.name,detail:x.days===0?'Сегодня':'Через '+x.days+' дн.',page:'dates',level:'normal'})}
  notices.sort((a,b)=>a.date.localeCompare(b.date)||(a.level==='danger'?-1:1));
- root.innerHTML=notices.length?`<div class="v84-notice-list">${notices.slice(0,5).map(x=>`<div class="v84-notice ${x.level}"><span class="v84-notice-dot"></span><div class="v84-notice-body"><b>${esc(x.title)}</b><small>${esc(x.detail)}</small></div><button type="button" class="btn small" onclick="go('${x.page}')">Открыть</button></div>`).join('')}</div>${notices.length>5?`<p class="v84-mini-note">Ещё ${notices.length-5} событий — в соответствующих разделах.</p>`:''}`:'<div class="v84-empty">В ближайшие 30 дней нет записанных событий, требующих внимания.</div>';
+ root.innerHTML=notices.length?`<div class="v84-notice-list">${notices.slice(0,5).map(x=>`<div class="v84-notice ${x.level}"><span class="v84-notice-dot"></span><div class="v84-notice-body"><b>${esc(x.title)}</b><small>${esc(x.detail)}</small></div><button type="button" class="btn small" ${recordAction('navigate',x.page)}>Открыть</button></div>`).join('')}</div>${notices.length>5?`<p class="v84-mini-note">Ещё ${notices.length-5} событий — в соответствующих разделах.</p>`:''}`:'<div class="v84-empty">В ближайшие 30 дней нет записанных событий, требующих внимания.</div>';
 }
 function v84ReportText(){const m=v84ThisMonth(),ex=expenses(m),inc=monthEntries(m).filter(e=>e.type==='income'),total=sum(ex),income=sum(inc),cats=Object.entries(aggregate(groupedExpenseEntries(ex),'category')).sort((a,b)=>b[1]-a[1]),ob=v78Obligations(m),budgets=v84Data().budgets;
  let lines=[`СЕМЕЙНЫЙ БАНК · ИТОГИ ${v84MonthLabel(m).toUpperCase()}`,'',`Доходы: ${money(income)}`,`Расходы: ${money(total)}`,`Результат месяца: ${money(income-total)}`,`Операций расходов: ${ex.length}`,'',`Три основные группы расходов:`];
@@ -4074,14 +4424,26 @@ document.getElementById('importFile').addEventListener('change',async e=>{
  const f=e.target.files?.[0];if(!f)return;
  try{
   if(f.size>15*1024*1024)throw new Error('Файл слишком большой (больше 15 МБ)');
-  const raw=JSON.parse(await f.text());
-  if(!raw||typeof raw!=='object'||!Array.isArray(raw.entries)||!raw.settings||typeof raw.settings!=='object')throw new Error('Это не резервная копия семейного банка');
+  const raw=validateBackup(JSON.parse(await f.text()));
   const incoming=normalize(raw),count=incoming.entries.length;
   if(!confirm(`Добавить данные из копии (${count} операций) к текущей истории? Существующие операции не будут заменены целиком.`))return;
-  try{localStorage.setItem('marichevy_pre_import_backup_v73',JSON.stringify({saved_at:new Date().toISOString(),data:state}))}catch(err){console.warn('pre-import backup',err)}
-  state=mergeStates(incoming,state); // Keep current settings on equal timestamps, merge the entire history.
-  renderAll();const ok=await saveAll();
-  toast(ok?'✓ Резервная копия объединена с текущими данными':' Импорт сохранён локально — облако не подтверждено');
+  const previousState=state,wasBlocked=localRecoveryBlocked;
+  const previousDisk=new Map([KEYS.state,KEYS.pending,LOCAL_BACKUP_KEY].map(key=>[key,localStorage.getItem(key)]));
+  const merged=mergeStates(incoming,state);validateBackup(merged);
+  // Without a durable rollback copy, importing must not change memory or disk.
+  const previousImport=localStorage.getItem(LOCAL_PREIMPORT_KEY);
+  if(previousImport!==null){try{parseLocalState(previousImport,true)}catch{preserveDamagedLocal(LOCAL_PREIMPORT_KEY,previousImport)}}
+  localStorage.setItem(LOCAL_PREIMPORT_KEY,JSON.stringify({saved_at:new Date().toISOString(),data:state}));
+  try{
+   state=merged;localRecoveryBlocked=false;
+   if(!saveLocal()||!savePendingLocal())throw new Error('Не удалось сохранить импорт. Восстанавливаем предыдущую копию.');
+  }catch(err){
+   state=previousState;localRecoveryBlocked=wasBlocked;
+   for(const [key,value] of previousDisk)try{if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value)}catch{localRecoveryBlocked=true;localRecoveryNotice='Импорт остановлен. Для восстановления сохранена копия перед импортом.'}
+   v89StorageFailed=true;throw err;
+  }
+  renderAll();const ok=session?await saveAll():false;
+  toast(localSaveMessage(ok,'Резервная копия объединена с текущими данными'));
  }catch(err){toast('Ошибка импорта: '+String(err.message||'неверный файл'))}
  finally{e.target.value=''}
 });
@@ -4108,32 +4470,30 @@ function startCloudSync(){
 }
 function stopCloudSync(){if(cloudSyncTimer){clearInterval(cloudSyncTimer);cloudSyncTimer=null}}
 async function syncFromCloud(){
- if(!session||saving||cloudSyncBusy)return false;
+ if(localRecoveryBlocked){updateSync(localRecoveryNotice||'Локальное восстановление требует согласования — облачная запись остановлена');return false}
+ if(!session||cloudSyncBusy)return false;
  cloudSyncBusy=true;
- try{
-   const cloud=await fetchCloudState();
-   if(!cloud)return false;
-   let pending=null;
-   try{const raw=JSON.parse(localStorage.getItem(KEYS.pending)||'null');if(raw&&typeof raw==='object')pending=normalize(raw)}catch{pending=null}
-   const before=JSON.stringify(state);
-   // Pending/local changes always participate in the merge before cloud data can win.
-   const merged=pending?mergeStates(cloud,pending):cloud;
-   const changed=JSON.stringify(merged)!==before;
-   state=merged;
-   saveLocal();
-   if(pending){
-     localStorage.setItem(KEYS.pending,JSON.stringify(state));
-     await pushCloud(true);
-   }else{
-     localStorage.removeItem(KEYS.pending);
-   }
-   if(changed){renderAll();toast(' Семейные данные обновлены')}
-   updateSync(' Синхронизировано');
-   return true;
- }catch(e){console.warn('cloud sync',e);updateSync(' Не удалось обновить облако');return false}
- finally{cloudSyncBusy=false}
+ const job=async()=>{
+  try{
+   const epoch=authEpoch,readSerial=mutationSerial,cloud=await fetchCloudState(),pending=readPendingLocal();
+   if(epoch!==authEpoch)return false;
+   if(!cloud)return preserveUnconfirmedSync('Сохранено на устройстве — облачная копия пока недоступна');
+   const before=JSON.stringify(state),hasChanges=!!pending||readSerial!==mutationSerial;
+   const reconciled=hasChanges?reconcileCloudSnapshot(cloud,state):cloud;
+   if(!reconciled)return false;state=reconciled;
+   if(!hasChanges)rememberCloudBase(cloud);
+   if(!saveLocal())return preserveUnconfirmedSync('Не удалось сохранить локальную копию — скачайте JSON');
+   if(JSON.stringify(state)!==before)renderAll();
+   if(hasChanges){if(!savePendingLocal())return false;return await pushCloud(true)}
+   if(cloudReadMeta.protocol!==2){updateSync('Облачная копия прочитана — безопасная запись ждёт обновления сервера');return false}
+   updateSync('Синхронизировано');return true;
+  }catch(e){console.warn('Cloud read failed',e.message);return preserveUnconfirmedSync('Не удалось обновить облако — данные сохранены на устройстве')}
+ };
+ saveQueue=saveQueue.then(job,job);
+ try{return await saveQueue}finally{cloudSyncBusy=false}
 }
 async function verifyCachedSession(allowRefresh=true){
+ const epoch=authEpoch;
  if(!session?.access_token)return false;
  try{
   if(!(await ensureToken()))return false;
@@ -4143,7 +4503,8 @@ async function verifyCachedSession(allowRefresh=true){
   finally{clearTimeout(timeout)}
   if(response.status===401){if(allowRefresh&&await refreshSession())return verifyCachedSession(false);return false}
   if(!response.ok)throw new Error('HTTP '+response.status);
-  const user=await response.json();if(!user?.id)return false;
+  const user=await response.json();if(epoch!==authEpoch||!session||!user?.id||!(await verifyHouseholdAccess(session)))return false;
+  if(epoch!==authEpoch||!session)return false;
   session.user=user;
   localStorage.setItem(KEYS.session,JSON.stringify(session));
   return true;
@@ -4152,12 +4513,14 @@ async function verifyCachedSession(allowRefresh=true){
 async function boot(){
  initForm();
  try{session=JSON.parse(localStorage.getItem(KEYS.session)||'null')}catch{session=null}
- if(normalizeAnimalEntries()){saveLocal();if(session)localStorage.setItem(KEYS.pending,JSON.stringify(state))}
+ if(normalizeAnimalEntries()){saveLocal();if(session)savePendingLocal()}
  // Never show cached household finances before verifying the session server-side.
  showGate();
  if(session){
   const note=document.getElementById('v75AuthNote');if(note)note.textContent='Проверяем действующую сессию…';
-  if(await verifyCachedSession()){
+  const epoch=authEpoch,verified=await verifyCachedSession();
+  if(epoch!==authEpoch)return;
+  if(verified){
    setStatus(session.user?.email||'Семья',true);showApp();startCloudSync();
   }else{
    if(note)note.textContent='Для защиты семейных данных войдите повторно. При отсутствии сети нужен доступ к интернету.';
@@ -4165,6 +4528,7 @@ async function boot(){
    setStatus('Вход не выполнен',false);showGate();
   }
  }else setStatus('Вход не выполнен',false);
+ if(localRecoveryNotice){updateSync(localRecoveryNotice);toast(localRecoveryNotice)}
 }
 // v73 Signature dashboard preference is purely presentational and stored separately.
 function toggleV73Overview(){
@@ -4207,9 +4571,11 @@ function v86CalendarEvents(m){
  const ob=v78Obligations(m);
  for(const row of v78ObligationRows(ob)){
   const allocated=Number(row.allocated)||0;
-  items.push({key:'loan:'+row.kind+':'+row.date+':'+row.title,kind:row.kind,date:row.date,title:row.title,subtitle:row.subtitle,amount:Number(row.amount)||0,paid:!!row.paid,part:!!row.partial,allocated:allocated,link:'loans'});
+  items.push({key:row.kind==='installment'?'installment:'+row.installmentId+':'+row.installmentPartId:'loan:'+row.kind+':'+row.date+':'+row.title,kind:row.kind,date:row.date,title:row.title,subtitle:row.subtitle,amount:Number(row.amount)||0,paid:!!row.paid,part:!!row.partial,allocated:allocated,link:'loans',installmentId:row.installmentId,installmentPartId:row.installmentPartId});
  }
  for(const r of v84Data().recurring){
+  const linkedPlan=(state.installments||[]).find(i=>i.id===r.installmentId),linkedPart=(linkedPlan?.parts||[]).find(p=>p.id===r.installmentPartId&&String(p.date).startsWith(m));
+  if(linkedPart)continue;
   const date=v84DateOfMonth(m,r.day),paid=v84RecurringConfirmed(r,m);
   items.push({key:'regular:'+r.id+':'+m,kind:'regular',date,title:r.name||'Регулярный платёж',subtitle:'Повторяющийся платёж · '+(r.category||'Без категории'),amount:Number(r.amount)||0,paid,allocated:paid?(Number(r.amount)||0):0,link:'analytics',recurringId:r.id,period:m});
  }
@@ -4225,23 +4591,31 @@ function v86RenderCalendar(){
  document.querySelectorAll('[data-v86-filter]').forEach(b=>{const active=b.dataset.v86Filter===v86CalendarFilter;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))});
  const subset=data.filter(x=>v86CalendarFilter==='all'||(v86CalendarFilter==='paid'?x.paid:!x.paid));
  list.innerHTML=subset.length?subset.map(x=>{const [_,mo,day]=x.date.match(/^(\d{4})-(\d{2})-(\d{2})$/)||[];const label=x.paid?'Учтено':x.part?'Частично':x.date<today()?'Срок прошёл':'Ожидается';const cls=x.paid?'paid':x.part?'part':x.date<today()?'late':'';
-  return `<div class="v86-calendar-row"><div class="v86-calendar-date"><strong>${esc(String(Number(day)||'—'))}</strong><span>${esc(new Date(x.date+'T12:00:00').toLocaleDateString('ru-RU',{month:'short'}))}</span></div><div class="v86-calendar-description"><b>${esc(x.title)}</b><small>${esc(x.subtitle)}</small></div><strong class="v86-calendar-sum">${money(x.amount)}</strong><span class="v86-state ${cls}">${label}</span>${x.kind==='regular'&&!x.paid?`<div class="v881-cal-actions"><button class="btn small" type="button" onclick="v84LinkRecurring('${esc(x.recurringId)}','${esc(x.period)}')">Связать расход</button><button class="btn primary small" type="button" onclick="v84ConfirmRecurring('${esc(x.recurringId)}','${esc(x.period)}')">Отметить оплату</button></div>`:''}</div>`}).join(''):'<div class="v84-empty">Для этого фильтра платежей нет.</div>';
+  return `<div class="v86-calendar-row"><div class="v86-calendar-date"><strong>${esc(String(Number(day)||'—'))}</strong><span>${esc(new Date(x.date+'T12:00:00').toLocaleDateString('ru-RU',{month:'short'}))}</span></div><div class="v86-calendar-description"><b>${esc(x.title)}</b><small>${esc(x.subtitle)}</small></div><strong class="v86-calendar-sum">${money(x.amount)}</strong><span class="v86-state ${cls}">${label}</span>${x.kind==='regular'&&!x.paid?`<div class="v881-cal-actions"><button class="btn small" type="button" ${recordAction('recurring-link',x.recurringId,x.period)}>Связать расход</button><button class="btn primary small" type="button" ${recordAction('recurring-confirm',x.recurringId,x.period)}>Отметить оплату</button></div>`:''}</div>`}).join(''):'<div class="v84-empty">Для этого фильтра платежей нет.</div>';
 }
 function v86CurrentAccounts(){const list=v84Data().accounts;return {items:list,total:list.length?list.reduce((n,a)=>n+(Number(a.amount)||0),0):null,latest:list.reduce((s,a)=>String(a.updated_at||'')>s?String(a.updated_at||''):s,'')}}
 function v86Forecast(){
- const now=today(),target=v84NextPayDate()||v84DateOfMonth(now.slice(0,7),31);
- const end=target<now?now:target;
- // Include all months between today and payday; the reporting window is short but can cross year end.
- const from=now.slice(0,7),to=end.slice(0,7);let cursor=new Date(from+'-01T12:00:00Z');const events=[];
- for(let i=0;i<4;i++){
-  const m=cursor.toISOString().slice(0,7);if(m>to)break;
-  events.push(...v86CalendarEvents(m).filter(x=>x.date>=now&&x.date<=end&&!x.paid));
-  cursor=new Date(Date.UTC(cursor.getUTCFullYear(),cursor.getUTCMonth()+1,1,12));
+ const now=today(),target=v84NextPayDate()||v84DateOfMonth(now.slice(0,7),31),end=target<now?now:target,to=end.slice(0,7);
+ // Recurring plans have no historical activation date: include overdue current-period payments,
+ // plus explicitly stored older installment/mortgage dates, without inventing past recurrences.
+ const months=new Set([now.slice(0,7)]);
+ for(const i of state.installments||[])for(const p of i.parts||[])if(String(p.date)<=end)months.add(String(p.date).slice(0,7));
+ for(const row of loanScheduleData())if(row.payDate<=end)months.add(row.payDate.slice(0,7));
+ let cursor=new Date(now.slice(0,7)+'-01T12:00:00Z');
+ while(cursor.toISOString().slice(0,7)<=to){months.add(cursor.toISOString().slice(0,7));cursor.setUTCMonth(cursor.getUTCMonth()+1)}
+ const unique=new Map();
+ for(const m of [...months].sort())for(const e of v86CalendarEvents(m)){
+  if(e.paid||e.date>end||(e.kind==='regular'&&m<now.slice(0,7)))continue;
+  if(e.kind==='regular'){
+   const linked=state.entries.find(x=>x.recurringId===e.recurringId&&x.recurringPeriod===e.period);
+   if(linked&&(state.installments||[]).some(i=>Object.values(i.links||{}).includes(linked.id)))continue;
+  }
+  unique.set(e.key,e);
  }
- const mortgage=events.filter(e=>e.kind==='mortgage'||e.kind==='installment').reduce((n,e)=>n+Math.max(0,e.amount-e.allocated),0);
- const regular=events.filter(e=>e.kind==='regular').reduce((n,e)=>n+e.amount,0);
- const accounts=v86CurrentAccounts();
- return {date:end,accounts,mortgage,regular,obligations:mortgage+regular,estimate:accounts.total===null?null:accounts.total-mortgage-regular,events};
+ const events=[...unique.values()],remaining=e=>Math.max(0,e.amount-e.allocated);
+ const mortgage=events.filter(e=>e.kind==='mortgage'||e.kind==='installment').reduce((n,e)=>n+remaining(e),0);
+ const regular=events.filter(e=>e.kind==='regular').reduce((n,e)=>n+remaining(e),0),overdue=events.filter(e=>e.date<now).reduce((n,e)=>n+remaining(e),0),accounts=v86CurrentAccounts();
+ return {date:end,accounts,mortgage,regular,overdue,obligations:mortgage+regular,estimate:accounts.total===null?null:accounts.total-mortgage-regular,events};
 }
 function v86RenderPulse(){
  const root=document.getElementById('v84PulseNumbers');if(!root)return;const m=homeMonth(),monthIncome=sum(monthEntries(m).filter(e=>e.type==='income')),spent=sum(expenses(m)),ob=v78Obligations(m),forecast=v86Forecast(),chosenCurrent=m===month();
@@ -4254,7 +4628,7 @@ function v86RenderPulse(){
  ];
  root.innerHTML=rows.map(([label,value,desc])=>`<div class="v84-pulse-stat"><small>${esc(label)}</small><strong>${esc(value)}</strong><span>${esc(desc)}</span></div>`).join('');
  const details=document.getElementById('v86PulseBreakdown');if(details)details.innerHTML=`<div><small>Ипотека и рассрочки до ${esc(v86ReadableDate(forecast.date))}</small><b>${money(forecast.mortgage)} ещё не подтверждено</b></div><div><small>Регулярные платежи до ${esc(v86ReadableDate(forecast.date))}</small><b>${money(forecast.regular)} запланировано</b></div>`;
- const narrative=document.getElementById('v84PulseNarrative');if(narrative)narrative.textContent=forecast.accounts.total===null?'Для прогноза укажите текущие остатки в «Настройках». Результат месяца не является балансом банковских счетов.':`Прогноз учитывает вручную указанные остатки и не подтверждённые платежи до ${v86ReadableDate(forecast.date)}. Не учитывает повседневные будущие покупки, изменения доходов и возможное пересечение регулярных платежей с другими графиками.`;
+ const narrative=document.getElementById('v84PulseNarrative');if(narrative)narrative.textContent=forecast.accounts.total===null?'Для прогноза укажите текущие остатки в «Настройках». Результат месяца не является балансом банковских счетов.':`Прогноз учитывает вручную указанные остатки и не подтверждённые платежи до ${v86ReadableDate(forecast.date)}. Включены просроченные неподтверждённые платежи: ${money(forecast.overdue)}. Регулярные платежи прошлых месяцев без сохранённого графика не восстанавливаются автоматически. Совпадение суммы не означает дубликат; связывайте один платёж явно. Повседневные будущие покупки и изменения доходов не учтены.`;
 }
 function v86SpendGroupToDay(m,lastDay){return sum(expenses(m).filter(e=>Number(String(e.date).slice(8,10))<=lastDay))}
 function v86RenderCompare(){
@@ -4277,18 +4651,17 @@ function v86ReminderEvents(){
 }
 function v86RenderReminders(){
  const root=document.getElementById('v84Notices');if(!root)return;const events=v86ReminderEvents(),now=today();
- root.innerHTML=events.length?`<div class="v84-notice-list">${events.slice(0,4).map(e=>{const delta=v86DateDelta(now,e.date);const label=delta<0?`Просрочено · ${-delta} дн.`:delta===0?'Сегодня':delta===1?'Завтра':`Через ${delta} дн.`;return `<div class="v84-notice ${delta<0?'danger':''}"><span class="v84-notice-dot"></span><div class="v84-notice-body"><b>${esc(e.title)}</b><small>${esc(label)} · ${esc(e.meta)}</small></div><button type="button" class="btn small" onclick="go('${e.route}')">Открыть</button></div>`}).join('')}</div>${events.length>4?`<p class="v84-mini-note">Ещё ${events.length-4} события — в разделах «Домашние дела», «Кредиты и рассрочки» и «Важные даты».</p>`:''}`:'<div class="v84-empty">В ближайшие 14 дней нет дел или платежей, требующих внимания.</div>';
+ root.innerHTML=events.length?`<div class="v84-notice-list">${events.slice(0,4).map(e=>{const delta=v86DateDelta(now,e.date);const label=delta<0?`Просрочено · ${-delta} дн.`:delta===0?'Сегодня':delta===1?'Завтра':`Через ${delta} дн.`;return `<div class="v84-notice ${delta<0?'danger':''}"><span class="v84-notice-dot"></span><div class="v84-notice-body"><b>${esc(e.title)}</b><small>${esc(label)} · ${esc(e.meta)}</small></div><button type="button" class="btn small" ${recordAction('navigate',e.route)}>Открыть</button></div>`}).join('')}</div>${events.length>4?`<p class="v84-mini-note">Ещё ${events.length-4} события — в разделах «Домашние дела», «Кредиты и рассрочки» и «Важные даты».</p>`:''}`:'<div class="v84-empty">В ближайшие 14 дней нет дел или платежей, требующих внимания.</div>';
 }
 function v86RenderAll(){v86RenderPulse();v86RenderCalendar();v86RenderCompare();v86RenderReminders()}
 
 
 /* v87: Scenario-only family advisor. Never writes synthetic expense operations. */
 function v87AdvisorMonths(){
- const current=month();const months=[];const first=current+'-01T12:00:00';
+ const current=month(),months=[],first=current+'-01T12:00:00';
  for(let i=1;i<=3;i++){const d=new Date(first);d.setMonth(d.getMonth()-i);months.push(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`)}
- let available=months.filter(m=>monthEntries(m).length>0);
- let provisional=false;
- if(!available.length && monthEntries(current).length){available=[current];provisional=true}
+ let available=months.filter(m=>expenses(m).length>0),provisional=false;
+ if(!available.length&&expenses(current).length){available=[current];provisional=true}
  return {months:available,provisional,current};
 }
 function v87AdvisorData(){
@@ -4334,13 +4707,14 @@ function v87RenderAdvisor(){
  if(!d.months.length){status.textContent='Недостаточно данных: внесите доходы и расходы хотя бы за один месяц. Когда появятся завершённые месяцы, расчёт станет информативнее.';metrics.innerHTML='';guide.innerHTML='<div class="v87-advisor-empty">Сначала заполните семейную историю операций. Советник не будет придумывать цифры.</div>';return}
  const sample=d.months.map(v84MonthLabel).join(', ');
  status.textContent=d.provisional?`Предварительный сценарий: данные только за текущий, ещё не законченный месяц (${sample}). Это не средняя зарплата.`:`Основа: ${d.months.length} ${d.months.length===1?'завершённый месяц':'завершённых месяца'} (${sample}). ${d.months.length<2?'Для устойчивых рекомендаций желательно хотя бы 2–3 полностью записанных месяца.':'Проверьте полноту расходов и зарплат каждого месяца.'}`;
+ if(!d.hasIncome&&!d.partialIncome)status.textContent+=' Доходы не внесены: сравнение с зарплатой недоступно.';
  if(d.partialIncome)status.textContent+=' Доходы внесены не во все месяцы: сравнение с зарплатой скрыто.';
  if(d.monthsMissingExpenses.length)status.textContent+=' Есть месяцы без расходов; средняя сумма может быть занижена.';
- const tiles=[['Средние расходы',money(d.spent),'По внесённым расходам; проверьте полноту истории'],['Средние доходы',d.hasIncome?money(d.income):'Нет записей','Необходима полная история зарплат'],['На цели и резерв',money(d.goalMonthly+d.reserve),`${money(d.goalMonthly)} цели · ${money(d.reserve)} резерв`],['Ориентир дохода семьи',money(d.required),`После условной экономии ${money(d.projectedSaving)}`]];
+ const tiles=[['Средние расходы',money(d.spent),'По внесённым расходам; проверьте полноту истории'],['Средние доходы',d.hasIncome?money(d.income):d.partialIncome?'Неполные данные':'Нет записей','Необходима полная история зарплат'],['На цели и резерв',money(d.goalMonthly+d.reserve),`${money(d.goalMonthly)} цели · ${money(d.reserve)} резерв`],['Ориентир дохода семьи',money(d.required),`После условной экономии ${money(d.projectedSaving)}`]];
  metrics.innerHTML=tiles.map(([name,value,note])=>`<div class="v87-metric"><small>${esc(name)}</small><strong>${esc(value)}</strong><span>${esc(note)}</span></div>`).join('');
  const items=Object.entries(d.byCategory).sort((a,b)=>b[1]-a[1]).slice(0,4);
  let lines=`<div class="v87-note"><h3>Как получился расчёт</h3><p>Расходы <b>${money(d.spent)}</b> − условная экономия <b>${money(d.projectedSaving)}</b> + взносы на действующие цели <b>${money(d.goalMonthly)}</b> + дополнительный резерв <b>${money(d.reserve)}</b> = <b>${money(d.required)} в месяц</b>.</p>`;
- if(d.hasIncome){const gap=d.income-d.required;lines+=`<p>${gap>=0?`При среднем зафиксированном доходе после такого плана остаётся <b>${money(gap)}</b>.`:`Чтобы выполнять такой план без сокращения взносов, семейный доход должен вырасти примерно на <b>${money(-gap)} в месяц</b>.`} Это расчёт по записям, не прогноз зарплаты.</p>`}else lines+=d.partialIncome?'<p>Доходы внесены не за все выбранные месяцы. Сравнение с зарплатой скрыто до заполнения истории.</p>':'<p>Доходы не внесены: сравнить план с реальной зарплатой пока нельзя.</p>';
+ if(d.hasIncome){const gap=d.income-d.required;lines+=`<p>${gap>=0?`При среднем зафиксированном доходе после такого плана остаётся <b>${money(gap)}</b>.`:`Чтобы выполнять такой план без сокращения взносов, семейный доход должен вырасти примерно на <b>${money(-gap)} в месяц</b>.`} Наличие записей не подтверждает полноту доходов. Это расчёт по записям, не прогноз зарплаты.</p>`}else lines+=d.partialIncome?'<p>Доходы внесены не за все выбранные месяцы. Сравнение с зарплатой скрыто до заполнения истории.</p>':'<p>Доходы не внесены: сравнить план с реальной зарплатой пока нельзя.</p>';
  if(d.goals.length)lines+=`<p>Учитываются ${d.goals.length} ${d.goals.length===1?'незакрытая цель':'незакрытых целей'} с заданными ежемесячными взносами. <a href="#" onclick="event.preventDefault();go('goals')">Изменить цели</a></p>`;
  else lines+='<p>Взносы на цели сейчас равны нулю. Добавьте плановую сумму в разделе «Цели и накопления».</p>';
  if(items.length&&d.cut>0)lines+=`<p>Пример гибких расходов, которые можно пересмотреть: ${items.map(([n,v])=>`${esc(n)} (${money(v)})`).join(', ')}. Снижение на ${d.cut}% — только ваш сценарий, а не автоматическая рекомендация отказываться от нужных покупок.</p>`;
@@ -4383,11 +4757,11 @@ function v88FeedbackPayload(){
  const type=document.getElementById('v88FeedbackType')?.value||'idea';
  const section=document.getElementById('v88FeedbackSection')?.value||'';
  const message=document.getElementById('v88FeedbackMessage')?.value?.trim()||'';
- return {type,section,message,appVersion:'v94',familyEdition:true};
+ return {type,section,message,appVersion:'v95-rc1',familyEdition:true};
 }
 function v88FeedbackText(){
  const p=v88FeedbackPayload();const labels={idea:'Новая функция',improvement:'Улучшить существующее',bug:'Сообщить об ошибке',design:'Дизайн и удобство'};
- return `Обратная связь · Семейный Банк\nВерсия: v88.1\nТип: ${labels[p.type]||p.type}\nРаздел: ${p.section||'Весь банк'}\n\n${p.message}\n`;
+ return `Обратная связь · Семейный Банк\nВерсия: ${p.appVersion}\nТип: ${labels[p.type]||p.type}\nРаздел: ${p.section||'Весь банк'}\n\n${p.message}\n`;
 }
 async function v88CopyFeedback(){
  if(!v88FeedbackPayload().message){v88FeedbackStatus('Сначала опишите ваше предложение.','error');return}
