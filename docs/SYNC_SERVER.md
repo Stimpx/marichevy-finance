@@ -1,11 +1,18 @@
 # Server revision contract (review and staging only)
 
-These SQL files have been exercised only against an ephemeral local PostgreSQL
-database with fictional household data. **Nothing has been applied to Supabase or
-production.** The actual hosted schema, grants, policies, triggers and membership
-model are unknown. Validating those in an authorized staging environment remains
-required before any rollout. A browser-only change cannot provide the guarantee
-described here until the server contract is installed and the household activated.
+The exact CAS SQL has now been applied and exercised in the separate FREE
+Supabase project `marichevy-finance-staging` (`iqpoxphtvtogjowruufe`) with two
+fictional households and three real test Auth accounts. Direct Auth/PostgREST/RLS,
+concurrent CAS, receipts, legacy-write rejection, synthetic restore and protocol
+rollback passed. The current client also passed real-server browser flows,
+including same-record/edit-delete conflicts and offline reload. See
+[RELEASE_CANDIDATE.md](RELEASE_CANDIDATE.md) for exact hashes and evidence.
+
+**Production has not been changed or validated.** Its actual schema, grants,
+policies, triggers and membership model still require read-only inspection.
+The staging fixture membership policy is not a production migration.
+Live browser flows forward verified HTTPS through a test route bridge; actual
+Safari/Yandex and native browser proxy/CA remain separate acceptance.
 
 `server/001_family_state_cas.sql` accepts only the inferred ordinary RLS-enabled
 `public.family_state` table with exactly `household_id uuid` as its sole primary

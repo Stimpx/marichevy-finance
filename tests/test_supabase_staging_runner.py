@@ -80,6 +80,12 @@ class StagingRunnerGuards(unittest.TestCase):
             stage.query('SELECT 1')
         self.assertEqual(transport.calls, [])
 
+    def test_management_query_accepts_documented_created_response(self):
+        transport = QueueTransport((200, identity()), (201, [{'value': 1}]))
+        stage = runner.Staging(TOKEN, transport)
+        stage.verify_identity()
+        self.assertEqual(stage.query('SELECT 1 AS value', read_only=True), [{'value': 1}])
+
     def test_failed_revalidation_revokes_the_previous_identity_check(self):
         transport = QueueTransport((200, identity()), (200, identity(name='production')))
         stage = runner.Staging(TOKEN, transport)
@@ -119,6 +125,25 @@ class StagingRunnerGuards(unittest.TestCase):
                     stage.run()
                 self.assertEqual(len(transport.calls), 2)
                 self.assertTrue(transport.calls[1][3]['read_only'])
+
+    def test_browser_resume_refuses_an_unexpected_extra_account(self):
+        inventory = {'public_relations': 2, 'auth_users': 4, 'fixture_exists': True}
+        transport = QueueTransport((200, identity()), (201, [inventory]))
+        stage = runner.Staging(TOKEN, transport)
+        with self.assertRaisesRegex(runner.StagingError, 'three-user fixture'):
+            stage.browser()
+        self.assertEqual(len(transport.calls), 2)
+
+    def test_browser_resume_refuses_accounts_without_fictional_metadata(self):
+        inventory = {'public_relations': 2, 'auth_users': 3, 'fixture_exists': True}
+        marker = [{'project_ref': runner.PROJECT_REF, 'project_name': runner.PROJECT_NAME, 'fixture_version': 1}]
+        members = [{'household_id': 'house', 'user_id': str(index), 'email': 'real@example.com',
+                    'run_id': None} for index in range(3)]
+        transport = QueueTransport((200, identity()), (201, [inventory]), (201, marker), (201, members))
+        stage = runner.Staging(TOKEN, transport)
+        with self.assertRaisesRegex(runner.StagingError, 'non-fixture'):
+            stage.browser()
+        self.assertEqual(len(transport.calls), 4)
 
     def test_modern_keys_preferred_without_key_mutation(self):
         keys = [{'name': 'anon', 'type': 'legacy', 'api_key': 'old-anon'},

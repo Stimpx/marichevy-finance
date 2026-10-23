@@ -2120,6 +2120,8 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 /* Семейный Банк · демо · Траты.Банк · v75 STABILITY & EXPERIENCE / v74 storage keys and historical records preserved. */
 const CONFIG=Object.freeze({url:'',key:'',household:'offline-demo'});
 const KEYS={state:'marichevy_demo_state_v10',session:'marichevy_demo_session_v10',pending:'marichevy_demo_pending_v10'};
+const CLOUD_BASE_KEY=KEYS.state+'_cloud_base_v1';
+const CLOUD_CONFLICT_KEY=KEYS.state+'_cloud_conflict_v1';
 const PEOPLE=['Алексей','Елена','Илья','София','Рыжик','Бим','Общее'];
 const EXPENSE_PEOPLE=PEOPLE;
 // v86.2: beneficiary always takes priority; preserve original named allocation in legacy `who`.
@@ -2437,7 +2439,16 @@ function loadLocal(){
   }
   if(recovered.length){
    if(primary===null||damaged)localRecoveryNotice='Локальная копия восстановлена. Проверьте данные и скачайте JSON.';
-   return normalize(recovered.length===1?recovered[0]:mergeStates(...recovered));
+   if(recovered.length===1)return normalize(recovered[0]);
+   // Either local write may fail independently. Their record clocks do not say
+   // which full snapshot contains the unsent edit; compare with the common base.
+   try{
+    const reconciled=reconcileCloudSnapshot(normalize(recovered[0]),normalize(recovered[1]),'local-recovery');
+    if(reconciled)return reconciled;
+   }catch{}
+   localRecoveryBlocked=true;v89StorageFailed=true;
+   localRecoveryNotice='Локальные копии расходятся. Обе сохранены, запись остановлена; скачайте варианты конфликта и согласуйте изменения.';
+   return normalize(recovered[1]);
   }
   if(damaged){localRecoveryBlocked=true;v89StorageFailed=true;localRecoveryNotice='Локальные данные повреждены. Запись остановлена; восстановите проверенную копию JSON.'}
  }catch{localRecoveryBlocked=true;v89StorageFailed=true;localRecoveryNotice='Локальное хранилище недоступно. Не закрывайте вкладку; скачайте JSON.'}
@@ -2563,6 +2574,7 @@ let authEpoch=0;
 async function authApi(path,body){return api(path,{method:'POST',body:JSON.stringify(body)})}
 
 async function login(){
+ const epoch=authEpoch;
  const email=document.getElementById('loginEmail').value.trim(),password=document.getElementById('loginPassword').value;
  const err=document.getElementById('loginError'),btn=document.getElementById('loginBtn'); err.innerHTML='';
  if(!email||!password){err.innerHTML='<div class="error">Введите email и пароль.</div>';return}
@@ -2571,6 +2583,7 @@ async function login(){
   const r=await authApi('/auth/v1/token?grant_type=password',{email,password});
   const data=await r.json(); if(!r.ok)throw new Error(data.error_description||data.msg||'Не удалось войти');
   if(!(await verifyHouseholdAccess(data)))throw new Error('Нет доступа к этой семье. Локальные данные и очередь сохранены.');
+  if(epoch!==authEpoch)return;
   authEpoch++;session=data; localStorage.setItem(KEYS.session,JSON.stringify(data));
   closeAuth();setStatus(email,true);showApp();startCloudSync();toast(' Вход выполнен');
  }catch(e){err.innerHTML='<div class="error">'+esc(e.message)+'</div>'}
@@ -2586,6 +2599,7 @@ function showGate(){
  document.getElementById('authGate').style.display='flex';
 }
 async function gateLogin(){
+ const epoch=authEpoch;
  const email=document.getElementById('gateEmail').value.trim();
  const password=document.getElementById('gatePassword').value;
  const err=document.getElementById('gateError');
@@ -2598,6 +2612,7 @@ async function gateLogin(){
   const data=await r.json();
   if(!r.ok)throw new Error(data.error_description||data.msg||'Не удалось войти');
   if(!(await verifyHouseholdAccess(data)))throw new Error('Нет доступа к этой семье. Локальные данные и очередь сохранены.');
+  if(epoch!==authEpoch)return;
   authEpoch++;session=data;localStorage.setItem(KEYS.session,JSON.stringify(data));
   setStatus(email,true);showApp();startCloudSync();
  }catch(e){
@@ -2606,8 +2621,14 @@ async function gateLogin(){
  }finally{btn.disabled=false;btn.textContent='Войти'}
 }
 async function refreshSession(){
- if(!session?.refresh_token)return false;
- try{const r=await authApi('/auth/v1/token?grant_type=refresh_token',{refresh_token:session.refresh_token});const d=await r.json();if(!r.ok)throw new Error();session=d;localStorage.setItem(KEYS.session,JSON.stringify(d));return true}catch{return false}
+ const previous=session,epoch=authEpoch;
+ if(!previous?.refresh_token)return false;
+ try{
+  const r=await authApi('/auth/v1/token?grant_type=refresh_token',{refresh_token:previous.refresh_token});
+  const d=await r.json();
+  if(!r.ok||epoch!==authEpoch||session!==previous)return false;
+  session=d;localStorage.setItem(KEYS.session,JSON.stringify(d));return true;
+ }catch{return false}
 }
 async function ensureToken(){
  if(!session)return false;
@@ -2714,12 +2735,11 @@ function verifiedCloudContains(actual,written){
 }
 // A durable common ancestor, scoped to this backend/household. Device clocks
 // must never choose between two changes to the same logical record.
-const CLOUD_BASE_KEY=KEYS.state+'_cloud_base_v1';
-const CLOUD_CONFLICT_KEY=KEYS.state+'_cloud_conflict_v1';
+
 function rememberCloudBase(data){
  localStorage.setItem(CLOUD_BASE_KEY,JSON.stringify({household:CONFIG.household,url:CONFIG.url,data}));
 }
-function reconcileCloudSnapshot(cloud,local){
+function reconcileCloudSnapshot(cloud,local,context='cloud'){
  let base=null;
  const raw=localStorage.getItem(CLOUD_BASE_KEY);
  if(raw!==null){
@@ -2788,7 +2808,7 @@ function reconcileCloudSnapshot(cloud,local){
  const result=merge(b,r,l,'state');
  reconcileCloudSnapshot.conflicts=conflicts;
  if(conflicts.length){
-  try{localStorage.setItem(CLOUD_CONFLICT_KEY,JSON.stringify({format:'family-sync-conflict-v1',household:CONFIG.household,base,cloud,local,conflicts}))}
+  try{saveSyncConflict({format:'family-sync-conflict-v1',context,household:CONFIG.household,base,cloud,local,conflicts})}
   catch{updateSync('Конфликт: не удалось сохранить копию вариантов. Очередь не удалена, облако не перезаписано. Скачайте JSON на обоих устройствах и не закрывайте вкладку.');return null}
   updateSync('Конфликт изменений ('+conflicts.length+'). Локальная очередь и оба варианта сохранены, облако не перезаписано. В настройках скачайте варианты конфликта для согласования; не очищайте данные браузера.');
   return null;
@@ -2806,11 +2826,27 @@ function reconcileCloudSnapshot(cloud,local){
  }
  return normalize(result);
 }
+function saveSyncConflict(packet){
+ const raw=JSON.stringify(packet),previous=localStorage.getItem(CLOUD_CONFLICT_KEY);
+ if(previous!==null){
+  try{if(cloudJSONEqual(JSON.parse(previous),packet))return}catch{}
+  const prefix=CLOUD_CONFLICT_KEY+'_archive_';
+  const retained=Object.keys(localStorage).some(key=>key.startsWith(prefix)&&localStorage.getItem(key)===previous);
+  if(!retained)localStorage.setItem(prefix+uid(),previous);
+ }
+ // Never replace the previous unresolved variants until their archive is safe.
+ localStorage.setItem(CLOUD_CONFLICT_KEY,raw);
+}
 function downloadSyncConflict(){
  try{
   const raw=localStorage.getItem(CLOUD_CONFLICT_KEY);
   if(!raw){toast('Сохранённых вариантов конфликта нет');return}
-  const blob=new Blob([raw],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+  const packet=JSON.parse(raw),prefix=CLOUD_CONFLICT_KEY+'_archive_';
+  const previous=Object.keys(localStorage).filter(key=>key.startsWith(prefix)).sort().map(key=>{
+   const saved=localStorage.getItem(key);try{return JSON.parse(saved)}catch{return {format:'unreadable-conflict-bytes',raw:saved}}
+  });
+  if(previous.length)packet.previous_conflicts=previous;
+  const blob=new Blob([JSON.stringify(packet)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');
   a.href=url;a.download='family-sync-conflict-PRIVATE.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);
   toast('Варианты конфликта скачаны. Это частная копия для согласования, не файл обычного импорта.');
  }catch{toast('Не удалось скачать варианты конфликта — сохраните JSON на обоих устройствах')}
@@ -2822,6 +2858,7 @@ function preserveUnconfirmedSync(message){
  return false;
 }
 async function pushCloud(initial=false){
+ if(localRecoveryBlocked){updateSync(localRecoveryNotice||'Локальное восстановление требует согласования — облачная запись остановлена');return false}
  const epoch=authEpoch;
  if(!(await ensureToken()))return preserveUnconfirmedSync('Только на этом устройстве — войдите для облака');
  saving=true;updateSync('Сохраняем в облако…');
@@ -4424,6 +4461,7 @@ function startCloudSync(){
 }
 function stopCloudSync(){if(cloudSyncTimer){clearInterval(cloudSyncTimer);cloudSyncTimer=null}}
 async function syncFromCloud(){
+ if(localRecoveryBlocked){updateSync(localRecoveryNotice||'Локальное восстановление требует согласования — облачная запись остановлена');return false}
  if(!session||cloudSyncBusy)return false;
  cloudSyncBusy=true;
  const job=async()=>{
@@ -4446,6 +4484,7 @@ async function syncFromCloud(){
  try{return await saveQueue}finally{cloudSyncBusy=false}
 }
 async function verifyCachedSession(allowRefresh=true){
+ const epoch=authEpoch;
  if(!session?.access_token)return false;
  try{
   if(!(await ensureToken()))return false;
@@ -4455,7 +4494,8 @@ async function verifyCachedSession(allowRefresh=true){
   finally{clearTimeout(timeout)}
   if(response.status===401){if(allowRefresh&&await refreshSession())return verifyCachedSession(false);return false}
   if(!response.ok)throw new Error('HTTP '+response.status);
-  const user=await response.json();if(!user?.id||!(await verifyHouseholdAccess(session)))return false;
+  const user=await response.json();if(epoch!==authEpoch||!session||!user?.id||!(await verifyHouseholdAccess(session)))return false;
+  if(epoch!==authEpoch||!session)return false;
   session.user=user;
   localStorage.setItem(KEYS.session,JSON.stringify(session));
   return true;
@@ -4469,7 +4509,9 @@ async function boot(){
  showGate();
  if(session){
   const note=document.getElementById('v75AuthNote');if(note)note.textContent='Проверяем действующую сессию…';
-  if(await verifyCachedSession()){
+  const epoch=authEpoch,verified=await verifyCachedSession();
+  if(epoch!==authEpoch)return;
+  if(verified){
    setStatus(session.user?.email||'Семья',true);showApp();startCloudSync();
   }else{
    if(note)note.textContent='Для защиты семейных данных войдите повторно. При отсутствии сети нужен доступ к интернету.';

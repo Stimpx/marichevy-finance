@@ -84,3 +84,23 @@ failures against an older client. Protocol baseline failures and the later
 unknown-intelligence regression were captured before each corresponding fix.
 Financial baseline reproduced 14 failed assertions; all 18 cases pass afterward.
 Green local tests do not establish hosted Supabase/RLS or actual Safari support.
+
+## Продолжение 23 октября: фактический стенд
+
+Полный локальный прогон текущего клиента завершил 146 тестов без пропусков
+(56.143s), включая 144 UI-проверки. В него вошли дополнительные проверки
+primary/pending, поздних auth-ответов и архива конфликтов. Позднее добавленный
+read-only production inspector проверяется отдельно; его tests не вызывают
+производственный API.
+
+`tools/supabase_staging.py run` был отдельно выполнен на разрешённом новом
+Supabase-стенде и прошёл33 реальных Auth/PostgREST/CAS/RLS шагов. Повторять
+bootstrap на текущем стенде не нужно. `browser` проверил9 сценариев настоящего
+клиента и сервера, включая независимые добавления, same-ID/edit-delete с
+неверными часами, reload/offline и чужую семью. Тестовый bridge сохраняет TLS
+и пересылает реальные ответы; не подменяет сервер. Native browser proxy/CA
+этим не проверены; отдельный настоящий CORS preflight прошёл.
+
+Обычный unittest по-прежнему использует синтетические/локальные зависимости,
+не вызывает hosted runner и не копирует реальные данные. Подключение и
+ограничения — docs/STAGING_SETUP.md; точные SHA/результаты — RELEASE_CANDIDATE.

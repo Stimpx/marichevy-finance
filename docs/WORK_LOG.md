@@ -143,3 +143,75 @@ legacy-отказы и синтетические backup/rollback; НЕ producti
 Hosted-проверки НЕ запускались, ожидается защищённый scoped token и применение
 сетевых настроек. Инструмент inspect без binding подтвердил только безопасный
 отказ Missing protected environment binding, а не состояние удалённого проекта.
+
+## Живой Supabase и клиент · 23 октября 2026, Москва
+
+После сохранения владельцем scoped token подключение появилось в процессе;
+значение не читалось для отчёта и не выводилось. Непосредственный GET подтвердил
+точные ref/name marichevy-finance-staging, ACTIVE_HEALTHY, пустую public schema
+и 0 Auth users. Query endpoint возвращает документированный HTTP201: первоначальный
+runner принимал только200, исправлен при сохранении проверки статусов, добавлен
+целевой unit-test. Затем реальный bootstrap/run прошёл33 шага через настоящие
+Auth/PostgREST. Созданы только три фиктивных аккаунта и две семьи; применён точный
+001 CAS, проверены изоляция/RLS/anon, серверные версии, overlapping writes,
+receipt/idempotency, отказ legacy PATCH/POST/DELETE/downgrade, синтетическое
+restore и protocol rollback/reactivation. Production не затрагивался.
+
+Инвентаризация стенда сохранена в supabase-staging-schema.json. Единственный
+дополнительный SECURITY DEFINER — платформенный public.rls_auto_enable(): event
+trigger с фиксированным pg_catalog search_path для ENABLE RLS на создаваемых
+public-таблицах. Исходник изучен, произвольные SQL/GUC клиенту не предоставлены;
+anon/authenticated не имеют schema CREATE. Никакая политика/функция ради теста
+не отключалась и TLS-проверка не обходилась.
+
+Новые регрессии клиента воспроизвели потерю pending/primary при частичном отказе
+записи и медленных часах, воскрешение сессии поздним refresh/login/verify после
+logout и потерю ранее сохранённого варианта конфликта. Первые5 тестов падали
+на e293b2b. Исправлены сравнение локальных копий с общим предком, блокировка при
+неоднозначности, epoch-проверки и архив distinct conflict packets. Итог7/7 новых
+тестов и61 storage/sync+initial5 прошли. Неизвестные старые поля/ID сохраняются.
+
+Полный текущий регресс:146/146,56.143s,0 skipped. SHA index.html
+5d90efa3f828fa1631eb58286ac35df02cc2beaa52f22f01435e2ea7da52abc3 совпадает с
+UI report и hosted browser report. Helper реального клиента первоначально
+останавливался из-за CSP EvalError в Playwright wait_for_function; исправлено
+ожидание на bounded page.evaluate polling, CSP не ослабляли. После диагноза
+реальные UI-входы/чтение/обе конкурентные записи/reload/offline+неверные часы
+прошли; расширение до same-ID/edit-delete также прошло. Итог9 браузерных
+сценариев,40 настоящих HTTPS-запросов,1 настоящий server revision conflict.
+Route bridge пересылает настоящие ответы с TLS-проверкой, не моделирует RPC;
+нативный browser proxy/CA этим не проверен. Отдельный настоящий HTTPS CORS OPTIONS
+подтвердил origin/method/headers. Авторизацию и RLS при этом не обходили.
+
+Повтор браузерных проверок обновляет пароли только трёх fixture-аккаунтов с
+проверенными metadata/run id и email @example.invalid, не сбрасывает таблицы.
+Отчёты безопасны; ключи/пароли/сессии только в памяти. Оригинальная семейная
+история на стенд не переносилась. Все7 параметров текущих изменений остаются
+в кандидатной ветке; main bfc7ce5 неизменен.
+
+Остались реальные production schema/backup/pending queues, устройства владельца
+и согласованная активация. Для первого из них подготовлен отдельный readonly
+PRODUCTION_SUPABASE_INSPECTION_TOKEN (Project Settings Read + Database Read),
+не найденный в текущих bindings/переменных. В черновик сети добавлены точные
+api.github.com и finance.marichev.pro для read-only hosting/version checks;
+первоначальный gh Pages GET вернул Forbidden, источник размещения не подтверждён.
+Это не разрешение на deploy. Следующий шаг владельца — scoped token только для
+marichevy-finance с двумя Read правами, затем защищённое подключение. Выпуск
+пока не согласовывается как готовый: обязательные реальные prerequisites открыты.
+
+Уточнение read-only инспектора перед подключением production: определение
+webhook-триггера может содержать секретные TGARGS (например Authorization).
+Поэтому полный trigger DDL не должен возвращаться: сохраняются только метаданные
+и хеш; строковые литералы CHECK/RLS также редактируются на стороне PostgreSQL.
+Это обнаружено при review подготовленного инструмента до любых production-запросов.
+Отдельные targeted проверки инспектора проверяют отсутствие sentinel-значений.
+
+Production inspector после review:15/15 целевых проверок прошли (2.053s).
+Точный каталоговый SELECT выполнен на изолированном PostgreSQL с sentinel
+webhook Authorization/TGARGS, RLS WITH CHECK/USING, CHECK и экранированными
+литералами: значения не появились в результате. Raw trigger DDL/args не
+возвращаются, литералы политик/ограничений редактируются на сервере, точные
+хеши сохранены. Production API не вызывался; ожидается readonly binding.
+После уточнения helper/CSP и метаданных упаковки32 целевых helper/runner/bundle
+проверки прошли (0.328s). Повтор146 клиентских тестов после этих инструментальных
+изменений не требовался: SHA клиента не менялся и совпадает с hosted evidence.

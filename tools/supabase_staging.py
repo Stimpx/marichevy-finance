@@ -15,6 +15,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import secrets
 import time
 from urllib.error import HTTPError, URLError
@@ -89,7 +90,8 @@ class Staging:
             raise StagingError("Project identity must be verified before further operations")
         status, result = self.transport.request(method, MANAGEMENT + suffix,
             {"Authorization": "Bearer " + self.token}, body)
-        if status != 200:
+        allowed_statuses = (200, 201) if method == "POST" and suffix == "/database/query" else (200,)
+        if status not in allowed_statuses:
             raise StagingError("Management API returned HTTP " + str(status))
         return result
 
@@ -138,6 +140,61 @@ class Staging:
         if not condition:
             raise StagingError("Hosted assertion failed: " + label)
         self.checks.append(label)
+
+    def browser(self):
+        """Resume only known fictional fixture accounts; never reset real users."""
+        inspected = self.inspect()
+        inventory = inspected['inventory']
+        if inventory != {'public_relations': 2, 'auth_users': 3, 'fixture_exists': True}:
+            raise StagingError('Browser checks require exactly the existing two-family/three-user fixture')
+        marker = self.query('SELECT project_ref,project_name,fixture_version FROM marichevy_staging.fixture_registry', read_only=True)
+        if marker != [{'project_ref': PROJECT_REF, 'project_name': PROJECT_NAME, 'fixture_version': 1}]:
+            raise StagingError('Staging fixture marker does not match the expected installation')
+        members = self.query("""SELECT m.household_id,m.user_id,u.email,
+            u.raw_app_meta_data->>'marichevy_staging_run' AS run_id
+            FROM public.staging_membership m JOIN auth.users u ON u.id=m.user_id
+            ORDER BY m.household_id,m.user_id""", read_only=True)
+        if len(members) != 3 or len({member.get('run_id') for member in members}) != 1:
+            raise StagingError('Unknown fixture membership; no account password will be changed')
+        for member in members:
+            run = member.get('run_id') or ''
+            email = member.get('email') or ''
+            if not re.fullmatch('[0-9a-f]{32}', run) or not re.fullmatch('stage-' + run + '-[012]@example[.]invalid', email):
+                raise StagingError('Refusing to change a non-fixture authentication account')
+        groups = {}
+        for member in members:
+            groups.setdefault(member['household_id'], []).append(member)
+        if sorted(len(group) for group in groups.values()) != [1, 2]:
+            raise StagingError('Expected two fictional households with two/one members')
+        own_household, own = next((house, group) for house, group in groups.items() if len(group) == 2)
+        outsider = next(group[0] for group in groups.values() if len(group) == 1)
+        public_key, admin_key = self.keys()
+        headers = {'apikey': admin_key}
+        if not admin_key.startswith('sb_secret_'):
+            headers['Authorization'] = 'Bearer ' + admin_key
+        credentials = []
+        for member in [*own, outsider]:
+            password = secrets.token_urlsafe(36)
+            status, result = self.transport.request('PUT', PROJECT_URL + '/auth/v1/admin/users/' + member['user_id'],
+                headers, {'password': password})
+            self.check('fixture-only password renewed', status == 200 and isinstance(result, dict)
+                       and result.get('id') == member['user_id'])
+            credentials.append({'email': member['email'], 'password': password})
+        from staging_browser import BrowserCheckError, verify_browser_flow
+        try:
+            browser_result = verify_browser_flow(self.transport, public_key, own_household, credentials)
+        except BrowserCheckError as error:
+            self.checks.extend(error.checks_completed)
+            self.browser_diagnostics = error.diagnostics
+            raise StagingError(str(error)) from None
+        except ValueError:
+            raise StagingError('Staging client sanitization failed; no browser check was accepted') from None
+        self.checks.extend(browser_result['checks'])
+        return {**inspected, 'outcome': 'passed', 'checks': self.checks,
+                'fixture_only': True, 'production_tested': False,
+                'browser': browser_result,
+                'client_sha256': hashlib.sha256((ROOT / 'index.html').read_bytes()).hexdigest(),
+                'network_path': 'real verified HTTPS forwarded through Playwright route bridge; native CORS untested'}
 
     def run(self):
         inspected = self.inspect()
@@ -272,14 +329,14 @@ class Staging:
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=["inspect", "run"])
+    parser.add_argument("command", choices=["inspect", "run", "browser"])
     parser.add_argument("--report", type=Path, default=Path("/workspace/artifacts/supabase-staging-report.json"))
     args = parser.parse_args()
     staging = None
     observed_at = datetime.now(timezone.utc).isoformat()
     try:
         staging = Staging(os.environ.get(TOKEN_NAME))
-        report = staging.inspect() if args.command == "inspect" else staging.run()
+        report = getattr(staging, args.command)()
         report["observed_at"] = observed_at
         args.report.parent.mkdir(parents=True, exist_ok=True)
         args.report.write_text(json.dumps(report, indent=2) + "\n")
@@ -290,6 +347,8 @@ def main():
                   "command": args.command, "outcome": "blocked" if staging is None else "failed",
                   "checks_completed": [] if staging is None else staging.checks,
                   "safe_error": str(error), "production_tested": False}
+        if staging is not None and hasattr(staging, 'browser_diagnostics'):
+            report['browser_diagnostics'] = staging.browser_diagnostics
         args.report.parent.mkdir(parents=True, exist_ok=True)
         args.report.write_text(json.dumps(report, indent=2) + "\n")
         print(str(error))

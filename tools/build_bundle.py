@@ -119,7 +119,7 @@ def build(output: Path) -> None:
     (output/'expense-proposal.html').write_bytes((ROOT/'tools'/'expense_proposal.html').read_bytes())
     source=(ROOT/'index.html').read_text()
     demo=transform_demo(source)
-    metadata=(json.dumps({'source_sha256':hashlib.sha256(source.encode()).hexdigest(),'status':'NOT PUBLISHED','server_sync':'pending authorized hosted schema/RLS/activation validation'},sort_keys=True,indent=2)+'\n').encode()
+    metadata=(json.dumps({'source_sha256':hashlib.sha256(source.encode()).hexdigest(),'status':'NOT PUBLISHED','server_sync':'production schema/RLS/backup/activation pending; see source-bound staging evidence in docs/RELEASE_CANDIDATE.md'},sort_keys=True,indent=2)+'\n').encode()
     write_bundle(output/'safe-demo',{'OWNER_REVIEW_RU.md':(ROOT/'docs'/'OWNER_REVIEW_RU.md').read_bytes(),'BUILD.json':metadata,'index.html':demo.encode(),'favicon.svg':ICON.encode(),'_headers':('/*\n  Content-Security-Policy: '+CSP+'\n  Referrer-Policy: no-referrer\n').encode(),'README.txt':'НЕ ОПУБЛИКОВАНО. Откройте index.html или запустите локальный статический сервер. Только фиктивные данные. Изменения хранятся на этом устройстве; облако, Telegram и отправка отзывов отключены. Это не доказательство работы production или серверной синхронизации.\n'.encode()})
     filenames=['index.html','favicon.svg','favicon.ico','favicon-32.png','apple-touch-icon.png','CNAME']
     filenames += ['docs/SYNC_SERVER.md','docs/PR2_SYNC.md','docs/RELEASE_CANDIDATE.md','docs/OWNER_REVIEW_RU.md','server/001_family_state_cas.sql','server/activate_household.sql','server/rollback_household.sql']
