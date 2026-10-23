@@ -1571,6 +1571,7 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 #today .v91-entry button:focus-visible,#today .v91-entry summary:focus-visible{outline:3px solid #91a9ed;outline-offset:3px}
 @media(max-width:1000px){#today .v91-form{grid-template-columns:repeat(2,minmax(0,1fr))}#today .v91-form>.v95-amount,#today .v91-form>.v91-category{grid-column:1/-1}}
 @media(max-width:600px){#today .v91-entry{padding:16px;border-radius:20px}#today .v91-form{gap:12px 10px;margin-top:16px}#today .v91-head h2{font-size:24px}#today .v91-head p{font-size:12px}#today .v91-kicker{display:none}#today .v91-form .field label{font-size:12px}#today .v91-form .v90-chips button{font-size:11px;padding:6px 9px}#today .v91-actions{margin-top:16px}#today #v90Extra summary span{display:none}}
+@media(max-width:600px){#today.active{animation:none;transform:none}#today.active .v91-actions{position:fixed;left:16px;right:16px;bottom:calc(86px + env(safe-area-inset-bottom));z-index:49;margin:0;padding:8px;background:#fff;border:1px solid #e3e7ec;border-radius:16px;box-shadow:0 4px 18px #162c4620}#today.active .v91-entry{padding-bottom:100px}}
 @media(max-width:440px){#today #v90Extra .form-grid{grid-template-columns:1fr}}
 </style>
 </head>
@@ -1761,7 +1762,7 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 <div class="v91-head"><div><span class="v91-kicker">СЕМЕЙНЫЙ БЮДЖЕТ</span><h2>Новая запись</h2><p>Сумма, покупка и для кого — остальное по желанию.</p></div></div>
 <div class="form-grid v91-form">
 <div class="field full v95-operation"><label for="eType">Операция</label><select id="eType"><option value="expense">Расход</option><option value="income">Доход</option><option value="transfer">Перевод между своими счетами</option><option value="cash">Снятие наличных</option></select></div>
-<div class="field v95-amount"><label for="eAmount">Сколько, ₽</label><input id="eAmount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="0" /></div>
+<div class="field v95-amount"><label for="eAmount">Сколько, ₽</label><input id="eAmount" type="text" maxlength="24" inputmode="decimal" placeholder="0" /></div>
 <div class="field expense-field v91-category"><label for="v90Search">Что купили?</label><input id="v90Search" type="search" maxlength="200" placeholder="Молоко, обед, корм…" autocomplete="off" aria-describedby="v92SearchHint"><div id="v93CreditHelp" hidden class="hint"><b>Платёж по кредиту или рассрочке</b><p>Если обязательство уже есть в разделе кредитов, отметьте оплату в его графике — так платёж свяжется с ним.</p><button type="button" class="btn" onclick="go('loans')">Открыть кредиты и рассрочки</button><label for="v93CreditAccounting">Для отдельного платежа подтвердите учёт</label><select id="v93CreditAccounting"><option value="">Выберите вариант</option><option value="payment">Учитываю расходами только платежи; полная покупка не записана</option><option value="full">Полная стоимость покупки уже записана расходом</option></select></div><p id="v92Selected" role="status" hidden></p><select id="eCategory" aria-label="Выбранная категория" hidden></select><select id="eGroup" hidden></select></div>
 <div class="field expense-field" id="v81BeneficiaryField"><label for="eBeneficiary">Для кого?</label><select id="eBeneficiary"></select></div>
 <div class="field expense-field"><label for="eStore">Где? · необязательно</label><input id="eStore" placeholder="Магазин или место"></div>
@@ -1976,7 +1977,7 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 <section class="section" id="settings">
 <div class="card">
   <h2>Настройки и данные</h2>
-  <div class="success" role="status" aria-live="polite" id="syncStatus">Проверяем состояние...</div><div class="v75-settings-note">Личная история остаётся в семейной базе. Перед обновлением сайта и на общем компьютере рекомендуем экспорт JSON.</div>
+  <div class="success" role="status" aria-live="polite" id="syncStatus">Проверяем состояние...</div><button type="button" class="btn small" onclick="downloadSyncConflict()">Скачать варианты конфликта</button><div class="v75-settings-note">Личная история остаётся в семейной базе. Перед обновлением сайта и на общем компьютере рекомендуем экспорт JSON.</div>
   <div class="form-grid" style="margin-top:16px">
     <div class="field"><label>День зарплаты</label><input data-setting="preferences.payday" inputmode="numeric" max="31" min="1" placeholder="Например 10" type="number"/></div>
   </div>
@@ -2302,7 +2303,7 @@ function expenseCategory(category,who){return category||'Прочее'}
 
 
 let choreFilter='today';
-function normalizeChore(c){if(!c||typeof c!=='object')return null;const title=String(c.title||'').trim();if(!title)return null;const due=String(c.dueDate||c.due||today()).slice(0,10);const repeat=CHORE_REPEAT_LABELS[c.recurrence]?c.recurrence:(CHORE_REPEAT_LABELS[c.repeat]?c.repeat:'weekly');return {id:String(c.id||uid()),title,assignee:String(c.assignee||c.who||'Семья'),dueDate:due,recurrence:repeat,lastDone:String(c.lastDone||''),created_at:String(c.created_at||new Date().toISOString()),updated_at:String(c.updated_at||c.created_at||new Date().toISOString())}}
+function normalizeChore(c){if(!c||typeof c!=='object')return null;const title=String(c.title||'').trim();if(!title)return null;const due=String(c.dueDate||c.due||today()).slice(0,10);const repeat=CHORE_REPEAT_LABELS[c.recurrence]?c.recurrence:(CHORE_REPEAT_LABELS[c.repeat]?c.repeat:'weekly');return {...c,id:String(c.id||uid()),title,assignee:String(c.assignee||c.who||'Семья'),dueDate:due,recurrence:repeat,lastDone:String(c.lastDone||''),created_at:String(c.created_at||new Date().toISOString()),updated_at:String(c.updated_at||c.created_at||new Date().toISOString())}}
 function choreAddDays(s,n){const [y,m,d]=s.split('-').map(Number),x=new Date(Date.UTC(y,m-1,d));x.setUTCDate(x.getUTCDate()+n);return x.toISOString().slice(0,10)}
 function choreAddMonth(s){const [y,m,d]=s.split('-').map(Number),x=new Date(Date.UTC(y,m-1,1));x.setUTCMonth(x.getUTCMonth()+1);const last=new Date(Date.UTC(x.getUTCFullYear(),x.getUTCMonth()+1,0)).getUTCDate();x.setUTCDate(Math.min(d,last));return x.toISOString().slice(0,10)}
 function choreStatus(c){const t=today();return c.dueDate<t?'overdue':c.dueDate===t?'today':'upcoming'}
@@ -2535,8 +2536,20 @@ function setStatus(text,ok=true){
  document.getElementById('authBtn').textContent=ok?'Выйти':'Войти';
  document.getElementById('syncStatus').textContent=ok?' Облако подключено':' Требуется вход'
 }
-function api(path,options={}){return fetch(CONFIG.url+path,{...options,headers:{apikey:CONFIG.key,'Content-Type':'application/json',...(options.headers||{})}})}
-async function authApi(path,body){return fetch(CONFIG.url+path,{method:'POST',headers:{apikey:CONFIG.key,'Content-Type':'application/json'},body:JSON.stringify(body)})}
+async function api(path,options={}){
+ const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),20000);
+ try{return await fetch(CONFIG.url+path,{...options,signal:options.signal||controller.signal,headers:{apikey:CONFIG.key,'Content-Type':'application/json',...(options.headers||{})}})}
+ finally{clearTimeout(timeout)}
+}
+async function verifyHouseholdAccess(candidate){
+ if(!candidate?.access_token)return false;
+ const r=await api('/rest/v1/family_state?household_id=eq.'+encodeURIComponent(CONFIG.household)+'&select=household_id', {headers:{Authorization:'Bearer '+candidate.access_token}});
+ if(!r.ok)return false;
+ const rows=await r.json();
+ return Array.isArray(rows)&&rows.length===1&&rows[0].household_id===CONFIG.household;
+}
+let authEpoch=0;
+async function authApi(path,body){return api(path,{method:'POST',body:JSON.stringify(body)})}
 
 async function login(){
  const email=document.getElementById('loginEmail').value.trim(),password=document.getElementById('loginPassword').value;
@@ -2546,7 +2559,8 @@ async function login(){
  try{
   const r=await authApi('/auth/v1/token?grant_type=password',{email,password});
   const data=await r.json(); if(!r.ok)throw new Error(data.error_description||data.msg||'Не удалось войти');
-  session=data; localStorage.setItem(KEYS.session,JSON.stringify(data));
+  if(!(await verifyHouseholdAccess(data)))throw new Error('Нет доступа к этой семье. Локальные данные и очередь сохранены.');
+  authEpoch++;session=data; localStorage.setItem(KEYS.session,JSON.stringify(data));
   closeAuth();setStatus(email,true);showApp();startCloudSync();toast(' Вход выполнен');
  }catch(e){err.innerHTML='<div class="error">'+esc(e.message)+'</div>'}
  finally{btn.disabled=false;btn.textContent='Войти'}
@@ -2572,7 +2586,8 @@ async function gateLogin(){
   const r=await authApi('/auth/v1/token?grant_type=password',{email,password});
   const data=await r.json();
   if(!r.ok)throw new Error(data.error_description||data.msg||'Не удалось войти');
-  session=data;localStorage.setItem(KEYS.session,JSON.stringify(data));
+  if(!(await verifyHouseholdAccess(data)))throw new Error('Нет доступа к этой семье. Локальные данные и очередь сохранены.');
+  authEpoch++;session=data;localStorage.setItem(KEYS.session,JSON.stringify(data));
   setStatus(email,true);showApp();startCloudSync();
  }catch(e){
   // A failed cloud read must never turn a successful authentication into a logout.
@@ -2686,6 +2701,109 @@ function verifiedCloudContains(actual,written){
  for(const key of Object.keys(written.intelligence||{}))if(!['budgets','recurring','accounts','deleted'].includes(key)&&!cloudContainsFields(actual.intelligence?.[key],written.intelligence[key]))return false;
  return true;
 }
+// A durable common ancestor, scoped to this backend/household. Device clocks
+// must never choose between two changes to the same logical record.
+const CLOUD_BASE_KEY=KEYS.state+'_cloud_base_v1';
+const CLOUD_CONFLICT_KEY=KEYS.state+'_cloud_conflict_v1';
+function rememberCloudBase(data){
+ localStorage.setItem(CLOUD_BASE_KEY,JSON.stringify({household:CONFIG.household,url:CONFIG.url,data}));
+}
+function reconcileCloudSnapshot(cloud,local){
+ let base=null;
+ const raw=localStorage.getItem(CLOUD_BASE_KEY);
+ if(raw!==null){
+  const saved=JSON.parse(raw);
+  if(saved.household!==CONFIG.household||saved.url!==CONFIG.url)throw new Error('Локальная база принадлежит другой семье');
+  validateBackup(saved.data);base=normalize(saved.data);
+ }
+ const conflicts=[];
+ const merge=(b,r,l,path)=>{
+  if(l===undefined)return r;
+  if(r===undefined)return l;
+  if(cloudJSONEqual(r,l))return r;
+  const object=v=>v!==null&&typeof v==='object'&&!Array.isArray(v);
+  if(object(r)&&object(l)&&(b===undefined||object(b))){
+   const out={};
+   for(const key of new Set([...Object.keys(b||{}),...Object.keys(r),...Object.keys(l)])){
+    const value=merge(b?.[key],r[key],l[key],path+'.'+key);
+    if(value!==undefined)out[key]=value;
+   }
+   return out;
+  }
+  if(cloudJSONEqual(l,b))return r;
+  if(cloudJSONEqual(r,b))return l;
+  conflicts.push(path);return l;
+ };
+ const collections={entries:'deletedEntries',goals:'deletedGoals',birthdays:'deletedBirthdays',boardItems:'deletedBoardItems',chores:'deletedChores',installments:'deletedInstallments'};
+ const pack=(value)=>{
+  if(!value)return undefined;
+  const out=JSON.parse(JSON.stringify(value));
+  const packRows=(owner,key,deleted)=>{
+   const slots={};
+   for(const row of owner[key]||[])slots[row.id]={record:row};
+   for(const [id,at] of Object.entries(deleted||{}))slots[id]={...(slots[id]||{}),deleted:at};
+   delete owner[key];return slots;
+  };
+  const rows={};
+  for(const [key,del] of Object.entries(collections)){rows[key]=packRows(out,key,out[del]);delete out[del]}
+  out.intelligence=out.intelligence||{};
+  for(const key of ['budgets','recurring','accounts'])rows['intelligence_'+key]=packRows(out.intelligence,key,out.intelligence.deleted?.[key]);
+  if(out.intelligence.deleted){for(const key of ['budgets','recurring','accounts'])delete out.intelligence.deleted[key]}
+  return {rest:out,rows};
+ };
+ const bp=pack(base),rp=pack(cloud),lp=pack(local);
+ const b=bp?.rest,r=rp.rest,l=lp.rest;
+ const sameRecord=(a,b)=>{
+  if(cloudJSONEqual(a,b))return true;
+  if(!a?.record||!b?.record||a.deleted!==b.deleted)return false;
+  const strip=row=>{const copy={...row};delete copy.created_at;delete copy.updated_at;return copy};
+  return cloudJSONEqual(strip(a.record),strip(b.record));
+ };
+ // Records and their tombstones form one atomic unit: edit/delete conflicts
+ // cannot be hidden by recursively merging a tombstone with a live record.
+ const rows={};
+ for(const key of Object.keys(lp.rows)){
+  rows[key]={};
+  for(const id of new Set([...Object.keys(bp?.rows[key]||{}),...Object.keys(rp.rows[key]),...Object.keys(lp.rows[key])])){
+   const bv=bp?.rows[key]?.[id],rv=rp.rows[key][id],lv=lp.rows[key][id];
+   if(lv===undefined)rows[key][id]=rv;
+   else if(rv===undefined)rows[key][id]=lv;
+   else if(sameRecord(rv,lv))rows[key][id]=rv;
+   else if(sameRecord(lv,bv))rows[key][id]=rv;
+   else if(sameRecord(rv,bv))rows[key][id]=lv;
+   else {conflicts.push(key+':'+id);rows[key][id]=lv}
+  }
+ }
+ const result=merge(b,r,l,'state');
+ reconcileCloudSnapshot.conflicts=conflicts;
+ if(conflicts.length){
+  try{localStorage.setItem(CLOUD_CONFLICT_KEY,JSON.stringify({format:'family-sync-conflict-v1',household:CONFIG.household,base,cloud,local,conflicts}))}
+  catch{updateSync('Конфликт: не удалось сохранить копию вариантов. Очередь не удалена, облако не перезаписано. Скачайте JSON на обоих устройствах и не закрывайте вкладку.');return null}
+  updateSync('Конфликт изменений ('+conflicts.length+'). Локальная очередь и оба варианта сохранены, облако не перезаписано. В настройках скачайте варианты конфликта для согласования; не очищайте данные браузера.');
+  return null;
+ }
+ result.intelligence=result.intelligence||{};result.intelligence.deleted=result.intelligence.deleted||{};
+ for(const [key,slots] of Object.entries(rows)){
+  const nested=key.startsWith('intelligence_'),name=nested?key.slice(13):key;
+  const owner=nested?result.intelligence:result,deleted={};owner[name]=[];
+  for(const [id,slot] of Object.entries(slots)){
+   if(!slot)continue;
+   if(slot.record)owner[name].push(slot.record);
+   if(slot.deleted!==undefined)deleted[id]=slot.deleted;
+  }
+  if(nested)result.intelligence.deleted[name]=deleted;else result[collections[key]]=deleted;
+ }
+ return normalize(result);
+}
+function downloadSyncConflict(){
+ try{
+  const raw=localStorage.getItem(CLOUD_CONFLICT_KEY);
+  if(!raw){toast('Сохранённых вариантов конфликта нет');return}
+  const blob=new Blob([raw],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download='family-sync-conflict-PRIVATE.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);
+  toast('Варианты конфликта скачаны. Это частная копия для согласования, не файл обычного импорта.');
+ }catch{toast('Не удалось скачать варианты конфликта — сохраните JSON на обоих устройствах')}
+}
 function preserveUnconfirmedSync(message){
  const localOK=saveLocal(),pendingOK=savePendingLocal();
  v89StorageFailed=!localOK||!pendingOK;
@@ -2693,12 +2811,16 @@ function preserveUnconfirmedSync(message){
  return false;
 }
 async function pushCloud(initial=false){
+ const epoch=authEpoch;
  if(!(await ensureToken()))return preserveUnconfirmedSync('Только на этом устройстве — войдите для облака');
  saving=true;updateSync('Сохраняем в облако…');
  try{
   for(let attempt=0;attempt<5;attempt++){
    const cloud=await fetchCloudState(),pending=readPendingLocal();
-   state=mergeStates(cloud,pending,state);
+   if(epoch!==authEpoch)return false;
+   const reconciled=cloud?reconcileCloudSnapshot(cloud,state):state;
+   if(!reconciled)return false;state=reconciled;
+   if(cloud)rememberCloudBase(cloud);
    if(cloudReadMeta.protocol!==2||cloudReadMeta.revision===null)return preserveUnconfirmedSync('Сохранено на устройстве — облачная запись ждёт безопасного обновления сервера');
    validateBackup(state);
    const requestSerial=mutationSerial,expected=cloudReadMeta.revision;
@@ -2708,12 +2830,15 @@ async function pushCloud(initial=false){
    const r=await api('/rest/v1/rpc/family_state_cas',{method:'POST',headers:{Authorization:'Bearer '+session.access_token},body:JSON.stringify({p_household_id:CONFIG.household,p_expected_revision:expected,p_data:snapshot,p_request_id:requestId})});
    if(!r.ok)throw new Error('Облачная запись: HTTP '+r.status);
    const ack=await r.json();
+   if(epoch!==authEpoch)return false;
    if(ack.status==='conflict')continue;
    if(ack.status!=='written'||ack.protocol!==2||!Number.isSafeInteger(ack.revision)||ack.revision<=expected||ack.request_id!==requestId||!cloudJSONEqual(ack.data,snapshot))throw new Error('Сервер не подтвердил полный снимок изменений');
-   state=mergeStates(ack.data,state);
-   const localOK=saveLocal();
+   rememberCloudBase(ack.data);
    if(requestSerial!==mutationSerial)return preserveUnconfirmedSync('Есть новые изменения — завершаем синхронизацию');
+   state=normalize(ack.data);
+   const localOK=saveLocal();
    if(!localOK)return preserveUnconfirmedSync('Облако подтвердило запись; локальное сохранение не удалось — скачайте JSON');
+   rememberCloudBase(ack.data);
    localStorage.removeItem(KEYS.pending);updateSync('Синхронизировано');return true;
   }
   return preserveUnconfirmedSync('Сохранено на устройстве — изменения другого устройства требуют повторной синхронизации');
@@ -2749,7 +2874,7 @@ async function manualCloudSync(){
 
 window.addEventListener('pagehide',()=>{try{saveLocal()}catch(e){console.warn('pagehide save',e)}},{capture:true});
 function logout(){
- stopCloudSync();session=null;localStorage.removeItem(KEYS.session);setStatus('Вход не выполнен',false);showGate();document.getElementById('gatePassword').value='';document.getElementById('gateEmail').value='';toast('Вы вышли. Для приватности закройте вкладку на общем устройстве.')
+ authEpoch++;stopCloudSync();session=null;localStorage.removeItem(KEYS.session);setStatus('Вход не выполнен',false);showGate();document.getElementById('gatePassword').value='';document.getElementById('gateEmail').value='';toast('Вы вышли. Для приватности закройте вкладку на общем устройстве.')
 }
 function openAuth(){document.getElementById('authModal').classList.add('open')}
 function closeAuth(){document.getElementById('authModal').classList.remove('open')}
@@ -2877,10 +3002,17 @@ function updateEntryForm(){
 function openEntry(type='expense'){go('today');document.getElementById('eType').value=type;updateEntryForm();document.getElementById('eAmount').focus()}
 function clearEntry(){['eAmount','eStore','eIncomeSource','eComment','v90Search','v93CreditAccounting'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});document.getElementById('eDate').value=today();document.getElementById('eType').value='expense';updateEntryForm();document.getElementById('eCategory').value='';v81FillDetails('e','','','Общее');v90Paint()}
 let v90Saving=false;
+function parseMoneyInput(value){
+ const text=String(value).trim();
+ if(!/^(?:\d+|\d{1,3}(?:[ \u00a0\u202f]\d{3})+)(?:[.,]\d{1,2})?$/.test(text))return NaN;
+ const [whole,fraction='']=text.replace(/[ \u00a0\u202f]/g,'').replace(',','.').split('.');
+ const cents=Number(whole)*100+Number(fraction.padEnd(2,'0'));
+ return Number.isSafeInteger(cents)?cents/100:NaN;
+}
 async function addEntry(){
  if(v90Saving)return;
- const amount=Number(document.getElementById('eAmount').value),type=document.getElementById('eType').value;
- if(!Number.isFinite(amount)||amount<=0){document.getElementById('saveMsg').innerHTML='<div class="error">Укажите корректную сумму больше нуля.</div>';return}
+ const amount=parseMoneyInput(document.getElementById('eAmount').value),type=document.getElementById('eType').value;
+ if(!Number.isFinite(amount)||amount<=0){document.getElementById('saveMsg').innerHTML='<div class="error">Укажите сумму больше нуля, например 1 250,50. Не больше двух знаков после запятой.</div>';return}
  const store=type==='income'?(document.getElementById('eIncomeSource')?.value.trim()||''):(type==='expense'?(document.getElementById('eStore')?.value.trim()||''):'');
  if(type==='expense'&&!document.getElementById('eCategory').value){toast('Выберите, на что потратили');return}
  if(type==='expense'&&document.getElementById('eCategory').value==='Кредит'){const mode=document.getElementById('v93CreditAccounting').value;if(mode!=='payment'){toast(mode==='full'?'Повторный расход не сохранён: покупка уже учтена. Нужен отдельный учёт погашения долга.':'Уточните способ учёта кредитного платежа');return}}
@@ -2904,7 +3036,7 @@ function openEdit(id){
  const e=state.entries.find(x=>x.id===id);if(!e)return;editId=id;
  document.getElementById('editForm').innerHTML=`<div class="form-grid">
  <div class="field"><label>Тип</label><select id="xType"><option value="expense">Расход</option><option value="income">Доход</option><option value="transfer">Перевод</option><option value="cash">Наличные</option></select></div>
- <div class="field"><label>Сумма</label><input id="xAmount" type="number" value="${esc(e.amount)}"></div>
+ <div class="field"><label>Сумма</label><input id="xAmount" type="text" inputmode="decimal" maxlength="24" value="${esc(e.amount)}"></div>
  <div class="field"><label>Категория</label><select id="xCat">${categoryOptions(e.category)}</select></div>
  <div class="field v81-edit-detail"><label for="xSubcategory">Уточнение расхода</label><select id="xSubcategory"></select></div>
  <div class="field v81-edit-detail"><label for="xBeneficiary">Для кого или чего?</label><select id="xBeneficiary"></select></div>
@@ -2920,7 +3052,7 @@ function openEdit(id){
 function closeEdit(){document.getElementById('editModal').classList.remove('open');editId=null}
 async function saveEdit(){
  const e=state.entries.find(x=>x.id===editId);if(!e)return;
- const amount=Number(document.getElementById('xAmount').value);if(!Number.isFinite(amount)||amount<=0){toast(' Укажите сумму больше нуля');return;} e.updated_at=new Date().toISOString();e.type=document.getElementById('xType').value;e.amount=amount;e.who=e.type==='income'?document.getElementById('xWho').value:(e.who||'Общее');e.category=e.type==='expense'?expenseCategory(document.getElementById('xCat').value,e.who):document.getElementById('xCat').value;e.date=document.getElementById('xDate').value;e.store=document.getElementById('xStore').value;e.comment=document.getElementById('xComment').value;
+ const amount=parseMoneyInput(document.getElementById('xAmount').value);if(!Number.isFinite(amount)||amount<=0){toast(' Укажите сумму больше нуля');return;} e.updated_at=new Date().toISOString();e.type=document.getElementById('xType').value;e.amount=amount;e.who=e.type==='income'?document.getElementById('xWho').value:(e.who||'Общее');e.category=e.type==='expense'?expenseCategory(document.getElementById('xCat').value,e.who):document.getElementById('xCat').value;e.date=document.getElementById('xDate').value;e.store=document.getElementById('xStore').value;e.comment=document.getElementById('xComment').value;
  if(e.type==='expense'){e.subcategory=document.getElementById('xSubcategory')?.value||'';e.beneficiary=document.getElementById('xBeneficiary')?.value||'';}else{delete e.subcategory;delete e.beneficiary;}
  closeEdit();renderAll();const ok=await saveAll();toast(localSaveMessage(ok))
 }
@@ -4305,10 +4437,13 @@ async function syncFromCloud(){
  cloudSyncBusy=true;
  const job=async()=>{
   try{
-   const readSerial=mutationSerial,cloud=await fetchCloudState(),pending=readPendingLocal();
+   const epoch=authEpoch,readSerial=mutationSerial,cloud=await fetchCloudState(),pending=readPendingLocal();
+   if(epoch!==authEpoch)return false;
    if(!cloud)return preserveUnconfirmedSync('Сохранено на устройстве — облачная копия пока недоступна');
    const before=JSON.stringify(state),hasChanges=!!pending||readSerial!==mutationSerial;
-   state=hasChanges?mergeStates(cloud,pending,state):cloud;
+   const reconciled=hasChanges?reconcileCloudSnapshot(cloud,state):cloud;
+   if(!reconciled)return false;state=reconciled;
+   if(!hasChanges)rememberCloudBase(cloud);
    if(!saveLocal())return preserveUnconfirmedSync('Не удалось сохранить локальную копию — скачайте JSON');
    if(JSON.stringify(state)!==before)renderAll();
    if(hasChanges){if(!savePendingLocal())return false;return await pushCloud(true)}
@@ -4329,7 +4464,7 @@ async function verifyCachedSession(allowRefresh=true){
   finally{clearTimeout(timeout)}
   if(response.status===401){if(allowRefresh&&await refreshSession())return verifyCachedSession(false);return false}
   if(!response.ok)throw new Error('HTTP '+response.status);
-  const user=await response.json();if(!user?.id)return false;
+  const user=await response.json();if(!user?.id||!(await verifyHouseholdAccess(session)))return false;
   session.user=user;
   localStorage.setItem(KEYS.session,JSON.stringify(session));
   return true;

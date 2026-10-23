@@ -70,6 +70,20 @@ class ExpenseForm(unittest.TestCase):
         self.assertTrue(result['oldUnchanged'])
         self.assertEqual(result['rows'],[{'category':'Вкусняшки','target':target,'amount':17} for target in ['Алиса','Сергей']])
 
+    def test_russian_decimal_and_grouping_preserve_kopecks(self):
+        self.prepare()
+        for text in ['1 250,50','1\u00a0250,50','1250.50']:
+            with self.subTest(text=text):
+                self.page.locator('#eAmount').fill(text)
+                self.page.evaluate("v90Choose('Продукты')")
+                self.page.evaluate('addEntry()')
+                self.assertEqual(self.page.evaluate('state.entries.at(-1).amount'),1250.50)
+        self.page.locator('#eAmount').fill('12,345')
+        count=self.page.evaluate('state.entries.length')
+        self.page.evaluate('addEntry()')
+        self.assertEqual(self.page.evaluate('state.entries.length'),count)
+        self.assertIn('сумм',self.page.locator('#saveMsg').inner_text())
+
     def test_income_and_transfer_still_save(self):
         self.prepare()
         self.page.evaluate("openEntry('income')")
@@ -98,7 +112,7 @@ class ExpenseForm(unittest.TestCase):
         self.prepare()
         for width in [1280,390,320]:
             with self.subTest(width=width):
-                self.page.set_viewport_size({'width':width,'height':900})
+                self.page.set_viewport_size({'width':width,'height':844})
                 fields=self.page.evaluate("""() => ['eAmount','v90Search','eBeneficiary','eStore','v90Save'].map(id=>{
                     const r=document.getElementById(id).getBoundingClientRect();return {id,left:r.left,right:r.right,width:r.width,visible:!!r.height}})""")
                 for field in fields:
@@ -106,6 +120,10 @@ class ExpenseForm(unittest.TestCase):
                     self.assertGreater(field['width'],0,field)
                     self.assertGreaterEqual(field['left'],0,field)
                     self.assertLessEqual(field['right'],width+1,field)
+                if width<=600:
+                    save=self.page.locator('#v90Save').bounding_box()
+                    self.assertLessEqual(save['y']+save['height'],844-80)
+                    self.assertTrue(self.page.locator('#v90Save').evaluate("node=>{const r=node.getBoundingClientRect();return node.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))}"))
 
 
 if __name__=='__main__':

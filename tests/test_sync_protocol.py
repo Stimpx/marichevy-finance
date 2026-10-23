@@ -74,6 +74,7 @@ class MemoryCAS:
         self.drop_next_ack = False
         self.conflict_always = False
         self.not_found = False
+        self.allow_family = True
         self.bad_ack = None
 
     def row(self):
@@ -94,7 +95,16 @@ class MemoryCAS:
             self.blocked.append(request.url)
             route.abort()
             return
+        if url.path in ('/auth/v1/token','/auth/v1/user'):
+            route.fulfill(json={'id':'fictional-user','access_token':'synthetic-login-token',
+                               'user':{'id':'fictional-user','email':'test@example.invalid'}})
+            return
         if request.method == 'GET' and url.path == '/rest/v1/family_state':
+            query=parse_qs(url.query)
+            if query.get('select')==['household_id']:
+                household=query['household_id'][0].removeprefix('eq.')
+                route.fulfill(json=[{'household_id':household}] if self.allow_family else [])
+                return
             self.gets.append(parse_qs(url.query))
             if self.offline:
                 route.abort()
@@ -227,9 +237,10 @@ class SyncProtocol(unittest.TestCase):
             // Explicit protocol-only fixture, bypassing login and token refresh.
             ensureToken=async()=>true;
             session={access_token:'synthetic-protocol-token',user:{id:'fictional-user'}};
+            if(typeof rememberCloudBase==='function')rememberCloudBase(normalize(value.base));
             if(value.pending)savePendingLocal(); saveLocal();
             window.confirm=()=>true; window.__finished=false;
-        }''', {'data': state or fixture(), 'pending': pending})
+        }''', {'data': state or fixture(), 'pending': pending, 'base':self.backend.data})
         return page
 
     def start(self, page, expression='pushCloud()'):
@@ -266,7 +277,7 @@ class SyncProtocol(unittest.TestCase):
         self.wait_held(2)
         self.backend.release()
         results = [self.finish(first), self.finish(second)]
-        self.assertEqual(results, [True, True])
+        self.assertEqual(results, [True, True], [(p.locator('#syncStatus').inner_text(),p.evaluate('reconcileCloudSnapshot.conflicts')) for p in (first,second)])
         self.assert_no_legacy_write()
 
     def test_two_devices_concurrent_additions_survive_cas_conflict(self):
@@ -277,13 +288,47 @@ class SyncProtocol(unittest.TestCase):
         self.assertGreaterEqual(len(self.backend.calls), 3, 'A stale revision must retry after a CAS conflict')
         self.assertEqual(self.backend.revision, 2)
 
-    def test_concurrent_edit_delete_uses_record_and_tombstone_clocks(self):
-        a, b = fixture(), fixture()
-        a['entries'] = [entry('edit-wins', amount=23, updated_at=LATER), entry('delete-wins', updated_at=LATER)]
-        b['deletedEntries'] = {'edit-wins': AT, 'delete-wins': LATEST}
-        self.concurrent_push(self.device(a, True), self.device(b, True))
-        self.assertEqual([(e['id'], e['amount']) for e in self.backend.data['entries']], [('edit-wins', 23)])
-        self.assertEqual(self.backend.data['deletedEntries'], b['deletedEntries'])
+    def test_concurrent_edit_delete_blocks_without_using_device_clocks(self):
+        original=fixture(); original['entries']=[entry('shared')]
+        self.backend.data=deepcopy(original)
+        a,b=self.device(original),self.device(original)
+        a.evaluate("state.entries[0].amount=23;state.entries[0].updated_at='2001-01-01T00:00:00.000Z';savePendingLocal()")
+        b.evaluate("state.entries=[];state.deletedEntries.shared='2099-01-01T00:00:00.000Z';savePendingLocal()")
+        self.assertTrue(a.evaluate('pushCloud()'))
+        self.assertFalse(b.evaluate('pushCloud()'))
+        self.assertEqual(self.backend.data['entries'][0]['amount'],23)
+        self.assertIn('shared',self.pending(b)['deletedEntries'])
+        self.assertIn('Конфликт',b.locator('#syncStatus').inner_text())
+        before=self.pending(b)
+        b.reload();b.wait_for_function("typeof state==='object'")
+        self.assertEqual(self.pending(b),before)
+
+    def test_two_edits_same_record_preserve_losing_queue_even_with_clock_skew(self):
+        original=fixture();original['entries']=[entry('shared')]
+        self.backend.data=deepcopy(original)
+        a,b=self.device(original),self.device(original)
+        for page,amount,date in [(a,21,'2099-01-01'),(b,31,'2001-01-01')]:
+            page.evaluate("v=>{state.entries[0].amount=v.amount;state.entries[0].updated_at=v.date;savePendingLocal()}",dict(amount=amount,date=date))
+        self.assertTrue(a.evaluate('pushCloud()'))
+        self.assertFalse(b.evaluate('syncFromCloud()'))
+        self.assertEqual(self.backend.data['entries'][0]['amount'],21)
+        self.assertEqual(self.pending(b)['entries'][0]['amount'],31)
+        self.assertEqual(b.evaluate('state.entries[0].amount'),31)
+        self.assertEqual(len(self.backend.calls),1)
+        with b.expect_download() as event:
+            b.evaluate('downloadSyncConflict()')
+        packet=json.loads(Path(event.value.path()).read_text())
+        self.assertEqual(packet['local']['entries'][0]['amount'],31)
+        self.assertEqual(packet['cloud']['entries'][0]['amount'],21)
+        self.assertEqual(packet['base']['entries'][0]['amount'],17)
+        self.assertIn('entries:shared',packet['conflicts'])
+
+    def test_unchanged_remote_does_not_erase_local_edit_with_slow_clock(self):
+        original=fixture();original['entries']=[entry('shared')]
+        self.backend.data=deepcopy(original);page=self.device(original)
+        page.evaluate("state.entries[0].amount=42;state.entries[0].updated_at='2001-01-01';savePendingLocal()")
+        self.assertTrue(page.evaluate('pushCloud()'))
+        self.assertEqual(self.backend.data['entries'][0]['amount'],42)
 
     def test_all_collections_and_deletions_survive_conflict_roundtrip(self):
         data = all_collections()
@@ -296,7 +341,17 @@ class SyncProtocol(unittest.TestCase):
         for collection in ('budgets', 'recurring', 'accounts'):
             data['intelligence'][collection].append(dict(data['intelligence'][collection][0], id='deleted-' + collection))
             tombstones['intelligence']['deleted'][collection]['deleted-' + collection] = LATEST
-        self.concurrent_push(self.device(data, True), self.device(tombstones, True))
+        self.backend.data=deepcopy(data)
+        # Both writers start from the same real ancestor; one deletes existing
+        # records while the other keeps them unchanged.
+        deleted=deepcopy(data)
+        for collection, key in top:
+            deleted[collection]=[row for row in deleted[collection] if not row['id'].startswith('deleted-')]
+            deleted[key]=tombstones[key]
+        for collection in ('budgets','recurring','accounts'):
+            deleted['intelligence'][collection]=[row for row in deleted['intelligence'][collection] if not row['id'].startswith('deleted-')]
+            deleted['intelligence']['deleted'][collection]=tombstones['intelligence']['deleted'][collection]
+        self.concurrent_push(self.device(data, True), self.device(deleted, True))
         reader = self.device()
         self.assertTrue(reader.evaluate('syncFromCloud()'))
         saved = reader.evaluate('state')
@@ -359,6 +414,35 @@ class SyncProtocol(unittest.TestCase):
         self.assertTrue(page.evaluate('window.__later'))
         self.assertEqual({e['id'] for e in self.backend.data['entries']}, {'first', 'later'})
         self.assertIsNone(self.pending(page))
+
+    def test_edit_same_record_while_ack_waits_survives_slow_clock_and_reload(self):
+        value=fixture();value['entries']=[entry('shared')]
+        page=self.device(value,True);self.backend.hold_ack=True
+        self.start(page);self.wait_held()
+        page.evaluate("state.entries[0].amount=99;state.entries[0].updated_at='2001-01-01';mutationSerial++;saveLocal();savePendingLocal()")
+        self.backend.release();self.assertFalse(self.finish(page))
+        self.assertEqual(page.evaluate('state.entries[0].amount'),99)
+        self.assertEqual(self.pending(page)['entries'][0]['amount'],99)
+        self.assertTrue(page.evaluate('pushCloud()'))
+        self.assertEqual(self.backend.data['entries'][0]['amount'],99)
+        self.assertIsNone(self.pending(page))
+
+    def test_missing_ancestor_refuses_ambiguous_existing_record(self):
+        self.backend.data=fixture();self.backend.data['entries']=[entry('shared',amount=11)]
+        value=fixture();value['entries']=[entry('shared',amount=22)]
+        page=self.device(value,True)
+        page.evaluate("localStorage.removeItem(KEYS.state+'_cloud_base_v1')")
+        self.assertFalse(page.evaluate('pushCloud()'))
+        self.assertEqual(self.backend.calls,[])
+        self.assertEqual(self.pending(page)['entries'][0]['amount'],22)
+
+    def test_corrupt_ancestor_is_retained_and_never_authorizes_write(self):
+        value=fixture();value['entries']=[entry('local')];page=self.device(value,True)
+        page.evaluate("localStorage.setItem(KEYS.state+'_cloud_base_v1','broken-json')")
+        self.assertFalse(page.evaluate('pushCloud()'))
+        self.assertEqual(self.backend.calls,[])
+        self.assertEqual(page.evaluate("localStorage.getItem(KEYS.state+'_cloud_base_v1')"),'broken-json')
+        self.assertEqual(self.pending(page)['entries'][0]['id'],'local')
 
     def test_verifier_rejects_same_timestamp_changed_content_every_collection(self):
         page = self.device()
@@ -475,6 +559,7 @@ class SyncProtocol(unittest.TestCase):
             plan = deepcopy(template)
             plan['id'], plan['parts'][0]['id'] = plan_id, part_id
             value['installments'].append(plan)
+        self.backend.data=deepcopy(value)
         a, b = self.device(value), self.device(value)
         for page, plan_id, part_id in ((a, 'a:b', 'c'), (b, 'a', 'b:c')):
             page.evaluate('''ids => {
@@ -527,6 +612,28 @@ class SyncProtocol(unittest.TestCase):
         self.assertEqual(self.backend.data['intelligence'].get('futurePlans'), remote['intelligence']['futurePlans'])
         self.assertEqual(self.backend.data['intelligence'].get('futureFlags'), local['intelligence']['futureFlags'])
         self.assertEqual(self.backend.data['intelligence']['deleted'].get('futurePlans'), remote['intelligence']['deleted']['futurePlans'])
+
+    def test_foreign_family_login_never_unlocks_cached_finances(self):
+        local=fixture();local['entries']=[entry('private-pending')]
+        page=self.device(local,True);self.backend.allow_family=False
+        page.evaluate("logout();document.getElementById('gateEmail').value='outsider@example.invalid';document.getElementById('gatePassword').value='fictional-password'")
+        page.evaluate('gateLogin()')
+        self.assertTrue(page.locator('#appRoot').evaluate("node=>node.classList.contains('auth-locked')"))
+        self.assertIn('Нет доступа',page.locator('#gateError').inner_text())
+        self.assertIsNone(page.evaluate('session'))
+        self.assertEqual(self.pending(page)['entries'][0]['id'],'private-pending')
+        self.assertEqual(self.backend.calls,[])
+        page.evaluate("session={access_token:'synthetic-other-user'}")
+        self.assertFalse(page.evaluate('verifyCachedSession()'))
+
+    def test_logout_during_read_does_not_send_a_later_write(self):
+        local=fixture();local['entries']=[entry('stay-local')]
+        page=self.device(local,True);self.backend.hold_gets=1
+        self.start(page);self.wait_held()
+        page.evaluate('logout()');self.backend.release()
+        self.assertFalse(self.finish(page))
+        self.assertEqual(self.backend.calls,[])
+        self.assertEqual(self.pending(page)['entries'][0]['id'],'stay-local')
 
     def test_get_and_cas_contract_use_revision_and_request_id(self):
         value = fixture(); value['entries'] = [entry('contract')]
