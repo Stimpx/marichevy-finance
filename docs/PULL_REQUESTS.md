@@ -62,19 +62,33 @@ and desktop/mobile screenshots. Changed files: index.html,
 tests/test_expense_form.py, docs/PR4_EXPENSE_FORM.md, docs/WORK_LOG.md.
 Final owner design assessment and actual Safari/Yandex checks remain.
 
-## Stage 5
+## Stage 5 · cumulative v95-rc1 release candidate
 
-Title: Package an isolated review demo and private release candidate
-Head: `codex/pr5-release-candidate`; base: `codex/pr4-simple-expense-form`.
+Title: Prepare v95-rc1 family release with verified Supabase CAS and permission guards
+Head: `codex/pr5-release-candidate`; base: `main`; [Draft PR5](https://github.com/Stimpx/marichevy-finance/pull/5).
 
-Adds a fail-closed anonymized offline demo generator, separate private installation
-package with manifests, release/owner instructions, candidate register and layout
-regression across 11 sections and nine widths. The private installation package stays outside git. A sanitized source-recovery ZIP is included under backups/ to permit direct GitHub download after ChatGPT artifact delivery failed. The
-private package is never served with the demo. This PR does not publish anything.
+PR5 now contains the whole PR1–PR5 candidate for one coordinated frontend release.
+Do not merge intermediate frontend branches into main one by one: each main change
+triggers GitHub Pages. Main still serves bfc7ce5/v94; this Draft PR does not publish.
 
-Validation: bundle 4 tests; layout 144 checks inside one test; complete integrated
-regression result is recorded in RELEASE_CANDIDATE.md and WORK_LOG.md. Changed
-files: tools/build_bundle.py, tools/expense_proposal.html, tests/test_build_bundle.py,
-tests/test_release_ui.py, the PostgreSQL final-server readiness fix in tests/test_sync_database.py, release/build/owner docs, tests/README.md and this file.
-External HTTPS preview and actual hosted backend checks still require authorized
-access; do not present an unpublished local server as an accessible preview link.
+The candidate preserves pending/base/conflict copies, resolves unrelated concurrent
+edits with server CAS and stops ambiguous same-record conflicts without choosing by
+device clock. It checks household access before opening cached data, fixes late auth
+responses after logout, retains unknown JSON fields, supports decimal money entry
+and keeps the mobile expense Save visible. Server migrations restrict table
+capabilities and bind membership lookups while preserving trusted service-role use.
+
+Evidence: full local regression 212/212 with 144 UI checks, runner 35/35 separately
+(overlapping counts); actual production-shaped Supabase/PostgREST 46 checks and 9
+current-client browser scenarios, 40 real HTTPS requests and one actual CAS conflict.
+Native Chromium probe encountered this cloud environment's CA trust failure; real
+Safari/iPhone and Yandex acceptance are not claimed. Source/SQL hashes and remaining
+backup/device/approval prerequisites are in RELEASE_CANDIDATE.md.
+
+Safe demo and PRIVATE installation packages remain separate, with manifests and
+source hashes. Actual family backups must never enter Git, demo, staging Supabase
+or reusable environment snapshots. Restore and queue checks remain private.
+
+Release/rollback order is in RELEASE_RUNBOOK.md. Keep PR5 Draft until the verified
+private real backup, device queues/acceptance and owner release approval are ready.
+Production schema/data/permissions, DNS and Telegram were not changed.

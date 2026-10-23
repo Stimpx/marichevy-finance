@@ -8,9 +8,10 @@
 - Dashboard по снимку: Healthy, GitHub не подключён, миграций нет.
 
 После подключения scoped token проект также проверен через Management API.
-Hosted-проверки fixture v1 выполнены: подробности в RELEASE_CANDIDATE.md.
-После появления токена на снимке владелец удалил его. Прежний токен не использовать;
-сейчас ожидается новый scoped token для проверки модели членства v2 и hardening.
+Hosted-проверки fixture v1 и production-shaped v2 выполнены: подробности в
+RELEASE_CANDIDATE.md. После появления первого токена на снимке владелец удалил его.
+Новый scoped token с проверенными правами подключён; membership прошёл46 шагов,
+browser текущего v95-rc1 —9 сценариев. Прежний токен не использовать.
 Реальную семейную историю на стенд не копировать. Рабочий проект не менять.
 
 ## Единственное защищённое подключение
@@ -46,7 +47,7 @@ Secret `STAGING_SUPABASE_MANAGEMENT_TOKEN`, destination `api.supabase.com`.
 ```sh
 python3 tools/supabase_staging.py inspect
 python3 tools/supabase_staging.py membership --report /workspace/artifacts/supabase-membership-v2-report.json
-python3 tools/supabase_staging.py browser --report /workspace/artifacts/supabase-browser-report.json
+python3 tools/supabase_staging.py browser --report /workspace/artifacts/supabase-browser-v95-rc1-report.json
 ```
 
 Сначала inspect проверяет Management API project ref/name/Healthy и читает только

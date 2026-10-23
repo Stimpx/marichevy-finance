@@ -120,10 +120,13 @@ CAS двух членов и чужой семьи, прямые SQL TRUNCATE/TR
 атомарный отказ при наследовании/неожиданной схеме, блокировка чужих user UUID,
 запрет anon helper и сохранение service-role lookup без uid.
 
-На отдельном Supabase-стенде требуется воспроизвести production-shaped membership,
-households, FK и пять policies без копирования реальной истории. После `002` и `003`
-нужны обычные Auth JWT двух семей, anon и service-role lookup: прямые table/RPC HTTP,
-свой/чужой ID пользователя, запрет self-enrollment, CAS-конкуренция, отсутствие DELETE
-policy, локальная очередь, синтетический reserve/restore. Только после такого hosted
-прогона можно включать эти SHA в согласованный выпуск server+client. Подготовка и
-проверки не дают разрешения менять production или публиковать новый HTML отдельно.
+23 октября на отдельном Supabase-стенде выполнено развитие до production-shaped
+membership/households/FK/пяти policies без реальной истории. После точных002/003
+прошли46 direct checks с обычными Auth JWT двух семей, anon и service-role lookup:
+свой/чужой ID, запрет self-enrollment и прочих membership/household мутаций,
+сохранность данных/revisions, CAS, legacy-отказы и отсутствие DELETE policy.
+Текущий клиент прошёл9 сценариев с40 настоящими HTTPS и одним CAS-конфликтом,
+включая локальную очередь и same-ID/edit-delete при неверных часах.
+Отчёты: supabase-membership-v2-report.json и supabase-browser-v95-rc1-report.json.
+Это позволяет включить эти SHA в подготовленный выпуск server+client, но не
+заменяет реальный резерв/restore, устройства и разрешение менять production.

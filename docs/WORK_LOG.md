@@ -274,3 +274,70 @@ allowlist финансовых ключей, raw строки и UTF-8/UTF-16LE 
 одиночные суррогаты и гонку. Это не выполненный резерв устройств владельца.
 Реальные backup/restore, очереди обоих устройств, Safari/iPhone и Яндекс Browser,
 внешние writers и итоговое разрешение на публикацию остаются открыты.
+
+## Повторное подключение и настоящая модель членства · 23 октября 2026
+
+Владелец подключил новый токен стенда с точными четырьмя правами и доступом к
+одному marichevy-finance-staging, затем опубликовал конфигурацию среды Codex.
+Новая конфигурация сохранила кандидат 457a931 и оба защищённых binding. Это не
+публикация банка. После восстановления среды проверены реальные process bindings
+по присутствию, checkout/head/status и Management API; секреты не выводились.
+
+`membership` успешно выполнил развитие v1→v2 и точные 002/003: 46 проверок прошли.
+Тестовые JSON/revisions и членство при миграции не изменились, effective capabilities
+закрыты, точный self-bound helper проверен, обычные JWT/anon/service_role дали
+ожидаемые результаты. Собственный CAS/legacy и чужие запросы проверены через
+настоящий PostgREST. Отчёт supabase-membership-v2-report.json содержит точные SQL SHA.
+Рабочая база и настоящая история не читались и не менялись.
+
+Текущий v95-rc1 с SHA 9c5dbdddfe61a3d00926201e17e59f84df286413b47daaf93a44435db290c2a8
+после v2/hardening прошёл все 9 браузерных сценариев: 40 настоящих HTTPS, 1 CAS conflict,
+независимые добавления, reload/offline pending, same-ID и edit/delete при неверных
+часах, отказ чужому аккаунту открывать кэш. Отчёт supabase-browser-v95-rc1-report.json
+имеет fixture_version=2, hardening_verified=true и тот же SHA. Bridge проверяет TLS
+и пересылает реальные ответы; это не mocked RPC. Отдельный read-only native Chromium
+probe остановился до HTTP с ERR_CERT_AUTHORITY_INVALID при стандартном proxy/CA.
+TLS не отключали; native CORS/device acceptance не заявляются. Это CA среды,
+не установленная ошибка сертификата рабочего сайта на устройствах владельца.
+
+Draft PR5 переоформлен как весь кандидат и направлен в main: один финальный HTML
+после подготовки/активации согласованного сервера. gh pr edit встретил удалённый
+GitHub Projects classic API; тот же metadata update выполнен через REST API и
+подтверждён. PR остаётся Draft, main bfc7ce5, merge/deploy/DNS не выполнялись.
+
+Владельцу показаны обезличенные снимки формы телефона/ПК. Подтверждение внешнего
+вида и настоящая проверка клавиатуры/Save остаются отдельными. Готовятся конкретные
+offline-инструменты частного резерва и восстановления; catalog-only разрешение
+на production не расширяется автоматически до чтения семейных строк.
+
+## Конкретный частный резерв и offline restore · подготовлено, не выполнено на семье
+
+Добавлены export_private_server_backup.py, verify_private_backup.py и
+restore_private_backup.py. Первый после отдельного согласия проверяет фиксированный
+production project/CONFIG household и читает один согласованный snapshot четырёх
+app-таблиц через фиксированный SELECT с read_only=true. auth.users, ключи, DDL/DML
+не запрашивает. snapshot_json сохраняется исходной строкой вместе с TimeZone и
+хешами, без округления Python float. Файлы 0600 в принадлежащей оператору папке 0700
+вне checkout, no-follow/exclusive, предел 32MiB; значения/UUID не выводятся.
+
+Restore восстанавливает четыре таблицы в отдельном PostgreSQL 16 network=none,
+tmpfs, без портов и логирования строк, с минимальными Auth UUID stand-ins для FK.
+Сверяет все поля/readback, PK/FK/RLS, репетирует 001–003 и CAS в откатываемой
+транзакции. Контейнер удаляется до записи частного readback. Это logical app-data
+restore, не восстановление Supabase/Auth, всей платформы или неизвестных delivery
+CHECK/default. Verifier сравнивает точные JSON/ID/tombstones/Decimal/связи и копии
+двух устройств; ничего не объединяет и не выбирает по времени.
+
+Независимый review устранил valid-JSON quarantine false-pass, metadata bool gaps,
+неверный scaled zero, несовместимые size limits, checkout/owner/output path gaps,
+interrupt cleanup и утечки неизвестных CLI аргументов в ошибках. Общий целевой
+прогон 53/53, 10.654s: 18 extractor, 19 verifier,12 actual local PostgreSQL и 4 bundle.
+Все данные вымышленные; производственные строки не читались. Главный клиент и
+SQL 001–003 не изменены, поэтому повтор общего 212/Supabase 46/browser 9 не требовался.
+
+PRIVATE_RESTORE_ACCEPTANCE.md описывает точные команды, ограничение plaintext
+прав доступа, личную копию вне временного worker, отсутствие private данных в Git,
+демо, staging Supabase и reusable environment snapshots. iPhone raw queue остаётся
+отдельной внешней предпосылкой; обычный экспорт не объявляется полной копией очереди.
+Следующий необходимый шаг — отдельное согласие на read-only семейный snapshot и
+закрытый local restore. Это не запрос публикации или разрешение на production writes.

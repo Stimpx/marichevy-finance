@@ -124,4 +124,24 @@ Queue-capture тесты перехватывают точный production orig
 отдают локальную синтетическую страницу. Во внешний production не обращаются,
 его storage не читают. Проверяют реальные загрузки PRIVATE JSON, raw UTF-16,
 хеши, отсутствие чтения сессии/изменения storage и отказ при гонке/неверном origin.
-002/003 локально исполняются в PostgreSQL16; это не заменяет Supabase17/PostgREST.
+002/003 локально исполняются в PostgreSQL 16; это не заменяет Supabase17/PostgREST.
+
+## Частный резерв: инструменты подготовлены, реальные данные не читались
+
+```sh
+PYTHONPATH=tests python3 -m unittest test_private_server_backup test_private_backup_verifier test_private_pg_restore test_build_bundle -v
+```
+
+53/53 прошли за 10.654s: 18 fixed-extractor boundary/file tests, 19 offline verifier,
+12 PostgreSQL restore/integration и 4 bundle checks. Они проверяют только вымышленные
+данные. Экспортёр использует fake transport; реальный production endpoint не вызывается.
+Restore создаёт новый networkless tmpfs PostgreSQL без портов, восстанавливает четыре
+app-таблицы с PK/FK/RLS и репетирует 001–003/CAS, сохраняя оригинальные поля.
+Auth UUID stand-ins не являются восстановлением Supabase/Auth или всей платформы.
+
+Проверены точные числа/часовой пояс/неизвестный JSON/tombstones, повреждения и
+неоднозначности очередей, SQL/COPY injection, неизменённые исходники, закрытые пути,
+право владельца/0700/0600, exclusive output, cleanup и отсутствие PII в ошибках.
+Инструменты требуют явного разрешения на частные входы; действующий catalog-only
+доступ автоматически не расширяется до истории. Реальный резерв/restore остаётся
+незавершённым. Порядок: docs/PRIVATE_RESTORE_ACCEPTANCE.md.
