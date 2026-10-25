@@ -368,6 +368,16 @@ def capture(value, project, household, server, exported):
     counts = {"divergent_active_values": 0, "corrupt_preserved_values": 0,
               "conflict_packets": 0, "pending_values": 0}
     primary_seen = False
+    # New UI captures include memory, which may contain edits absent from disk.
+    # Never accept a matching persisted snapshot while silently ignoring those edits.
+    if "memory_state_json" in value:
+        memory = value["memory_state_json"]
+        if not isinstance(memory, str):
+            fail("invalid-memory-state")
+        parsed_memory = parse(memory)
+        state_rows(parsed_memory)
+        if not equal(parsed_memory, server) or not equal(parsed_memory, exported):
+            counts["divergent_active_values"] += 1
     for row in records:
         if not isinstance(row, dict):
             fail("invalid-capture-records")

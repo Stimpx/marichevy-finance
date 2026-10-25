@@ -125,7 +125,7 @@ def build(output: Path) -> None:
     filenames += ['docs/SYNC_SERVER.md','docs/PR2_SYNC.md','docs/RELEASE_CANDIDATE.md',
                   'docs/RELEASE_RUNBOOK.md','docs/PRODUCTION_SCHEMA_FINDINGS.md',
                   'docs/OWNER_REVIEW_RU.md','docs/LOCAL_QUEUE_BACKUP_RU.md',
-                  'docs/PRIVATE_RESTORE_ACCEPTANCE.md','tools/capture_local_queue.js',
+                  'docs/PRIVATE_RESTORE_ACCEPTANCE.md','docs/DEVICE_QUEUE_CAPTURE_MAC_RU.md','tools/capture_local_queue.js',
                   'tools/export_private_server_backup.py','tools/verify_private_backup.py',
                   'tools/restore_private_backup.py','server/001_family_state_cas.sql',
                   'server/002_restrict_table_capabilities.sql','server/003_bound_membership_lookup.sql',

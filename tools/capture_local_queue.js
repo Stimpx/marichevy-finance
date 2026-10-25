@@ -67,18 +67,36 @@
     const filename = 'marichevy-local-queue-PRIVATE-' + capturedAt.replace(/[^0-9]/g, '') + '.json';
     const objectUrl = URL.createObjectURL(new Blob([JSON.stringify(capture, null, 2) + '\n'],
       {type: 'application/json'}));
+    const holderId = 'marichevy-private-queue-download';
+    const previous = document.getElementById(holderId);
+    if (previous && previous.dataset.marichevyCapture === 'v1') {
+      const previousLink = previous.querySelector('a[data-marichevy-capture-download]');
+      if (previousLink) {
+        const previousUrl = previousLink.href;
+        setTimeout(() => URL.revokeObjectURL(previousUrl), 15000);
+      }
+      previous.remove();
+    }
+    const holder = document.createElement('div');
+    holder.id = holderId;
+    holder.dataset.marichevyCapture = 'v1';
+    holder.setAttribute('role', 'status');
+    holder.style.cssText = 'position:fixed;left:12px;right:12px;top:12px;z-index:2147483647;padding:16px;background:white;color:#17223b;border:2px solid #315fc7;border-radius:12px;font:16px system-ui;box-shadow:0 4px 24px #0003';
+    const note = document.createElement('p');
+    note.textContent = 'Частная копия очереди подготовлена. Проверьте загрузки; если файла нет, нажмите ссылку. Данные и очередь не изменены.';
     const link = document.createElement('a');
     link.href = objectUrl;
     link.download = filename;
-    link.hidden = true;
-    try {
-      document.body.appendChild(link);
-      link.click();
-    } finally {
-      link.remove();
-      setTimeout(() => URL.revokeObjectURL(objectUrl), 2000);
-    }
-    return {outcome: 'download-requested', key_count: records.length, filename};
+    link.dataset.marichevyCaptureDownload = 'v1';
+    link.textContent = 'Скачать частную копию очереди';
+    link.style.cssText = 'display:inline-block;padding:12px;color:#24467a;text-decoration:underline';
+    holder.append(note, link);
+    document.body.appendChild(holder);
+    // Keep an explicit user-gesture fallback for browsers that block async clicks.
+    // Only the current copy is retained until another successful capture or reload.
+    let requested = false;
+    try { link.click(); requested = true; } catch (_) {}
+    return {outcome: requested ? 'download-requested' : 'download-prepared', key_count: records.length, filename};
   } catch (error) {
     const known = new Set(['wrong-origin', 'secure-hashing-unavailable', 'no-financial-keys',
       'storage-changed-during-capture']);

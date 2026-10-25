@@ -1983,9 +1983,13 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
   </div>
   <div class="actions">
     <button class="btn primary" onclick="saveSettings()">Сохранить настройки</button>
-    <button class="btn" onclick="exportData()">↓ Резервная копия JSON</button><button class="btn" onclick="exportCsv()">↓ Таблица CSV</button><button class="btn" type="button" onclick="manualCloudSync()">↻ Проверить облако</button>
+    <button class="btn" type="button" onclick="exportDeviceBackup()">↓ Полная копия устройства</button><div class="v75-settings-note" style="grid-column:1/-1;width:100%">Сохраняет историю этой вкладки, локальную очередь и варианты конфликтов. Не включает сессию входа и резерв сервера. Файл частный; не загружайте его через обычный импорт. На время копирования остановите правки во всех вкладках; проверьте сохранение файла в загрузках или «Файлы».</div><button class="btn" onclick="exportData()">↓ Резервная копия JSON</button><button class="btn" onclick="exportCsv()">↓ Таблица CSV</button><button class="btn" type="button" onclick="manualCloudSync()">↻ Проверить облако</button>
     <label class="btn">Импорт JSON<input accept=".json" hidden="" id="importFile" type="file"/></label>
     <button class="btn danger" onclick="logout()">Выйти</button>
+  </div>
+  <div id="deviceBackupDownload" class="v75-settings-note" hidden style="display:none">
+    <a id="deviceBackupDownloadLink" class="btn" style="display:inline-flex;text-decoration:none">Скачать подготовленную копию устройства</a>
+    <p style="margin-bottom:0">Если файл не появился в загрузках или «Файлы», нажмите эту ссылку. Она сохраняет уже подготовленную копию; после новых правок подготовьте её заново.</p>
   </div>
   <p class="hint">День зарплаты нужен только для расчёта ориентира расходов до следующего поступления. Финансовые записи хранятся в семейном облаке Supabase; локальная копия используется как резерв при временном сбое сети.</p>
 </div>
@@ -4409,6 +4413,98 @@ function exportCsv(){
  const rows=state.entries.slice().sort((a,b)=>String(a.date||'').localeCompare(String(b.date||''))).map(e=>[e.date,typeName(e.type),e.category,e.who,e.amount,e.store,e.pay,e.comment,e.from,e.to,e.subcategory||'',e.beneficiary||'']);
  const data='\ufeff'+[columns,...rows].map(r=>r.map(safe).join(';')).join('\r\n');
  const blob=new Blob([data],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='marichevy-operations-'+today()+'.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+}
+let deviceBackupDownloadUrl=null;
+async function exportDeviceBackup(){
+  'use strict';
+  const fail = reason => { throw new Error(reason); };
+  try {
+    if (!window.isSecureContext || !crypto.subtle) fail('secure-hashing-unavailable');
+
+    const memoryRaw = JSON.stringify(state);
+    const exactKeys = new Set([
+      'marichevy_state_v10', 'marichevy_state_v10_corrupt_v1',
+      'marichevy_state_v10_cloud_base_v1', 'marichevy_state_v10_cloud_conflict_v1',
+      'marichevy_pending_v10', 'marichevy_pending_v10_corrupt_v1',
+      'marichevy_state_backup_v44', 'marichevy_state_backup_v44_corrupt_v1',
+      'marichevy_pre_import_backup_v73', 'marichevy_pre_import_backup_v73_corrupt_v1'
+    ]);
+    const storageKey = key => key.replace('marichevy_state_v10', KEYS.state).replace('marichevy_pending_v10', KEYS.pending).replace('marichevy_state_backup_v44', LOCAL_BACKUP_KEY).replace('marichevy_pre_import_backup_v73', LOCAL_PREIMPORT_KEY);
+    const allowedKeys = new Set([...exactKeys].map(storageKey));
+    const archivePrefix = KEYS.state + '_cloud_conflict_v1_archive_';
+    const isAllowed = key => allowedKeys.has(key) || (key.startsWith(archivePrefix) && /^[A-Za-z0-9_-]+$/.test(key.slice(archivePrefix.length)));
+    const storage = window.localStorage;
+    const selectedKeys = () => {
+      const selected = [];
+      for (let index = 0, count = storage.length; index < count; index += 1) {
+        const key = storage.key(index);
+        if (key !== null && isAllowed(key)) selected.push(key);
+      }
+      return [...new Set(selected)].sort();
+    };
+    const keys = selectedKeys();
+    const rawValues = keys.map(key => {
+      const raw = storage.getItem(key);
+      if (raw === null) fail('storage-changed-during-capture');
+      return {key, raw};
+    });
+    const capturedAt = new Date().toISOString();
+    const encoder = new TextEncoder();
+    const hex = digest => Array.from(new Uint8Array(digest), byte => byte.toString(16).padStart(2, '0')).join('');
+    const records = [];
+    for (const item of rawValues) {
+      const bytes = encoder.encode(item.raw);
+      // UTF-16LE also distinguishes a lone surrogate from TextEncoder's U+FFFD.
+      const codeUnitBytes = new Uint8Array(item.raw.length * 2);
+      for (let index = 0; index < item.raw.length; index += 1) {
+        const codeUnit = item.raw.charCodeAt(index);
+        codeUnitBytes[index * 2] = codeUnit & 255;
+        codeUnitBytes[index * 2 + 1] = codeUnit >>> 8;
+      }
+      const utf8Digest = await crypto.subtle.digest('SHA-256', bytes);
+      const utf16Digest = await crypto.subtle.digest('SHA-256', codeUnitBytes);
+      records.push({key: item.key, raw: item.raw, utf16_code_units: item.raw.length,
+        utf8_bytes: bytes.byteLength, sha256_utf8: hex(utf8Digest), sha256_utf16le: hex(utf16Digest)});
+    }
+    // Hashing yields to the application. Refuse a visibly changing capture.
+    if (JSON.stringify(state) !== memoryRaw || JSON.stringify(selectedKeys()) !== JSON.stringify(keys) ||
+        rawValues.some(item => storage.getItem(item.key) !== item.raw)) {
+      fail('storage-changed-during-capture');
+    }
+    const capture = {
+      format: 'marichevy-local-queue-capture-v1',
+      purpose: 'PRIVATE-read-only-local-recovery-capture-not-an-application-import',
+      origin: location.origin, captured_at_device_utc: capturedAt,
+      device_clock_verified: false, key_count: records.length,
+      session_included: false, storage_modified: false, records,
+      memory_state_json: memoryRaw, server_backup_included: false
+    };
+    const filename = 'marichevy-local-queue-PRIVATE-' + capturedAt.replace(/[^0-9]/g, '') + '.json';
+    const holder = document.getElementById('deviceBackupDownload');
+    const link = document.getElementById('deviceBackupDownloadLink');
+    if (!holder || !link) fail('capture-failed');
+    const objectUrl = URL.createObjectURL(new Blob([JSON.stringify(capture, null, 2) + '\n'],
+      {type: 'application/json'}));
+    const previousUrl = deviceBackupDownloadUrl;
+    link.href = objectUrl;
+    link.download = filename;
+    holder.hidden = false;
+    holder.style.display = 'block';
+    deviceBackupDownloadUrl = objectUrl;
+    // Retain only the current prepared copy. Allow an older download to start
+    // before releasing its URL; the current link remains usable until replaced.
+    if (previousUrl) setTimeout(() => URL.revokeObjectURL(previousUrl), 15000);
+    let requested = false;
+    try { link.click(); requested = true; } catch (_) {}
+    toast('Копия устройства подготовлена. Проверьте загрузки или нажмите ссылку под кнопками. Очередь не изменена.');
+    return {outcome: requested ? 'download-requested' : 'download-prepared', key_count: records.length, filename};
+  } catch (error) {
+    const known = new Set(['wrong-origin', 'secure-hashing-unavailable', 'no-financial-keys',
+      'storage-changed-during-capture']);
+    const reason = error instanceof Error && known.has(error.message) ? error.message : 'capture-failed';
+    toast('Копия устройства не создана (' + reason + '). Не закрывайте вкладку; остановите правки и повторите.');
+    return {outcome: 'blocked', reason};
+  }
 }
 function exportData(){
  try{

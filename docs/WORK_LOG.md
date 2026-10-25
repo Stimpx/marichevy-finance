@@ -341,3 +341,66 @@ PRIVATE_RESTORE_ACCEPTANCE.md описывает точные команды, о
 отдельной внешней предпосылкой; обычный экспорт не объявляется полной копией очереди.
 Следующий необходимый шаг — отдельное согласие на read-only семейный snapshot и
 закрытый local restore. Это не запрос публикации или разрешение на production writes.
+
+
+## Отдельная облачная среда и копия устройства · 25 октября 2026
+
+По разным environment_id/source_config_id подтверждена отдельная среда нового чата;
+имя marichevy-finance-v95 сохранено, старые конфигурации не менялись. Начальный
+checkout был work/bfc7ce5 без изменений. Ветка и PR5 read-only проверены: оба
+88eea9a35477ddd432eb98b7d6de2e3ea0a9c1c7; локально выбрана codex/pr5-release-candidate.
+Владелец явно разрешил закрытый read-only семейный резерв и local restore; повторное
+согласие на чтение не требуется. В текущей среде оба Supabase binding отсутствуют,
+поэтому реальные строки не читались, production/staging API не вызывались.
+
+В интерфейс добавлена полная копия устройства с исходными строками очереди/base/
+конфликтов/quarantine и текущим состоянием памяти, без чтения session и записи storage.
+Offline verifier больше не игнорирует отличающуюся память при совпавших дисковых копиях.
+Новая кнопка не опубликована в v94. Настоящий iPhone и получение его очереди ещё не
+проверены. Main, production SQL/JSON, опубликованный HTML и старые среды не изменялись.
+
+Итог текущего прогона: 268/268, 228.822s, exit 0, без skips; лог
+/workspace/v95-final-regression.log. Включены три UI-теста новой копии и новая
+регрессия offline memory divergence. Предыдущий промежуточный прогон 266 тестов
+имел две ошибки нового тестового harness (hidden locator и transport lone surrogate);
+они исправлены, итоговый прогон зелёный. Desktop и 390px demo скачивают файл через
+кнопку; расположение пояснения на мобильном исправлено на полную ширину.
+Сохранены install_script/start_skill, точный исходный repository commit, требования
+двух защищённых Supabase подключений и два целевых сетевых домена. Черновик сохранён,
+не опубликован. Реальные семейные файлы и server backup в этой среде отсутствуют.
+
+
+## Защищённое подключение, настоящий резерв и повтор кандидата · 26 октября 2026
+
+Владелец ввёл два project-scoped токена через защищённые настройки и опубликовал
+отдельную среду Codex. Binding names проверены без вывода значений; actual API
+прошли, хотя environment_status оставлял secret/network state=unknown.
+Исходный HEAD и все локальные изменения восстановились. Повтор main/PR5 remote
+подтвердил bfc7ce5/88eea9a. Main и опубликованный банк не менялись.
+
+Fixed read-only exporter выполнил только GET project identity и один snapshot SELECT
+с read_only=true, только настроенная семья/четыре app-таблицы. Закрытый PostgreSQL
+restore+001–003/CAS rehearsal прошёл без production writes; исходный файл после
+restore совпал с export receipt. Все private файлы 0600 в 0700 папке вне checkout,
+значения/хеши/количества не выведены. С этого момента reusable snapshot не публиковать.
+Это app-table restore, не восстановление Auth/платформы; копия владельца вне worker
+и сопоставление реальных устройств ещё не подтверждены.
+
+Повтор существующего staging membership: 46 passed, v2, evolution_applied=false.
+После добавления постоянной ручной ссылки скачивания текущий client SHA
+51359c13466b3b713a9d4e87d3fcf08c678cf880880f2c0c455a778a23ecf089 прошёл9 hosted browser сценариев,
+40 HTTPS/1 CAS-conflict. TLS bridge проверен; native CORS/реальный iPhone не заявлены.
+Current regression: 270/270,97.921s, без skips, включая144 UI checks. Лог
+/workspace/v95-rc2-regression-20261026.log. Финансовая логика не менялась.
+
+Независимый review проверил readonly boundary/export/restore и device capture.
+Fallback UI test имитирует запрет async anchor.click, затем настоящим нажатием
+скачивает raw queue/conflicts+memory спустя задержку; текущий URL сохраняется,
+заменённый освобождается через15s. Standalone v94 helper теперь тоже оставляет
+ручную ссылку;7/7 helper checks passed. Ни state/pending, ни session не меняются.
+Владелец ответил, что устройства доступны; подготовлен путь iPhone+Mac/ПК в
+DEVICE_QUEUE_CAPTURE_MAC_RU.md. Реальные очереди ещё не получены и не приняты.
+
+Fixed catalog повторно подтвердил прежнюю схему/права/helper; metadata cron.job
+присутствует, команды задач/Edge Functions/внешние writers не исследовались и не
+объявляются отсутствующими. Публикация server+HTML остаётся отдельным финальным шагом.

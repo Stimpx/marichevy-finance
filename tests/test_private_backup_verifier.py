@@ -94,6 +94,14 @@ class PrivateBackupVerifier(unittest.TestCase):
                                   "capture_file": f"capture{n}.json"} for n in (1, 2)]}
         self.write("plan.json", self.plan)
 
+    def test_ui_memory_divergence_cannot_be_ignored(self):
+        value = self.read("capture1.json")
+        memory = copy.deepcopy(self.data)
+        memory["entries"][0]["amount"] = 999
+        value["memory_state_json"] = json.dumps(memory)
+        self.write("capture1.json", value)
+        self.assertEqual(self.verify()["outcome"], "review_required")
+
     def write(self, name, value):
         (self.root / name).write_text(json.dumps(value, ensure_ascii=True), encoding="utf-8")
 

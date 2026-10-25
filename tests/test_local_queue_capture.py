@@ -153,6 +153,29 @@ class LocalQueueCapture(unittest.TestCase):
         self.assertEqual(self.page.evaluate('window.__captureWrites'), [])
         self.assertEqual(self.requests, [ORIGIN + '/capture-fixture'])
 
+    def test_manual_link_downloads_when_async_programmatic_click_is_blocked(self):
+        values = {STATE: '{"entries":[]}', PENDING: '{raw fictional pending'}
+        self.open_fixture(values)
+        before = self.snapshot()
+        self.page.evaluate("""() => {
+          HTMLAnchorElement.prototype.click = function () { throw Error('blocked async click'); };
+        }""")
+        result = self.page.evaluate(SCRIPT)
+        self.assertEqual(result['outcome'], 'download-prepared')
+        self.assertEqual(self.downloads, [])
+        link = self.page.get_by_role('link', name='Скачать частную копию очереди', exact=True)
+        self.assertTrue(link.is_visible())
+        with self.page.expect_download() as download:
+            link.click()
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'capture.json'
+            download.value.save_as(path)
+            data = json.loads(path.read_text())
+        self.assertEqual({r['key']: r['raw'] for r in data['records']}, values)
+        self.assertEqual(self.snapshot(), before)
+        self.assertEqual(self.page.evaluate('window.__captureWrites'), [])
+        self.assertEqual(self.requests, [ORIGIN + '/capture-fixture'])
+
     def test_wrong_origin_refuses_before_any_storage_read_or_download(self):
         self.open_fixture({STATE: 'fictional', SESSION: 'secret'}, origin='https://example.invalid')
         before = self.snapshot()
