@@ -65,8 +65,8 @@ def transform_demo(source: str) -> str:
  if(navigator.serviceWorker)navigator.serviceWorker.register=()=>Promise.reject(new Error('Демо'));
  try {localStorage.removeItem('marichevy_demo_session_v10');
  if(localStorage.getItem('marichevy_demo_state_v10')===null && localStorage.getItem('marichevy_demo_pending_v10')===null && !Object.keys(localStorage).some(k=>k.startsWith('marichevy_demo_')&&/backup|corrupt/.test(k))) {
- const stamp=new Date().toISOString(),date=new Date().toISOString().slice(0,10);
- const entries=[['demo-income',80000,'income','Зарплата','Алексей','Демоработодатель'],['demo-food',1250,'expense','Продукты','Общее','Магазин у дома'],['demo-school',350,'expense','Школа и занятия','София','Школьная столовая'],['demo-pet',600,'expense','Животные','Бим','Зоомагазин']].map(([id,amount,type,category,who,store])=>({id,amount,type,category,who,beneficiary:who,store,date,pay:'Карта',comment:'Фиктивный пример',created_at:stamp,updated_at:stamp}));
+ const stamp=new Date().toISOString(),parts=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Moscow',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()),pick=type=>parts.find(p=>p.type===type).value,date=pick('year')+'-'+pick('month')+'-'+pick('day');
+ const entries=[['demo-income',80000,'income','Зарплата','Алексей','Демоработодатель'],['demo-food',285.40,'expense','Продукты','Общее','КБ'],['demo-diapers',1199.90,'expense','Дети','София','Детский мир'],['demo-clothes',975.25,'expense','Одежда','Елена','фамилия'],['demo-service',790.10,'expense','Подписки','Алексей','OpenAI'],['demo-school',350,'expense','Школа и занятия','София','Школьная столовая'],['demo-pet',600,'expense','Животные','Бим','Зоомагазин']].map(([id,amount,type,category,who,store])=>({id,amount,type,category,who,beneficiary:who,store,date,pay:'Карта',comment:'Фиктивный пример',created_at:stamp,updated_at:stamp}));
  localStorage.setItem('marichevy_demo_state_v10',JSON.stringify({entries,settings:{loans:{loanBank:'Демобанк',loan1:11000},notifications:{enabled:false,telegram:false}}}));
  }}catch(_){}
 })();</script>'''
@@ -82,7 +82,7 @@ def transform_demo(source: str) -> str:
  showApp();setStatus('ДЕМО · только на устройстве',false);
  const authButton=document.getElementById('authBtn');if(authButton){authButton.disabled=true;authButton.textContent='Без аккаунта'}
  const status=document.getElementById('syncStatus');if(status)status.textContent='ДЕМО · фиктивная семья · облако и интеграции отключены';
- const banner=document.createElement('div');banner.textContent='ДЕМО · Фиктивные данные · Не опубликовано · Реальный аккаунт не нужен';banner.style='position:sticky;top:0;z-index:999;background:#e8f0ff;color:#24467a;padding:10px;text-align:center;font:12px system-ui';document.body.prepend(banner);
+ const banner=document.createElement('div');banner.textContent='ДЕМО · Фиктивные данные · Не опубликовано · Реальный аккаунт не нужен';banner.style='position:sticky;top:0;z-index:1;background:#e8f0ff;color:#24467a;padding:10px;text-align:center;font:12px system-ui';document.body.prepend(banner);
  document.querySelectorAll('a[href^="mailto:"],a[href^="about:"],a[href^="tel:"]').forEach(a=>a.removeAttribute('href'));
 })();</script>'''
     html = exact_sub(html, r'</body>', footer+'</body>', 'body end')
@@ -119,13 +119,16 @@ def build(output: Path) -> None:
     (output/'expense-proposal.html').write_bytes((ROOT/'tools'/'expense_proposal.html').read_bytes())
     source=(ROOT/'index.html').read_text()
     demo=transform_demo(source)
-    metadata=(json.dumps({'source_sha256':hashlib.sha256(source.encode()).hexdigest(),'status':'NOT PUBLISHED','server_sync':'production schema/RLS/backup/activation pending; see source-bound staging evidence in docs/RELEASE_CANDIDATE.md'},sort_keys=True,indent=2)+'\n').encode()
+    metadata=(json.dumps({'source_sha256':hashlib.sha256(source.encode()).hexdigest(),'status':'NOT PUBLISHED','server_sync':'production protocol activation and coordinated release pending; current catalog, private restore and fictional staging evidence in docs/RELEASE_CANDIDATE.md'},sort_keys=True,indent=2)+'\n').encode()
     write_bundle(output/'safe-demo',{'OWNER_REVIEW_RU.md':(ROOT/'docs'/'OWNER_REVIEW_RU.md').read_bytes(),'BUILD.json':metadata,'index.html':demo.encode(),'favicon.svg':ICON.encode(),'_headers':('/*\n  Content-Security-Policy: '+CSP+'\n  Referrer-Policy: no-referrer\n').encode(),'README.txt':'НЕ ОПУБЛИКОВАНО. Откройте index.html или запустите локальный статический сервер. Только фиктивные данные. Изменения хранятся на этом устройстве; облако, Telegram и отправка отзывов отключены. Это не доказательство работы production или серверной синхронизации.\n'.encode()})
     filenames=['index.html','favicon.svg','favicon.ico','favicon-32.png','apple-touch-icon.png','CNAME']
     filenames += ['docs/SYNC_SERVER.md','docs/PR2_SYNC.md','docs/RELEASE_CANDIDATE.md',
                   'docs/RELEASE_RUNBOOK.md','docs/PRODUCTION_SCHEMA_FINDINGS.md',
                   'docs/OWNER_REVIEW_RU.md','docs/LOCAL_QUEUE_BACKUP_RU.md',
-                  'docs/PRIVATE_RESTORE_ACCEPTANCE.md','docs/DEVICE_QUEUE_CAPTURE_MAC_RU.md','tools/capture_local_queue.js',
+                  'docs/PRIVATE_RESTORE_ACCEPTANCE.md','docs/DEVICE_QUEUE_CAPTURE_MAC_RU.md',
+                  'docs/CATEGORY_MODEL_RU.md','docs/HOSTING_PLAN_RU.md','docs/PRODUCT_FREE_PRO_RU.md',
+                  'docs/PAYMENTS_PLAN_RU.md','docs/FEEDBACK_DELIVERY.md','docs/ACCOUNT_ACCESS_PLAN_RU.md','docs/UX_ACCEPTANCE_RU.md',
+                  'tools/capture_local_queue.js',
                   'tools/export_private_server_backup.py','tools/verify_private_backup.py',
                   'tools/restore_private_backup.py','server/001_family_state_cas.sql',
                   'server/002_restrict_table_capabilities.sql','server/003_bound_membership_lookup.sql',

@@ -22,7 +22,7 @@ sys.path.insert(0,str(ROOT/'tools'))
 import build_bundle
 
 WIDTHS=(320,360,390,430,768,1024,1280,1512,1920)
-SECTIONS=('home','today','history','analytics','income','car','loans','goals','chores','dates','settings')
+SECTIONS=('home','today','history','analytics','income','car','loans','goals','chores','dates','settings','help','plans')
 
 
 def rich_fixture():
@@ -107,6 +107,7 @@ class ReleaseUI(unittest.TestCase):
                 for label,open_script,selector,close_script in [
                     ('edit','openEdit("qa-expense-0-0")','#editModal .modal','closeEdit()'),
                     ('analytics drill','v84Drill("person","Общее")','#v84DrillModal .v84-modal','v84CloseDrill()'),
+                    ('amount calculator','v96OpenCalculator("eAmount")','#v96Calculator','v96CloseCalculator()'),
                     ('auth presentation','openAuth()','#authModal .modal','closeAuth()')]:
                     page.evaluate(open_script)
                     modal=page.locator(selector);self.assertTrue(modal.is_visible(),label)
@@ -125,9 +126,30 @@ class ReleaseUI(unittest.TestCase):
         check={'width':width,'view':label,'documentWidth':size['document'],'bodyWidth':size['body']};report['checks'].append(check)
         if max(size['document'],size['body'])>width+2:
             report['issues'].append({**check,'kind':'horizontal overflow','offenders':size['offenders']})
+        if label in ('home','history'):
+            ledger=page.evaluate('''(label) => {
+                const root=document.getElementById(label==='history'?'historyBody':'recent');
+                const selector=label==='history'?'.v76-amount,.v76-actions button':'.v96-recent-amount,.v96-recent-actions button';
+                return [...root.querySelectorAll(selector)].flatMap(node=>{
+                    const rect=node.getBoundingClientRect();if(!rect.width||!rect.height)return [];
+                    const clip=node.closest('.table-wrap')?.getBoundingClientRect();
+                    const left=Math.max(0,clip?.left||0),right=Math.min(innerWidth,clip?.right||innerWidth);
+                    return rect.left<left-2||rect.right>right+2?[{text:node.textContent.trim(),left:rect.left,right:rect.right}]:[];
+                });
+            }''',label)
+            if ledger:report['issues'].append({**check,'kind':'financial amount or action clipped','elements':ledger[:4]})
         if modal_selector:
             rect=page.locator(modal_selector).bounding_box()
             if rect and (rect['x'] < -2 or rect['x']+rect['width']>width+2):
                 report['issues'].append({**check,'kind':'modal outside viewport','rect':rect})
+            if label=='modal/edit':
+                obscured=page.evaluate('''() => {
+                    const heading=document.querySelector('#editModal h2'),rect=heading.getBoundingClientRect();
+                    const front=document.elementFromPoint(rect.left+rect.width/2,rect.top+rect.height/2);
+                    const a=document.getElementById('xType').closest('.field').getBoundingClientRect();
+                    const b=document.getElementById('xAmount').closest('.field').getBoundingClientRect();
+                    return {heading:!heading.contains(front),misaligned:Math.abs(a.left-b.left)>20&&Math.abs(a.top-b.top)>2};
+                }''')
+                if obscured['heading'] or obscured['misaligned']:report['issues'].append({**check,'kind':'editor heading covered or fields misaligned',**obscured})
 
 if __name__=='__main__':unittest.main()
