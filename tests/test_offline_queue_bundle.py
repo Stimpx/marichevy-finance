@@ -116,6 +116,15 @@ class OfflineBundle(unittest.TestCase):
         for blocked in ('powershell','executionpolicy','allow pasting','curl','wget','npm install','runas'):
             self.assertNotIn(blocked,launcher.lower())
         self.assertIn('runtime\\node.exe',launcher)
+        # A native startup failure or partial ZIP extraction must remain visible
+        # instead of disappearing when the owner presses an arbitrary key.
+        self.assertIn('/D /V:OFF /K',launcher)
+        self.assertIn('setlocal DisableDelayedExpansion',launcher)
+        self.assertIn('""Start backup.cmd" --keep-window"',launcher)
+        self.assertNotIn('%~f0',launcher)
+        self.assertNotIn('pause',launcher.lower())
+        for required in ('app\\bootstrap.cjs','MANIFEST.json','Извлечь всё','СОХРАНЕНО'):
+            self.assertIn(required,launcher)
 
 
 if __name__=='__main__':unittest.main()
