@@ -346,5 +346,45 @@ class PublicLedgerBrowser(unittest.TestCase):
         self.assertEqual(self.page.evaluate('(key)=>localStorage.getItem(key+"pending_v10")',prefix),pending)
         self.assertTrue(frame.locator('#deviceBackupDownload').is_hidden())
 
+    def test_category_review_updates_configured_id_and_preserves_financial_fields(self):
+        self.page.evaluate("""()=>{
+          households[H1].settings.categories.push({id:'cat-subscription',name:'Подписки'},{id:'cat-work',name:'Работа'});
+        }""")
+        frame=self.mount()
+        frame.evaluate("""()=>{
+          state.entries=[{id:'review-service',type:'expense',date:today(),amount:12.34,
+            category:'Еда',category_id:'cat-1',who:null,store:'OpenAI',comment:'Подписка ChatGPT',
+            futureField:{keep:[true,null,7]}}];
+          renderAll();go('analytics');v98OpenCategoryReview();
+        }""")
+        before=frame.evaluate('JSON.parse(JSON.stringify(state.entries[0]))')
+        frame.locator('#v98ReviewRows button').click()
+        frame.locator('#v98CategoryEditIntro button').filter(has_text='Подписки').click()
+        frame.locator('#editModal').get_by_role('button',name='Сохранить',exact=True).click()
+        self.page.wait_for_function('rows[H1].data.entries?.[0]?.category_id==="cat-subscription"')
+        stored=self.page.evaluate('rows[H1].data.entries[0]')
+        self.assertEqual(stored['category'],'Подписки')
+        self.assertEqual(stored['category_id'],'cat-subscription')
+        for key in ('amount','date','who','store','comment','futureField'):
+            self.assertEqual(stored[key],before[key])
+        self.assertEqual(self.page.evaluate('rows[H1].data.entries.length'),1)
+        self.assertEqual(frame.evaluate("v98BudgetScope({groupVersion:2,groupId:'subscriptions',group:'Подписки и сервисы'}).supported"),True)
+
+    def test_viewer_can_read_review_but_never_apply_category(self):
+        self.page.evaluate("households[H1].role='viewer';households[H1].settings.categories.push({id:'cat-subscription',name:'Подписки'})")
+        frame=self.mount()
+        frame.evaluate("""()=>{
+          state.entries=[{id:'viewer-review',type:'expense',date:today(),amount:12.34,
+            category:'Еда',who:'Читатель',store:'OpenAI',comment:'ChatGPT'}];
+          renderAll();go('analytics');v98OpenCategoryReview();
+        }""")
+        before=frame.evaluate('JSON.stringify(state)')
+        self.assertTrue(frame.locator('#categoryReview').is_visible())
+        self.assertTrue(frame.locator('#v98ReviewRows button').is_disabled())
+        frame.evaluate("v98OpenReviewEntry('viewer-review');v98SaveCategoryReview()")
+        self.assertEqual(frame.evaluate('JSON.stringify(state)'),before)
+        self.assertFalse(frame.locator('#editModal').is_visible())
+        self.assertEqual(self.page.evaluate("calls.filter(call=>call.path.endsWith('finance_state_cas')).length"),0)
+
 
 if __name__=='__main__': unittest.main()

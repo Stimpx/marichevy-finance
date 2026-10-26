@@ -8,7 +8,7 @@ import test_local_data_safety as harness
 
 TOPICS = (
     'help-start','help-operations','help-fields','help-calculator','help-quick-entry','help-categories',
-    'help-history','help-analytics','help-car','help-loans','help-plans','help-goals',
+    'help-history','help-analytics','help-category-review','help-car','help-loans','help-plans','help-goals',
     'help-family','help-sync','help-backup','help-privacy','help-feedback',
 )
 

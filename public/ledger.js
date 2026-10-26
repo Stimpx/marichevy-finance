@@ -163,7 +163,7 @@
     v881OpenEmail = () => false;
     // Browser events and direct calls share the same role guard; the server also
     // rejects viewer CAS requests independently of this interface.
-    const mutations = ['addEntry','deleteEntry','saveEdit','addBoardItem','deleteBoardItem','addGoal','deleteGoal','addGoalDeposit','saveSettings','addBirthday','deleteBirthday','addChore','completeChore','deleteChore','v77CreateInstallment','v77LinkPayment','v77PayPart','v77DeleteInstallment','v77UpdatePart','v78ToggleMortgage','v84LinkRecurring','v84Remove','v84AddBudget','v84AddRecurring','v84ConfirmRecurring','v84SaveAccount','v87ApplyAdvisor','v97CommitFavorite','v97SubmitFavoriteEditor','v97AddFavorite','v97SaveFavoriteFromForm','v97SaveFavoriteFromEntry','v97RenameFavorite','v97RemoveFavorite','v96StageBranding','v96SaveBranding','v96ResetBranding','updateTelegramSetting'];
+    const mutations = ['addEntry','deleteEntry','saveEdit','v98OpenReviewEntry','v98SaveCategoryReview','addBoardItem','deleteBoardItem','addGoal','deleteGoal','addGoalDeposit','saveSettings','addBirthday','deleteBirthday','addChore','completeChore','deleteChore','v77CreateInstallment','v77LinkPayment','v77PayPart','v77DeleteInstallment','v77UpdatePart','v78ToggleMortgage','v84LinkRecurring','v84Remove','v84AddBudget','v84AddRecurring','v84ConfirmRecurring','v84SaveAccount','v87ApplyAdvisor','v97CommitFavorite','v97SubmitFavoriteEditor','v97AddFavorite','v97SaveFavoriteFromForm','v97SaveFavoriteFromEntry','v97RenameFavorite','v97RemoveFavorite','v96StageBranding','v96SaveBranding','v96ResetBranding','updateTelegramSetting'];
     const mutatorSet = new Set(mutations);
     for (const name of mutations) {
       const original = window[name];
@@ -216,9 +216,10 @@
     CATS.splice(0, CATS.length, ...activeCategories.map(label));
     for (const row of activeCategories) if (!Object.hasOwn(EXPENSE_GROUP_NAME, label(row))) EXPENSE_GROUP_NAME[label(row)] = label(row);
     const configuredGroups = new Map();
+    const groupIds = new Map(EXPENSE_GROUPS.map(group => [group.title, v98GroupId(group)]));
     for (const row of activeCategories) {
       const name = label(row), title = expenseEntryGroup({type: 'expense', category: name});
-      if (!configuredGroups.has(title)) configuredGroups.set(title, {title, values: [], legacy: []});
+      if (!configuredGroups.has(title)) configuredGroups.set(title, {id: groupIds.get(title) || 'custom:' + encodeURIComponent(title), title, values: [], legacy: []});
       configuredGroups.get(title).values.push(name);
     }
     EXPENSE_GROUPS.splice(0, EXPENSE_GROUPS.length, ...configuredGroups.values());

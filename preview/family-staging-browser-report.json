@@ -3,9 +3,9 @@
   "fixture_version": 2,
   "fixture_only": true,
   "production_tested": false,
-  "client_sha256": "f066205dcd8946ced7ba82480f4b5bbe907b65ce02c97688f468ac22c5696eef",
+  "client_sha256": "db7417956e4dd06df7042e195537ef58e619f9fef792d2f85450c175fca118e3",
   "network_path": "real verified HTTPS forwarded through Playwright route bridge; native CORS untested",
-  "observed_at": "2026-10-26T09:41:24.734382+00:00",
+  "observed_at": "2026-10-26T10:28:47.067963+00:00",
   "browser": {
     "checks": [
       "two actual UI logins authorized",

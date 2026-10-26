@@ -58,9 +58,9 @@ class CategorySuggestions(unittest.TestCase):
         self.assertIn(result['first'], ('Подписки', 'Работа'))
         self.assertEqual(result['selected'], '')
         self.assertTrue(result['unchanged'])
-        # Budget-group semantics are intentionally unchanged by the chooser fix.
-        self.assertEqual(result['subscriptionGroup'], 'Досуг и привычки')
-        self.assertEqual(result['workGroup'], 'Прочее')
+        # Current analytics separates services and work; saved budget scopes are tested separately.
+        self.assertEqual(result['subscriptionGroup'], 'Подписки и сервисы')
+        self.assertEqual(result['workGroup'], 'Работа')
 
     def test_explicit_choice_saves_exact_existing_ids_and_preserves_historical_rows(self):
         self.prepare()
