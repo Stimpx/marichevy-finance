@@ -116,9 +116,14 @@ server rejects that old write. Keeping a legacy fallback would invalidate CAS.
    considering a separately approved production rollout.
 
 For rollback, first stop/drain clients and disable safe cloud writes; retain a
-fresh backup. `server/rollback_household.sql` requires the current revision and
-`DISABLE_SYNC_REVIEWED_HOUSEHOLD`, changes protocol `2` to `1` without restoring old
-JSON, increments the revision and clears the receipt. The new client then stays
+fresh backup. `server/rollback_household.sql` requires the current revision,
+`expected_activation_revision` from the separately saved activation receipt, and
+`DISABLE_SYNC_REVIEWED_HOUSEHOLD`. The two revisions must match each other and the
+row: any application write after activation blocks rollback. Before those writes
+it changes protocol `2` to `1` without restoring old JSON, increments the revision
+and clears the receipt. After v95 writes, retain protocol2 and pause writers
+until a compatible client is repaired; original v94 normalization drops v95
+favorites/unknown fields and must not resume saving that document. The new client then stays
 disabled (`upgrade_required`). Re-enabling legacy clients deliberately removes
 the lost-update guarantee. Do not drop the guard or restore stale snapshots as an
 automatic rollback; reconcile retained local pending work separately.

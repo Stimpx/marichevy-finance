@@ -2909,6 +2909,11 @@ function normalize(s){
  }
  }
 }
+function isValidCalendarDate(value){
+ if(typeof value!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(value))return false;
+ const parsed=new Date(value+'T12:00:00Z');
+ return Number.isFinite(parsed.getTime())&&parsed.toISOString().slice(0,10)===value;
+}
 // Validate structure, not a whitelist of historical categories or family members.
 function validateBackup(raw){
  const object=x=>x!==null&&typeof x==='object'&&!Array.isArray(x);
@@ -2918,8 +2923,7 @@ function validateBackup(raw){
  const number=(value,path)=>{if(value!==undefined&&(value===null||!['number','string'].includes(typeof value)||String(value).trim()===''||!Number.isFinite(Number(value))))fail(path)};
  const date=(value,path)=>{
   text(value,path);if(value===undefined||value===null||value==='')return;
-  if(!/^\d{4}-\d{2}-\d{2}$/.test(value))fail(path);
-  const parsed=new Date(value+'T12:00:00Z');if(!Number.isFinite(parsed.getTime())||parsed.toISOString().slice(0,10)!==value)fail(path);
+  if(!isValidCalendarDate(value))fail(path);
  };
  const rows=(parent,key,check)=>{
   if(parent[key]===undefined)return;
@@ -4115,6 +4119,8 @@ function deleteEntry(id){
 }
 function openEdit(id,returnDrill=null){
  const e=state.entries.find(x=>x.id===id);if(!e)return;editId=id;
+ const recordedWho=typeof e.who==='string'?e.who:'';
+ const editPeople=[...new Set([...EXPENSE_PEOPLE,recordedWho])];
  v96EditReturnContext=returnDrill&&['group','person'].includes(returnDrill.mode)?{...returnDrill}:null;
  document.getElementById('editForm').innerHTML=`<div class="form-grid">
  <div class="field"><label>Тип</label><select id="xType"><option value="expense">Расход</option><option value="income">Доход</option><option value="transfer">Перевод</option><option value="cash">Наличные</option></select></div>
@@ -4122,8 +4128,8 @@ function openEdit(id,returnDrill=null){
  <div class="field"><label>Категория</label><select id="xCat">${categoryOptions(e.category)}</select></div>
  <div class="field v81-edit-detail"><label for="xSubcategory">Уточнение расхода</label><select id="xSubcategory"></select></div>
  <div class="field v81-edit-detail"><label for="xBeneficiary">Для кого или чего?</label><select id="xBeneficiary"></select></div>
- <div class="field" id="v86EditWhoField"><label>Кто получил доход?</label><select id="xWho">${EXPENSE_PEOPLE.map(x=>`<option ${x===e.who?'selected':''}>${esc(x)}</option>`).join('')}</select></div>
- <div class="field"><label>Дата</label><input id="xDate" type="date" value="${esc(e.date)}"></div>
+ <div class="field" id="v86EditWhoField"><label>Кто получил доход?</label><select id="xWho">${editPeople.map(x=>`<option value="${esc(x)}"${x===recordedWho?' selected':''}>${esc(x||'Не указано')}</option>`).join('')}</select></div>
+ <div class="field"><label for="xDate">Дата</label><input id="xDate" type="date" value="${esc(e.date)}" aria-describedby="xDateError"><p id="xDateError" class="error" role="alert" hidden></p></div>
  <div class="field"><label>Место / источник</label><input id="xStore" value="${esc(e.store)}"></div>
  <div class="field full"><label for="xComment">Комментарий <span class="v76-optional">· необязательно</span></label><input id="xComment" maxlength="200" value="${esc(e.comment)}"></div></div>`;
  v96InstallMerchantAutocomplete('xStore');
@@ -4139,8 +4145,14 @@ function closeEdit(restoreDrill=true){
 }
 async function saveEdit(){
  const e=state.entries.find(x=>x.id===editId);if(!e)return;
- const amount=parseMoneyInput(document.getElementById('xAmount').value);if(!Number.isFinite(amount)||amount<=0){toast(' Укажите сумму больше нуля');return;} e.updated_at=new Date().toISOString();e.type=document.getElementById('xType').value;e.amount=amount;e.who=e.type==='income'?document.getElementById('xWho').value:(e.who||'Общее');e.category=e.type==='expense'?expenseCategory(document.getElementById('xCat').value,e.who):document.getElementById('xCat').value;e.date=document.getElementById('xDate').value;e.store=document.getElementById('xStore').value;e.comment=document.getElementById('xComment').value;
- if(e.type==='expense'){e.subcategory=document.getElementById('xSubcategory')?.value||'';e.beneficiary=document.getElementById('xBeneficiary')?.value||'';}else{delete e.subcategory;delete e.beneficiary;}
+ const dateInput=document.getElementById('xDate'),editedDate=dateInput.value,dateError=document.getElementById('xDateError');
+ if(!isValidCalendarDate(editedDate)){dateError.textContent='Укажите существующую дату операции: день, месяц и год. Изменения пока не сохранены.';dateError.hidden=false;dateInput.setAttribute('aria-invalid','true');dateInput.focus();return}
+ dateError.textContent='';dateError.hidden=true;dateInput.removeAttribute('aria-invalid');
+ const previousType=e.type;
+ const nextType=document.getElementById('xType').value,selectedWho=document.getElementById('xWho').value;
+ const keepRecordedWho=previousType==='income'&&nextType==='income'&&selectedWho===(typeof e.who==='string'?e.who:'');
+ const amount=parseMoneyInput(document.getElementById('xAmount').value);if(!Number.isFinite(amount)||amount<=0){toast(' Укажите сумму больше нуля');return;} e.updated_at=new Date().toISOString();e.type=nextType;e.amount=amount;if(!keepRecordedWho)e.who=e.type==='income'?selectedWho:(e.who||'Общее');e.category=e.type==='expense'?expenseCategory(document.getElementById('xCat').value,e.who):document.getElementById('xCat').value;e.date=editedDate;e.store=document.getElementById('xStore').value;e.comment=document.getElementById('xComment').value;
+ if(e.type==='expense'){e.subcategory=document.getElementById('xSubcategory')?.value||'';e.beneficiary=document.getElementById('xBeneficiary')?.value||'';}else if(previousType==='expense'){delete e.subcategory;delete e.beneficiary;}
  const context=v96EditReturnContext;
  closeEdit(false);renderAll();
  const pending=saveAll();

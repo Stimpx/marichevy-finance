@@ -187,10 +187,44 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON public.family_state TO authenticated;
         self.assertEqual(self.snapshot()["data"], FIXTURE)
         self.assertEqual((self.snapshot()["protocol"], self.snapshot()["revision"]), (2, 1))
         variables[-2:] = [("expected_revision", "1"), ("confirmation", "DISABLE_SYNC_REVIEWED_HOUSEHOLD")]
+        variables.append(("expected_activation_revision", "1"))
         self.sql((ROOT / "server/rollback_household.sql").read_text(), variables=variables)
         self.assertEqual(self.snapshot()["data"], FIXTURE)
         self.assertEqual((self.snapshot()["protocol"], self.snapshot()["revision"]), (1, 2))
         self.assertEqual(self.cas(2, FIXTURE)["status"], "upgrade_required")
+
+    def test_rollback_after_new_writes_refuses_and_preserves_all_new_data(self):
+        self.activate()
+        data = json.loads(json.dumps(FIXTURE))
+        data['entries'].append({'id': 'v95-new-expense', 'type': 'expense', 'amount': 12.34,
+                                'date': '2026-10-26', 'category': 'Продукты'})
+        data['futureRoot'] = {'keep': ['opaque', 7]}
+        data.setdefault('settings', {})['futureSetting'] = {'preserve': True}
+        data['intelligence'] = {'favorites': [{'id': 'new-favorite', 'name': 'Учебный обед'}],
+                                'templates': [{'id': 'legacy-template', 'future': 1}],
+                                'deleted': {'favorites': {'deleted-favorite': '2026-10-26T09:00:00Z'}}}
+        self.assertEqual(self.cas(1, data)['status'], 'written')
+        before = self.snapshot()
+        for revision in (1, before['revision']):
+            with self.subTest(expected_revision=revision):
+                result = self.sql((ROOT / 'server/rollback_household.sql').read_text(), check=False,
+                    variables=[('expected_database', 'sync_fictional'), ('household_id', HOUSE),
+                               ('expected_revision', str(revision)), ('expected_activation_revision', '1'),
+                               ('confirmation', 'DISABLE_SYNC_REVIEWED_HOUSEHOLD')])
+                self.assertNotEqual(result.returncode, 0)
+                self.assertEqual(self.snapshot(), before)
+        self.assertEqual(before['protocol'], 2)
+        self.assertEqual(before['data'], data)
+
+    def test_rollback_without_activation_receipt_refuses(self):
+        self.activate()
+        before = self.snapshot()
+        result = self.sql((ROOT / 'server/rollback_household.sql').read_text(), check=False,
+            variables=[('expected_database', 'sync_fictional'), ('household_id', HOUSE),
+                       ('expected_revision', str(before['revision'])),
+                       ('confirmation', 'DISABLE_SYNC_REVIEWED_HOUSEHOLD')])
+        self.assertNotEqual(result.returncode, 0)
+        self.assertEqual(self.snapshot(), before)
 
     def test_11_operator_template_wrong_database_or_revision_refused(self):
         before = self.snapshot()

@@ -12,7 +12,7 @@
     "public/accounts.js": "79f51d1b8381f4687897316fa4c7115708964c565d61d7864ee5b14d15ba5d22",
     "public/accounts.css": "188983ad4bf85298abdd0fd6da0025b98c2f45d3c355df77ad2afc777e3af3e0",
     "public/ledger.js": "22357ad2e9d7e7a34e73cb600bc61a32e9ef233eac03bf053424b76e97caa7a1",
-    "public/ledger-template.html": "768bb3ad423c3ce9ad7e40c8f5732a710883d87b6b7d610a0f6baaf52bfc6b10"
+    "public/ledger-template.html": "731d293baef319842c8a3ef49f995598c94716b91bbee939d91e265f76d535dc"
   },
   "coverage": "chromium_full_stack",
   "checks": [
@@ -71,5 +71,5 @@
   "external_request_count": 0,
   "assertion_count": 43,
   "source_unchanged": true,
-  "elapsed_seconds": 10.59
+  "elapsed_seconds": 11.1
 }
