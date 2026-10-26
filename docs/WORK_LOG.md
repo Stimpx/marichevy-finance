@@ -930,3 +930,40 @@ data::text/time/byexact и NULLreceipt сохранены. Fixturemetadata2→1�
 Runtime остаётся connected/running и отвечает на команды. Причина не выдумана,
 snapshot не публиковался, старые ключи/backup не сбрасывались. Production/main
 не изменялись; установка и закрытая сверка устройств не объявлялись завершёнными.
+
+
+## 27 октября · личный источник, SQL Editor и остановка вставки в Chrome Mac
+
+Фактически сохранён личный source=user_provided и новая runtime spec; исполнение
+не получает deployment variable. Это не доказывает отсутствие значения в vault
+или неисправность Supabase PAT. Владелец отправил отзыв о повторяемом отказе
+сохранения; неподдержанный force-apply, повторные PAT и snapshot не использовались.
+
+В SQL Editor владелец выполнил только metadata SELECT: postgres/off. Это возможный
+операторский путь без передачи ключа в Codex, но fixed-project preflight, закрытая
+сверка и прочие условия выпуска остаются. В cropped результате project identity
+не подтверждалась. Производственные DDL/DML/activation/main не выполнялись.
+
+В привычной вкладке Chrome Mac открыта консоль; попытка вставки безопасной проверки
+origin/visibility/secure context заблокирована встроенной защитой. Никаких команд
+отключения защиты, Snippets или переключения на другой профиль не предлагается.
+Raw Mac ещё не сохранён; отдельно готовится native offline помощник с проверкой
+на вымышленных данных перед чтением выбранного профиля. Реальные данные/пути
+профиля/суммы со снимков не перенесены в репозиторий.
+
+Подготовлен отдельный универсальный Mac offline комплект с официальными Node
+22.23.4 arm64/x64, закреплёнными зависимостями и собственными launcher/bootstrap.
+Existing Windows/core sources не менялись. Darwin adapter держит один existing
+LOCK на чтение; mutex сохраняется до подтверждённого close. Он проверяет ABI,
+родительские ACL/ownership/local volume, не меняя исходные разрешения. Native
+engine открывает только закрытый clone после CRC; clone удаляется до итогового
+JSON. Обязательная самопроверка у владельца проверяет конфликт locks разными
+процессами в обе стороны, освобождение и fictional capture до чтения профиля.
+
+17/17 Mac mocked contracts и 8/8 bundle checks passed; Python discovery обёртки
+прошёл 9/9. Общий capture прошёл 10/10, прежний Windows adapter wrapper 1/1,
+Windows bundle 6/6. Независимый review и финальный readback ZIP/CRC/manifest/
+source bytes/Unix modes прошли. Code-only ZIP содержит 458 файлов, SHA9db462ea…;
+отчёт preview/mac-private-backup-helper-v95-report.json. Никакого настоящего
+Darwin запуска или owner-capture этими проверками не заявляется. App/client
+и production/main неизменны, app588 повторно не запускались без нового основания.
