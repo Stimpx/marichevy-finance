@@ -1737,7 +1737,7 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 /* Short home keeps the full dashboard available without changing family records. */
 #home>.v73-overview-toolbar{order:-1;gap:12px;padding:0;align-items:center}
 #home .v73-overview-toggle{min-height:44px;white-space:normal;flex-shrink:0}
-#home.v73-focus>:not(.hero):not(#v96MonthlyReview):not(#v97HomeFavorites):not(#v97HomePayments):not(#v97HomeRecent):not(.v73-overview-toolbar){display:none!important}
+#home.v73-focus>:not(#v99HomeSpending):not(#v99HomeDirections):not(#v99HomeSlices):not(.hero):not(#v96MonthlyReview):not(#v97HomeFavorites):not(#v97HomePayments):not(#v97HomeRecent):not(.v73-overview-toolbar){display:none!important}
 #home.v73-focus>.hero{order:0;padding:clamp(18px,2.5vw,28px)}
 #home.v73-focus>.v73-overview-toolbar{order:1}
 #home.v73-focus>#v97HomeFavorites{order:2}
@@ -1779,6 +1779,32 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 #history .v76-action-group .btn{min-width:0;max-width:100%;white-space:normal;overflow-wrap:anywhere;display:flex;align-items:center;justify-content:center}
 @media(max-width:1100px){#today .v91-row-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
+<style>
+/* Month, exact expenses and both reconciled scales stay visible in either overview. */
+#home>#v99HomeSpending{order:-20;min-width:0}#home>#v99HomeDirections{order:-19}#home>#v99HomeSlices{order:-18}
+.v99-spending-head{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:clamp(20px,2.3vw,30px);border:1px solid #dfe7f4;border-radius:24px;background:linear-gradient(115deg,#f7faff,#eef3ff);margin-bottom:18px}
+.v99-spending-head>div{min-width:0}.v99-spending-head label{display:block;font-size:12px;color:#627691;margin-bottom:6px}.v99-spending-head .month-select{display:block;background:#fff;color:#263e62;border:1px solid #d7e2f4;max-width:100%;min-height:44px;margin:0 0 18px;padding:9px 36px 9px 12px;border-radius:12px;font-size:14px}
+.v99-spending-head h2{margin:0 0 5px;font-size:15px;font-weight:600;color:#5d718b}.v99-expense-total{font-size:clamp(29px,3.4vw,46px);line-height:1.15;color:#1d3558;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}.v99-spending-head p{margin:9px 0 0;font-size:12px;color:#6b7f98}
+.v99-spending-head-side{display:flex;align-items:center;gap:22px;flex-shrink:0}.v99-spending-head .donut-ring{width:100px;height:100px;min-width:100px;margin:0;border-radius:50%;position:relative}.v99-spending-head .donut-center{border-radius:50%;inset:24%;max-width:52%;font-size:0!important;background:#f2f6ff}.v99-spending-head .btn{min-height:46px;white-space:normal}
+.v99-spending-scales,.v99-home-slices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;min-width:0}.v99-spending-scales>.card,.v99-home-slices>.card{min-width:0}.v99-spending-scales .card h2{margin:0 0 7px;font-size:20px}.v99-spending-scales .hint{margin:0 0 17px;line-height:1.5}
+.v99-category-scales{display:grid;gap:4px}.v99-category-row,.v99-spending-scales .v84-drill-bar{width:100%;margin:0;padding:10px 0;text-align:left;color:var(--ink);background:transparent;min-width:0;min-height:44px;border-radius:8px}.v99-category-row:hover,.v99-spending-scales .v84-drill-bar:hover{background:#f5f8ff}.v99-category-row:focus-visible,.v99-spending-scales .v84-drill-bar:focus-visible{outline:3px solid #90a9e3;outline-offset:2px}.v99-spending-scales .bar-top{display:flex;justify-content:space-between;gap:12px;align-items:baseline;margin-bottom:8px;font-size:13px}.v99-spending-scales .bar-top span{min-width:0;overflow-wrap:anywhere}.v99-spending-scales .bar-top b{font-size:13px;white-space:nowrap;flex-shrink:0}.v99-spending-scales .bar{height:8px;margin:0}.v99-spending-scales .bar i{display:block;max-width:100%}
+.v99-section-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:16px;min-width:0}.v99-section-heading h2{margin:0 0 5px;font-size:20px}.v99-section-heading .hint{margin:0;line-height:1.5}.v99-section-heading>div{min-width:0}.v99-section-heading>strong{font-size:20px;white-space:nowrap;font-variant-numeric:tabular-nums}.v99-section-heading .btn{flex-shrink:0;min-height:44px}
+.v99-direction-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.v99-direction-tile{display:flex;flex-direction:column;text-align:left;gap:8px;border:1px solid #e0e7f2;background:#f8faff;border-radius:14px;padding:14px;min-height:91px;color:#29415f;min-width:0}.v99-direction-tile span{font-size:13px;line-height:1.4;overflow-wrap:anywhere}.v99-direction-tile strong{margin-top:auto;font-size:18px;line-height:1.3;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}.v99-direction-tile:hover{border-color:#aabde7;background:#f0f5ff}.v99-direction-tile:focus-visible{outline:3px solid #90a9e3;outline-offset:2px}.v99-overlap-note{margin-top:15px;line-height:1.55}
+.v99-slice-row{width:100%;text-align:left;background:transparent;color:var(--ink);display:flex;justify-content:space-between;gap:12px;align-items:baseline;border-top:1px solid #edf1f7;padding:12px 0;font-size:13px}.v99-slice-row span{min-width:0;overflow-wrap:anywhere}.v99-slice-row b{white-space:nowrap;font-variant-numeric:tabular-nums}.v99-slice-open{margin-top:10px;min-height:44px}
+@media(max-width:1100px){.v99-direction-tiles{grid-template-columns:repeat(3,minmax(0,1fr))}.v99-spending-head-side{flex-direction:column;gap:12px}}
+@media(max-width:760px){.v99-spending-scales,.v99-home-slices{grid-template-columns:minmax(0,1fr);gap:14px}.v99-spending-head{padding:18px;gap:12px;border-radius:19px;align-items:flex-start}.v99-spending-head .donut-ring{width:64px;height:64px;min-width:64px}.v99-spending-head-side{flex-shrink:1;align-items:flex-end}.v99-spending-head-side .btn{padding:10px;font-size:12px;max-width:112px}.v99-spending-head .month-select{font-size:12px;padding-right:25px}.v99-direction-tiles{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.v99-direction-tile{padding:12px;min-height:90px}.v99-direction-tile strong{font-size:16px}.v99-section-heading h2{font-size:18px}}
+@media(max-width:370px){.v99-spending-head .donut-ring{display:none}.v99-spending-head-side{max-width:86px}.v99-expense-total{font-size:28px}.v99-section-heading{flex-wrap:wrap}.v99-spending-scales .bar-top{gap:7px;font-size:12px}.v99-spending-scales .bar-top b{font-size:12px}}
+
+#home{container-type:inline-size;container-name:v99home}
+@container v99home (max-width:650px){.v99-spending-scales,.v99-home-slices{grid-template-columns:minmax(0,1fr)}.v99-spending-head-side{flex-direction:column;gap:12px}.v99-spending-head .donut-ring{width:64px;height:64px;min-width:64px}.v99-direction-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}.v99-spending-scales .bar-top b{white-space:normal;overflow-wrap:anywhere;text-align:right;max-width:50%}.v99-section-heading{flex-wrap:wrap}}
+@container v99home (max-width:360px){.v99-spending-head{padding:16px;gap:12px}.v99-spending-head-side{display:none}.v99-spending-head .month-select{font-size:12px;width:100%;max-width:100%;padding:8px 26px 8px 10px}.v99-expense-total{font-size:29px}.v99-spending-head>div:first-child{width:100%}.v99-section-heading>strong{white-space:normal;overflow-wrap:anywhere}}
+
+/* V99_ENTRY_DIRECTIONS_STYLE_BEGIN */
+.v99-entry-directions{min-width:0;margin-top:4px}.v99-entry-directions-heading{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}.v99-entry-directions h3{margin:0;font-size:16px;line-height:1.4}.v99-entry-directions>.hint{margin:8px 0 12px;line-height:1.5}.v99-entry-direction-tiles{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}.v99-entry-direction{appearance:none;min-width:0;min-height:48px;border:1px solid #dce4f1;border-radius:14px;background:#f7f9fd;color:#385372;font:inherit;font-size:13px;font-weight:700;padding:10px 8px;line-height:1.35;overflow-wrap:anywhere;cursor:pointer}.v99-entry-direction:hover{background:#eef3ff;border-color:#9cadde}.v99-entry-direction.active{background:#eaf0ff;border-color:#4f66d8;color:#273fae;box-shadow:inset 0 0 0 1px #4f66d8}.v99-entry-direction:focus-visible{outline:3px solid #a9b9ef;outline-offset:2px}.v99-entry-direction:disabled{opacity:.6;cursor:default}.v99-direction-editor{margin-top:16px;padding:16px;border:1px solid #dce4f1;border-radius:16px;background:#f7f9fd;min-width:0}.v99-direction-editor label{display:block;font-size:13px;font-weight:700;margin-bottom:8px}.v99-direction-editor input{width:100%;min-width:0;max-width:100%;box-sizing:border-box}.v99-direction-editor .actions{flex-wrap:wrap}.v99-direction-editor [role=status]{font-size:13px;line-height:1.5;overflow-wrap:anywhere}.v99-direction-editor [role=status]:empty{display:none}
+@media(max-width:1100px){.v99-entry-direction-tiles{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:600px){.v99-entry-direction-tiles{grid-template-columns:repeat(3,minmax(0,1fr))}.v99-entry-direction{font-size:12px;padding:10px 6px}.v99-direction-editor{padding:12px}.v99-direction-editor .actions>.btn{min-width:0;white-space:normal}}
+/* V99_ENTRY_DIRECTIONS_STYLE_END */
+</style>
 </head>
 <body>
 <noscript><div style="padding:14px;background:#fff3cd;color:#664d03;text-align:center;font:600 14px/1.4 system-ui">Для работы «Маричевы · Траты.Банк» необходимо включить JavaScript.</div></noscript>
@@ -1810,9 +1836,18 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 <div class="userbar"><span class="dot off" id="statusDot"></span><span id="userLabel">Вход не выполнен</span><button class="btn small" id="authBtn">Войти</button></div>
 </header>
 <section class="section active" id="home">
+<section id="v99HomeSpending" class="v99-home-spending" aria-labelledby="v99SpendingTitle">
+ <div class="v99-spending-head"><div><label for="homeMonth">Месяц обзора</label><select aria-label="Выбор месяца" class="month-select" id="homeMonth"><option value="">Текущий месяц</option></select><h2 id="v99SpendingTitle">Расходы семьи</h2><strong id="v99HomeExpenseTotal" class="v99-expense-total">0 ₽</strong><p id="v99HomeExpenseCount">Только внесённые расходы за выбранный месяц</p></div><div class="v99-spending-head-side"><div class="donut-ring" id="donut"><div class="donut-center" id="donutTotal">0 ₽</div></div><button type="button" class="btn primary" onclick="openEntry('expense')">Добавить расход</button></div></div>
+ <div class="v99-spending-scales home-spending-overview">
+  <section class="card" aria-labelledby="v99CategoryScaleTitle"><h2 id="v99CategoryScaleTitle">Куда уходят деньги</h2><p class="hint" id="chartMonthHint">Расходы по категориям</p><div id="categoryLegend" class="v99-category-scales"></div></section>
+  <section class="card" aria-labelledby="v99TargetScaleTitle"><h2 id="v99TargetScaleTitle">Для кого расходы</h2><p class="hint">Те же операции по получателям. Каждый расход учтён один раз.</p><div id="familyBars"></div></section>
+ </div>
+</section>
+<section class="card v99-home-directions" id="v99HomeDirections" aria-labelledby="v99DirectionTitle"><div class="v99-section-heading"><div><h2 id="v99DirectionTitle">Люди и направления</h2><p class="hint">Нажмите плитку, чтобы посмотреть покупки и исправить запись.</p></div><button type="button" class="btn small" onclick="v99OpenDirectionEditor('home')">Добавить своё</button></div><div id="v99DirectionEditorHome" hidden></div><div id="v99HomeDirectionTiles" class="v99-direction-tiles"></div><p class="hint v99-overlap-note">Личная подписка видна у человека и в подписках; подарок — у получателя и в подарках. Это разные срезы одних расходов: суммы плиток не складываются.</p></section>
+<section class="v99-home-slices" id="v99HomeSlices" aria-label="Подписки и подарки за месяц"><article class="card"><div class="v99-section-heading"><div><h2>Подписки и онлайн-сервисы</h2><p class="hint">Сервисы всей семьи за выбранный месяц</p></div><strong id="v99SubscriptionTotal">0 ₽</strong></div><div id="v99SubscriptionList"></div></article><article class="card"><div class="v99-section-heading"><div><h2>Подарки</h2><p class="hint">Отдельный итог с указанием получателей</p></div><strong id="v99GiftTotal">0 ₽</strong></div><div id="v99GiftList"></div></article></section>
 <div class="home-opening"><div><div class="home-opening-kicker">СЕМЬЯ МАРИЧЕВЫХ · ФИНАНСОВЫЙ ЦЕНТР</div><h2>Деньги под контролем.<br/> <em>Время — для семьи.</em></h2><p>Бюджет, общие планы и важные моменты — в одном месте.</p></div><div class="home-opening-mark" aria-hidden="true">М</div></div>
 <div class="hero">
-<div class="hero-row"><div><div class="hero-label">Результат месяца <select aria-label="Выбор месяца" class="month-select" id="homeMonth"><option value="">Текущий месяц</option></select></div><div class="hero-value" id="heroBalance">0 ₽</div><div class="hero-sub" id="heroSub">Доходы и расходы ещё не внесены</div><div class="v75-metric-tip">Разница доходов и расходов за месяц, не баланс карт и наличных.</div></div><div class="pill" style="background:rgba(255,255,255,.12);color:#fff">МАРИЧЕВЫ · СЕМЕЙНЫЙ БЮДЖЕТ</div></div>
+<div class="hero-row"><div><div class="hero-label">Результат месяца </div><div class="hero-value" id="heroBalance">0 ₽</div><div class="hero-sub" id="heroSub">Доходы и расходы ещё не внесены</div><div class="v75-metric-tip">Разница доходов и расходов за месяц, не баланс карт и наличных.</div></div><div class="pill" style="background:rgba(255,255,255,.12);color:#fff">МАРИЧЕВЫ · СЕМЕЙНЫЙ БЮДЖЕТ</div></div>
 <div class="quick">
 <button onclick="openEntry('expense')"> <b>Добавить расход</b><small>Покупка, кафе, аптека</small></button>
 <button onclick="openEntry('income')"> <b>Добавить доход</b><small>Зарплата, пособие</small></button>
@@ -1864,11 +1899,8 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 <div class="home-mini-list" id="homeFinanceMini"></div>
 </div>
 </div>
-<div class="v73-overview-toolbar"><div class="v73-overview-copy"><span><b id="v97HomeOverviewTitle">Короткий обзор</b><small id="v97HomeOverviewNote">Итог месяца, платежи и последние записи.</small></span></div><button type="button" class="v73-overview-toggle" id="v73OverviewToggle" aria-pressed="true" aria-expanded="false" aria-controls="v86Calendar v84Pulse v84NoticesCard" onclick="toggleV73Overview()">Открыть полный обзор</button></div>
-<div class="grid2 home-spending-overview">
-<div class="card"><h2>Куда уходят деньги</h2><div class="hint" id="chartMonthHint">Фактические списания за месяц, включая платежи по обязательствам</div><div class="donut"><div class="donut-ring" id="donut"><div class="donut-center" id="donutTotal">0 ₽</div></div></div><div class="legend" id="categoryLegend"></div></div>
-<div class="card"><h2>Для кого расходы</h2><div class="hint">Те же расходы, распределённые по назначению. К категориям не прибавляются.</div><div id="familyBars"></div></div>
-</div>
+<div class="v73-overview-toolbar"><div class="v73-overview-copy"><span><b id="v97HomeOverviewTitle">Короткий обзор</b><small id="v97HomeOverviewNote">Расходы, направления, платежи и последние записи.</small></span></div><button type="button" class="v73-overview-toggle" id="v73OverviewToggle" aria-pressed="true" aria-expanded="false" aria-controls="v86Calendar v84Pulse v84NoticesCard" onclick="toggleV73Overview()">Открыть полный обзор</button></div>
+
 <div class="family-board board-grid">
 <div class="board-compose">
 <div class="board-head">
@@ -1936,8 +1968,9 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 <div class="field full v95-operation"><label for="eType">Операция</label><select id="eType"><option value="expense">Расход</option><option value="income">Доход</option><option value="transfer">Перевод между своими счетами</option><option value="cash">Снятие наличных</option></select></div>
 <div class="field v95-amount"><label for="eAmount">Сколько, ₽</label><input id="eAmount" type="text" maxlength="24" inputmode="decimal" placeholder="0" /></div>
 <div class="field expense-field v91-category"><label for="v90Search">Что купили?</label><input id="v90Search" type="search" maxlength="200" placeholder="Молоко, обед, корм…" autocomplete="off" aria-describedby="v92SearchHint"><div id="v93CreditHelp" hidden class="hint"><b>Платёж по кредиту или рассрочке</b><p>Если обязательство уже есть в разделе кредитов, отметьте оплату в его графике — так платёж свяжется с ним.</p><button type="button" class="btn" onclick="go('loans')">Открыть кредиты и рассрочки</button><label for="v93CreditAccounting">Для отдельного платежа подтвердите учёт</label><select id="v93CreditAccounting"><option value="">Выберите вариант</option><option value="payment">Учитываю расходами только платежи; полная покупка не записана</option><option value="full">Полная стоимость покупки уже записана расходом</option></select></div><p id="v92Selected" role="status" hidden></p><select id="eCategory" aria-label="Выбранная категория" hidden></select><select id="eGroup" hidden></select></div>
-<div class="field expense-field" id="v81BeneficiaryField"><label for="eBeneficiary">Для кого?</label><select id="eBeneficiary"></select></div>
+<div class="field expense-field" id="v81BeneficiaryField"><label for="eBeneficiary">Для кого?</label><select id="eBeneficiary" onchange="v99RenderEntryDirections()"></select></div>
 <div class="field expense-field"><label for="eStore">Где? · необязательно</label><input id="eStore" placeholder="Магазин или место"></div>
+<section class="field expense-field full v99-entry-directions" aria-labelledby="v99EntryDirectionsTitle"><div class="v99-entry-directions-heading"><h3 id="v99EntryDirectionsTitle">Для кого и на что?</h3><button type="button" class="btn small" onclick="v99OpenDirectionEditor('entry')">Добавить своё</button></div><p class="hint">Человек и направление можно сочетать: личная подписка видна и у человека, и в подписках. Расход сохранится один раз.</p><div id="v99EntryDirectionTiles" class="v99-entry-direction-tiles"></div><div id="v99DirectionEditorEntry" hidden></div></section>
 <div class="field expense-field full v95-suggestions"><small id="v92SearchHint" role="status" aria-live="polite"></small><div id="v90Quick" class="v90-chips"></div><div id="v90Categories"><button type="button" class="v91-link" id="v91All" onclick="v91Toggle()" aria-expanded="false" aria-controls="v90Quick">Все категории</button><div id="v90Results" hidden></div></div></div>
 <div class="field full income-field" id="v86WhoField"><label id="eWhoLabel" for="eWho">Кто получил доход?</label><select id="eWho"></select></div>
 <div class="field full income-field"><label for="eIncomeSource">Источник дохода</label><input id="eIncomeSource" placeholder="Зарплата, премия…"></div>
@@ -2331,7 +2364,7 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 </div></details>
 <details class="v96-help-topic" id="help-fields"><summary><h3>Что означает каждое поле покупки</h3></summary><div class="v96-help-body">
  <dl class="v96-help-definitions">
-  <dt>Что купили? → категория</dt><dd>Напишите предмет покупки или найдите категорию. Затем сами нажмите подходящий вариант. Подсказка не выбирает категорию и не меняет историю за вас. «Подписки и сервисы» сохраняются под прежним ключом «Подписки», «Детские товары» — под ключом «Дети».</dd>
+  <dt>Что купили? → категория</dt><dd>Напишите предмет покупки или найдите категорию. Затем сами нажмите подходящий вариант. Подсказка не выбирает категорию и не меняет историю за вас. «Подписки и онлайн-сервисы» сохраняются под прежним ключом «Подписки», «Детские товары» — под ключом «Дети».</dd>
   <dt>Уточнение</dt><dd>Необязательная детализация внутри категории: например, автомобиль → бензин или питомцы → корм. Старые неизвестные уточнения сохраняются. Категория и её уточнение не являются магазином или получателем.</dd>
   <dt>Где купили?</dt><dd>Название продавца или площадки. Оно необязательно. Подсказки знакомых названий помогают ввести магазин; значок продавца не является категорией покупки и не доказывает назначение платежа. Подгузники из маркетплейса остаются детскими товарами, а не автоматически бытовой покупкой.</dd>
   <dt>Для кого?</dt><dd>Кому или на чьи нужды предназначена покупка. Это не поле «кто заплатил». Для общего расхода выберите «Общее», для известного личного назначения — нужного человека или питомца из своего списка. Не угадывайте конкретного ребёнка по названию товара.</dd>
@@ -2359,7 +2392,7 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 </div></details>
 <details class="v96-help-topic" id="help-categories"><summary><h3>Все категории: подробное назначение</h3></summary><div class="v96-help-body">
  <p>Ниже перечислены все существующие точные названия, включая сохранённые старые категории. Это инструкция к текущему набору, а не массовое переименование истории. Окончательное изменение семейного списка обсуждается отдельно.</p>
- <p>Группа в диаграмме, точная категория и получатель — разные разрезы одной покупки. Группа «Досуг и привычки» объединяет несколько категорий, включая подписки; она не означает, что каждая подписка является развлечением. В истории смотрите точное назначение записи.</p>
+ <p>Группа в диаграмме, точная категория и получатель — разные разрезы одной покупки. Подписки и онлайн-сервисы показаны отдельно от досуга. Одна операция может быть видна в нескольких разрезах, но в общий расход входит один раз.</p>
  <h4>Варианты новой формы</h4>
  <div class="v96-help-category-grid"><details class="v96-help-category" id="help-category-19" data-help-category="Кредит"><summary><strong>Кредит / рассрочка</strong><small>В данных: Кредит</small></summary><div class="v96-help-body"><p>Погашение кредита или оплата части покупки, когда расход учитывается по платежам. Само слово «Кредит» не делает запись ипотечной и не выбирает договор.</p><p><b>Пример и порядок:</b> Вымышленная покупка оплачивается четырьмя частями: уже внесённую часть свяжите с её графиком через «Из истории».</p><p class="v96-help-note">Если вся стоимость покупки уже записана расходом, не добавляйте её части как новые расходы. Выберите в графике способ «покупка уже записана целиком»; это погашение долга, а не повторная покупка.</p></div></details>
 <details class="v96-help-category" id="help-category-3" data-help-category="Продукты"><summary><strong>Продукты</strong></summary><div class="v96-help-body"><p>Обычные продукты и напитки для дома: хлеб, молоко, овощи, крупы. Тип покупки важнее названия магазина.</p><p><b>Пример и порядок:</b> Молоко из супермаркета или хлеб с маркетплейса относятся к продуктам; продавец записывается в «Где купили?».</p><p class="v96-help-note">Кафе, готовый заказ из ресторана и чаевые имеют отдельный вариант «Кафе и доставка». Для сладостей и снеков есть «Вкусняшки».</p></div></details>
@@ -2370,10 +2403,11 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 <details class="v96-help-category" id="help-category-26" data-help-category="Одежда"><summary><strong>Одежда и обувь</strong><small>В данных: Одежда</small></summary><div class="v96-help-body"><p>Одежда и обувь: куртки, футболки, ботинки и подобные покупки. Отображаемое название — «Одежда и обувь»; сохранённый ключ остаётся «Одежда».</p><p><b>Пример и порядок:</b> Для детского дождевика выберите одежду и нужного получателя; необязательное уточнение можно выбрать отдельно.</p><p class="v96-help-note">Буквы «од», введённые для поиска категории, не должны становиться комментарием. Содержательное описание вроде «дождевик для прогулок» можно сохранить.</p></div></details>
 <details class="v96-help-category" id="help-category-29" data-help-category="Дом"><summary><strong>Дом и быт</strong><small>В данных: Дом</small></summary><div class="v96-help-body"><p>Бытовые и домашние покупки: посуда, мебель, уборка, бытовая химия, техника. В форме это «Дом и быт».</p><p><b>Пример и порядок:</b> Стиральный порошок, швабра или вымышленный кухонный чайник подходят сюда; название магазина не заменяет назначение.</p><p class="v96-help-note">Подгузники больше не предлагаются как бытовая покупка по умолчанию. Коммунальные счета идут отдельным вариантом, а ремонт автомобиля — в автомобильный раздел.</p></div></details>
 <details class="v96-help-category" id="help-category-7" data-help-category="ЖКХ"><summary><strong>Счета и связь</strong><small>В данных: ЖКХ</small></summary><div class="v96-help-body"><p>Счета за жильё и связь: коммунальные услуги, интернет, мобильный тариф. В новой форме вариант подписан «Счета и связь».</p><p><b>Пример и порядок:</b> Используйте уточнение «Интернет», «Электричество» или другое подходящее, если хотите видеть состав счетов.</p><p class="v96-help-note">Старые «Интернет», «Мобильная связь» и отдельные коммунальные категории остаются в истории со своими именами. Справка не объединяет их записи.</p></div></details>
-<details class="v96-help-category" id="help-category-14" data-help-category="Аптека и медицина"><summary><strong>Здоровье</strong><small>В данных: Аптека и медицина</small></summary><div class="v96-help-body"><p>Лекарства, врачи, анализы, лечение и медицинские расходники. В форме сохранённый ключ подписан «Здоровье».</p><p><b>Пример и порядок:</b> Вымышленный анализ или явно указанные подгузники для взрослых — медицинское назначение, даже если куплены в обычном магазине.</p><p class="v96-help-note">Уходовая косметика имеет отдельную категорию «Красота». Получателя лечения выбирайте вручную, без догадки по названию товара.</p></div></details>
+<details class="v96-help-category" id="help-category-14" data-help-category="Аптека и медицина"><summary><strong>Медицина и аптеки</strong><small>В данных: Аптека и медицина</small></summary><div class="v96-help-body"><p>Лекарства, врачи, анализы, лечение, очки и медицинские расходники. Сохранённое название старой категории не меняется, а в форме показано «Медицина и аптеки».</p><p><b>Пример и порядок:</b> Очки, вымышленный анализ или явно указанные подгузники для взрослых — медицинское назначение, даже если куплены в обычном магазине.</p><p class="v96-help-note">Пилатес, фитнес, витамины и БАДы относятся к отдельному «Спорту и здоровью», даже при покупке в аптеке. Старые записи исправляются только после вашего выбора.</p></div></details>
+<details class="v96-help-category" id="help-category-sport" data-help-category="Спорт и здоровье"><summary><strong>Спорт и здоровье</strong></summary><div class="v96-help-body"><p>Пилатес, фитнес, тренировки, витамины и БАДы. Назначение покупки важнее места оплаты.</p><p><b>Пример и порядок:</b> Выберите «Спорт и здоровье» и уточнение «Пилатес» либо «Витамины». Укажите человека отдельно: набор категорий одинаково доступен всем.</p><p class="v96-help-note">Лекарства, врачи, анализы и очки относятся к «Медицине и аптекам». Смешанную или неясную покупку приложение не перекладывает автоматически.</p></div></details>
 <details class="v96-help-category" id="help-category-27" data-help-category="Красота"><summary><strong>Красота и уход</strong><small>В данных: Красота</small></summary><div class="v96-help-body"><p>Уход и внешность: косметика, стрижки, маникюр, привычные средства ухода. Отображаемое название — «Красота и уход».</p><p><b>Пример и порядок:</b> Шампунь для ухода или услуга парикмахера подходят сюда; бытовое средство для стирки — в «Дом».</p><p class="v96-help-note">Услуга врача и лекарство относятся к здоровью. Если назначение спорное, выберите осознанно и поясните его комментарием.</p></div></details>
 <details class="v96-help-category" id="help-category-2" data-help-category="Авто и транспорт"><summary><strong>Авто и транспорт</strong></summary><div class="v96-help-body"><p>Современная общая категория. Уточнение различает бензин, обслуживание, парковку, такси и общественный транспорт.</p><p><b>Пример и порядок:</b> Для бензина выберите соответствующее уточнение. Для такси выберите «Такси» — оно относится к передвижению, а не к расходам личного автомобиля.</p><p class="v96-help-note">Пустое или неизвестное автомобильное уточнение видно в блоке «Без уточнения». Это сохраняет сумму, но не доказывает, на какую машину или поездку потрачены деньги.</p></div></details>
-<details class="v96-help-category" id="help-category-31" data-help-category="Подписки"><summary><strong>Подписки и сервисы</strong><small>В данных: Подписки</small></summary><div class="v96-help-body"><p>В форме — «Подписки и сервисы». Это повторяющийся доступ к цифровому сервису или другой подписке, а не автоматическое назначение «развлечения».</p><p><b>Пример и порядок:</b> Для ChatGPT или OpenAI предлагаются отдельные варианты подписки и работы. Выберите цель оплаты самостоятельно.</p><p class="v96-help-note">Для планового ежемесячного напоминания можно отдельно создать регулярный платёж. Сам план расхода не создаёт и не заменяет факт оплаты.</p></div></details>
+<details class="v96-help-category" id="help-category-31" data-help-category="Подписки"><summary><strong>Подписки и онлайн-сервисы</strong><small>В данных: Подписки</small></summary><div class="v96-help-body"><p>Доступ к цифровым сервисам и подпискам, хостинг, домены, облако, видео и музыка. Категория не означает автоматически «развлечения».</p><p><b>Пример и порядок:</b> Для хостинга выберите соответствующее уточнение. Для ChatGPT или OpenAI предлагаются варианты подписки и работы: цель оплаты выбираете вы.</p><p class="v96-help-note">Личная подписка может быть указана для человека и одновременно видна в общем списке сервисов; общий расход учитывает её один раз. Плановое напоминание не создаёт факт оплаты.</p></div></details>
 <details class="v96-help-category" id="help-category-37" data-help-category="Работа"><summary><strong>Работа</strong></summary><div class="v96-help-body"><p>Рабочие инструменты, программы и услуги, если вы решили учитывать их как рабочую статью. Категория описывает назначение, а не работодателя или плательщика.</p><p><b>Пример и порядок:</b> Цифровой инструмент для работы можно явно отнести сюда вместо подписок или развлечений.</p><p class="v96-help-note">Наличие названия ChatGPT не выбирает категорию за вас. Исторические рабочие записи не переименовываются автоматически.</p></div></details>
 <details class="v96-help-category" id="help-category-30" data-help-category="Развлечения"><summary><strong>Отдых и развлечения</strong><small>В данных: Развлечения</small></summary><div class="v96-help-body"><p>Отдых и развлечения: кино, концерты, досуг и похожие покупки. В форме вариант подписан «Отдых и развлечения».</p><p><b>Пример и порядок:</b> Вымышленный билет в кино подходит сюда; при желании добавьте уточнение и получателя.</p><p class="v96-help-note">Цифровой рабочий инструмент не считается развлечением только потому, что оплата похожа на подписку. Старые путешествия и хобби могут иметь собственные точные категории.</p></div></details>
 <details class="v96-help-category" id="help-category-33" data-help-category="Подарки"><summary><strong>Подарки</strong></summary><div class="v96-help-body"><p>Покупка, которую вы осознанно учитываете как подарок: например, букет или вещь ко дню рождения.</p><p><b>Пример и порядок:</b> Подарочный сертификат можно записать здесь и в комментарии отметить вымышленный повод.</p><p class="v96-help-note">Назначение «подарок» отличается от обычной покупки одежды или продуктов. Выберите один способ учёта; не дублируйте одну оплату в двух категориях.</p></div></details>
@@ -2395,7 +2429,7 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 <details class="v96-help-category" id="help-category-21" data-help-category="Страховка"><summary><strong>Страховка</strong></summary><div class="v96-help-body"><p>Общая сохранённая категория страхования. Она может относиться к имуществу, человеку или автомобилю.</p><p><b>Пример и порядок:</b> Автомобильное назначение распознаётся только при явных признаках, например ОСАГО или указании машины в описании.</p><p class="v96-help-note">Без таких сведений запись не приписывается автомобилю. Специальная категория «Автострахование» существует отдельно.</p></div></details>
 <details class="v96-help-category" id="help-category-22" data-help-category="Налог"><summary><strong>Налог</strong></summary><div class="v96-help-body"><p>Общая сохранённая категория налогов. Не каждый налог относится к машине.</p><p><b>Пример и порядок:</b> Налог с явным указанием транспортного назначения учитывается в автомобильном разделе.</p><p class="v96-help-note">Запись без автомобильного контекста остаётся общей налоговой статьёй. Для транспортного налога есть и отдельный сохранённый ключ.</p></div></details>
 <details class="v96-help-category" id="help-category-23" data-help-category="Шины"><summary><strong>Шины</strong></summary><div class="v96-help-body"><p>Сохранённая автомобильная категория шин и связанных покупок.</p><p><b>Пример и порядок:</b> Вымышленный комплект шин можно найти отдельно от топлива и обслуживания.</p><p class="v96-help-note">У новой записи общая категория автомобиля и уточнение «Шины» описывают тот же предмет; старое название не переписывается.</p></div></details>
-<details class="v96-help-category" id="help-category-24" data-help-category="Транспорт"><summary><strong>Транспорт</strong></summary><div class="v96-help-body"><p>Сохранённая категория передвижения. Она отличается от содержания личного автомобиля.</p><p><b>Пример и порядок:</b> Билет на городской транспорт может быть отмечен этим прежним именем.</p><p class="v96-help-note">Передвижение и автомобиль имеют разные границы. Не сравнивайте их как одинаковые статьи без проверки точной категории и уточнения.</p></div></details>
+<details class="v96-help-category" id="help-category-24" data-help-category="Транспорт"><summary><strong>Такси и транспорт</strong><small>В данных: Транспорт</small></summary><div class="v96-help-body"><p>Поездки на такси и общественном транспорте. Это отдельная категория, которая не увеличивает расходы на личный автомобиль.</p><p><b>Пример и порядок:</b> Укажите человека и уточнение «Такси». Его поездка попадёт и в личную детализацию, и в транспортный срез, но общий расход не удвоится.</p><p class="v96-help-note">Прежние записи «Авто и транспорт» с уточнением «Такси» продолжают считаться передвижением. Неясные записи требуют ручной проверки.</p></div></details>
 <details class="v96-help-category" id="help-category-25" data-help-category="Такси"><summary><strong>Такси</strong></summary><div class="v96-help-body"><p>Сохранённая категория поездок на такси. Входит в передвижение, а не в расходы личного автомобиля.</p><p><b>Пример и порядок:</b> Такси в современной общей категории с уточнением «Такси» учитывается по тому же правилу.</p><p class="v96-help-note">Получатель поездки задаётся отдельно. Категория такси не превращает его в автомобиль или плательщика.</p></div></details>
 <details class="v96-help-category" id="help-category-28" data-help-category="Маркетплейсы"><summary><strong>Маркетплейсы</strong></summary><div class="v96-help-body"><p>Сохранённая категория покупок на торговых площадках. Сам маркетплейс может продавать товары разных назначений.</p><p><b>Пример и порядок:</b> Прежняя покупка с таким именем остаётся в истории и фильтрах.</p><p class="v96-help-note">В новой форме полезнее выбрать предмет: одежду, продукты, детские товары или другое, а площадку указать в «Где купили?». Исторические строки не меняются сами.</p></div></details>
 <details class="v96-help-category" id="help-category-32" data-help-category="Путешествия"><summary><strong>Путешествия</strong></summary><div class="v96-help-body"><p>Сохранённая категория поездок, проживания и расходов путешествия.</p><p><b>Пример и порядок:</b> Старые билеты или проживание можно отфильтровать отдельно по этому имени.</p><p class="v96-help-note">Текущая форма также предлагает общий вариант отдыха. Сначала договоритесь о будущих правилах семьи, затем применяйте их к новым операциям.</p></div></details>
@@ -2606,8 +2640,106 @@ function v86ExpenseTarget(e){
 function v94ExpenseBucket(e){return v86ExpenseTarget(e)}
 function v86TargetTotals(entries){
  const totals={'Сергей':0,'Виктория':0,'Алиса':0,'Майя':0,'Макс':0,'Дени':0,'Общее':0};
- for(const e of entries){const key=v94ExpenseBucket(e);totals[key]=(totals[key]||0)+(Number(e.amount)||0)}
+ Object.setPrototypeOf(totals,null);
+ const buckets=new Map();
+ for(const e of entries){const key=v94ExpenseBucket(e);if(!buckets.has(key))buckets.set(key,[]);buckets.get(key).push(e)}
+ for(const [key,rows] of buckets)totals[key]=sum(rows);
  return Object.entries(totals).sort((a,b)=>b[1]-a[1]);
+}
+/* v99 directions are overlapping read-only views; only an explicit form save creates an expense. */
+function v99CustomDirections(){
+ const raw=state.settings?.preferences?.expenseDirections;
+ return Array.isArray(raw)?raw.filter(value=>typeof value==='string'&&value.trim()===value&&value.length>0&&value.length<=40&&!/[\u0000-\u001f\u007f]/.test(value)):[];
+}
+function v99BeneficiaryChoices(){
+ return [...new Set(['Не указано','Общее',...PEOPLE,...v99CustomDirections(),...(state.entries||[]).filter(e=>e?.type==='expense').map(v86ExpenseTarget),'Оба ребёнка','Все питомцы'])];
+}
+function v99DirectionDefinitions(){
+ const people=[...new Set(PEOPLE.filter(name=>!['Общее','Не указано'].includes(name)))];
+ const special=[{id:'car',label:'Автомобиль',kind:'direction',category:'Авто и транспорт'},{id:'loans',label:'Кредиты и рассрочки',kind:'direction',category:'Кредит'},{id:'shared',label:'Общие траты на семью',kind:'recipient',target:'Общее'},{id:'utilities',label:'ЖКХ',kind:'direction',category:'ЖКХ'},{id:'subscriptions',label:'Подписки и онлайн-сервисы',kind:'direction',category:'Подписки'},{id:'gifts',label:'Подарки',kind:'direction',category:'Подарки'}];
+ const reserved=new Set([...people,'Не указано','Общее',...special.map(item=>item.label)]);
+ const custom=[...new Set([...v99CustomDirections(),...(state.entries||[]).filter(e=>e?.type==='expense').map(v86ExpenseTarget)])].filter(name=>!reserved.has(name));
+ return [...people.map(name=>({id:'person:'+name,label:name,kind:['Макс','Дени'].includes(name)?'pet':'person',target:name})),...special,...custom.map(name=>({id:'custom:'+name,label:name,kind:'custom',target:name})),{id:'unspecified',label:'Не указано',kind:'recipient',target:'Не указано'}];
+}
+function v99DirectionEntryRows(id,rows){
+ const source=Array.isArray(rows)?rows.filter(e=>e?.type==='expense'):[];
+ if(id==='car')return source.filter(e=>Boolean(carCategory(e)));
+ if(id==='loans')return source.filter(e=>v99PurposeCategory(e)==='Кредит'||Boolean(e.installmentId)||v77EntryIsLinked(e.id)||e.mortgagePayment===true||e.obligationType==='mortgage');
+ if(id==='utilities')return source.filter(e=>['ЖКХ','Электричество','Вода и газ','Интернет','Мобильная связь'].includes(v99PurposeCategory(e)));
+ if(id==='subscriptions')return source.filter(e=>v99PurposeCategory(e)==='Подписки');
+ if(id==='gifts')return source.filter(e=>v99PurposeCategory(e)==='Подарки');
+ const target=id==='shared'?'Общее':id==='unspecified'?'Не указано':id.startsWith('person:')?id.slice(7):id.startsWith('custom:')?id.slice(7):null;
+ return target===null?[]:source.filter(e=>v86ExpenseTarget(e)===target);
+}
+function v99DirectionTiles(rows){
+ return v99DirectionDefinitions().map(item=>{const entries=v99DirectionEntryRows(item.id,rows);return {...item,entries,cents:Math.round(sum(entries)*100)}});
+}
+function v99DirectionDetail(id,entry){
+ if(id==='subscriptions')return String(v96MerchantDisplayName(entry.store)||entry.comment||'Сервис не указан').trim()||'Сервис не указан';
+ if(id==='gifts')return typeof entry.giftRecipient==='string'&&entry.giftRecipient.trim()?entry.giftRecipient.trim():v86ExpenseTarget(entry);
+ if(id==='car')return carCategory(entry)||'Без уточнения';
+ if(id==='loans'){
+  const linked=(state.installments||[]).filter(loan=>!Object.hasOwn(state.deletedInstallments||{},loan.id)&&(loan.id===entry.installmentId||Object.values(loan.links||{}).includes(entry.id)));
+  if(linked.length>1)return 'Несколько привязок — проверить';
+  if(linked.length===1)return String(linked[0].title||linked[0].provider||V77_KINDS[linked[0].kind]||'Обязательство без названия');
+  if(entry.mortgagePayment===true||entry.obligationType==='mortgage')return String(state.settings?.loans?.loanBank||'Кредит по договору');
+  return 'Без привязки к кредиту или рассрочке';
+ }
+ return v99CategoryLabel(v99PurposeCategory(entry));
+}
+function v99CanWriteDirections(){
+ const bridge=window.__FINANCE_BRIDGE__;
+ return !localRecoveryBlocked&&!document.getElementById('appRoot')?.classList.contains('auth-locked')&&(!bridge||(bridge.active===true&&['owner','editor'].includes(bridge.role)));
+}
+function v99RenderEntryDirections(){
+ const root=document.getElementById('v99EntryDirectionTiles');if(!root)return;
+ const target=document.getElementById('eBeneficiary')?.value||'Не указано',category=document.getElementById('eCategory')?.value||'',disabled=!v99CanWriteDirections();
+ root.innerHTML=v99DirectionDefinitions().map(item=>{const active=item.category?v99PurposeCategory(category)===v99PurposeCategory(item.category):target===item.target;return `<button type="button" class="v99-entry-direction${active?' active':''}" data-v99-entry-direction="${esc(item.id)}" aria-pressed="${active}"${disabled?' disabled':''}>${esc(item.label)}</button>`}).join('');
+ root.querySelectorAll('[data-v99-entry-direction]').forEach(button=>button.onclick=()=>v99ChooseEntryDirection(button.dataset.v99EntryDirection));
+}
+function v99ChooseEntryDirection(id){
+ if(!v99CanWriteDirections()||document.getElementById('eType')?.value!=='expense')return false;
+ const item=v99DirectionDefinitions().find(row=>row.id===id);if(!item)return false;
+ if(item.category){
+  const selected=document.getElementById('eCategory');selected.value=item.category;
+  v81FillDetails('e',item.category,'',document.getElementById('eBeneficiary').value||'Не указано');v90Paint();
+ }else{
+  const selected=document.getElementById('eBeneficiary');if(![...selected.options].some(option=>option.value===item.target))selected.add(new Option(item.target,item.target));selected.value=item.target;
+ }
+ v99RenderEntryDirections();document.getElementById('eBeneficiary')?.dispatchEvent(new Event('change',{bubbles:true}));return true;
+}
+const v99DirectionEditors=new Map();
+function v99DirectionEditorNode(source){return document.getElementById(source==='home'?'v99DirectionEditorHome':'v99DirectionEditorEntry')}
+function v99OpenDirectionEditor(source='entry'){
+ if(!['home','entry'].includes(source)||!v99CanWriteDirections())return false;
+ const root=v99DirectionEditorNode(source);if(!root)return false;
+ const previous=v99DirectionEditors.get(source);if(previous?.busy&&previous.epoch===authEpoch)return false;
+ if(!previous||previous.epoch!==authEpoch)v99DirectionEditors.set(source,{pending:'',busy:false,epoch:authEpoch});
+ root.hidden=false;root.innerHTML=`<form class="v99-direction-editor"><label for="v99DirectionName-${source}">Название своего направления</label><input id="v99DirectionName-${source}" maxlength="40" autocomplete="off" placeholder="Например: дача или ремонт"/><p class="hint">Появится отдельная плитка. История и текущий черновик не изменятся.</p><div class="actions"><button type="submit" class="btn primary">Создать направление</button><button type="button" class="btn" data-v99-direction-cancel>Отмена</button></div><p data-v99-direction-status role="status" aria-live="polite"></p></form>`;
+ root.querySelector('form').onsubmit=event=>{event.preventDefault();v99SubmitDirectionEditor(source)};
+ root.querySelector('[data-v99-direction-cancel]').onclick=()=>{if(!v99DirectionEditors.get(source)?.busy){root.hidden=true;v99DirectionEditors.delete(source)}};
+ root.querySelector('input').focus();return true;
+}
+async function v99SubmitDirectionEditor(source='entry'){
+ const root=v99DirectionEditorNode(source),edit=v99DirectionEditors.get(source);if(!root||!edit||edit.busy||edit.epoch!==authEpoch||!v99CanWriteDirections())return false;
+ const input=root.querySelector('input'),status=root.querySelector('[data-v99-direction-status]'),name=String(input?.value||'').trim(),norm=value=>value.normalize('NFKC').toLocaleLowerCase('ru-RU').replace(/ё/g,'е').replace(/\s+/g,' ').trim();
+ const fail=message=>{status.textContent=message;return false};
+ if(!name||name.length>40||/[\u0000-\u001f\u007f]/.test(name)||['__proto__','prototype','constructor','tostring','valueof'].includes(norm(name)))return fail('Введите название от 1 до 40 символов без служебных знаков.');
+ const raw=state.settings?.preferences?.expenseDirections;
+ if(raw!==undefined&&(!Array.isArray(raw)||raw.length>32||raw.length!==v99CustomDirections().length||new Set(raw.map(norm)).size!==raw.length))return fail('Сохранённые настройки направлений требуют проверки. Они не изменены.');
+ const existing=v99CustomDirections(),retry=edit.pending===name&&existing.includes(name);
+ if(!retry&&(['Семья','Семья / общее','Общие расходы'].some(value=>norm(value)===norm(name))||v99DirectionDefinitions().some(item=>norm(item.label)===norm(name)||item.target&&norm(item.target)===norm(name)||item.category&&norm(item.category)===norm(name))))return fail('Такое направление уже есть. Выберите другое название.');
+ if(!retry&&existing.length>=32)return fail('Можно создать до 32 своих направлений.');
+ edit.busy=true;root.querySelectorAll('button').forEach(button=>button.disabled=true);
+ if(!retry){state.settings.preferences={...(state.settings.preferences||{}),expenseDirections:[...existing,name]};state.settings.updated_at=new Date().toISOString();edit.pending=name;}
+ try{
+  const cloudOK=await saveAll();
+  if(edit.epoch!==authEpoch||!v99CanWriteDirections()||v99DirectionEditors.get(source)!==edit)return false;
+  if(v89StorageFailed)return fail('Не удалось сохранить направление на устройстве. Оно осталось в памяти; освободите место и повторите сохранение.');
+  v81FillDetails('e',document.getElementById('eCategory')?.value||'',document.getElementById('eSubcategory')?.value||'',document.getElementById('eBeneficiary')?.value||'Не указано');
+  renderHome();root.hidden=true;v99DirectionEditors.delete(source);toast(localSaveMessage(cloudOK,'Направление создано.'));return true;
+ }catch{return fail('Направление пока не подтверждено. Повторите сохранение.');}
+ finally{edit.busy=false;if(root.isConnected)root.querySelectorAll('button').forEach(button=>button.disabled=!v99CanWriteDirections())}
 }
 /* V99_MERCHANT_CATALOG_BEGIN — generated by tools/build_merchant_catalog.py */
 const V96_MERCHANTS=[{"brand":"krasnoe-beloe","value":"Красное & Белое","aliases":["кб","к&б","красноебелое","красное белое","красное и белое","krasnoe beloe","krasnoe & beloe","krasnoe i beloe"],"sector":"groceries"},{"brand":"detskiy-mir","value":"Детский мир","aliases":["детмир","детский-мир","detskiy mir","detsky mir","detmir"],"sector":"children"},{"brand":"familia","value":"Familia","aliases":["фамилия","фамилиа","familia offprice"],"sector":"fashion"},{"brand":"pyaterochka","value":"Пятёрочка","aliases":["пятерочка","пятёрка магазин","пятерка магазин","пятерочька","pyaterochka","pyatyorochka","5ka","5ка"],"sector":"groceries"},{"brand":"dixy","value":"Дикси","aliases":["dixy","diksi","дикси магазин"],"sector":"groceries"},{"brand":"vkusvill","value":"ВкусВилл","aliases":["вкусвил","вкусвилл","вкус вилл","вкус вил","vkusvill","vkusvil","vkus vill","избёнка","избенка","вкуссвилл","вкуссвил"],"sector":"groceries"},{"brand":"magnit","value":"Магнит","aliases":["magnit","магнит у дома","магнит семейный","магнит экстра"],"sector":"groceries"},{"brand":"perekrestok","value":"Перекрёсток","aliases":["перекресток","перекрёсток магазин","perekrestok","perekryostok","perekrestok ru"],"sector":"groceries"},{"brand":"lenta","value":"Лента","aliases":["lenta","лента гипермаркет","супер лента","гипер лента","мини лента"],"sector":"groceries"},{"brand":"auchan","value":"Ашан","aliases":["auchan","ашан сити","ашан гипермаркет","ashan"],"sector":"groceries"},{"brand":"azbuka-vkusa","value":"Азбука вкуса","aliases":["азбукавкуса","azbuka vkusa","azbukavkusa","ав дейли","ab daily"],"sector":"groceries"},{"brand":"verny","value":"Верный","aliases":["верный магазин","verny","vernyi","verniy"],"sector":"groceries"},{"brand":"chizhik","value":"Чижик","aliases":["чижик магазин","chizhik","chijik"],"sector":"groceries"},{"brand":"svetofor","value":"Светофор","aliases":["светофор магазин","svetofor","svetofor market"],"sector":"groceries"},{"brand":"okey","value":"О’КЕЙ","aliases":["окей","о кей","okey","o key","okey market","окей гипермаркет"],"sector":"groceries"},{"brand":"globus","value":"Глобус","aliases":["глобус гипермаркет","globus","globus hypermarket","globus ru"],"sector":"groceries"},{"brand":"yarche","value":"Ярче!","aliases":["ярче","ярче магазин","yarche","yarche plus"],"sector":"groceries"},{"brand":"bristol","value":"Бристоль","aliases":["bristol","бристол","бристоль магазин"],"sector":"groceries"},{"brand":"avoska","value":"Авоська","aliases":["авоська магазин","avoska","avos ka"],"sector":"groceries"},{"brand":"magnolia","value":"Магнолия","aliases":["магнолия магазин","magnolia","magnoliya"],"sector":"groceries"},{"brand":"fasol","value":"Фасоль","aliases":["фасоль магазин","fasol","fasol market"],"sector":"groceries"},{"brand":"viktoria","value":"Виктория супермаркет","aliases":["виктория магазин","виктория супермаркет","victoria supermarket","viktoria supermarket","victoria market"],"sector":"groceries"},{"brand":"metro","value":"METRO Cash & Carry","aliases":["metro cash carry","metro cash and carry","метро кэш энд керри","метро кеш энд керри","метро гипермаркет"],"sector":"groceries"},{"brand":"myasnov","value":"Мясновъ","aliases":["мяснов","myasnov","myasnov ru","мясновъ магазин"],"sector":"groceries"},{"brand":"monetka","value":"Монетка","aliases":["monetka","монетка магазин","monetka supermarket"],"sector":"groceries"},{"brand":"krasny-yar","value":"Красный Яр","aliases":["красныйяр","krasny yar","krasniy yar","красный яр гастроном"],"sector":"groceries"},{"brand":"pobeda","value":"Победа магазин","aliases":["победа дискаунтер","магазин победа","pobeda market","pobeda supermarket"],"sector":"groceries"},{"brand":"samokat","value":"Самокат","aliases":["самокат доставка","samokat","samokat delivery"],"sector":"groceries"},{"brand":"kuper","value":"Купер","aliases":["kuper","сбермаркет","sbermarket","сбер маркет","купер доставка"],"sector":"groceries"},{"brand":"yandex-lavka","value":"Яндекс Лавка","aliases":["яндекславка","яндекс лавка","yandex lavka","yandexlavka","ya lavka"],"sector":"groceries"},{"brand":"gorzdrav","value":"Горздрав","aliases":["гор здрав","gorzdrav","gorzdrav org","горздрав аптека"],"sector":"pharmacy"},{"brand":"rigla","value":"Ригла","aliases":["rigla","ригла аптека","rigla ru"],"sector":"pharmacy"},{"brand":"apteka-36-6","value":"Аптека 36,6","aliases":["36 6","36,6","36.6","аптека 366","apteka 36 6","366 ru","36 и 6"],"sector":"pharmacy"},{"brand":"stolichki","value":"Столички","aliases":["столички аптека","аптеки столички","stolichki","stolichki ru"],"sector":"pharmacy"},{"brand":"eapteka","value":"ЕАПТЕКА","aliases":["е аптека","еаптека","eapteka","e apteka","сбер еаптека","sber eapteka"],"sector":"pharmacy"},{"brand":"apteka-ru","value":"Аптека.ру","aliases":["аптека ру","аптекару","apteka ru","apteka.ru","aptekaru"],"sector":"pharmacy"},{"brand":"planeta-zdorovya","value":"Планета здоровья","aliases":["планетаздоровья","planeta zdorovya","planeta zdorovia","planetazdorovo"],"sector":"pharmacy"},{"brand":"zdravcity","value":"Здравсити","aliases":["здрав сити","zdravcity","zdrav city","здравсити аптека"],"sector":"pharmacy"},{"brand":"neopharm","value":"Неофарм","aliases":["нео фарм","neopharm","neofarm","неофарм аптека"],"sector":"pharmacy"},{"brand":"samson-pharma","value":"Самсон-Фарма","aliases":["самсон фарма","самсонфарма","samson pharma","samson farma"],"sector":"pharmacy"},{"brand":"asna","value":"АСНА","aliases":["asna","асна аптека","asna ru"],"sector":"pharmacy"},{"brand":"bud-zdorov","value":"Будь Здоров!","aliases":["будь здоров аптека","аптека будь здоров","bud zdorov","budzdorov"],"sector":"pharmacy"},{"brand":"aprel","value":"Аптека Апрель","aliases":["апрель аптека","apteka aprel","aprel pharmacy","аптеки апрель"],"sector":"pharmacy"},{"brand":"dialog","value":"Аптека Диалог","aliases":["диалог аптека","dialog pharmacy","apteka dialog","dialog apteka"],"sector":"pharmacy"},{"brand":"vita","value":"Аптека Вита","aliases":["вита аптека","вита экспресс","vita express","vita pharmacy","apteka vita"],"sector":"pharmacy"},{"brand":"maksavit","value":"МАКСАВИТ","aliases":["максавит","макса вит","maksavit","maxavit","максавит аптека"],"sector":"pharmacy"},{"brand":"implozia","value":"Имплозия","aliases":["имплозия аптека","implozia","implosia","imploziya"],"sector":"pharmacy"},{"brand":"zhivika","value":"Живика","aliases":["живика аптека","zhivika","jivika","zhivika ru"],"sector":"pharmacy"},{"brand":"farmlend","value":"Фармленд","aliases":["фарм ленд","farmlend","pharmland","фармленд аптека"],"sector":"pharmacy"},{"brand":"doctor-stoletov","value":"Доктор Столетов","aliases":["докторстолетов","doctor stoletov","doktor stoletov","dr stoletov","столетов аптека"],"sector":"pharmacy"},{"brand":"invitro","value":"ИНВИТРО","aliases":["invitro","инвитро лаборатория","лаборатория инвитро","invitro laboratory"],"sector":"health"},{"brand":"wildberries","value":"Wildberries","aliases":["wb","вб","вайлдберриз","вайлдберис","валберис","валберриз","вайлдберриес","вайлд берриз","wild berries","wildberies"],"sector":"marketplace"},{"brand":"ozon","value":"Ozon","aliases":["озон","ozon ru","ozon.ru","озон магазин"],"sector":"marketplace"},{"brand":"yandex-market","value":"Яндекс Маркет","aliases":["яндексмаркет","яндекс маркет","yandex market","yandexmarket","market yandex"],"sector":"marketplace"},{"brand":"aliexpress","value":"AliExpress","aliases":["алиэкспресс","али экспресс","aliexpres","ali express","aliexpress ru"],"sector":"marketplace"},{"brand":"megamarket","value":"Мегамаркет","aliases":["мега маркет","megamarket","сбермегамаркет","сбер мегамаркет","sbermegamarket","sber megamarket"],"sector":"marketplace"},{"brand":"avito","value":"Авито","aliases":["avito","авито ру","avito ru"],"sector":"marketplace"},{"brand":"lamoda","value":"Lamoda","aliases":["ламода","ла мода","la moda","lamoda ru"],"sector":"marketplace"},{"brand":"joom","value":"Joom","aliases":["джум","джоом","joom ru"],"sector":"marketplace"},{"brand":"flowwow","value":"Flowwow","aliases":["флаувау","флоувау","фловоу","flow wow","flowwow ru"],"sector":"marketplace"},{"brand":"magnit-market","value":"Магнит Маркет","aliases":["магнитмаркет","magnit market","magnitmarket","казаньэкспресс","казан экспресс","kazanexpress","kazan express"],"sector":"marketplace"},{"brand":"akusherstvo","value":"Акушерство.ру","aliases":["акушерство ру","акушерствору","akusherstvo","akusherstvo ru","акушерство магазин"],"sector":"children"},{"brand":"korablik","value":"Кораблик","aliases":["korablik","кораблик магазин","korablik ru"],"sector":"children"},{"brand":"vot-on-ya","value":"ВотОнЯ","aliases":["вот он я","вотоня","votonia","vot on ya","votonya"],"sector":"children"},{"brand":"gulliver","value":"Gulliver","aliases":["гулливер","гулливер одежда","gulliver kids","gulliver market"],"sector":"children"},{"brand":"motherbear","value":"Motherbear","aliases":["мазербеар","мазербир","mother bear","motherbear ru"],"sector":"children"},{"brand":"kari-kids","value":"Kari Kids","aliases":["кари кидс","karikids","кари дети","kari kids ru"],"sector":"children"},{"brand":"vkusno-i-tochka","value":"Вкусно — и точка","aliases":["вкусно и точка","вкусноиточка","vkusno i tochka","vkusnoitochka"],"sector":"cafe"},{"brand":"burger-king","value":"Бургер Кинг","aliases":["бургеркинг","burger king","burgerking","бургер кинг ресторан"],"sector":"cafe"},{"brand":"kfc","value":"KFC","aliases":["кфс","кфц","кей эф си","k f c"],"sector":"cafe"},{"brand":"rostics","value":"Rostic’s","aliases":["ростикс","rostics","rostic s","ростикс ресторан"],"sector":"cafe"},{"brand":"dodo","value":"Додо Пицца","aliases":["додо","додопицца","dodo pizza","dodopizza","dodo"],"sector":"cafe"},{"brand":"teremok","value":"Теремок","aliases":["teremok","теремок блины","теремок ресторан"],"sector":"cafe"},{"brand":"kroshka-kartoshka","value":"Крошка Картошка","aliases":["крошкакартошка","kroshka kartoshka","kroshka-kartoshka","крошка картошка кафе"],"sector":"cafe"},{"brand":"shokoladnitsa","value":"Шоколадница","aliases":["шоколадница кафе","shokoladnitsa","shokoladnica","shokoladniza"],"sector":"cafe"},{"brand":"coffeemania","value":"Кофемания","aliases":["кофе мания","coffeemania","kofemania","coffe mania"],"sector":"cafe"},{"brand":"coffee-house","value":"Кофе Хауз","aliases":["кофехауз","coffee house","coffeehouse","кофе хаус"],"sector":"cafe"},{"brand":"stars-coffee","value":"Stars Coffee","aliases":["старс кофе","старс коффи","starscoffee","старз кофе"],"sector":"cafe"},{"brand":"surf-coffee","value":"Surf Coffee","aliases":["серф кофе","сёрф кофе","серфкофе","surfcoffee","surf coffee x"],"sector":"cafe"},{"brand":"one-price-coffee","value":"One Price Coffee","aliases":["ван прайс кофе","ванпрайс кофе","уан прайс кофе","onepricecoffee","one price"],"sector":"cafe"},{"brand":"double-b","value":"Даблби","aliases":["дабл би","double b","doubleb","double bee","кофе даблби"],"sector":"cafe"},{"brand":"tanuki","value":"Тануки","aliases":["tanuki","тануки ресторан","тануки доставка"],"sector":"cafe"},{"brand":"yakitoria","value":"Якитория","aliases":["yakitoria","яки тория","якитория ресторан","yakitoriya"],"sector":"cafe"},{"brand":"khatimaki","value":"Хатимаки","aliases":["хатимаки ресторан","khatimaki","hatimaki","хати маки"],"sector":"cafe"},{"brand":"mumu","value":"Му-Му","aliases":["му му","муму кафе","кафе му му","mumu","mu mu"],"sector":"cafe"},{"brand":"anderson","value":"АндерСон","aliases":["андерсон кафе","anderson cafe","anderson family","andersson cafe"],"sector":"cafe"},{"brand":"yandex-food","value":"Яндекс Еда","aliases":["яндекседа","яндекс еда","yandex food","yandexfood","yandex eda","yandexeda","yandex eats"],"sector":"cafe"},{"brand":"yobidoyobi","value":"Ёбидоёби","aliases":["ебидоеби","ёби доёби","еби доеби","yobidoyobi","yobi do yobi","yobidoebi"],"sector":"cafe"},{"brand":"magnit-cosmetic","value":"Магнит Косметик","aliases":["магниткосметик","магнит косметика","magnit cosmetic","magnit cosmetics"],"sector":"beauty"},{"brand":"ulybka-radugi","value":"Улыбка радуги","aliases":["улыбкарадуги","ulybka radugi","ulybkaradugi","улыбка радуги магазин"],"sector":"beauty"},{"brand":"podruzhka","value":"Подружка","aliases":["podruzhka","подружка магазин","podrygka","podrugka"],"sector":"beauty"},{"brand":"letoile","value":"Лэтуаль","aliases":["летуаль","л этуаль","letoile","l etoile","l'etoile","лэтуаль магазин"],"sector":"beauty"},{"brand":"rive-gauche","value":"Рив Гош","aliases":["ривгош","rive gauche","rivegauche","рив гош магазин"],"sector":"beauty"},{"brand":"gold-apple","value":"Золотое Яблоко","aliases":["золотоеяблоко","gold apple","goldapple","golden apple","золотое яблоко магазин"],"sector":"beauty"},{"brand":"ile-de-beaute","value":"ИЛЬ ДЕ БОТЭ","aliases":["иль де боте","ильдеботе","ile de beaute","iledebeaute","ильдеботэ"],"sector":"beauty"},{"brand":"yves-rocher","value":"Ив Роше","aliases":["ивроше","yves rocher","yvesrocher","ив роше магазин"],"sector":"beauty"},{"brand":"mixit","value":"MIXIT","aliases":["миксит","микс ит","mixit ru","mix it"],"sector":"beauty"},{"brand":"randewoo","value":"Рандеву парфюмерия","aliases":["randewoo","randewoo ru","рандеву духи","рандеву парфюм","рандеву косметика"],"sector":"beauty"},{"brand":"dns","value":"DNS","aliases":["днс","ди эн эс","dns shop","dns-shop","dns магазин"],"sector":"electronics"},{"brand":"mvideo","value":"М.Видео","aliases":["мвидео","м видео","mvideo","m video","m.video"],"sector":"electronics"},{"brand":"eldorado","value":"Эльдорадо","aliases":["eldorado","эльдорадо магазин","eldorado ru"],"sector":"electronics"},{"brand":"citilink","value":"Ситилинк","aliases":["сити линк","citilink","citylink","citilink ru"],"sector":"electronics"},{"brand":"restore","value":"restore:","aliases":["re store","re-store","рестор","ре стор","restore ru"],"sector":"electronics"},{"brand":"technopark","value":"Технопарк","aliases":["техно парк","technopark","tehnopark","technopark ru"],"sector":"electronics"},{"brand":"holodilnik","value":"Холодильник.ру","aliases":["холодильник ру","holodilnik","holodilnik ru","holodilnik.ru"],"sector":"electronics"},{"brand":"onlinetrade","value":"ОНЛАЙН ТРЕЙД.РУ","aliases":["онлайнтрейд","онлайн трейд","onlinetrade","onlinetrade ru","online trade ru"],"sector":"electronics"},{"brand":"lemana-pro","value":"Лемана ПРО","aliases":["леманапро","lemana pro","lemanapro","леруа мерлен","леруамерлен","leroy merlin","leroymerlin"],"sector":"home"},{"brand":"petrovich","value":"Петрович","aliases":["petrovich","петрович магазин","петрович стройматериалы","petrovich ru"],"sector":"home"},{"brand":"obi","value":"ОБИ","aliases":["obi","оби магазин","obi ru","obi hypermarket"],"sector":"home"},{"brand":"vseinstrumenti","value":"ВсеИнструменты.ру","aliases":["все инструменты","всеинструменты","все инструменты ру","vseinstrumenti","vseinstrumenty","vseinstrumenti ru"],"sector":"home"},{"brand":"hoff","value":"Hoff","aliases":["хофф","хоф","hoff ru","хофф мебель"],"sector":"home"},{"brand":"askona","value":"Askona","aliases":["аскона","askona ru","аскона магазин"],"sector":"home"},{"brand":"ikea","value":"IKEA","aliases":["икеа","икея","ikea store","ikea ru"],"sector":"home"},{"brand":"fix-price","value":"Fix Price","aliases":["фикс прайс","фикспрайс","fixprice","fix-price","фикс праис"],"sector":"home"},{"brand":"galamart","value":"Галамарт","aliases":["гала март","galamart","галамарт магазин"],"sector":"home"},{"brand":"domovoy","value":"Домовой","aliases":["домовой магазин","domovoy","domovoi","домовой товары для дома"],"sector":"home"},{"brand":"lukoil","value":"ЛУКОЙЛ","aliases":["лукойл азс","lukoil","лукоил","lukoil azs"],"sector":"fuel"},{"brand":"gazpromneft","value":"Газпромнефть","aliases":["газпром нефть","gazpromneft","gazprom neft","газпромнефть азс"],"sector":"fuel"},{"brand":"rosneft","value":"Роснефть","aliases":["рос нефть","rosneft","ros neft","роснефть азс"],"sector":"fuel"},{"brand":"tatneft","value":"Татнефть","aliases":["тат нефть","tatneft","tat neft","татнефть азс"],"sector":"fuel"},{"brand":"teboil","value":"Teboil","aliases":["тебойл","тебоил","teb oil","тебойл азс"],"sector":"fuel"},{"brand":"bashneft","value":"Башнефть","aliases":["баш нефть","bashneft","bash neft","башнефть азс"],"sector":"fuel"},{"brand":"gazprom-azs","value":"АЗС Газпром","aliases":["газпром азс","gazprom azs","gazprom petrol","азс gazprom"],"sector":"fuel"},{"brand":"irbis","value":"АЗС Ирбис","aliases":["ирбис азс","irbis azs","irbis petrol","азс irbis"],"sector":"fuel"},{"brand":"bethowen","value":"Бетховен","aliases":["бетховен зоомагазин","bethowen","bethoven","бетховен питомцы"],"sector":"pets"},{"brand":"chetyre-lapy","value":"Четыре Лапы","aliases":["4 лапы","4лапы","четырелапы","четыре лапы магазин","4lapy","chetyre lapy"],"sector":"pets"},{"brand":"petshop","value":"Petshop.ru","aliases":["петшоп","пет шоп","petshop","pet shop","petshop ru"],"sector":"pets"},{"brand":"le-murrr","value":"Ле’Муррр","aliases":["лемуррр","ле муррр","лемур","le murrr","lemurrr","ле мур"],"sector":"pets"},{"brand":"magizoo","value":"Магизоо","aliases":["маги зоо","magizoo","magi zoo","магизоо магазин"],"sector":"pets"},{"brand":"zoozavr","value":"Зоозавр","aliases":["зоо завр","zoozavr","zoo zavr","зоозавр магазин"],"sector":"pets"},{"brand":"mts","value":"МТС","aliases":["mts","мтс связь","mts mobile","мтс оплата"],"sector":"telecom"},{"brand":"megafon","value":"МегаФон","aliases":["мега фон","megafon","mega fon","мегафон связь"],"sector":"telecom"},{"brand":"beeline","value":"Билайн","aliases":["beeline","bee line","би лайн","билайн связь"],"sector":"telecom"},{"brand":"t2","value":"t2","aliases":["т2","теле2","теле 2","tele2","tele 2","t 2","t2 связь"],"sector":"telecom"},{"brand":"rostelecom","value":"Ростелеком","aliases":["ростеле ком","rostelecom","rostelekom","ростелеком интернет"],"sector":"telecom"},{"brand":"yota","value":"Yota","aliases":["йота","ёта","иота","yota связь"],"sector":"telecom"},{"brand":"yandex-plus","value":"Яндекс Плюс","aliases":["яндексплюс","яндекс плюс","yandex plus","yandexplus","ya plus"],"sector":"online"},{"brand":"kinopoisk","value":"Кинопоиск","aliases":["кино поиск","кинопоиск плюс","kinopoisk","kino poisk","kinopoisk hd"],"sector":"online"},{"brand":"okko","value":"Okko","aliases":["окко","okko tv","окко кино","okko kino"],"sector":"online"},{"brand":"ivi","value":"Иви","aliases":["ivi","ivi ru","иви кино","ivi tv"],"sector":"online"},{"brand":"wink","value":"Wink","aliases":["винк","wink tv","винк кино","wink ru"],"sector":"online"},{"brand":"vk-music","value":"VK Музыка","aliases":["вк музыка","вкмузыка","vk music","vkmusic","vk музыка","boom музыка"],"sector":"online"},{"brand":"chatgpt","value":"ChatGPT","aliases":["чатгпт","чат гпт","чат джипити","чат жпт","chat gpt","openai chatgpt","open ai chatgpt"],"sector":"online"},{"brand":"litres","value":"Литрес","aliases":["litres","лит рес","litres ru","литрес книги"],"sector":"online"},{"brand":"sportmaster","value":"Спортмастер","aliases":["спорт мастер","sportmaster","sport master","спортмастер магазин"],"sector":"fashion"},{"brand":"kari","value":"Kari","aliases":["кари","kari shoes","кари обувь","kari ru"],"sector":"fashion"},{"brand":"ostin","value":"O’STIN","aliases":["остин","o stin","ostin","ostin ru","остин одежда"],"sector":"fashion"},{"brand":"befree","value":"Befree","aliases":["бифри","би фри","be free","befree ru"],"sector":"fashion"},{"brand":"zarina","value":"Zarina","aliases":["зарина","zarina ru","зарина одежда"],"sector":"fashion"},{"brand":"desport","value":"Деспорт","aliases":["desport","де спорт","desport ru","деспорт магазин"],"sector":"fashion"}];
@@ -2771,7 +2903,15 @@ function v96InstallMerchantAutocomplete(targetId){
  detached.observe(document.body,{childList:true,subtree:true});
 }
 
-const V90_CATEGORIES=[['Кредит','Кредит / рассрочка','ипотека кредит рассрочка сплит split займ долг'],['Продукты','Продукты','еда супермаркет'],['Вкусняшки','Вкусняшки','пиво снеки сладости'],['Рестораны и кафе','Кафе и доставка','кофе чаевые ресторан'],['Школа и занятия','Школа и занятия','обед школьное питание английский танцы кружки'],['Дети','Детские товары','подгузники памперсы пеленки pampers huggies'],['Одежда','Одежда и обувь','ботинки куртка'],['Дом','Дом и быт','техника мебель ремонт хозяйство'],['ЖКХ','Счета и связь','электричество вода газ интернет телефон аренда'],['Аптека и медицина','Здоровье','лекарства врач аптека'],['Красота','Красота и уход','маникюр косметика стрижка'],['Авто и транспорт','Авто и транспорт','бензин то такси парковка шины'],['Подписки','Подписки и сервисы','подписка сервис онлайн chatgpt openai'],['Работа','Работа','работа рабочие инструменты софт программы'],['Развлечения','Отдых и развлечения','отпуск кино путешествия хобби'],['Подарки','Подарки','цветы день рождения'],['Животные','Питомцы','корм ветеринар'],['Прочее','Другое','работа налог комиссия']];
+const V90_CATEGORIES=[['Кредит','Кредит / рассрочка','ипотека кредит рассрочка сплит split займ долг'],['Продукты','Продукты','еда супермаркет'],['Вкусняшки','Вкусняшки','пиво снеки сладости'],['Рестораны и кафе','Кафе и доставка','кофе чаевые ресторан'],['Школа и занятия','Школа и занятия','обед школьное питание английский танцы кружки'],['Дети','Детские товары','подгузники памперсы пеленки pampers huggies'],['Одежда','Одежда и обувь','ботинки куртка'],['Дом','Дом и быт','техника мебель ремонт хозяйство'],['ЖКХ','Счета и связь','электричество вода газ интернет телефон аренда'],['Аптека и медицина','Медицина и аптеки','лекарства врач аптека очки'],['Спорт и здоровье','Спорт и здоровье','пилатес фитнес тренировки витамины бады'],['Красота','Красота и уход','маникюр косметика стрижка'],['Авто и транспорт','Авто и транспорт','бензин то парковка шины'],['Транспорт','Такси и транспорт','такси метро автобус проезд'],['Подписки','Подписки и онлайн-сервисы','подписка сервис онлайн хостинг hosting chatgpt openai'],['Работа','Работа','работа рабочие инструменты софт программы'],['Развлечения','Отдых и развлечения','отпуск кино путешествия хобби'],['Подарки','Подарки','цветы день рождения'],['Животные','Питомцы','корм ветеринар'],['Прочее','Другое','работа налог комиссия']];
+// Presentation aliases are exact category names; descriptions never rewrite saved history.
+function v99PurposeCategory(entry){
+ const key=String(typeof entry==='string'?entry:entry?.category||'');
+ if(typeof entry==='object'&&entry&&key==='Авто и транспорт'&&['Такси','Общественный транспорт'].includes(entry.subcategory))return 'Транспорт';
+ const aliases={'Спорт':'Спорт и здоровье','Фитнес':'Спорт и здоровье','Медицина':'Аптека и медицина','Аптеки':'Аптека и медицина','Медицина и аптеки':'Аптека и медицина','Подписки и онлайн-сервисы':'Подписки','Подписки и сервисы':'Подписки','Такси':'Транспорт'};
+ return Object.hasOwn(aliases,key)?aliases[key]:key;
+}
+function v99CategoryLabel(key){if(key==='Такси')return 'Такси';const canonical=v99PurposeCategory(key);return V90_CATEGORIES.find(item=>item[0]===canonical)?.[1]||String(key||'Без категории')}
 // Purchase vocabulary. Prefixes apply to whole words, never arbitrary substrings.
 const V92_WORDS = {
  'Продукты':'хлеб батон багет лаваш булоч молок кефир ряженк творог сметан йогурт сыр масл яйц яиц мяс говядин свинин куриц курин индейк фарш котлет колбас сосиск ветчин бекон рыба рыб лосос семг форел треск минтай сельд селед тунц кревет морепродукт икра рис греч макарон спагет вермишел лапш овсян хлопь круп пшен манк мук сахар соль перец специи приправ кетчуп майонез соус уксус дрожж крахмал овощ фрукт картош картоф морков лук чеснок капуст огур помидор томат свекл кабач баклаж тыкв броккол салат зелень укроп петруш яблок банан апельсин мандарин лимон груш персик нектарин абрикос слив виноград арбуз дын киви манго ягод клубник малин черник голубик вишн черешн гриб шампиньон горох фасол чечевиц нут консерв тушенк пельмен вареник замороз завтрак ужин вода вод минерал чай кофе какао орех сухофрукт изюм кураг финик мед варень джем масло оливков подсолнечн продукты супермаркет пятерочк перекресток ашан лента магнит вкусвилл азбук',
@@ -2782,11 +2922,13 @@ const V92_WORDS = {
  'Дом':'дом быт ремонт мебел диван кресл стол стул шкаф кроват матрас подушк одеял простын полотенц посуд тарелк чашк кружк стакан кастрюл сковород нож вилк ложк лампоч батарейк провод розетк инструмент дрел молоток гвозд краск обои цемент пылесос холодильник плит стиральн телевизор ноутбук компьютер смартфон наушник утюг чайник микроволновк губк салфет туалетн бумаг порошок гель моющ чистящ кондиционер контейнер пакеты мусор ведро швабр',
  'Дети':'подгузник памперс пеленк pampers huggies',
  'ЖКХ':'жкх коммунал квартплат электричеств водоснабж газоснабж отоплен водоотвед капремонт домофон интернет связь телефон тариф мобильн аренда квартплата счет',
- 'Аптека и медицина':'аптек лекарств таблет витамин врач доктор клиник больниц анализ обследован узи мрт кт стоматолог зубн лечени прививк вакцин бинт пластыр термометр тонометр нурофен парацетамол ибупрофен линз очки',
+ 'Аптека и медицина':'аптек лекарств таблет врач доктор клиник больниц анализ обследован узи мрт кт стоматолог зубн лечени прививк вакцин бинт пластыр термометр тонометр нурофен парацетамол ибупрофен линз очки',
+ 'Спорт и здоровье':'спорт фитнес пилатес трениров спортзал йога бассейн секци витамин бады бад добавк спортивн спортпит',
  'Красота':'красот уход косметик маникюр педикюр стрижк парикмахер салон барбершоп шампун бальзам мыло крем помад тушь духи парфюм дезодорант бритв эпиляц массаж расческ макияж',
- 'Авто и транспорт':'авто автомобил бензин дизель топлив заправк азс такси метро автобус трамвай троллейбус электричк проезд парковк шин резин колес мойк автомойк осаго каско запчаст техосмотр стоянк эвакуатор штраф транспондер антифриз шиномонтаж',
- 'Развлечения':'развлеч отдых отпуск путешеств поездк кино театр концерт музей выставк цирк зоопарк парк аттракцион бассейн фитнес спортзал хобби игр игрушк лего lego книг netflix spotify кинопоиск иви отель гостиниц хостел экскурси самолет авиабилет поезд билеты тур путевк',
- 'Подписки':'подписк сервис онлайн цифров нейросет chatgpt openai чатгпт чатжпт',
+ 'Авто и транспорт':'авто автомобил бензин дизель топлив заправк азс парковк шин резин колес мойк автомойк осаго каско запчаст техосмотр стоянк эвакуатор штраф транспондер антифриз шиномонтаж',
+ 'Транспорт':'такси метро автобус трамвай троллейбус электричк проезд общественн транспорт',
+ 'Развлечения':'развлеч отдых отпуск путешеств поездк кино театр концерт музей выставк цирк зоопарк парк аттракцион хобби игр игрушк лего lego книг netflix spotify кинопоиск иви отель гостиниц хостел экскурси самолет авиабилет поезд билеты тур путевк',
+ 'Подписки':'подписк сервис онлайн цифров нейросет хостинг hosting домен chatgpt openai чатгпт чатжпт',
  'Работа':'работ рабоч инструмент софт программ',
  'Подарки':'подар подароч цвет букет розы тюльпан упаковк поздравлен сувенир',
  'Животные':'питом животн корм лакомств ветеринар ветклиник наполнител лоток поводок ошейник шлейк когтеточк груминг глист блох аквариум сено опилк purina royal canin whiskas whiskas роял канин пурина вискас',
@@ -2819,6 +2961,26 @@ function v92DiaperCategory(query){
  return 'Дети';
 }
 function v92DigitalService(value){return /(?:^| )(?:chat ?gpt|open ?ai|чат ?(?:gpt|гпт|жпт|джипити))(?: |$)/.test(v92Norm(value))}
+function v99PurchasePurpose(value){
+ const text=v92Norm(value),has=pattern=>pattern.test(text);
+ const sport=has(/(?:^| )(?:пилатес[а-я]*|фитнес[а-я]*|трениров[а-я]*|спортзал[а-я]*|йог[а-я]*|витамин[а-я]*|бад[а-я]*|спортпит[а-я]*)(?: |$)/);
+ const medical=has(/(?:^| )(?:лекарств[а-я]*|таблет[а-я]*|врач[а-я]*|доктор[а-я]*|анализ[а-я]*|стоматолог[а-я]*|лечени[а-я]*|очк[а-я]*|линз[а-я]*|узи|мрт|привив[а-я]*)(?: |$)/);
+ const hosting=has(/(?:^| )(?:хостинг[а-я]*|hosting|домен[а-я]*)(?: |$)/);
+ const taxi=has(/(?:^| )(?:такси|taxi)(?: |$)/);
+ const choices=[sport?'Спорт и здоровье':'',medical?'Аптека и медицина':'',hosting?'Подписки':'',taxi?'Транспорт':''].filter(Boolean);
+ // Mixed purchases need the owner's choice. The pharmacy alone is never evidence.
+ return choices.length===1?choices[0]:'';
+}
+function v99PurchaseDetail(category,value){
+ const q=v92Norm(value);if(v99PurchasePurpose(q)!==category)return '';
+ if(category==='Транспорт')return 'Такси';
+ if(category==='Подписки')return /(?:^| )хостинг[а-я]*(?: |$)|(?:^| )hosting(?: |$)/.test(q)?'Хостинг':'Домен';
+ if(category==='Спорт и здоровье'){
+  for(const [pattern,label] of [[/(?:^| )пилатес[а-я]*(?: |$)/,'Пилатес'],[/(?:^| )фитнес[а-я]*(?: |$)/,'Фитнес'],[/(?:^| )витамин[а-я]*(?: |$)/,'Витамины'],[/(?:^| )бад[а-я]*(?: |$)/,'БАДы'],[/(?:^| )спортпит[а-я]*(?: |$)/,'Спортивное питание']])if(pattern.test(q))return label;
+  return 'Тренировки';
+ }
+ return /(?:^| )(?:очк[а-я]*|линз[а-я]*)(?: |$)/.test(q)?'Очки и зрение':'';
+}
 function v92Matches(query,merchant=''){
  const q=v92Norm(query),digital=v92DigitalService(q+' '+merchant);if(!q&&!digital)return [];
  const tokens=q?q.split(' '):[],scores=new Map(), reasons=new Map();
@@ -2838,6 +3000,7 @@ function v92Matches(query,merchant=''){
  for(const [key,count] of history)add(key,110+Math.min(count,5),'Так записывали раньше');
  // Offer purpose choices for a digital tool; never copy a historical misclassification into the form.
  if(digital){add('Подписки',118,'Цифровой сервис — выберите назначение');add('Работа',117,'Цифровой инструмент — выберите назначение')}
+ const purpose=v99PurchasePurpose(q);if(purpose)add(purpose,119,'По назначению покупки — выберите категорию');
  const diaperCategory=v92DiaperCategory(q);if(diaperCategory)add(diaperCategory,119,'По назначению товара — выберите категорию');
  return V90_CATEGORIES.filter(x=>scores.has(x[0])).map(x=>({key:x[0],label:x[1],score:scores.get(x[0]),reason:reasons.get(x[0])})).sort((a,b)=>b.score-a.score);
 }
@@ -2845,7 +3008,7 @@ let v91Expanded=false;
 let v92AutoDescription="";
 function v91Toggle(){v91Expanded=!v91Expanded;document.getElementById('v90Search').value='';v90Paint()}
 function v90Choose(key,detail='',description=''){
- const q=document.getElementById('v90Search').value.trim(),normal=v92Norm(q);
+ const q=document.getElementById('v90Search').value.trim(),normal=v92Norm(q);detail=detail||v99PurchaseDetail(key,q);
  const categoryQuery=normal.length<3||Boolean(detail&&v92Norm(detail).startsWith(normal))||V90_CATEGORIES.some(x=>[x[0],x[1]].some(label=>v92Norm(label).startsWith(normal)));
  const comment=document.getElementById('eComment');
  const automatic=description||(!categoryQuery?q:'');
@@ -2873,7 +3036,7 @@ function v90Paint(){
  const currentDetail=document.getElementById('eSubcategory').value;
  document.getElementById('v90Quick').innerHTML=items.map(({key,label,detail},i)=>{const active=selected===key&&(!detail||currentDetail===detail);return `<button type="button" class="btn small ${active?'primary':''}" aria-pressed="${active}" data-cat="${esc(key)}" data-choice="${i}"><span>${esc(label)}</span></button>`}).join('');
  const hint=document.getElementById('v92SearchHint');
- hint.textContent=hasQuery?(v92DigitalService(q+' '+merchant)?'Цифровой сервис: выберите «Подписки и сервисы» или «Работа» по назначению.':matches.length?'Выберите подходящий вариант.':'Выберите категорию для этой покупки.'):'Быстрые варианты или поиск покупки';
+ hint.textContent=hasQuery?(v92DigitalService(q+' '+merchant)?'Цифровой сервис: выберите «Подписки и онлайн-сервисы» или «Работа» по назначению.':matches.length?'Выберите подходящий вариант.':'Выберите категорию для этой покупки.'):'Быстрые варианты или поиск покупки';
  const status=document.getElementById('v92Selected');status.hidden=!selected;
  status.textContent=selected?'Выбрано: '+(V90_CATEGORIES.find(x=>x[0]===selected)?.[1]||selected)+(currentDetail?' · '+currentDetail:''):'';
  document.getElementById('v93CreditHelp').hidden=selected!=='Кредит';
@@ -2883,12 +3046,13 @@ function v90Paint(){
 function v90Template(id){return v97OpenFavorite(String(id))}
 const INCOME_PEOPLE=['Сергей','Виктория','Майя','Алиса'];
 // Existing category values MUST NOT be renamed in persisted expenses.
-const CATS=['Вкусняшки','Школа и занятия','Авто и транспорт','Продукты','Супермаркеты','Рестораны и кафе','Жильё','ЖКХ','Электричество','Вода и газ','Интернет','Мобильная связь','Дети','Образование','Аптека и медицина','Животные','ТО','Бензин','Парковка','Кредит','Ремонт','Страховка','Налог','Шины','Транспорт','Такси','Одежда','Красота','Маркетплейсы','Дом','Развлечения','Подписки','Путешествия','Подарки','Банковские комиссии','Хобби','Дача','Работа','Благотворительность','Прочее', 'Мойка','Платные дороги','Штрафы','Запчасти','Автострахование','Транспортный налог'];
+const CATS=['Вкусняшки','Школа и занятия','Авто и транспорт','Продукты','Супермаркеты','Рестораны и кафе','Жильё','ЖКХ','Электричество','Вода и газ','Интернет','Мобильная связь','Дети','Образование','Аптека и медицина','Спорт и здоровье','Животные','ТО','Бензин','Парковка','Кредит','Ремонт','Страховка','Налог','Шины','Транспорт','Такси','Одежда','Красота','Маркетплейсы','Дом','Развлечения','Подписки','Путешествия','Подарки','Банковские комиссии','Хобби','Дача','Работа','Благотворительность','Прочее', 'Мойка','Платные дороги','Штрафы','Запчасти','Автострахование','Транспортный налог'];
 // Presentation-only group mapping; historical categories stay byte-for-byte unchanged.
 const EXPENSE_GROUPS=[
  {id:'purchases',title:'Покупки и еда',values:['Вкусняшки','Продукты','Рестораны и кафе','Маркетплейсы','Одежда','Красота','Подарки'],legacy:['Супермаркеты']},
  {id:'home',title:'Дом и счета',values:['ЖКХ','Жильё','Интернет','Мобильная связь','Дом','Дача'],legacy:['Электричество','Вода и газ']},
  {id:'family',title:'Семья и здоровье',values:['Школа и занятия','Дети','Образование','Аптека и медицина','Животные']},
+ {id:'sport',title:'Спорт и здоровье',values:['Спорт и здоровье']},
  {id:'auto',title:'Автомобиль',values:['Авто и транспорт','Бензин','ТО','Ремонт','Парковка','Мойка','Платные дороги','Шины','Запчасти','Автострахование','Транспортный налог','Штрафы']},
  {id:'transport',title:'Передвижение',values:['Транспорт','Такси']},
  {id:'leisure',title:'Досуг и привычки',values:['Развлечения','Путешествия','Хобби']},
@@ -2912,7 +3076,7 @@ const V98_LEGACY_GROUPS=Object.freeze([
 const V98_LEGACY_GROUP_NAME=Object.freeze(Object.assign(Object.create(null),...V98_LEGACY_GROUPS.flatMap(group=>group.values.map(category=>({[category]:group.title})))));
 const OLD_CATEGORIES=new Set(EXPENSE_GROUPS.flatMap(g=>g.legacy||[]));
 const EXPENSE_GROUP_NAME=Object.create(null);for(const group of EXPENSE_GROUPS)for(const key of [...group.values,...(group.legacy||[])])EXPENSE_GROUP_NAME[key]=group.title;
-function expenseGroup(category){return EXPENSE_GROUP_NAME[String(category||'')]||'Прочее'}
+function expenseGroup(category){return EXPENSE_GROUP_NAME[v99PurposeCategory(category)]||'Прочее'}
 function expenseEntryGroup(entry){
  if(carCategory(entry))return 'Автомобиль';
  if(String(entry.category||'').trim().toLowerCase()==='авто и транспорт')return 'Передвижение';
@@ -2926,7 +3090,7 @@ function categoryOptions(selected='',withAll=false){
  if(withAll)chunks.push('<option value="">Все категории</option>');
  for(const group of EXPENSE_GROUPS){
   let choices=[...group.values];if(sel && (group.legacy||[]).includes(sel))choices.unshift(sel);
-  chunks.push(`<optgroup label="${esc(group.title)}">${choices.map(c=>`<option value="${esc(c)}"${c===sel?' selected':''}>${esc(c==='Продукты'?'Продукты и супермаркеты':c)}</option>`).join('')}</optgroup>`);
+  chunks.push(`<optgroup label="${esc(group.title)}">${choices.map(c=>`<option value="${esc(c)}"${c===sel?' selected':''}>${esc(c==='Продукты'?'Продукты и супермаркеты':v99CategoryLabel(c))}</option>`).join('')}</optgroup>`);
  }
  if(withAll)chunks.push('<optgroup label="Старые категории">'+EXPENSE_GROUPS.flatMap(g=>g.legacy||[]).map(c=>`<option value="${esc(c)}"${c===sel?' selected':''}>${esc(c)}</option>`).join('')+'</optgroup>');
  if(sel && !CATS.includes(sel))chunks.push(`<optgroup label="Старая категория"><option value="${esc(sel)}" selected>${esc(sel)}</option></optgroup>`);
@@ -3230,7 +3394,12 @@ function sum(a){
  // Preserve unusual legacy subcent values; never rewrite or silently round history.
  return exact?cents/100:total;
 }
-function aggregate(arr,key){const o={};arr.forEach(e=>{const k=e[key]||'Не указано';o[k]=(o[k]||0)+(Number(e.amount)||0)});return o}
+function aggregate(arr,key){
+ const groups=new Map(),out=Object.create(null);
+ for(const entry of arr){const value=String(entry[key]||'Не указано');if(!groups.has(value))groups.set(value,[]);groups.get(value).push(entry)}
+ for(const [value,rows] of groups)out[value]=sum(rows);
+ return out;
+}
 function sessionToken(){return session?.access_token||''}
 
 const ACCOUNT_PROFILES=Object.freeze({
@@ -3417,6 +3586,7 @@ function showApp(){
 function showGate(){
  v98ClearCategoryReview();
  document.getElementById('appRoot').classList.add('auth-locked');
+ v99RenderEntryDirections();
  document.getElementById('authGate').style.display='flex';
  if(document.getElementById('v96Calculator'))v96CloseCalculator(false);
  v96ClearBrandingDraft();v96ApplyBranding();v96RenderBrandingChoices();v97QuickStatus('');v97CloseFavoriteEditor();const fs=document.getElementById('v97FavoritesStatus');if(fs)fs.textContent='';
@@ -3790,7 +3960,10 @@ const V81_SUBCATEGORIES={
  'ЖКХ':['Квартплата','Электричество','Вода и газ','Отопление','Вывоз мусора','Капремонт','Другое'],
  'Дом':['Бытовая химия','Для кухни','Уборка','Мебель','Техника','Ремонт дома','Другое'],
  'Жильё':['Аренда','Ипотека','Ремонт','Мебель','Техника','Другое'],
- 'Аптека и медицина':['Аптека','Врач','Анализы','Стоматолог','Зрение','Витамины','Другое'],
+ 'Аптека и медицина':['Лекарства','Врач','Анализы','Стоматолог','Очки и зрение','Лечение','Другое'],
+ 'Спорт и здоровье':['Пилатес','Фитнес','Тренировки','Витамины','БАДы','Спортивное питание','Другое'],
+ 'Транспорт':['Такси','Общественный транспорт','Другое'],
+ 'Такси':['Поездка','Другое'],
  'Бензин':['Заправка','Другое'],
  'ТО':['Плановое обслуживание','Замена масла','Диагностика','Другое'],
  'Ремонт':['Запчасти','Работа мастера','Расходники','Другое'],
@@ -3798,21 +3971,22 @@ const V81_SUBCATEGORIES={
  'Маркетплейсы':['Для дома','Для детей','Для питомцев','Одежда','Электроника','Другое'],
  'Одежда':['Взрослая','Детская','Обувь','Аксессуары','Другое'],
  'Красота':['Стрижка','Маникюр','Косметика','Уход','Другое'],
- 'Подписки':['Онлайн-сервисы','Видео и музыка','Обучение','Облако','Другое'],
+ 'Подписки':['Онлайн-сервисы','Хостинг','Домен','Видео и музыка','Обучение','Облако','Другое'],
  'Развлечения':['Кино','Квесты и игры','Семейный отдых','Детский досуг','Другое'],
  'Подарки':['Семья','Друзья','Дети','Коллеги','Другое'],
  'Путешествия':['Билеты','Отель','Питание','Экскурсии','Другое'],
  'Кредит':['Ипотека','Рассрочка / Сплит','Кредитная карта','Потребительский кредит','Другое']
 };
-function v81DetailOptions(category){return V81_SUBCATEGORIES[String(category||'')]||['Другое']}
-function v81BeneficiaryOptions(){return ['Не указано','Общее','Сергей','Виктория','Алиса','Майя','Дени','Макс','Оба ребёнка','Все питомцы']}
+function v81DetailOptions(category){return V81_SUBCATEGORIES[v99PurposeCategory(category)]||['Другое']}
+function v81BeneficiaryOptions(){return v99BeneficiaryChoices()}
 function v81FillDetails(prefix,category,detail='',beneficiary){
  const sub=document.getElementById(prefix+'Subcategory'),who=document.getElementById(prefix+'Beneficiary');if(!sub||!who)return;
- const target=beneficiary===undefined?(who.value||(prefix==='e'?'Общее':'Не указано')):(beneficiary||(prefix==='e'?'Общее':'Не указано'));
+ const target=beneficiary===undefined?(who.value||'Не указано'):(beneficiary||'Не указано');
  const values=['',...v81DetailOptions(category)];if(detail&&!values.includes(detail))values.push(detail);
  sub.innerHTML=values.map(x=>`<option value="${esc(x)}">${x?esc(x):'Без уточнения'}</option>`).join('');sub.value=detail;
- const choices=prefix==='e'?['Общее',...['Сергей','Виктория','Алиса','Майя'],...PEOPLE.filter(x=>!['Общее','Сергей','Виктория','Алиса','Майя'].includes(x))]:v81BeneficiaryOptions();if(!choices.includes(target))choices.push(target);
+ const choices=v81BeneficiaryOptions();if(!choices.includes(target))choices.push(target);
  who.innerHTML=choices.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');who.value=target;
+ if(typeof v99RenderEntryDirections==='function')v99RenderEntryDirections();
 }
 function v81EntryDetailText(e){return [e.category,e.subcategory].filter(Boolean).join(' / ')}
 function v81EntrySubjectText(e){return String(e.beneficiary||'')}
@@ -3873,9 +4047,10 @@ function updateEntryForm(){
  if(comment) comment.placeholder=type==='income'?'Например: зарплата за сентябрь':type==='transfer'?'Например: перевод с карты на накопления':type==='cash'?'Например: снятие 10 000 ₽':'Например: продукты на неделю';
  const store=document.getElementById('eStore');
  if(store) store.placeholder=type==='expense'?'Пятёрочка, Ozon, аптека...':'';
+ v99RenderEntryDirections();
 }
 function openEntry(type='expense'){go('today');document.getElementById('eType').value=type;updateEntryForm();document.getElementById('eAmount').focus()}
-function clearEntry(){v92AutoDescription='';['eAmount','eStore','eIncomeSource','eComment','v90Search','v93CreditAccounting'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});document.getElementById('eDate').value=today();document.getElementById('eType').value='expense';updateEntryForm();document.getElementById('eCategory').value='';v81FillDetails('e','','','Общее');v90Paint();v97MarkDraftClean();v97QuickStatus('')}
+function clearEntry(){v92AutoDescription='';['eAmount','eStore','eIncomeSource','eComment','v90Search','v93CreditAccounting'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});document.getElementById('eDate').value=today();document.getElementById('eType').value='expense';updateEntryForm();document.getElementById('eCategory').value='';v81FillDetails('e','','','Не указано');v90Paint();v97MarkDraftClean();v97QuickStatus('')}
 let v90Saving=false;
 // Calculator never saves an operation: only the explicit Apply changes one input.
 function v96CalculateAmount(expression){
@@ -4226,6 +4401,8 @@ function v98CategoryReviewSignal(entry){
  const allowed=new Set(V90_CATEGORIES.map(item=>item[0]));
  const signal=(reason,choices)=>({kind:'suggestion',reason,suggestions:choices.filter(key=>allowed.has(key))});
  if(digital&&!['Подписки','Работа'].includes(entry.category))return signal('В записи указан ChatGPT или OpenAI. Назначение сервиса выбираете вы: подписка или рабочий инструмент.',['Подписки','Работа']);
+ const purpose=v99PurchasePurpose(description);
+ if(purpose&&v99PurposeCategory(entry)!==purpose)return signal(purpose==='Спорт и здоровье'?'В описании указаны тренировки, витамины или БАДы. По семейным правилам это «Спорт и здоровье», отдельно от медицины. Проверьте назначение перед сохранением.':purpose==='Аптека и медицина'?'В описании указаны лекарства, врач, обследование или очки. Для них есть отдельная категория «Медицина и аптеки».':purpose==='Подписки'?'В описании указан хостинг или домен. Для них есть «Подписки и онлайн-сервисы». Назначение выбираете вы.':'В описании указано такси. Проверьте категорию «Такси и транспорт»; расходы на личный автомобиль считаются отдельно.',[purpose]);
  const diapers=v92DiaperCategory(description);
  if(diapers&&entry.category!==diapers)return signal('В описании есть подгузники или пелёнки. Подсказка учитывает только явно указанный контекст: детский товар, для взрослых или для питомца.',[diapers]);
  const generic=new Set(['','кб','красное белое','красное и белое','красноебелое','покупка','покупки','оплата','расход','чек','вкусняшки','продукты','прочее']);
@@ -4367,7 +4544,7 @@ function openEdit(id,returnDrill=null){
  const e=state.entries.find(x=>x.id===id);if(!e)return;editId=id;
  const recordedWho=typeof e.who==='string'?e.who:'';
  const editPeople=[...new Set([...EXPENSE_PEOPLE,recordedWho])];
- v96EditReturnContext=returnDrill&&['group','person'].includes(returnDrill.mode)?{...returnDrill}:null;
+ v96EditReturnContext=returnDrill&&['group','person','direction'].includes(returnDrill.mode)?{...returnDrill}:null;
  document.getElementById('editForm').innerHTML=`<div class="form-grid">
  <div class="field"><label>Тип</label><select id="xType"><option value="expense">Расход</option><option value="income">Доход</option><option value="transfer">Перевод</option><option value="cash">Наличные</option></select></div>
  <div class="field"><label>Сумма</label><input id="xAmount" type="text" inputmode="decimal" maxlength="24" value="${esc(e.amount)}">${v96AmountToolsHtml('xAmount')}</div>
@@ -4602,6 +4779,21 @@ function renderHomeMoments(){
    mini.innerHTML=items.join('');
  }
 }
+// Read-only monthly cuts: one actual row contributes once within a cut, never to a sum of cuts.
+function v99DashboardTotals(rows,keyFor){
+ const groups=new Map();for(const entry of rows){const key=String(keyFor(entry)||'Не указано');if(!groups.has(key))groups.set(key,[]);groups.get(key).push(entry)}
+ return [...groups].map(([key,items])=>[key,sum(items)]).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0],'ru'));
+}
+function v99RenderHomeDirections(rows){
+ const tiles=typeof v99DirectionTiles==='function'?v99DirectionTiles(rows):[];
+ document.getElementById('v99HomeDirectionTiles').innerHTML=tiles.map(tile=>`<button type="button" class="v99-direction-tile" data-v99-direction="${esc(tile.id)}" ${recordAction('drill','direction',tile.id,'home')}><span>${esc(tile.label)}</span><strong>${money2(tile.cents/100)}</strong></button>`).join('');
+ for(const [id,totalId,listId,empty] of [['subscriptions','v99SubscriptionTotal','v99SubscriptionList','Подписок за выбранный месяц пока нет.'],['gifts','v99GiftTotal','v99GiftList','Подарков за выбранный месяц пока нет.']]){
+  const slice=typeof v99DirectionEntryRows==='function'?v99DirectionEntryRows(id,rows):[];
+  document.getElementById(totalId).textContent=money2(sum(slice));
+  const grouped=v99DashboardTotals(slice,entry=>v99DirectionDetail(id,entry));
+  document.getElementById(listId).innerHTML=grouped.length?grouped.map(([key,amount])=>`<button type="button" class="v99-slice-row" ${recordAction('drill','direction',id,'home',{month:homeMonth(),sub:key})}><span>${esc(key)}</span><b>${money2(amount)} <span aria-hidden="true">↗</span></b></button>`).join(''):`<p class="hint">${empty}</p>`;
+ }
+}
 function renderHome(){
  v97RenderHomePayments();v97SyncHomePresentation();if(typeof v97RenderFavorites==='function')v97RenderFavorites();
  renderHomeMoments();
@@ -4634,21 +4826,22 @@ function renderHome(){
  document.getElementById('heroSub').textContent=inSum?`Доходы ${money(inSum)} · расходы ${money(exSum)}`:'Доходы пока не внесены';
  document.querySelector('#home .hero-label').firstChild.textContent='Доходы − расходы · '+selectedLabel+' ';
  document.getElementById('kIncome').textContent=money(inSum);document.getElementById('kExpense').textContent=money(exSum);document.getElementById('kBalance').textContent=money(bal);document.getElementById('kToday').textContent=money(todaySum);document.getElementById('kAvg').textContent=money(ex.length?exSum/ex.length:0);document.getElementById('kOps').textContent=arr.length;
- const cats=aggregate(groupedExpenseEntries(ex),'category'), entries=Object.entries(cats).sort((a,b)=>b[1]-a[1]), max=entries[0]?.[1]||1,total=exSum||1;
+ document.getElementById('v99HomeExpenseTotal').textContent=money2(exSum);
+ document.getElementById('v99HomeExpenseCount').textContent=ex.length+' операций · '+selectedLabel;
+ v99RenderHomeDirections(ex);
+ const entries=v99DashboardTotals(ex,expenseEntryGroup),max=entries[0]?.[1]||1,total=exSum||1;
  const colors=entries.map(([k])=>v84GroupColor(k));
  let angle=0,grad=entries.length?entries.map(([,v],i)=>{const end=angle+(v/total)*360;const x=`${colors[i%colors.length]} ${angle}deg ${end}deg`;angle=end;return x}).join(','):'#dfe6f0 0 360deg';
  document.getElementById('donut').style.background=`conic-gradient(${grad})`;document.getElementById('donutTotal').textContent=money(exSum);
- document.getElementById('categoryLegend').innerHTML=entries.map(([k,v],i)=>`<button class="legend-row v84-legend-click" type="button" ${recordAction('drill','group',k,'home')}><i class="legend-dot" style="background:${colors[i%colors.length]}"></i><span>${esc(k)}</span><b>${money(v)} · ${Math.round(v/total*100)}% <span aria-hidden="true">↗</span></b></button>`).join('')||'<div class="empty">Расходов за месяц пока нет.</div>';
- const people=v86TargetTotals(ex); // Every expense belongs to exactly one recipient bucket.
- const specialRows=[['Автомобиль',sum(ex.filter(e=>carCategory(e)))],['Кредитные платежи',sum(ex.filter(e=>String(e.category||'')==='Кредит'))]];
+ document.getElementById('categoryLegend').innerHTML=entries.map(([k,v],i)=>`<button class="v99-category-row v84-legend-click" type="button" ${recordAction('drill','group',k,'home')}><div class="bar-top"><span>${esc(k)}</span><b>${money2(v)} · ${Math.round(v/total*100)}%</b></div><div class="bar"><i style="width:${Math.max(0,Math.min(100,v/max*100))}%;background:${colors[i%colors.length]}"></i></div></button>`).join('')||'<div class="empty">Расходов за месяц пока нет.</div>';
+ const people=v86TargetTotals(ex).map(([key])=>[key,sum(ex.filter(entry=>v94ExpenseBucket(entry)===key))]); // Exclusive recipient cut, including zero rows.
  const pmax=people.reduce((m,[,v])=>Math.max(m,v),1);
  const familyBars=document.getElementById('familyBars');
  if(familyBars){
-   const peopleHtml=people.map(([k,v])=>`<button type="button" class="bar-row v84-drill-bar" ${recordAction('drill','person',k,'home')}><div class="bar-top"><span>${esc(k)}</span><b>${money(v)}</b></div><div class="bar"><i style="width:${v/pmax*100}%;background:${v84PersonColor(k)}"></i></div></button>`).join('');
+   const peopleHtml=people.map(([k,v])=>`<button type="button" class="bar-row v84-drill-bar" ${recordAction('drill','person',k,'home')}><div class="bar-top"><span>${esc(k)}</span><b>${money2(v)}</b></div><div class="bar"><i style="width:${Math.max(0,Math.min(100,v/pmax*100))}%;background:${v84PersonColor(k)}"></i></div></button>`).join('');
    const breakdownSum=people.reduce((v,[,amount])=>v+amount,0);
-   const summary=`<div class="spending-special-note v862-total-note">Всего по назначениям: <strong>${money(breakdownSum)}</strong> · ${Math.abs(breakdownSum-exSum)<0.01?'совпадает с расходами месяца':'проверьте записи'}</div>`;
-   const specialHtml=`<div class="spending-special-title">Из них · отдельные статьи</div>`+specialRows.map(([k,v])=>`<div class="bar-row special-expense-row"><div class="bar-top"><span>${esc(k)}</span><b>${money(v)}</b></div><div class="bar"><i style="width:${v/pmax*100}%"></i></div></div>`).join('')+`<div class="spending-special-note">Автомобиль и кредитные платежи уже включены в суммы выше. Повторно прибавлять их не нужно.</div>`;
-   familyBars.innerHTML=(peopleHtml||'<div class="empty">Пока нет расходов по назначению.</div>')+summary+specialHtml;
+   const summary=`<div class="spending-special-note v862-total-note">Всего по назначениям: <strong>${money2(breakdownSum)}</strong> · ${Math.abs(breakdownSum-exSum)<0.01?'совпадает с расходами месяца':'проверьте записи'}</div>`;
+   familyBars.innerHTML=(peopleHtml||'<div class="empty">Пока нет расходов по назначению.</div>')+summary;
  }
  const recent=[...state.entries].sort((a,b)=>b.date.localeCompare(a.date)||String(b.created_at).localeCompare(String(a.created_at))).slice(0,document.getElementById('home').classList.contains('v73-focus')?3:8);
  document.getElementById('recent').innerHTML=recent.length?`<div class="v96-recent-list" role="list">${recent.map(e=>`<article class="v96-recent-row" role="listitem"><div class="v96-recent-main">${v96MerchantBadge(e.store)}<div class="v96-recent-copy"><b>${esc(v96MerchantDisplayName(e.store)||e.category)}</b><small>${esc(typeName(e.type))} · ${esc(e.category||'Без категории')}</small></div></div><strong class="v96-recent-amount ${e.type==='income'?'money-green':isExpense(e)?'money-red':''}">${amountText(e)}</strong><div class="v96-recent-details">${esc(String(e.date||'').split('-').reverse().join('.'))} · ${esc(e.type==='expense'?v86ExpenseTarget(e):e.who||'—')}${e.comment?' · '+esc(e.comment):''}</div><div class="v96-recent-actions"><button type="button" class="btn small" ${recordAction('entry-edit',e.id)}>Изменить</button><button type="button" class="btn small" ${recordAction('entry-repeat',e.id)}>Повторить</button><button type="button" class="btn small" ${recordAction('favorite-from-entry',e.id)}>В избранное</button><button type="button" class="btn small danger" ${recordAction('entry-delete',e.id)}>Удалить</button></div></article>`).join('')}</div>`:'<div class="empty">Операций пока нет.</div>'
@@ -5539,9 +5732,9 @@ const V84_PALETTE=Object.freeze({
  'Обязательства':'#e54e5a','Дом и счета':'#8a57e5','Передвижение':'#05a8cc',
  'Автомобиль':'#eb5ba1','Прочее':'#8291a5','Подписки и сервисы':'#397d9c','Работа':'#7962b4'
 });
-function v84GroupColor(name){return V84_PALETTE[name]||'#6884c5'}
+function v84GroupColor(name){return Object.hasOwn(V84_PALETTE,name)?V84_PALETTE[name]:'#6884c5'}
 const V84_PERSON_COLORS=Object.freeze({'Сергей':'#3f69e8','Виктория':'#a657db','Алиса':'#f59c1b','Майя':'#13a780','Общее':'#617b9b','Общие расходы':'#617b9b','Оба ребёнка':'#b97b41','Все питомцы':'#3b8f9e','Макс':'#dd5772','Дени':'#06a8c4','Денни':'#06a8c4','Автомобиль':'#597c44','Кредиты и рассрочки':'#bd6a35'});
-function v84PersonColor(name){return V84_PERSON_COLORS[name]||'#6986bf'}
+function v84PersonColor(name){return Object.hasOwn(V84_PERSON_COLORS,name)?V84_PERSON_COLORS[name]:'#6986bf'}
 function v84NormalizeIntelligence(x){
  const a=x&&typeof x==='object'?x:{},types=['budgets','recurring','accounts','favorites'];
  const out={...a,budgets:[],recurring:[],accounts:[],favorites:[],deleted:{...(a.deleted||{}),budgets:{},recurring:{},accounts:{},favorites:{}}};
@@ -5691,16 +5884,20 @@ function v84RenderReport(){const root=document.getElementById('v84Report');if(ro
 async function v84CopyReport(){const text=v84ReportText()+v87AdvisorReport();try{await navigator.clipboard.writeText(text);toast('Отчёт скопирован')}catch{v84DownloadReport();toast('Копирование недоступно, отчёт сохранён файлом')}}
 function v84DownloadReport(){const blob=new Blob([v84ReportText()+v87AdvisorReport()],{type:'text/plain;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='family-bank-report-'+v84ThisMonth()+'.txt';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
 function v84Drill(mode,key,source='analytics',returnContext=null){
+ if(!['group','person','direction'].includes(mode))return;
  const chosen=returnContext?.month;
  const m=/^\d{4}-(0[1-9]|1[0-2])$/.test(chosen||'')?chosen:source==='home'?homeMonth():v84ThisMonth();
- v96DrillContext={mode,key,source,month:m,sub:returnContext?.sub||'',scrollTop:returnContext?.scrollTop||0,status:returnContext?.status||''};const raw=expenses(m),rows=raw.filter(e=>mode==='person'?v94ExpenseBucket(e)===key:expenseEntryGroup(e)===key).sort((a,b)=>String(b.date).localeCompare(String(a.date)));
- const total=sum(rows),sums=Object.entries(aggregate(mode==='person'?rows:rows.map(e=>({...e,target:v86ExpenseTarget(e)})),mode==='person'?'category':'target')).sort((a,b)=>b[1]-a[1]);
- document.getElementById('v84DrillTitle').textContent=key;document.getElementById('v84DrillPeriod').textContent=v84MonthLabel(m)+' · расшифровка до операции';
- const root=document.getElementById('v84DrillBody');root.innerHTML=`<div class="v84-drill-summary"><div><small>Потрачено</small><strong id="v96DrillTotal">${money2(total)}</strong></div><div><small>Операций</small><strong id="v96DrillCount">${rows.length}</strong></div><div><small>Средний расход</small><strong id="v96DrillAverage">${money2(rows.length?total/rows.length:0)}</strong></div></div><div class="v84-drill-sub">${mode==='person'?'По категориям':'По назначению'}</div><p id="v96DrillSaveStatus" role="status" aria-live="polite" hidden></p><div class="v84-drill-filter"><button type="button" data-v84-sub="">Все операции</button>${sums.map(([k,v])=>`<button type="button" data-v84-sub="${esc(k)}">${esc(k)} · ${money(v)}</button>`).join('')||'Нет расходов'}</div><div class="v84-drill-sub">Конкретные операции</div><div id="v84DrillEntries"></div>`;
+ v96DrillContext={mode,key,source,month:m,sub:returnContext?.sub||'',scrollTop:returnContext?.scrollTop||0,status:returnContext?.status||''};const raw=expenses(m);
+ const rows=(mode==='direction'?v99DirectionEntryRows(key,raw):raw.filter(e=>mode==='person'?v94ExpenseBucket(e)===key:expenseEntryGroup(e)===key)).slice().sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+ const subKey=entry=>mode==='direction'?v99DirectionDetail(key,entry):mode==='person'?String(entry.category||'Не указано'):v86ExpenseTarget(entry);
+ const total=sum(rows),sums=v99DashboardTotals(rows,subKey);
+ const title=mode==='direction'?(v99DirectionTiles(raw).find(tile=>tile.id===key)?.label||'Направление'):key;
+ document.getElementById('v84DrillTitle').textContent=title;document.getElementById('v84DrillPeriod').textContent=v84MonthLabel(m)+' · расшифровка до операции';
+ const root=document.getElementById('v84DrillBody');root.innerHTML=`<div class="v84-drill-summary"><div><small>Потрачено</small><strong id="v96DrillTotal">${money2(total)}</strong></div><div><small>Операций</small><strong id="v96DrillCount">${rows.length}</strong></div><div><small>Средний расход</small><strong id="v96DrillAverage">${money2(rows.length?total/rows.length:0)}</strong></div></div><div class="v84-drill-sub">${mode==='direction'?(key==='subscriptions'?'По сервисам':key==='gifts'?'По получателям':'По статьям'):mode==='person'?'По категориям':'По назначению'}</div><p id="v96DrillSaveStatus" role="status" aria-live="polite" hidden></p><div class="v84-drill-filter"><button type="button" data-v84-sub="">Все операции</button>${sums.map(([k,v])=>`<button type="button" data-v84-sub="${esc(k)}">${esc(mode==='person'?v99CategoryLabel(k):k)} · ${money2(v)}</button>`).join('')||'Нет расходов'}</div><div class="v84-drill-sub">Конкретные операции</div><div id="v84DrillEntries"></div>`;
  function show(sub=''){
    if(v96DrillContext)v96DrillContext.sub=sub;
    root.querySelectorAll('button[data-v84-sub]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.v84Sub===sub)));
-   const filtered=rows.filter(e=>!sub||(mode==='person'?e.category:v86ExpenseTarget(e))===sub);
+   const filtered=rows.filter(e=>!sub||subKey(e)===sub);
    const shownTotal=sum(filtered);
    document.getElementById('v96DrillTotal').textContent=money2(shownTotal);
    document.getElementById('v96DrillCount').textContent=String(filtered.length);
@@ -5708,7 +5905,7 @@ function v84Drill(mode,key,source='analytics',returnContext=null){
    document.getElementById('v84DrillEntries').innerHTML=filtered.length?filtered.map(e=>{
      const store=String(e.store||'').trim(),category=String(e.category||'Расход').trim();
      const name=store||category;
-     const details=[store&&category!==store?category:'',e.subcategory||'',e.beneficiary?`Для: ${e.beneficiary}`:'',e.comment||''].filter(Boolean);
+     const details=[store&&category!==store?v99CategoryLabel(category):'',e.subcategory||'',e.beneficiary?`Для: ${e.beneficiary}`:'',e.comment||''].filter(Boolean);
      const date=/^\d{4}-\d{2}-\d{2}$/.test(String(e.date||''))?String(e.date).slice(8,10)+'.'+String(e.date).slice(5,7)+'.'+String(e.date).slice(0,4):String(e.date||'');
      return `<div class="v84-drill-entry v85-drill-entry"><time class="v85-drill-date">${esc(date)}</time><div class="v85-drill-content"><b class="v85-drill-name">${v96MerchantBadge(e.store)}${esc(v96MerchantDisplayName(e.store)||name)}</b>${details.length?`<div class="v85-drill-details">${details.map(d=>`<span>${esc(d)}</span>`).join('')}</div>`:''}</div><div class="v96-drill-entry-actions"><span class="v84-drill-sum">${money2(e.amount)}</span><button type="button" class="btn small" aria-label="Изменить операцию: ${esc(name)}, ${esc(date)}" ${recordAction('drill-entry-edit',e.id)}>Изменить</button><button type="button" class="btn small" ${recordAction('entry-repeat',e.id)}>Повторить</button></div></div>`;
    }).join(''):'<div class="v84-empty">Записей пока нет</div>';
@@ -5724,7 +5921,7 @@ function v96EditFromDrill(id){
  v84CloseDrill();openEdit(id,context);document.getElementById('xAmount')?.focus();
 }
 function v96RestoreDrill(context,message=context?.status||'',refresh=false){
- if(!context||!['group','person'].includes(context.mode))return null;
+ if(!context||!['group','person','direction'].includes(context.mode))return null;
  const select=document.getElementById(context.source==='home'?'homeMonth':'analyticsMonth');
  if(select&&/^\d{4}-(0[1-9]|1[0-2])$/.test(context.month||'')){
   if(![...select.options].some(option=>option.value===context.month))select.add(new Option(v84MonthLabel(context.month),context.month));
@@ -5764,7 +5961,7 @@ for(const [id,kind] of [['donut','group'],['peopleDonut','person']]){
 }
 for(const id of ['analyticsMonth','homeMonth'])document.getElementById(id)?.addEventListener('change',v84RenderAll);
 
-function renderAll(){v97RenderFavorites();refreshHistoryPeriods();renderHome();renderToday();renderHistory();renderAnalytics();renderIncome();renderCar();renderGoals();renderLoans();renderChores();renderDates();renderFamilyBoard();renderFamilySpark();renderTodayHeader();renderTodayAdvice();settingsFields();try{renderEarlyRepayment()}catch(err){console.warn('early repayment render',err)}v84RenderAll();v96ApplyBranding();v96RenderBrandingChoices()}
+function renderAll(){v97RenderFavorites();refreshHistoryPeriods();renderHome();renderToday();renderHistory();renderAnalytics();renderIncome();renderCar();renderGoals();renderLoans();renderChores();renderDates();renderFamilyBoard();renderFamilySpark();renderTodayHeader();renderTodayAdvice();settingsFields();try{renderEarlyRepayment()}catch(err){console.warn('early repayment render',err)}v84RenderAll();v96ApplyBranding();v96RenderBrandingChoices();v99RenderEntryDirections()}
 function exportCsv(){
  const columns=['Дата','Тип','Категория','Участник','Сумма ₽','Где / источник','Оплата','Комментарий','Откуда','Куда','Уточнение расхода','Для кого'];
  const safe=(v)=>'"'+String(v??'').replace(/^[=+@\-\t\r]/,x=>"'"+x).replace(/"/g,'""')+'"';
@@ -6001,7 +6198,7 @@ function v97SyncHomePresentation(){
  const home=document.getElementById('home'),button=document.getElementById('v73OverviewToggle');if(!home||!button)return;
  const short=home.classList.contains('v73-focus');button.textContent=short?'Открыть полный обзор':'Свернуть до главного';button.setAttribute('aria-pressed',String(short));button.setAttribute('aria-expanded',String(!short));
  const title=document.getElementById('v97HomeOverviewTitle'),note=document.getElementById('v97HomeOverviewNote'),recent=document.getElementById('v97HomeRecentNote');
- if(title)title.textContent=short?'Короткий обзор':'Полный семейный обзор';if(note)note.textContent=short?'Итог месяца, платежи и последние записи.':'Все графики, бюджеты и семейные разделы.';if(recent)recent.textContent=(short?'Три последние записи':'Последние восемь записей')+' · все даты';
+ if(title)title.textContent=short?'Короткий обзор':'Полный семейный обзор';if(note)note.textContent=short?'Расходы, направления, платежи и последние записи.':'Все графики, бюджеты и семейные разделы.';if(recent)recent.textContent=(short?'Три последние записи':'Последние восемь записей')+' · все даты';
 }
 function v97SetHomeOverview(short,persist=true){
  const home=document.getElementById('home');if(!home)return;home.classList.toggle('v73-focus',!!short);v97SyncHomePresentation();
