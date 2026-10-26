@@ -986,3 +986,19 @@ code-only файлами: mac-diagnose.cjs и Check Mac helper.command. 8/8 test
 байтов; ошибки выводятся фиксированными кодами/категориями, без raw paths/messages.
 Причина первоначального отказа всё ещё неизвестна до диагностики у владельца.
 Исходные bootstrap/77MB ZIP, банк, main и production не менялись.
+
+Последний Mac diagnostic действительно прошёл все stages; владелец подтвердил,
+что повторно присланный native-policy screenshot был от более раннего запуска.
+Затем основной helper дошёл до profile prompt. Первый actual guard BROWSER_RUNNING
+отказал до чтения профиля; после полного выхода браузеров все native fictional
+selftests прошли и actual capture сообщил СОХРАНЕНО. Реальные пути/имена/числа
+из снимков не перенесены в Git. Hash/restore/reconciliation файлов ещё не закрыты.
+
+Владелец подтвердил: Windows raw пока только на Windows. Попросил закончить
+на сегодня и дать план на завтра. Все новые задачи остановлены с WIP checkpoint;
+никакого нового рабочего local verifier не выдано. План семи оставшихся этапов,
+готовые результаты и технические незакрытые условия сохранены в
+docs/CONTINUE_TOMORROW_RU.md. В tools/private_verify/ отдельные fail-closed stubs
+и WIP decoder/SQL; parity behavior не выполнено, syntax/checkpoint checks не
+объявляются приёмкой. Ни writer pause typing-only, ни повтор исходника вместо
+restored snapshot не заменяют реальные restore/source matching/ACK условия.
