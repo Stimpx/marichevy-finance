@@ -54,6 +54,26 @@ class FinancialFollowup(unittest.TestCase):
         self.assertIn('0,30',result['shown'])
         self.assertIn('0,70',result['balance'])
 
+    def test_income_review_includes_legacy_and_unspecified_recipients_without_rewriting_history(self):
+        result=self.evaluate("""
+          state.entries=[{...mk('known-income','income'),amount:0.10},
+            {...mk('legacy-income','income'),who:'Fictional archival recipient',amount:0.20},
+            {...mk('missing-recipient','income'),who:'',amount:0.30},
+            {...mk('past-income','income'),who:'Fictional past recipient',date:'2024-01-01',amount:999}];
+          document.getElementById('incomeMonth').value=month();
+          const before=JSON.stringify(state.entries);renderIncome();
+          return {before,after:JSON.stringify(state.entries),
+            total:document.getElementById('incomePeopleDonutTotal').textContent,
+            list:document.getElementById('incomeList').textContent,
+            chart:document.getElementById('incomePeopleChart').textContent};
+        """)
+        self.assertEqual(result['before'],result['after'])
+        self.assertIn('0,60',result['total'])
+        self.assertIn('Fictional archival recipient',result['list'])
+        self.assertIn('Fictional archival recipient',result['chart'])
+        self.assertIn('Не указано',result['chart'])
+        self.assertNotIn('Fictional past recipient',result['chart'])
+
     def test_exact_cent_budget_boundary_does_not_claim_false_overspend(self):
         result=self.evaluate("""
           state.entries=[{...mk('fictional-a'),category:'Продукты',amount:0.10},

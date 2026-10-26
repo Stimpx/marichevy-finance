@@ -46,7 +46,10 @@ class AnalyticsEdit(unittest.TestCase):
         self.before=self.snapshot()
 
     def open_drill(self, mode='group', source='analytics'):
-        if source=='home':self.page.evaluate("go('home')")
+        if source=='home':
+            self.page.evaluate("go('home')")
+            if self.page.evaluate("document.getElementById('home').classList.contains('v73-focus')"):
+                self.page.locator('#v73OverviewToggle').click()
         if mode=='group':
             container='#categoryLegend' if source=='home' else '#aCats'
             self.page.locator(container).get_by_role('button').filter(has_text=self.group).click()

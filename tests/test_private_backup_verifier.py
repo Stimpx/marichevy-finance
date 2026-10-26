@@ -36,7 +36,11 @@ def state():
             "intelligence": {"budgets": [{"id": "budget", "amount": 100}],
                              "recurring": [{"id": "recurring", "amount": 12.34}],
                              "accounts": [{"id": "account", "amount": -2.01}],
-                             "deleted": {"budgets": {"old": "2020-01-01"}, "accounts": {}, "recurring": {}},
+                             "favorites": [{"id": "favorite", "name": "Fictional lunch", "type": "expense",
+                                            "amount": "12.30", "category": "Продукты", "beneficiary": "Общее",
+                                            "favoriteVersion": 1, "futureField": {"keep": [True, None, MARKER]}}],
+                             "deleted": {"budgets": {"old": "2020-01-01"}, "accounts": {}, "recurring": {},
+                                         "favorites": {"old-favorite": "2020-01-01T00:00:00Z"}},
                              "unknown": {"nested": MARKER}},
             "futureCollection": [{"anything": MARKER}]}
 
@@ -143,6 +147,9 @@ class PrivateBackupVerifier(unittest.TestCase):
 
     def test_unknown_nested_fields_tombstones_ids_and_cents_are_compared_exactly(self):
         changes = [lambda t: t["family_state"][0]["data"]["futureCollection"].clear(),
+                   lambda t: t["family_state"][0]["data"]["intelligence"]["favorites"].clear(),
+                   lambda t: t["family_state"][0]["data"]["intelligence"]["favorites"][0]["futureField"].clear(),
+                   lambda t: t["family_state"][0]["data"]["intelligence"]["deleted"]["favorites"].clear(),
                    lambda t: t["family_state"][0]["data"]["deletedEntries"].clear(),
                    lambda t: t["family_state"][0]["data"]["entries"][0].update(amount=1250.51),
                    lambda t: t["family_state"][0]["data"]["entries"][0].update(id="another-id"),
@@ -243,6 +250,29 @@ class PrivateBackupVerifier(unittest.TestCase):
         self.assertTrue(verifier.cents(verifier.number("1.2300")))
         self.assertFalse(verifier.cents(verifier.number("1.2301")))
         self.assertTrue(verifier.cents(verifier.number("0.00000000000000000000")))
+
+    def test_favorite_duplicate_ids_and_subcent_amounts_are_reported_without_losing_rows(self):
+        data = copy.deepcopy(self.data)
+        duplicate = copy.deepcopy(data["intelligence"]["favorites"][0])
+        duplicate["name"] = "Other fictional variant"
+        duplicate["amount"] = "0.001"
+        data["intelligence"]["favorites"].append(duplicate)
+        data = verifier.parse(json.dumps(data))
+        before = copy.deepcopy(data)
+        rows = verifier.state_rows(data)
+        health = verifier.state_health(data)
+        self.assertEqual(len(rows["intelligence.favorites"]), 2)
+        self.assertEqual(health["ambiguous_duplicate_ids"], 1)
+        self.assertEqual(health["invalid_cent_values"], 1)
+        self.assertEqual(data, before)
+
+    def test_malformed_favorite_collection_or_tombstone_stops_private_verification(self):
+        for change in (lambda data: data["intelligence"].update(favorites={"bad": "shape"}),
+                       lambda data: data["intelligence"]["deleted"].update(favorites={"bad": 42})):
+            data = copy.deepcopy(self.data)
+            change(data)
+            with self.assertRaises(verifier.InvalidBackup):
+                verifier.state_rows(data)
 
     def test_legacy_duplicate_ids_are_preserved_and_flagged_without_losing_rows(self):
         duplicate = copy.deepcopy(self.data["entries"][0])

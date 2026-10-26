@@ -157,7 +157,7 @@ def state_rows(state):
     intelligence = state.get("intelligence", {})
     if not isinstance(intelligence, dict):
         fail("invalid-collection")
-    for name in ("budgets", "recurring", "accounts"):
+    for name in ("budgets", "recurring", "accounts", "favorites"):
         rows = intelligence.get(name, [])
         if not isinstance(rows, list):
             fail("invalid-collection")
@@ -171,7 +171,7 @@ def state_rows(state):
     deleted = intelligence.get("deleted", {})
     if not isinstance(deleted, dict):
         fail("invalid-tombstones")
-    for key in ("budgets", "recurring", "accounts"):
+    for key in ("budgets", "recurring", "accounts", "favorites"):
         tombstones(deleted.get(key, {}))
     return result
 
@@ -235,7 +235,7 @@ def state_health(state):
         for part_id, entry_id in links.items():
             if (part_id,) not in parts or (entry_id,) not in rows["entries"]:
                 broken_links += 1
-    for name in ("budgets", "recurring", "accounts"):
+    for name in ("budgets", "recurring", "accounts", "favorites"):
         for row in rows["intelligence." + name].values():
             if "amount" in row:
                 money.append(row["amount"])

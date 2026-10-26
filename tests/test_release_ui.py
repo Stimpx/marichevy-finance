@@ -100,6 +100,13 @@ class ReleaseUI(unittest.TestCase):
                     page.evaluate('(section)=>{go(section);window.scrollTo(0,0)}',section)
                     page.wait_for_timeout(40)
                     self._layout_check(page,report,width,section)
+                page.evaluate("go('home');v97SetHomeOverview(false)")
+                self._layout_check(page,report,width,'home/full')
+                page.evaluate("v97SetHomeOverview(true);clearEntry();openEntry('expense');eAmount.value='1,25';v90Choose('Продукты');v97SaveFavoriteFromForm()")
+                self.assertTrue(page.locator('#v97FavoriteEditor').is_visible())
+                page.locator('#v97FavoriteName').fill('Д'*40)
+                self._layout_check(page,report,width,'today/favorite editor')
+                page.evaluate('v97CloseFavoriteEditor();clearEntry()')
                 page.evaluate("go('today');document.getElementById('v90Extra').open=true")
                 self._layout_check(page,report,width,'today/details')
                 page.evaluate("go('loans');v77Form(true);toggleLoanSchedule();addEarlyPaymentRow()")
@@ -126,7 +133,7 @@ class ReleaseUI(unittest.TestCase):
         check={'width':width,'view':label,'documentWidth':size['document'],'bodyWidth':size['body']};report['checks'].append(check)
         if max(size['document'],size['body'])>width+2:
             report['issues'].append({**check,'kind':'horizontal overflow','offenders':size['offenders']})
-        if label in ('home','history'):
+        if label=='history' or label.startswith('home'):
             ledger=page.evaluate('''(label) => {
                 const root=document.getElementById(label==='history'?'historyBody':'recent');
                 const selector=label==='history'?'.v76-amount,.v76-actions button':'.v96-recent-amount,.v96-recent-actions button';

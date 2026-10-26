@@ -4,6 +4,20 @@
 <head><style>
 #eGroup{display:none!important}
 
+/* v97 quick entry: family-owned presets, never automatic expenses. */
+#v97Favorites{border-top:1px solid var(--line);margin-top:18px;padding-top:18px;scroll-margin-top:90px}
+#v97Favorites h3,#v97HomeFavorites h2{margin:0;font-size:17px}
+#v97Favorites .hint,#v97HomeFavorites .hint{font-size:12px;line-height:1.5;margin:7px 0 12px}
+.v91-row-actions{flex-wrap:wrap}
+.v97-favorite-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 0;border-top:1px solid var(--line)}
+.v97-favorite-row>div:first-child{min-width:0}.v97-favorite-row b{overflow-wrap:anywhere}.v97-favorite-row small{display:block;font-size:11px;color:var(--muted);line-height:1.5;margin-top:3px}
+.v97-favorite-actions,.v97-favorites-chips,.v97-favorites-home-head{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.v97-favorite-actions .btn{min-height:40px}.v97-favorites-home-head{justify-content:space-between}
+#v97DraftStatus,#v97FavoritesStatus{font-size:12px;line-height:1.5;margin:8px 0;overflow-wrap:anywhere}
+#v97HomeFavorites[hidden]{display:none!important}#v97HomeFavorites{padding:20px;background:var(--card,#fff);border:1px solid var(--line);border-radius:18px}
+@media(max-width:600px){.v97-favorite-row{align-items:flex-start;flex-direction:column;gap:8px}.v97-favorite-actions{width:100%}.v97-favorite-actions .btn{flex:1;padding:8px}.v97-favorites-chips .btn{min-height:44px}#v97HomeFavorites{padding:16px}}
+
+#history .v76-action-group{flex-wrap:wrap}#history .v76-actions{white-space:normal}#v97FavoriteEditor[hidden]{display:none!important}#v97FavoriteEditor{padding:14px;background:#f3f6fa;border:1px solid var(--line);border-radius:14px;margin-bottom:12px}#v97FavoriteEditor h4{margin:0 0 10px;font-size:15px}#v97FavoriteEditor label{display:block;margin:0 0 6px;font-size:12px}#v97FavoriteEditor .actions{margin-top:10px}#v97FavoriteEditorStatus{font-size:12px;line-height:1.5;margin:7px 0 0}
+
 </style>
 <!-- v70 HOME TASKS: domestic chores + in-app reminders, based on v69 -->
 <meta charset="utf-8"/>
@@ -493,7 +507,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover,input[type="month"]:
  #history .filters>.v75-all-dates{width:100%;margin:0}
 }
 /* Keep each operation's amount and actions visible on tablets and laptops. */
-@media(max-width:1450px){
+@media(max-width:1500px){
  .v76-history-wrap{border:0;overflow:visible;background:transparent}
  .v76-history-table{min-width:0;width:100%;border-collapse:separate;border-spacing:0 10px;table-layout:auto}
  .v76-history-table colgroup,.v76-history-table thead{display:none}
@@ -1714,6 +1728,52 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 @media(min-width:761px) and (max-width:1100px){.v96-month-review .v96-month-review-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.v96-month-review .v96-month-review-card:last-child{grid-column:1/-1}}
 @media(max-width:760px){.v96-month-review{padding:16px;border-radius:18px}.v96-month-review .v96-month-review-grid{grid-template-columns:minmax(0,1fr)}.v96-month-review .v96-month-review-head h2{font-size:20px}.v96-month-review .v96-month-review-card{padding:14px}}
 </style>
+<style>
+/* Short home keeps the full dashboard available without changing family records. */
+#home>.v73-overview-toolbar{order:-1;gap:12px;padding:0;align-items:center}
+#home .v73-overview-toggle{min-height:44px;white-space:normal;flex-shrink:0}
+#home.v73-focus>:not(.hero):not(#v96MonthlyReview):not(#v97HomeFavorites):not(#v97HomePayments):not(#v97HomeRecent):not(.v73-overview-toolbar){display:none!important}
+#home.v73-focus>.hero{order:0;padding:clamp(18px,2.5vw,28px)}
+#home.v73-focus>.v73-overview-toolbar{order:1}
+#home.v73-focus>#v97HomeFavorites{order:2}
+#home.v73-focus>#v96MonthlyReview{order:3}
+#home.v73-focus>#v97HomePayments{order:4;display:block}
+#home.v73-focus>#v97HomeRecent{order:5}
+#home.v73-focus .hero .quick{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:18px}
+#home.v73-focus .hero .quick button{min-height:72px}
+#home.v73-focus .hero .quick button:nth-child(n+3),#home.v73-focus .hero-row>.pill,#home.v73-focus #v81HeroReminder{display:none!important}
+#home.v73-focus #recent .v96-recent-row:nth-child(n+4){display:none}
+#home>#v86Calendar{scroll-margin-top:68px}
+.v97-home-payments{display:none}
+.v97-home-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+.v97-home-card-head h2{margin:0 0 5px;font-size:21px}
+.v97-home-card-head p,.v97-home-basis,.v97-home-payment-note{font-size:12px;line-height:1.5;color:var(--muted);margin:0;overflow-wrap:anywhere}
+.v97-home-card-head .btn,.v97-home-payment-row .btn,.v97-home-history{min-height:44px;white-space:normal}
+.v97-home-payment-total{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:12px 14px;border:1px solid #dfe8f5;border-radius:12px;background:#f5f8fd;margin:12px 0}
+.v97-home-payment-total span{font-size:12px;color:#60738d}
+.v97-home-payment-total strong{font-size:20px;font-variant-numeric:tabular-nums;white-space:nowrap;color:#263d5f}
+.v97-home-payment-list{display:grid;gap:9px}
+.v97-home-payment-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:7px 12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.v97-home-payment-row:last-child{border-bottom:0}
+.v97-home-payment-copy{min-width:0}.v97-home-payment-copy b{display:block;font-size:14px;overflow-wrap:anywhere}.v97-home-payment-copy small{display:block;font-size:12px;color:var(--muted);margin-top:4px;overflow-wrap:anywhere}
+.v97-home-payment-copy small.v97-home-overdue{color:#b3423b}
+.v97-home-payment-amount{font-size:16px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.v97-home-payment-more{margin-top:10px;font-size:12px;color:var(--muted)}
+.v97-home-payment-note{margin-top:12px}
+.v97-home-history{display:inline-flex;align-items:center;justify-content:center;margin-top:14px}
+@media(max-width:760px){#home>.v73-overview-toolbar{align-items:flex-start}.v97-home-card-head{flex-direction:column}.v97-home-card-head>.btn{align-self:flex-start}.v97-home-payment-row{grid-template-columns:minmax(0,1fr) auto}.v97-home-payment-copy{grid-column:1/-1}.v97-home-payment-row>.btn{justify-self:end}.v97-home-payment-total{flex-wrap:wrap}.v97-home-payment-amount{font-size:15px}}
+@media(max-width:410px){#home>.v73-overview-toolbar{flex-direction:column;align-items:stretch}#home .v73-overview-toggle{width:100%}.v97-home-card-head h2{font-size:19px}.v97-home-payment-total strong{font-size:19px}}
+</style>
+<style>
+/* Quick actions stay readable and reachable with long names or touch input. */
+.v97-favorites-chips .btn{max-width:100%;min-width:0;white-space:normal;overflow-wrap:anywhere}
+#v97FavoriteName{display:block;width:100%;min-width:0;min-height:46px;padding:11px 12px;border:1px solid #dce5f1;border-radius:12px;background:#fcfdff;color:var(--ink);font-size:16px}
+#v97Favorites .btn,#v97HomeFavorites .btn,#today .v91-row-actions .btn,#history .v76-action-group .btn{min-height:44px}
+#history .v76-col-actions{width:184px}
+#history .v76-action-group{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+#history .v76-action-group .btn{min-width:0;max-width:100%;white-space:normal;overflow-wrap:anywhere;display:flex;align-items:center;justify-content:center}
+@media(max-width:1100px){#today .v91-row-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
 </head>
 <body>
 <noscript><div style="padding:14px;background:#fff3cd;color:#664d03;text-align:center;font:600 14px/1.4 system-ui">Для работы «Маричевы · Траты.Банк» необходимо включить JavaScript.</div></noscript>
@@ -1757,7 +1817,9 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 <button id="v81HeroReminder" type="button" class="v81-hero-reminder" onclick="go('chores')" hidden></button>
 </div>
 
+<section class="card" id="v97HomeFavorites" hidden aria-label="Избранные операции"></section>
 <section class="v96-month-review" id="v96MonthlyReview" aria-labelledby="v96MonthlyTitle"><div class="v96-month-review-head"><div><h2 id="v96MonthlyTitle">Разбор месяца</h2><p><span id="v96MonthlyPeriod"></span> · только по внесённым операциям</p></div></div><div class="v96-month-review-grid" id="v96MonthlyCards" aria-live="polite"></div></section>
+<section class="card v97-home-payments" id="v97HomePayments" aria-labelledby="v97HomePaymentsTitle"><div class="v97-home-card-head"><div><h2 id="v97HomePaymentsTitle">Ближайшие платежи</h2><p id="v97HomePaymentsBasis"></p></div><button type="button" class="btn" onclick="v97OpenHomeDetails('v86Calendar')">Весь календарь платежей</button></div><div id="v97HomePaymentsContent" aria-live="polite"></div><p class="v97-home-payment-note">Показываем оставшиеся суммы по сохранённым графикам. «Не подтверждено» означает, что оплата ещё не полностью учтена в семейной истории.</p></section>
 <section class="v84-pulse" id="v84Pulse" aria-label="Семейный пульс">
  <div class="v84-panel-head"><div><small>СЕМЕЙНЫЙ ПУЛЬС</small><h2>Всё важное — одним взглядом</h2><p>Реальные расходы, ожидаемые платежи и дела. Без двойного учёта.</p></div><span class="v84-status-pill">Ваш финансовый обзор</span></div>
  <div class="v84-pulse-grid" id="v84PulseNumbers"></div>
@@ -1797,7 +1859,7 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 <div class="home-mini-list" id="homeFinanceMini"></div>
 </div>
 </div>
-<div class="v73-overview-toolbar"><div class="v73-overview-copy"><span><b>Ваш семейный обзор</b><small>Все детали бюджета, планы и события</small></span></div><button type="button" class="v73-overview-toggle" id="v73OverviewToggle" aria-pressed="false" onclick="toggleV73Overview()">Короткий обзор <span aria-hidden="true">↗</span></button></div>
+<div class="v73-overview-toolbar"><div class="v73-overview-copy"><span><b id="v97HomeOverviewTitle">Короткий обзор</b><small id="v97HomeOverviewNote">Итог месяца, платежи и последние записи.</small></span></div><button type="button" class="v73-overview-toggle" id="v73OverviewToggle" aria-pressed="true" aria-expanded="false" aria-controls="v86Calendar v84Pulse v84NoticesCard" onclick="toggleV73Overview()">Открыть полный обзор</button></div>
 <div class="grid2 home-spending-overview">
 <div class="card"><h2>Куда уходят деньги</h2><div class="hint" id="chartMonthHint">Фактические списания за месяц, включая платежи по обязательствам</div><div class="donut"><div class="donut-ring" id="donut"><div class="donut-center" id="donutTotal">0 ₽</div></div></div><div class="legend" id="categoryLegend"></div></div>
 <div class="card"><h2>Для кого расходы</h2><div class="hint">Те же расходы, распределённые по назначению. К категориям не прибавляются.</div><div id="familyBars"></div></div>
@@ -1860,7 +1922,7 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 <div class="kpi"><small>Средняя трата</small><strong id="kAvg">0 ₽</strong></div>
 <div class="kpi"><small>Операций</small><strong id="kOps">0</strong></div>
 </div>
-<div class="card"><h2>Последние операции</h2><div id="recent"></div></div>
+<div class="card" id="v97HomeRecent"><h2>Последние операции</h2><p class="v97-home-basis" id="v97HomeRecentNote">Три последние записи · все даты</p><div id="recent"></div><button type="button" class="btn v97-home-history" onclick="resetHistoryFilters();go('history')">Вся история операций</button></div>
 </section>
 <section class="section" id="today">
 <div class="card v91-entry">
@@ -1883,7 +1945,8 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 <div class="field expense-field full v81-detail-field" id="v81DetailField"><label for="eSubcategory">Уточнение · необязательно</label><select id="eSubcategory"></select></div>
 </div></details></div>
 <div class="actions v91-actions"><button class="btn primary" id="v90Save" onclick="addEntry()">Сохранить расход</button><button class="btn" onclick="clearEntry()">Очистить</button></div><div id="saveMsg" role="status" aria-live="polite"></div>
-<div id="v90Templates" hidden></div>
+<div id="v90Templates" hidden></div><p id="v97DraftStatus" role="status" aria-live="polite"></p>
+<section id="v97Favorites" aria-labelledby="v97FavoritesTitle"><div class="v97-favorites-home-head"><h3 id="v97FavoritesTitle">Избранное семьи</h3><button type="button" class="btn small" onclick="v97SaveFavoriteFromForm()">В избранное</button></div><p class="hint">Общие варианты для членов семьи. Они заполняют черновик — операция сохраняется отдельно.</p><form id="v97FavoriteEditor" hidden onsubmit="event.preventDefault();v97SubmitFavoriteEditor()"><h4 id="v97FavoriteEditorTitle">Сохранить вариант в избранное семьи</h4><label for="v97FavoriteName">Короткое название</label><input id="v97FavoriteName" maxlength="40" autocomplete="off" placeholder="Назовите свой вариант"/><div class="actions"><button type="submit" class="btn primary">Сохранить избранное</button><button type="button" class="btn" onclick="v97CloseFavoriteEditor()">Отмена</button></div><p id="v97FavoriteEditorStatus" role="status" aria-live="polite"></p></form><div id="v97FavoriteList"></div><p id="v97FavoritesStatus" role="status" aria-live="polite"></p></section>
 </div>
 <div class="card">
 <h2>Операции за день</h2>
@@ -2222,6 +2285,7 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
   <li><a href="#help-operations">Расход, доход, перевод и наличные</a></li>
   <li><a href="#help-fields">Категория, магазин, получатель и комментарий</a></li>
   <li><a href="#help-calculator">Калькулятор, копирование и вставка</a></li>
+  <li><a href="#help-quick-entry">Избранное семьи и повтор операции</a></li>
   <li><a href="#help-categories">Все категории подробно</a></li>
   <li><a href="#help-history">История и исправление записи</a></li>
   <li><a href="#help-analytics">Аналитика и расшифровка сумм</a></li>
@@ -2246,7 +2310,8 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
   <li>Перед крупными изменениями сохраните обычный JSON и полную копию устройства. Значение кнопок копирования объяснено ниже.</li>
  </ol>
  <p>Главная — обзор выбранного месяца. Календарь и обязательства содержат планы по датам. Напоминание о платеже не подтверждает списание денег; запись расхода не подтверждает банковскую операцию вне приложения.</p>
- <h4>Разбор месяца</h4><p>Этот блок обновляется при выборе месяца на главной: показывает записанные суммы, сравнение с предыдущим месяцем и крупнейшую группу расходов. «Посмотреть операции» открывает именно выбранный период, откуда можно исправить конкретную запись. При отсутствии доходов или прошлого месяца приложение сообщает о нехватке данных. Незавершённый месяц нельзя считать окончательным итогом; меньшая записанная сумма сама по себе не доказывает экономию.</p>
+ <h4>Короткая главная</h4><p>При первом открытии показаны итог месяца, добавление расхода или дохода, месячный разбор, ближайшие платежи и три последние операции. Если в семье есть избранные варианты, они также доступны здесь. «Открыть полный обзор» возвращает графики, все планы и семейные блоки; «Свернуть до главного» сокращает страницу. Выбор вида запоминается на этом устройстве. «Весь календарь платежей» открывает полный обзор и нужный календарь, а «Вся история операций» показывает записи за все даты.</p>
+ <h4>Разбор месяца</h4><p>Этот блок обновляется при выборе месяца на главной: показывает записанные суммы, сравнение с предыдущим месяцем и крупнейшую группу расходов. «Посмотреть операции» открывает именно выбранный период, откуда можно исправить конкретную запись. При отсутствии доходов или прошлого месяца приложение сообщает о нехватке данных. Незавершённый месяц нельзя считать окончательным итогом; меньшая записанная сумма сама по себе не доказывает экономию. Ближайшие платежи показываются на сегодня и до указанной в блоке даты независимо от выбранного исторического месяца, с учётом уже записанных оплат.</p>
 </div></details>
 <details class="v96-help-topic" id="help-operations"><summary><h3>Четыре типа операций</h3></summary><div class="v96-help-body">
  <h4>Расход</h4><p>Записывайте фактически потраченную сумму положительным числом в рублях: например, <code>1 250,50</code>. Допустимы копейки через запятую или точку. Выберите категорию по покупке, получателя и, при желании, магазин. Дата и комментарий находятся в деталях. Расход уменьшает результат месяца.</p>
@@ -2276,6 +2341,12 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
  <p>«Копировать сумму» или «Копировать результат» помещает число в буфер обмена. «Вставить» переносит число в поле; выражение вставляйте в поле расчёта калькулятора. Вставка и копирование не создают расходов.</p>
  <p>Если браузер не разрешил доступ к буферу, используйте обычное меню поля: выделить → копировать или вставить. На ПК работают <kbd>Ctrl+C</kbd>/<kbd>Ctrl+V</kbd>, на Mac — <kbd>⌘C</kbd>/<kbd>⌘V</kbd>; на телефоне нажмите и удерживайте поле. При изменении поля во время ожидания вставки приложение просит повторить действие, сохраняя ваш текущий ввод.</p>
  <p>«Отмена» закрывает калькулятор без применения расчёта. «Очистить» в калькуляторе относится к выражению; «Очистить» в форме операции очищает незавершённый ввод этой формы.</p>
+</div></details>
+<details class="v96-help-topic" id="help-quick-entry"><summary><h3>Избранное семьи и повтор операции</h3></summary><div class="v96-help-body">
+ <h4>Повторить покупку</h4><p>Найдите исходную операцию в истории, последних или сегодняшних записях и нажмите «Повторить». Откроется новый черновик на сегодняшнюю дату с прежней суммой и ручными полями. Проверьте сумму, получателя, категорию и магазин, затем отдельно нажмите «Сохранить». Исходная операция остаётся прежней. Если у вас уже есть незавершённый черновик, приложение спросит перед заменой; отмена сохранит его поля.</p>
+ <h4>Сохранить свой вариант</h4><p>Заполните форму и нажмите «В избранное» либо выберите эту кнопку у существующей операции. Введите короткое название — например, «Мой обед» — и нажмите «Сохранить избранное». Это сохраняет общий для семьи вариант заполнения, а не расход. «Заполнить» подставляет его в новый черновик; сумму можно изменить перед сохранением операции. До пяти вариантов доступны на короткой главной, весь список — в форме добавления.</p>
+ <h4>Изменить или убрать</h4><p>Кнопка «Название» переименовывает вариант, «Убрать» удаляет его из общего избранного, сохраняя историю операций. Можно создать до 30 вариантов; уже сохранённые данные не обрезаются. Избранное входит в семейные данные, обычный JSON, очередь и полную копию устройства. Сообщение о локальном сохранении не подтверждает появление на другом устройстве.</p>
+ <p class="v96-help-note">Кредитные, связанные и регулярные платежи не повторяются как обычная покупка. Используйте их график или раздел регулярных платежей: существующие связи и отметки оплаты не должны создавать второй расход. Избранное общее для членов семьи; это не личное закрытое хранилище.</p>
 </div></details>
 <details class="v96-help-topic" id="help-categories"><summary><h3>Все категории: подробное назначение</h3></summary><div class="v96-help-body">
  <p>Ниже перечислены все существующие точные названия, включая сохранённые старые категории. Это инструкция к текущему набору, а не массовое переименование истории. Окончательное изменение семейного списка обсуждается отдельно.</p>
@@ -2465,6 +2536,7 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
       <li>Полная копия устройства: история, неотправленные правки и варианты конфликтов.</li>
       <li>Уточнённые категории подписок, сервисов и автомобильных расходов.</li>
       <li>Собственный логотип и значок вкладки в настройках семьи.</li>
+      <li>Короткая главная, избранное семьи и повтор покупки через новый черновик.</li>
     </ul>
     <p class="v96-plans-future-note">Перед покупкой будут показаны версия, состав возможностей, полная цена и условия обновления.</p>
   </section>
@@ -2705,7 +2777,7 @@ function v90Paint(){
  const all=document.getElementById('v91All');all.textContent=v91Expanded?'Быстрые варианты':'Все категории';all.setAttribute('aria-expanded',String(v91Expanded));
  document.querySelectorAll('#v90Quick [data-choice]').forEach(b=>b.onclick=()=>{const item=items[Number(b.dataset.choice)];v90Choose(item.key,item.detail||'',item.description||'')});
 }
-function v90Template(i){openEntry();const t=[['Школа и занятия','Школьное питание','Алиса','Школа','Обед'],['Школа и занятия','Английский язык','Алиса','','Английский'],['Вкусняшки','','Общее','','']][i];v90Choose(t[0]);v81FillDetails('e',t[0],t[1],t[2]);document.getElementById('eStore').value=t[3];document.getElementById('eComment').value=t[4];document.getElementById('eAmount').focus()}
+function v90Template(id){return v97OpenFavorite(String(id))}
 const INCOME_PEOPLE=['Сергей','Виктория','Майя','Алиса'];
 // Existing category values MUST NOT be renamed in persisted expenses.
 const CATS=['Вкусняшки','Школа и занятия','Авто и транспорт','Продукты','Супермаркеты','Рестораны и кафе','Жильё','ЖКХ','Электричество','Вода и газ','Интернет','Мобильная связь','Дети','Образование','Аптека и медицина','Животные','ТО','Бензин','Парковка','Кредит','Ремонт','Страховка','Налог','Шины','Транспорт','Такси','Одежда','Красота','Маркетплейсы','Дом','Развлечения','Подписки','Путешествия','Подарки','Банковские комиссии','Хобби','Дача','Работа','Благотворительность','Прочее', 'Мойка','Платные дороги','Штрафы','Запчасти','Автострахование','Транспортный налог'];
@@ -2779,7 +2851,7 @@ if(!Number.isFinite(Number(state.settings.loans.loan1)))state.settings.loans.loa
 if(typeof state.settings.loans.loanBank!=='string')state.settings.loans.loanBank='УралСиб';
 
 function blankState(){return {
- entries:[], goals:[], birthdays:[], boardItems:[], chores:[], installments:[], intelligence:{budgets:[],recurring:[],accounts:[],deleted:{budgets:{},recurring:{},accounts:{}}}, deletedInstallments:{}, deletedEntries:{}, deletedGoals:{}, deletedBirthdays:{}, deletedBoardItems:{}, deletedChores:{}, settings:{
+ entries:[], goals:[], birthdays:[], boardItems:[], chores:[], installments:[], intelligence:{budgets:[],recurring:[],accounts:[],favorites:[],deleted:{budgets:{},recurring:{},accounts:{},favorites:{}}}, deletedInstallments:{}, deletedEntries:{}, deletedGoals:{}, deletedBirthdays:{}, deletedBoardItems:{}, deletedChores:{}, settings:{
   loans:{loanBank:'УралСиб',loan1:90000},
   preferences:{payday:0},
   notifications:{
@@ -2888,8 +2960,8 @@ function validateBackup(raw){
  });
  if(raw.intelligence!==undefined){
   if(!object(raw.intelligence))fail('intelligence');
-  for(const key of ['budgets','recurring','accounts'])rows(raw.intelligence,key,(r,p)=>{number(r.amount,p+'.amount');number(r.day,p+'.day');for(const k of ['name','group','category','who','updated_at','created_at'])text(r[k],p+'.'+k)});
-  const deleted=raw.intelligence.deleted;if(deleted!==undefined){if(!object(deleted))fail('intelligence.deleted');for(const key of ['budgets','recurring','accounts'])if(deleted[key]!==undefined){if(!object(deleted[key]))fail('intelligence.deleted.'+key);for(const [keyId,at] of Object.entries(deleted[key])){id(keyId,'intelligence.deleted.id');text(at,'intelligence.deleted.at')}}}
+  for(const key of ['budgets','recurring','accounts','favorites'])rows(raw.intelligence,key,(r,p)=>{number(r.amount,p+'.amount');number(r.day,p+'.day');for(const k of (key==='favorites'?['name','category','who','beneficiary','subcategory','store','pay','comment','from','to','type','updated_at','created_at']:['name','group','category','who','updated_at','created_at']))text(r[k],p+'.'+k)});
+  const deleted=raw.intelligence.deleted;if(deleted!==undefined){if(!object(deleted))fail('intelligence.deleted');for(const key of ['budgets','recurring','accounts','favorites'])if(deleted[key]!==undefined){if(!object(deleted[key]))fail('intelligence.deleted.'+key);for(const [keyId,at] of Object.entries(deleted[key])){id(keyId,'intelligence.deleted.id');text(at,'intelligence.deleted.at')}}}
  }
  for(const key of ['deletedEntries','deletedGoals','deletedBirthdays','deletedBoardItems','deletedChores','deletedInstallments']){
   const deleted=raw[key];if(deleted===undefined)continue;
@@ -2987,6 +3059,11 @@ document.addEventListener('click',event=>{
  const button=event.target.closest('[data-record-action]');if(!button||button.disabled)return;
  let args;try{args=JSON.parse(button.dataset.recordArgs);if(!Array.isArray(args))return}catch{return}
  switch(button.dataset.recordAction){
+  case 'entry-repeat':v97RepeatEntry(...args);break;
+  case 'favorite-from-entry':v97SaveFavoriteFromEntry(...args);break;
+  case 'favorite-open':v97OpenFavorite(...args);break;
+  case 'favorite-rename':v97RenameFavorite(...args);break;
+  case 'favorite-remove':v97RemoveFavorite(...args);break;
   case 'entry-edit':openEdit(...args);break;
   case 'drill-entry-edit':v96EditFromDrill(...args);break;
   case 'entry-delete':deleteEntry(...args);break;
@@ -3216,7 +3293,7 @@ function showGate(){
  document.getElementById('appRoot').classList.add('auth-locked');
  document.getElementById('authGate').style.display='flex';
  if(document.getElementById('v96Calculator'))v96CloseCalculator(false);
- v96ClearBrandingDraft();v96ApplyBranding();v96RenderBrandingChoices();
+ v96ClearBrandingDraft();v96ApplyBranding();v96RenderBrandingChoices();v97QuickStatus('');v97CloseFavoriteEditor();const fs=document.getElementById('v97FavoritesStatus');if(fs)fs.textContent='';
 }
 async function gateLogin(){
  const epoch=authEpoch;
@@ -3343,14 +3420,14 @@ function verifiedCloudContains(actual,written){
  for(const [key,deleted] of Object.entries(collections)){
   if(!rowsMatch(actual[key],written[key],actual[deleted])||!tombstonesMatch(actual[deleted],written[deleted]))return false;
  }
- for(const key of ['budgets','recurring','accounts']){
+ for(const key of ['budgets','recurring','accounts','favorites']){
   if(!rowsMatch(actual.intelligence?.[key],written.intelligence?.[key],actual.intelligence?.deleted?.[key])||!tombstonesMatch(actual.intelligence?.deleted?.[key],written.intelligence?.deleted?.[key]))return false;
  }
  const a=String(actual.settings?.updated_at||''),w=String(written.settings?.updated_at||'');
  if(a<w||(a===w&&!cloudContainsFields(actual.settings,written.settings)))return false;
  const known=new Set([...Object.keys(collections),...Object.values(collections),'settings','intelligence']);
  for(const key of Object.keys(written))if(!known.has(key)&&!cloudContainsFields(actual[key],written[key]))return false;
- for(const key of Object.keys(written.intelligence||{}))if(!['budgets','recurring','accounts','deleted'].includes(key)&&!cloudContainsFields(actual.intelligence?.[key],written.intelligence[key]))return false;
+ for(const key of Object.keys(written.intelligence||{}))if(!['budgets','recurring','accounts','favorites','deleted'].includes(key)&&!cloudContainsFields(actual.intelligence?.[key],written.intelligence[key]))return false;
  return true;
 }
 // A durable common ancestor, scoped to this backend/household. Device clocks
@@ -3398,8 +3475,8 @@ function reconcileCloudSnapshot(cloud,local,context='cloud'){
   const rows={};
   for(const [key,del] of Object.entries(collections)){rows[key]=packRows(out,key,out[del]);delete out[del]}
   out.intelligence=out.intelligence||{};
-  for(const key of ['budgets','recurring','accounts'])rows['intelligence_'+key]=packRows(out.intelligence,key,out.intelligence.deleted?.[key]);
-  if(out.intelligence.deleted){for(const key of ['budgets','recurring','accounts'])delete out.intelligence.deleted[key]}
+  for(const key of ['budgets','recurring','accounts','favorites'])rows['intelligence_'+key]=packRows(out.intelligence,key,out.intelligence.deleted?.[key]);
+  if(out.intelligence.deleted){for(const key of ['budgets','recurring','accounts','favorites'])delete out.intelligence.deleted[key]}
   return {rest:out,rows};
  };
  const bp=pack(base),rp=pack(cloud),lp=pack(local);
@@ -3652,6 +3729,7 @@ function initForm(){
  type.addEventListener('change',updateEntryForm);
  updateEntryForm();
  v81FillDetails('e',document.getElementById('eCategory').value);
+ v97MarkDraftClean();v97RenderFavorites();
 }
 function updateEntryForm(){
  const type=document.getElementById('eType').value;
@@ -3671,7 +3749,7 @@ function updateEntryForm(){
  if(store) store.placeholder=type==='expense'?'Пятёрочка, Ozon, аптека...':'';
 }
 function openEntry(type='expense'){go('today');document.getElementById('eType').value=type;updateEntryForm();document.getElementById('eAmount').focus()}
-function clearEntry(){v92AutoDescription='';['eAmount','eStore','eIncomeSource','eComment','v90Search','v93CreditAccounting'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});document.getElementById('eDate').value=today();document.getElementById('eType').value='expense';updateEntryForm();document.getElementById('eCategory').value='';v81FillDetails('e','','','Общее');v90Paint()}
+function clearEntry(){v92AutoDescription='';['eAmount','eStore','eIncomeSource','eComment','v90Search','v93CreditAccounting'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});document.getElementById('eDate').value=today();document.getElementById('eType').value='expense';updateEntryForm();document.getElementById('eCategory').value='';v81FillDetails('e','','','Общее');v90Paint();v97MarkDraftClean();v97QuickStatus('')}
 let v90Saving=false;
 // Calculator never saves an operation: only the explicit Apply changes one input.
 function v96CalculateAmount(expression){
@@ -3857,6 +3935,151 @@ function v96ApplyCalculatedAmount(){
  document.head.appendChild(style);
 })();
 
+/* v97: family favorites are instructions for a new draft, never transactions. */
+let v97DraftBaseline='',v97FavoriteSaving=false,v97FavoriteEditor=null;
+const V97_FAVORITE_LIMIT=30;
+function v97QuickUnlocked(){return !document.getElementById('appRoot').classList.contains('auth-locked')}
+function v97DraftFields(){
+ const value=id=>document.getElementById(id)?.value||'';
+ return {type:value('eType'),amount:value('eAmount'),category:value('eCategory'),subcategory:value('eSubcategory'),beneficiary:value('eBeneficiary'),who:value('eWho'),store:value('eType')==='income'?value('eIncomeSource'):value('eStore'),pay:value('ePay'),comment:value('eComment'),from:value('eFrom'),to:value('eTo'),date:value('eDate'),search:value('v90Search')};
+}
+function v97MarkDraftClean(){v97DraftBaseline=JSON.stringify(v97DraftFields())}
+function v97DraftDirty(){return Boolean(v97DraftBaseline)&&JSON.stringify(v97DraftFields())!==v97DraftBaseline}
+function v97QuickStatus(text,error=false){const el=document.getElementById('v97DraftStatus');if(el){el.textContent=text;el.classList.toggle('error',error)}}
+function v97QuickReady(){
+ if(!v97QuickUnlocked())return false;
+ if(v90Saving||v97FavoriteSaving){v97QuickStatus('Дождитесь завершения сохранения. Новый черновик пока не открыт.',true);return false}
+ return true;
+}
+function v97ManualDraft(source){
+ if(!source||!['expense','income','transfer','cash'].includes(source.type))return null;
+ const amount=parseMoneyInput(String(source.amount??''));
+ if(!Number.isFinite(amount)||amount<=0)return null;
+ const text=key=>typeof source[key]==='string'?source[key]:'';
+ const result={type:source.type,amount,category:text('category'),subcategory:text('subcategory'),beneficiary:text('beneficiary'),who:text('who'),store:text('store'),pay:text('pay'),comment:text('comment'),from:text('from'),to:text('to')};
+ if(result.type==='expense'&&!result.category)return null;
+ return result;
+}
+function v97LinkedDestination(entry){
+ if(entry?.recurringId||entry?.recurringPeriod)return 'analytics';
+ if(entry&&(entry.category==='Кредит'||entry.installmentId||entry.installmentPartId||entry.paymentKey||entry.scheduledDate||entry.debtRepayment||entry.accountingMode||entry.mortgagePayment||entry.obligationType||entry.autoGenerated||entry.generated||v77EntryIsLinked(entry.id)||v78BankExpense(entry)))return 'loans';
+ return '';
+}
+function v97RefuseLinked(entry){
+ const destination=v97LinkedDestination(entry);if(!destination)return false;
+ const message=destination==='analytics'?'Это регулярный платёж. Повторите оплату в разделе регулярных платежей, чтобы не создать лишний расход. Открыть раздел?':'Это кредитный или связанный платёж. Запишите следующую оплату в графике обязательства, чтобы не продублировать долг и расход. Открыть кредиты и рассрочки?';
+ if(confirm(message)&&v97QuickUnlocked())go(destination);
+ return true;
+}
+function v97SetOption(id,value){
+ const el=document.getElementById(id);if(!el)return;
+ if(el.tagName==='SELECT'&&![...el.options].some(option=>option.value===value))el.add(new Option(value||'Не указано',value));
+ el.value=value;
+}
+function v97FillDraft(source,label){
+ if(!v97QuickReady())return false;
+ const draft=v97ManualDraft(source);
+ if(!draft){v97QuickStatus('Не удалось открыть черновик: проверьте сумму, тип и категорию исходной записи.',true);toast('Черновик не открыт: проверьте исходные поля');return false}
+ if(v97DraftDirty()&&!confirm('Заменить незавершённый черновик? Его поля ещё не сохранены.'))return false;
+ if(!v97QuickReady())return false;
+ if(document.getElementById('v84DrillModal')?.classList.contains('open'))v84CloseDrill();
+ clearEntry();document.getElementById('eType').value=draft.type;updateEntryForm();
+ document.getElementById('eAmount').value=String(draft.amount).replace('.',',');
+ if(draft.type==='expense'){
+  v97SetOption('eCategory',draft.category);v81FillDetails('e',draft.category,draft.subcategory,draft.beneficiary||draft.who||'Не указано');
+  v97SetOption('ePay',draft.pay);document.getElementById('eStore').value=draft.store;
+ }else if(draft.type==='income'){
+  v97SetOption('eWho',draft.who||'Не указано');document.getElementById('eIncomeSource').value=draft.store;
+ }
+ if(draft.type==='transfer'){v97SetOption('eFrom',draft.from);v97SetOption('eTo',draft.to)}
+ document.getElementById('eComment').value=draft.comment;document.getElementById('eDate').value=today();
+ document.getElementById('saveMsg').textContent='';v90Paint();go('today');
+ v97QuickStatus(label+' · дата сегодня. Это новый черновик: проверьте поля и нажмите «Сохранить».');
+ document.getElementById('eAmount').focus();return true;
+}
+function v97RepeatEntry(id){
+ if(!v97QuickReady())return false;
+ const entry=state.entries.find(item=>item.id===id);if(!entry||v97RefuseLinked(entry))return false;
+ return v97FillDraft(entry,'Повтор операции');
+}
+function v97FavoriteRows(){const data=v84Data();return (data.favorites||[]).filter(row=>!data.deleted.favorites[row.id])}
+function v97FindFavorite(id){return v97FavoriteRows().find(row=>row.id===id)}
+function v97OpenFavorite(id){
+ if(!v97QuickReady())return false;
+ const favorite=v97FindFavorite(id);if(!favorite||v97RefuseLinked(favorite))return false;
+ return v97FillDraft(favorite,'Избранное: '+String(favorite.name||'Без названия'));
+}
+function v97CloseFavoriteEditor(){
+ v97FavoriteEditor=null;const editor=document.getElementById('v97FavoriteEditor');if(editor)editor.hidden=true;
+ const name=document.getElementById('v97FavoriteName');if(name)name.value='';
+ const status=document.getElementById('v97FavoriteEditorStatus');if(status)status.textContent='';
+}
+function v97BeginFavoriteEditor(draft,id=''){
+ if(!v97QuickReady())return false;
+ if(v97FavoriteEditor&&document.getElementById('v97FavoriteName').value.trim()&&!confirm('Заменить незавершённое название избранного?'))return false;
+ v97FavoriteEditor={draft,id};document.getElementById('v97FavoriteEditor').hidden=false;
+ document.getElementById('v97FavoriteEditorTitle').textContent=id?'Название избранного':'Сохранить вариант в избранное семьи';
+ document.getElementById('v97FavoriteName').value=id?String(v97FindFavorite(id)?.name||''):'';
+ document.getElementById('v97FavoriteEditorStatus').textContent='';
+ if(document.getElementById('v84DrillModal')?.classList.contains('open'))v84CloseDrill();
+ v97ShowFavorites();document.getElementById('v97FavoriteName').focus();return true;
+}
+async function v97SubmitFavoriteEditor(){
+ if(!v97QuickReady()||!v97FavoriteEditor)return false;
+ const edit=v97FavoriteEditor,name=document.getElementById('v97FavoriteName').value.trim();
+ const status=document.getElementById('v97FavoriteEditorStatus');
+ if(!name||name.length>40){status.textContent='Введите название от 1 до 40 символов.';return false}
+ const row=edit.id?v97FindFavorite(edit.id):null;
+ if(edit.id&&!row){status.textContent='Эта запись уже удалена. Создайте новый вариант.';return false}
+ if(!edit.id&&v97FavoriteRows().length>=V97_FAVORITE_LIMIT){status.textContent='В избранном уже 30 записей. Уберите ненужную перед добавлением.';return false}
+ const now=new Date().toISOString(),epoch=authEpoch;
+ const durable=await v97CommitFavorite(()=>{
+  if(row){row.name=name;row.updated_at=now}
+  else {edit.id=uid();v84Data().favorites.push({id:edit.id,name,...edit.draft,favoriteVersion:1,created_at:now,updated_at:now})}
+ });
+ if(epoch===authEpoch&&v97QuickUnlocked()&&v97FavoriteEditor===edit){
+  if(durable)v97CloseFavoriteEditor();else status.textContent='Избранное осталось в памяти, но не сохранено надёжно. Скачайте полную копию устройства.';
+ }
+ return durable;
+}
+async function v97CommitFavorite(change){
+ if(!v97QuickReady())return false;
+ const epoch=authEpoch;change();v97FavoriteSaving=true;v97RenderFavorites();
+ const status=document.getElementById('v97FavoritesStatus');if(status)status.textContent='Сохраняем избранное…';
+ let ok=false;
+ try{ok=await saveAll()}finally{v97FavoriteSaving=false}
+ if(epoch!==authEpoch||!v97QuickUnlocked())return false;
+ v97RenderFavorites();if(status)status.textContent=localSaveMessage(ok,'Избранное сохранено в облако.');
+ return ok||!v89StorageFailed;
+}
+function v97AddFavorite(source){
+ if(!v97QuickReady()||v97RefuseLinked(source))return false;
+ const draft=v97ManualDraft(source);if(!draft){toast('Для избранного укажите сумму больше нуля, тип и категорию');return false}
+ if(v97FavoriteRows().length>=V97_FAVORITE_LIMIT){toast('В избранном уже 30 записей. Удалите ненужную перед добавлением.');return false}
+ return v97BeginFavoriteEditor(draft);
+}
+function v97SaveFavoriteFromForm(){return v97AddFavorite(v97DraftFields())}
+function v97SaveFavoriteFromEntry(id){const row=state.entries.find(item=>item.id===id);return row?v97AddFavorite(row):false}
+function v97RenameFavorite(id){
+ if(!v97QuickReady()||!v97FindFavorite(id))return false;
+ return v97BeginFavoriteEditor(null,id);
+}
+function v97RemoveFavorite(id){
+ if(!v97QuickReady())return false;
+ const row=v97FindFavorite(id);if(!row||!confirm('Убрать «'+String(row.name||'Без названия')+'» из избранного семьи? История операций останется.'))return false;
+ return v97CommitFavorite(()=>{const data=v84Data();data.deleted.favorites[id]=new Date().toISOString();data.favorites=data.favorites.filter(item=>item.id!==id)});
+}
+function v97ShowFavorites(){if(!v97QuickUnlocked())return;go('today');document.getElementById('v97Favorites')?.scrollIntoView({block:'start',behavior:'smooth'})}
+function v97RenderFavorites(){
+ const root=document.getElementById('v97FavoriteList'),home=document.getElementById('v97HomeFavorites');if(!root)return;
+ const rows=v97FavoriteRows(),disabled=v97FavoriteSaving?' disabled':'';
+ root.innerHTML=rows.length?rows.map(row=>{
+  const supported=Boolean(v97ManualDraft(row))&&!v97LinkedDestination(row);
+  return `<article class="v97-favorite-row"><div><b>${esc(row.name||'Без названия')}</b><small>${supported?esc(typeName(row.type)+' · '+money2(row.amount)+' · '+(row.type==='expense'?(row.beneficiary||row.who||'Не указано'):row.who||'Общее')):'Формат сохранён; заполните новую запись вручную.'}</small></div><div class="v97-favorite-actions"><button type="button" class="btn small" ${recordAction('favorite-open',row.id)}${!supported?' disabled':disabled}>Заполнить</button><button type="button" class="btn small" ${recordAction('favorite-rename',row.id)}${disabled}>Название</button><button type="button" class="btn small" ${recordAction('favorite-remove',row.id)}${disabled}>Убрать</button></div></article>`;
+ }).join(''):'<p class="hint">Пока пусто. Заполните новую запись и нажмите «В избранное» или сохраните вариант из истории. Расход появится только после отдельного сохранения операции.</p>';
+ if(home){const available=rows.filter(row=>v97ManualDraft(row)&&!v97LinkedDestination(row));home.hidden=!available.length;home.innerHTML=available.length?`<div class="v97-favorites-home-head"><h2>Избранное семьи</h2><button type="button" class="btn small" onclick="v97ShowFavorites()">Все избранное</button></div><p class="hint">Нажатие заполнит новый черновик на сегодня.</p><div class="v97-favorites-chips">${available.slice(0,5).map(row=>`<button type="button" class="btn" ${recordAction('favorite-open',row.id)}>${esc(row.name||'Без названия')}</button>`).join('')}</div>`:''}
+}
+
 function parseMoneyInput(value){
  const text=String(value).trim();
  if(text.length>128||!/^(?:\d+|\d{1,3}(?:[ \u00a0\u202f]\d{3})+)(?:[.,]\d{1,2})?$/.test(text))return NaN;
@@ -3868,7 +4091,7 @@ function parseMoneyInput(value){
  return BigInt(savedWhole)*100n+BigInt(savedFraction.padEnd(2,'0'))===cents?amount:NaN;
 }
 async function addEntry(){
- if(v90Saving)return;
+ if(v90Saving||!v97QuickUnlocked())return;
  const amount=parseMoneyInput(document.getElementById('eAmount').value),type=document.getElementById('eType').value;
  if(!Number.isFinite(amount)||amount<=0){document.getElementById('saveMsg').innerHTML='<div class="error">Укажите сумму больше нуля, например 1 250,50. Не больше двух знаков после запятой.</div>';return}
  const store=type==='income'?(document.getElementById('eIncomeSource')?.value.trim()||''):(type==='expense'?(document.getElementById('eStore')?.value.trim()||''):'');
@@ -4120,6 +4343,7 @@ function renderHomeMoments(){
  }
 }
 function renderHome(){
+ v97RenderHomePayments();v97SyncHomePresentation();if(typeof v97RenderFavorites==='function')v97RenderFavorites();
  renderHomeMoments();
  renderHealthDashboard();
  renderFamilyBoard();
@@ -4166,10 +4390,10 @@ function renderHome(){
    const specialHtml=`<div class="spending-special-title">Из них · отдельные статьи</div>`+specialRows.map(([k,v])=>`<div class="bar-row special-expense-row"><div class="bar-top"><span>${esc(k)}</span><b>${money(v)}</b></div><div class="bar"><i style="width:${v/pmax*100}%"></i></div></div>`).join('')+`<div class="spending-special-note">Автомобиль и кредитные платежи уже включены в суммы выше. Повторно прибавлять их не нужно.</div>`;
    familyBars.innerHTML=(peopleHtml||'<div class="empty">Пока нет расходов по назначению.</div>')+summary+specialHtml;
  }
- const recent=[...state.entries].sort((a,b)=>b.date.localeCompare(a.date)||String(b.created_at).localeCompare(String(a.created_at))).slice(0,8);
- document.getElementById('recent').innerHTML=recent.length?`<div class="v96-recent-list" role="list">${recent.map(e=>`<article class="v96-recent-row" role="listitem"><div class="v96-recent-main">${v96MerchantBadge(e.store)}<div class="v96-recent-copy"><b>${esc(v96MerchantDisplayName(e.store)||e.category)}</b><small>${esc(typeName(e.type))} · ${esc(e.category||'Без категории')}</small></div></div><strong class="v96-recent-amount ${e.type==='income'?'money-green':isExpense(e)?'money-red':''}">${amountText(e)}</strong><div class="v96-recent-details">${esc(String(e.date||'').split('-').reverse().join('.'))} · ${esc(e.type==='expense'?v86ExpenseTarget(e):e.who||'—')}${e.comment?' · '+esc(e.comment):''}</div><div class="v96-recent-actions"><button type="button" class="btn small" ${recordAction('entry-edit',e.id)}>Изменить</button><button type="button" class="btn small danger" ${recordAction('entry-delete',e.id)}>Удалить</button></div></article>`).join('')}</div>`:'<div class="empty">Операций пока нет.</div>'
+ const recent=[...state.entries].sort((a,b)=>b.date.localeCompare(a.date)||String(b.created_at).localeCompare(String(a.created_at))).slice(0,document.getElementById('home').classList.contains('v73-focus')?3:8);
+ document.getElementById('recent').innerHTML=recent.length?`<div class="v96-recent-list" role="list">${recent.map(e=>`<article class="v96-recent-row" role="listitem"><div class="v96-recent-main">${v96MerchantBadge(e.store)}<div class="v96-recent-copy"><b>${esc(v96MerchantDisplayName(e.store)||e.category)}</b><small>${esc(typeName(e.type))} · ${esc(e.category||'Без категории')}</small></div></div><strong class="v96-recent-amount ${e.type==='income'?'money-green':isExpense(e)?'money-red':''}">${amountText(e)}</strong><div class="v96-recent-details">${esc(String(e.date||'').split('-').reverse().join('.'))} · ${esc(e.type==='expense'?v86ExpenseTarget(e):e.who||'—')}${e.comment?' · '+esc(e.comment):''}</div><div class="v96-recent-actions"><button type="button" class="btn small" ${recordAction('entry-edit',e.id)}>Изменить</button><button type="button" class="btn small" ${recordAction('entry-repeat',e.id)}>Повторить</button><button type="button" class="btn small" ${recordAction('favorite-from-entry',e.id)}>В избранное</button><button type="button" class="btn small danger" ${recordAction('entry-delete',e.id)}>Удалить</button></div></article>`).join('')}</div>`:'<div class="empty">Операций пока нет.</div>'
 }
-function renderToday(){const arr=state.entries.filter(e=>e.date===today()).sort((a,b)=>String(b.created_at).localeCompare(String(a.created_at)));document.getElementById('todayList').innerHTML=arr.length?arr.map(e=>{const label=V90_CATEGORIES.find(x=>x[0]===e.category)?.[1]||e.category;return `<article class="v91-transaction"><div class="v91-transaction-main"><b>${v96MerchantBadge(e.store)}${esc(v96MerchantDisplayName(e.store)||label||typeName(e.type))}</b><small>${esc([label,e.subcategory,e.type==='expense'?'Для: '+v86ExpenseTarget(e):e.who].filter(Boolean).join(' · '))}</small>${e.comment?`<p>${esc(e.comment)}</p>`:''}</div><strong class="${e.type==='income'?'money-green':e.type==='expense'?'money-red':''}">${amountText(e)}</strong><div class="v91-row-actions"><button class="btn small" ${recordAction('entry-edit',e.id)}>Изменить</button><button class="btn small" ${recordAction('entry-delete',e.id)}>Удалить</button></div></article>`}).join(''):'<div class="empty">За сегодня операций нет.</div>'}
+function renderToday(){const arr=state.entries.filter(e=>e.date===today()).sort((a,b)=>String(b.created_at).localeCompare(String(a.created_at)));document.getElementById('todayList').innerHTML=arr.length?arr.map(e=>{const label=V90_CATEGORIES.find(x=>x[0]===e.category)?.[1]||e.category;return `<article class="v91-transaction"><div class="v91-transaction-main"><b>${v96MerchantBadge(e.store)}${esc(v96MerchantDisplayName(e.store)||label||typeName(e.type))}</b><small>${esc([label,e.subcategory,e.type==='expense'?'Для: '+v86ExpenseTarget(e):e.who].filter(Boolean).join(' · '))}</small>${e.comment?`<p>${esc(e.comment)}</p>`:''}</div><strong class="${e.type==='income'?'money-green':e.type==='expense'?'money-red':''}">${amountText(e)}</strong><div class="v91-row-actions"><button class="btn small" ${recordAction('entry-edit',e.id)}>Изменить</button><button type="button" class="btn small" ${recordAction('entry-repeat',e.id)}>Повторить</button><button type="button" class="btn small" ${recordAction('favorite-from-entry',e.id)}>В избранное</button><button class="btn small" ${recordAction('entry-delete',e.id)}>Удалить</button></div></article>`}).join(''):'<div class="empty">За сегодня операций нет.</div>'}
 
 function renderHistory(){
  const q=document.getElementById('fSearch').value.trim().toLowerCase(),who=document.getElementById('fWho').value,cat=document.getElementById('fCat').value,group=document.getElementById('fGroup')?.value||'',type=document.getElementById('fType').value,m=document.getElementById('fMonth').value;
@@ -4187,7 +4411,7 @@ function renderHistory(){
    <td data-label="Место / источник" class="v76-shop"><span class="v96-merchant-cell">${v96MerchantBadge(shop)}<span class="v76-ellipsis" title="${safeFull(shop)}">${safeFull(v96MerchantDisplayName(shop)||'—')}</span></span></td>
    <td data-label="Комментарий" class="v76-comment"><span class="v76-ellipsis" title="${safeFull(comment)}">${safeFull(comment||'—')}</span></td>
    <td data-label="Сумма" class="v76-amount ${e.type==='income'?'money-green':e.type==='expense'?'money-red':''}">${amountText(e)}</td>
-   <td data-label="Действия" class="v76-actions"><div class="v76-action-group"><button class="btn small" aria-label="Редактировать операцию" title="Редактировать" data-action="edit" data-id="${esc(e.id)}"><svg class="v83-line-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L9 17l-4 1 1-4z"/></svg></button><button class="btn small danger" aria-label="Удалить операцию" title="Удалить" data-action="delete" data-id="${esc(e.id)}"><svg class="v83-line-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 14h10l1-14M9 7V4h6v3"/></svg></button></div></td>
+   <td data-label="Действия" class="v76-actions"><div class="v76-action-group"><button type="button" class="btn small" ${recordAction('entry-repeat',e.id)}>Повторить</button><button type="button" class="btn small" ${recordAction('favorite-from-entry',e.id)}>В избранное</button><button class="btn small" aria-label="Редактировать операцию" title="Редактировать" data-action="edit" data-id="${esc(e.id)}"><svg class="v83-line-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L9 17l-4 1 1-4z"/></svg></button><button class="btn small danger" aria-label="Удалить операцию" title="Удалить" data-action="delete" data-id="${esc(e.id)}"><svg class="v83-line-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 14h10l1-14M9 7V4h6v3"/></svg></button></div></td>
   </tr>`
  }).join('')||'<tr class="v76-empty-row"><td colspan="8" class="empty">Операций не найдено. Попробуйте изменить фильтры или выберите «Все даты».</td></tr>';
 }
@@ -4248,7 +4472,7 @@ function renderAnalytics(){
  document.getElementById('aCatsDetails').innerHTML=Object.entries(aggregate(ex,'category')).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="v74-detail-row"><span>${esc(k)}</span><b>${money(v)}</b></div>`).join('')||'<div class="empty">Пока нет расходов</div>';document.getElementById('aCats').innerHTML=cats.map(([k,v])=>`<button type="button" class="bar-row v84-drill-bar" ${recordAction('drill','group',k,'analytics')}><div class="bar-top"><span>${esc(k)}</span><b>${money(v)}</b></div><div class="bar"><i style="width:${v/catTotal*100}%;background:${v84GroupColor(k)}"></i></div></button>`).join('')||'<div class="empty">Нет данных</div>';
  document.getElementById('aStats').innerHTML=`<div class="kpi"><small>Всего расходов</small><strong>${money(total)}</strong></div><div class="kpi"><small>Операций</small><strong>${ex.length}</strong></div><div class="kpi"><small>Средняя покупка</small><strong>${money(ex.length?total/ex.length:0)}</strong></div><div class="kpi"><small>Дней с расходами</small><strong>${days}</strong></div>`;
 }
-function renderIncome(){const all=state.entries.filter(e=>e.type==='income');const sel=document.getElementById('incomeMonth');const m=sel?.value||month();const arr=all.filter(e=>e.date?.startsWith(m)&&INCOME_PEOPLE.includes(e.who)).sort((a,b)=>b.date.localeCompare(a.date));const by=aggregate(arr,'who');const ordered=INCOME_PEOPLE.map(p=>[p,by[p]||0]);const total=sum(arr);const label=new Date(m+'-01T12:00:00').toLocaleDateString('ru-RU',{month:'long',year:'numeric'});const hint=document.getElementById('incomePeopleChartHint');if(hint)hint.textContent='Доходы за '+label;const max=Math.max(...ordered.map(x=>x[1]),1);const chart=document.getElementById('incomePeopleChart');if(chart)chart.innerHTML=ordered.map(([p,v])=>`<div class="bar-row"><div class="bar-top"><b>${esc(p)}</b><span class="money-green">${money(v)}</span></div><div class="bar"><i style="width:${Math.max(0,Math.min(100,v/max*100))}%"></i></div></div>`).join('');const donut=document.getElementById('incomePeopleDonut');if(donut)donut.style.background=total?'conic-gradient('+ordered.map((x,i)=>{const a=ordered.slice(0,i).reduce((n,y)=>n+y[1],0)/total*360;const b=a+x[1]/total*360;const cols=['#496a9d','#76938b','#b1a18a','#9199aa','#aa90a5','#7296a0','#87909c'];return cols[i%cols.length]+' '+a+'deg '+b+'deg'}).join(',')+')':'conic-gradient(#e8edf5 0 360deg)';const dt=document.getElementById('incomePeopleDonutTotal');if(dt)dt.textContent=money(total);const legend=document.getElementById('incomePeopleLegend');if(legend)legend.innerHTML=ordered.filter(x=>x[1]>0).map(([p,v],i)=>`<div class="legend-row"><span class="legend-dot" style="background:${['#496a9d','#76938b','#b1a18a','#9199aa','#aa90a5','#7296a0','#87909c'][i%7]}"></span><span>${esc(p)}</span><b>${total?Math.round(v/total*100):0}% · ${money(v)}</b></div>`).join('')||'<div class="empty">Нет доходов за выбранный месяц.</div>';const cards=document.getElementById('incomePeopleCards');if(cards)cards.innerHTML=ordered.map(([p,v])=>`<div class="bar-row"><div class="bar-top"><b>${esc(p)}</b><span class="money-green">${money(v)} · ${total?Math.round(v/total*100):0}%</span></div><div class="bar"><i style="width:${total?Math.min(100,v/total*100):0}%"></i></div></div>`).join('');const list=document.getElementById('incomeList');list.innerHTML=arr.length?arr.map(e=>`<div class="bar-row"><div class="bar-top"><span>${esc(e.date)} · ${esc(e.store||e.category)} · ${esc(e.who)}</span><b class="money-green">+${money(e.amount)}</b></div><div>${esc(e.comment||'')}</div><div class="actions"><button class="btn small" ${recordAction('entry-edit',e.id)}>Изменить</button><button class="btn small danger" ${recordAction('entry-delete',e.id)}>Удалить</button></div></div>`).join(''):'<div class="empty">Нет доходов за выбранный месяц.</div>';}
+function renderIncome(){const all=state.entries.filter(e=>e.type==='income');const sel=document.getElementById('incomeMonth');const m=sel?.value||month();const arr=all.filter(e=>e.date?.startsWith(m)).sort((a,b)=>b.date.localeCompare(a.date));const ordered=[...new Set([...INCOME_PEOPLE,...arr.map(e=>e.who||'Не указано')])].map(p=>[p,sum(arr.filter(e=>(e.who||'Не указано')===p))]);const total=sum(arr);const label=new Date(m+'-01T12:00:00').toLocaleDateString('ru-RU',{month:'long',year:'numeric'});const hint=document.getElementById('incomePeopleChartHint');if(hint)hint.textContent='Доходы за '+label;const max=Math.max(...ordered.map(x=>x[1]),1);const chart=document.getElementById('incomePeopleChart');if(chart)chart.innerHTML=ordered.map(([p,v])=>`<div class="bar-row"><div class="bar-top"><b>${esc(p)}</b><span class="money-green">${money(v)}</span></div><div class="bar"><i style="width:${Math.max(0,Math.min(100,v/max*100))}%"></i></div></div>`).join('');const donut=document.getElementById('incomePeopleDonut');if(donut)donut.style.background=total?'conic-gradient('+ordered.map((x,i)=>{const a=ordered.slice(0,i).reduce((n,y)=>n+y[1],0)/total*360;const b=a+x[1]/total*360;const cols=['#496a9d','#76938b','#b1a18a','#9199aa','#aa90a5','#7296a0','#87909c'];return cols[i%cols.length]+' '+a+'deg '+b+'deg'}).join(',')+')':'conic-gradient(#e8edf5 0 360deg)';const dt=document.getElementById('incomePeopleDonutTotal');if(dt)dt.textContent=money(total);const legend=document.getElementById('incomePeopleLegend');if(legend)legend.innerHTML=ordered.filter(x=>x[1]>0).map(([p,v],i)=>`<div class="legend-row"><span class="legend-dot" style="background:${['#496a9d','#76938b','#b1a18a','#9199aa','#aa90a5','#7296a0','#87909c'][i%7]}"></span><span>${esc(p)}</span><b>${total?Math.round(v/total*100):0}% · ${money(v)}</b></div>`).join('')||'<div class="empty">Нет доходов за выбранный месяц.</div>';const cards=document.getElementById('incomePeopleCards');if(cards)cards.innerHTML=ordered.map(([p,v])=>`<div class="bar-row"><div class="bar-top"><b>${esc(p)}</b><span class="money-green">${money(v)} · ${total?Math.round(v/total*100):0}%</span></div><div class="bar"><i style="width:${total?Math.min(100,v/total*100):0}%"></i></div></div>`).join('');const list=document.getElementById('incomeList');list.innerHTML=arr.length?arr.map(e=>`<div class="bar-row"><div class="bar-top"><span>${esc(e.date)} · ${esc(e.store||e.category)} · ${esc(e.who||'Не указано')}</span><b class="money-green">+${money(e.amount)}</b></div><div>${esc(e.comment||'')}</div><div class="actions"><button class="btn small" ${recordAction('entry-edit',e.id)}>Изменить</button><button type="button" class="btn small" ${recordAction('entry-repeat',e.id)}>Повторить</button><button type="button" class="btn small" ${recordAction('favorite-from-entry',e.id)}>В избранное</button><button class="btn small danger" ${recordAction('entry-delete',e.id)}>Удалить</button></div></div>`).join(''):'<div class="empty">Нет доходов за выбранный месяц.</div>';}
 function carMonthKey(){return document.getElementById('carMonth')?.value||month()}
 function carCategory(entry){
  const c=String(entry.category||'').trim().toLowerCase();
@@ -5058,10 +5282,10 @@ function v84GroupColor(name){return V84_PALETTE[name]||'#6884c5'}
 const V84_PERSON_COLORS=Object.freeze({'Сергей':'#3f69e8','Виктория':'#a657db','Алиса':'#f59c1b','Майя':'#13a780','Общее':'#617b9b','Общие расходы':'#617b9b','Оба ребёнка':'#b97b41','Все питомцы':'#3b8f9e','Макс':'#dd5772','Дени':'#06a8c4','Денни':'#06a8c4','Автомобиль':'#597c44','Кредиты и рассрочки':'#bd6a35'});
 function v84PersonColor(name){return V84_PERSON_COLORS[name]||'#6986bf'}
 function v84NormalizeIntelligence(x){
- const a=x&&typeof x==='object'?x:{},types=['budgets','recurring','accounts'];
- const out={...a,budgets:[],recurring:[],accounts:[],deleted:{...(a.deleted||{}),budgets:{},recurring:{},accounts:{}}};
+ const a=x&&typeof x==='object'?x:{},types=['budgets','recurring','accounts','favorites'];
+ const out={...a,budgets:[],recurring:[],accounts:[],favorites:[],deleted:{...(a.deleted||{}),budgets:{},recurring:{},accounts:{},favorites:{}}};
  for(const t of types){
-  out[t]=(Array.isArray(a[t])?a[t]:[]).filter(v=>v&&typeof v==='object'&&typeof v.id==='string').map(v=>({...v,amount:Number(v.amount)||0,updated_at:String(v.updated_at||v.created_at||'1970-01-01T00:00:00Z')}));
+  out[t]=(Array.isArray(a[t])?a[t]:[]).filter(v=>v&&typeof v==='object'&&typeof v.id==='string').map(v=>({...v,...(t==='favorites'?{}:{amount:Number(v.amount)||0}),updated_at:String(v.updated_at||v.created_at||'1970-01-01T00:00:00Z')}));
   const d=a.deleted?.[t];out.deleted[t]=(d&&typeof d==='object'&&!Array.isArray(d))?{...d}:{};
  }
  return out;
@@ -5069,14 +5293,14 @@ function v84NormalizeIntelligence(x){
 function v84MergeIntelligence(sources){
  const extensions=sources.filter(s=>s?.intelligence).reduce((all,s)=>({...all,...s.intelligence,deleted:{...(all.deleted||{}),...(s.intelligence.deleted||{})}}),{});
  const out=v84NormalizeIntelligence(extensions);
- for(const key of ['budgets','recurring','accounts']){
+ for(const key of ['budgets','recurring','accounts','favorites']){
   out.deleted[key]={};
   const records=new Map();
   for(const s of sources){const a=v84NormalizeIntelligence(s?.intelligence);
    for(const [id,at] of Object.entries(a.deleted[key]))if(!out.deleted[key][id]||String(at)>String(out.deleted[key][id]))out.deleted[key][id]=at;
    for(const item of a[key]){const prior=records.get(item.id);if(!prior||String(item.updated_at)>String(prior.updated_at)||String(item.updated_at)===String(prior.updated_at))records.set(item.id,item)}
   }
-  out[key]=[...records.values()].filter(item=>!out.deleted[key][item.id]||String(item.updated_at)>String(out.deleted[key][item.id]));
+  out[key]=[...records.values()].filter(item=>!out.deleted[key][item.id]||(key!=='favorites'&&String(item.updated_at)>String(out.deleted[key][item.id])));
  }
  return out;
 }
@@ -5203,7 +5427,7 @@ function v84Drill(mode,key,source='analytics',returnContext=null){
      const name=store||category;
      const details=[store&&category!==store?category:'',e.subcategory||'',e.beneficiary?`Для: ${e.beneficiary}`:'',e.comment||''].filter(Boolean);
      const date=/^\d{4}-\d{2}-\d{2}$/.test(String(e.date||''))?String(e.date).slice(8,10)+'.'+String(e.date).slice(5,7)+'.'+String(e.date).slice(0,4):String(e.date||'');
-     return `<div class="v84-drill-entry v85-drill-entry"><time class="v85-drill-date">${esc(date)}</time><div class="v85-drill-content"><b class="v85-drill-name">${v96MerchantBadge(e.store)}${esc(v96MerchantDisplayName(e.store)||name)}</b>${details.length?`<div class="v85-drill-details">${details.map(d=>`<span>${esc(d)}</span>`).join('')}</div>`:''}</div><div class="v96-drill-entry-actions"><span class="v84-drill-sum">${money2(e.amount)}</span><button type="button" class="btn small" aria-label="Изменить операцию: ${esc(name)}, ${esc(date)}" ${recordAction('drill-entry-edit',e.id)}>Изменить</button></div></div>`;
+     return `<div class="v84-drill-entry v85-drill-entry"><time class="v85-drill-date">${esc(date)}</time><div class="v85-drill-content"><b class="v85-drill-name">${v96MerchantBadge(e.store)}${esc(v96MerchantDisplayName(e.store)||name)}</b>${details.length?`<div class="v85-drill-details">${details.map(d=>`<span>${esc(d)}</span>`).join('')}</div>`:''}</div><div class="v96-drill-entry-actions"><span class="v84-drill-sum">${money2(e.amount)}</span><button type="button" class="btn small" aria-label="Изменить операцию: ${esc(name)}, ${esc(date)}" ${recordAction('drill-entry-edit',e.id)}>Изменить</button><button type="button" class="btn small" ${recordAction('entry-repeat',e.id)}>Повторить</button></div></div>`;
    }).join(''):'<div class="v84-empty">Записей пока нет</div>';
  }
  root.querySelectorAll('button[data-v84-sub]').forEach(b=>b.addEventListener('click',()=>show(b.dataset.v84Sub)));show(v96DrillContext.sub);
@@ -5257,7 +5481,7 @@ for(const [id,kind] of [['donut','group'],['peopleDonut','person']]){
 }
 for(const id of ['analyticsMonth','homeMonth'])document.getElementById(id)?.addEventListener('change',v84RenderAll);
 
-function renderAll(){refreshHistoryPeriods();renderHome();renderToday();renderHistory();renderAnalytics();renderIncome();renderCar();renderGoals();renderLoans();renderChores();renderDates();renderFamilyBoard();renderFamilySpark();renderTodayHeader();renderTodayAdvice();settingsFields();try{renderEarlyRepayment()}catch(err){console.warn('early repayment render',err)}v84RenderAll();v96ApplyBranding();v96RenderBrandingChoices()}
+function renderAll(){v97RenderFavorites();refreshHistoryPeriods();renderHome();renderToday();renderHistory();renderAnalytics();renderIncome();renderCar();renderGoals();renderLoans();renderChores();renderDates();renderFamilyBoard();renderFamilySpark();renderTodayHeader();renderTodayAdvice();settingsFields();try{renderEarlyRepayment()}catch(err){console.warn('early repayment render',err)}v84RenderAll();v96ApplyBranding();v96RenderBrandingChoices()}
 function exportCsv(){
  const columns=['Дата','Тип','Категория','Участник','Сумма ₽','Где / источник','Оплата','Комментарий','Откуда','Куда','Уточнение расхода','Для кого'];
  const safe=(v)=>'"'+String(v??'').replace(/^[=+@\-\t\r]/,x=>"'"+x).replace(/"/g,'""')+'"';
@@ -5477,19 +5701,43 @@ async function boot(){
  }else setStatus('Вход не выполнен',false);
  if(localRecoveryNotice){updateSync(localRecoveryNotice);toast(localRecoveryNotice)}
 }
-// v73 Signature dashboard preference is purely presentational and stored separately.
-function toggleV73Overview(){
- const home=document.getElementById('home'),btn=document.getElementById('v73OverviewToggle');
- if(!home||!btn)return;
- const short=home.classList.toggle('v73-focus');
- btn.innerHTML=short?'Полный обзор <span aria-hidden="true">↗</span>':'Короткий обзор <span aria-hidden="true">↗</span>';
- btn.setAttribute('aria-pressed',String(short));
- try{localStorage.setItem('marichevy_v73_short_overview',short?'1':'0')}catch{}
+// Home presentation only: the existing forecast remains the source of known payments.
+function v97HomePaymentSummary(){
+ const forecast=v86Forecast(),now=today();
+ const rows=forecast.events.filter(event=>!event.paid).map(event=>({event,remainingCents:Math.max(0,v77Cents(event.amount)-v77Cents(event.allocated))})).filter(row=>row.remainingCents>0).sort((a,b)=>(a.event.date<now?0:1)-(b.event.date<now?0:1)||a.event.date.localeCompare(b.event.date)||a.event.title.localeCompare(b.event.title,'ru'));
+ return {now,until:forecast.date,rows,remainingCents:rows.reduce((total,row)=>total+row.remainingCents,0)};
 }
+function v97RenderHomePayments(){
+ const content=document.getElementById('v97HomePaymentsContent'),basis=document.getElementById('v97HomePaymentsBasis');if(!content||!basis)return;
+ const data=v97HomePaymentSummary(),date=value=>String(value).split('-').reverse().join('.');
+ basis.textContent=`По известным графикам на ${date(data.now)}, до ${date(data.until)}. Просроченные сохранённые платежи включены.`+(homeMonth()!==month()?' Этот блок — на сегодня, независимо от выбранного месяца.':'');
+ content.innerHTML=data.rows.length?`<div class="v97-home-payment-total"><span>Ещё не подтверждено до ${esc(date(data.until))}</span><strong id="v97HomeRemaining">${money2(data.remainingCents/100)}</strong></div><div class="v97-home-payment-list">${data.rows.slice(0,3).map(({event,remainingCents})=>{const overdue=event.date<data.now,when=overdue?'Срок прошёл · '+date(event.date):event.date===data.now?'Сегодня':date(event.date);return `<article class="v97-home-payment-row"><div class="v97-home-payment-copy"><b>${esc(event.title)}</b><small class="${overdue?'v97-home-overdue':''}">${esc(when)}${event.allocated>0?' · частично учтено':''}</small></div><strong class="v97-home-payment-amount" aria-label="Осталось учесть">${money2(remainingCents/100)}</strong><button type="button" class="btn small" data-v97-calendar-month="${esc(event.date.slice(0,7))}">Посмотреть</button></article>`}).join('')}</div>${data.rows.length>3?`<p class="v97-home-payment-more">Ещё платежей: ${data.rows.length-3}. Все записи доступны в календаре.</p>`:''}`:`<p class="v97-home-basis">По сохранённым графикам нет неподтверждённых платежей до ${esc(date(data.until))}. Проверьте календарь, если ещё не добавили нужный платёж.</p>`;
+ content.onclick=event=>{const button=event.target.closest('button[data-v97-calendar-month]');if(button&&content.contains(button))v97OpenHomeDetails('v86Calendar',button.dataset.v97CalendarMonth)};
+}
+function v97SyncHomePresentation(){
+ const home=document.getElementById('home'),button=document.getElementById('v73OverviewToggle');if(!home||!button)return;
+ const short=home.classList.contains('v73-focus');button.textContent=short?'Открыть полный обзор':'Свернуть до главного';button.setAttribute('aria-pressed',String(short));button.setAttribute('aria-expanded',String(!short));
+ const title=document.getElementById('v97HomeOverviewTitle'),note=document.getElementById('v97HomeOverviewNote'),recent=document.getElementById('v97HomeRecentNote');
+ if(title)title.textContent=short?'Короткий обзор':'Полный семейный обзор';if(note)note.textContent=short?'Итог месяца, платежи и последние записи.':'Все графики, бюджеты и семейные разделы.';if(recent)recent.textContent=(short?'Три последние записи':'Последние восемь записей')+' · все даты';
+}
+function v97SetHomeOverview(short,persist=true){
+ const home=document.getElementById('home');if(!home)return;home.classList.toggle('v73-focus',!!short);v97SyncHomePresentation();
+ if(persist)try{localStorage.setItem('marichevy_v73_short_overview',short?'1':'0')}catch{}
+ renderHome();
+}
+function v97OpenHomeDetails(target='v86Calendar',period=''){
+ v97SetHomeOverview(false);go('home');
+ if(target==='v86Calendar'){
+  const select=document.getElementById('v86CalendarMonth'),chosen=/^\d{4}-\d{2}$/.test(period)?period:month();
+  if(select){if(![...select.options].some(option=>option.value===chosen))select.add(new Option(v84MonthLabel(chosen),chosen));select.value=chosen}v86SetFilter('pending');
+ }
+ const node=document.getElementById(target);if(node){node.setAttribute('tabindex','-1');node.scrollIntoView({block:'start',behavior:'auto'});node.focus({preventScroll:true})}
+}
+// Reuse the existing device preference. An unset preference starts with the short overview.
+function toggleV73Overview(){const home=document.getElementById('home');if(home)v97SetHomeOverview(!home.classList.contains('v73-focus'))}
 (function initV73Presentation(){
- const home=document.getElementById('home'),btn=document.getElementById('v73OverviewToggle');
- let short=false;try{short=localStorage.getItem('marichevy_v73_short_overview')==='1'}catch{}
- if(home&&btn&&short){home.classList.add('v73-focus');btn.innerHTML='Полный обзор <span aria-hidden="true">↗</span>';btn.setAttribute('aria-pressed','true')}
+ const home=document.getElementById('home');let short=true;try{short=localStorage.getItem('marichevy_v73_short_overview')!=='0'}catch{}
+ if(home)home.classList.toggle('v73-focus',short);v97SyncHomePresentation();
  document.querySelectorAll('#nav button,#mobileNav button').forEach(b=>{const label=b.textContent.trim();b.setAttribute('aria-label',label);b.setAttribute('title',label)});
 })();
 
@@ -5600,7 +5848,7 @@ function v86RenderReminders(){
  const root=document.getElementById('v84Notices');if(!root)return;const events=v86ReminderEvents(),now=today();
  root.innerHTML=events.length?`<div class="v84-notice-list">${events.slice(0,4).map(e=>{const delta=v86DateDelta(now,e.date);const label=delta<0?`Просрочено · ${-delta} дн.`:delta===0?'Сегодня':delta===1?'Завтра':`Через ${delta} дн.`;return `<div class="v84-notice ${delta<0?'danger':''}"><span class="v84-notice-dot"></span><div class="v84-notice-body"><b>${esc(e.title)}</b><small>${esc(label)} · ${esc(e.meta)}</small></div><button type="button" class="btn small" ${recordAction('navigate',e.route)}>Открыть</button></div>`}).join('')}</div>${events.length>4?`<p class="v84-mini-note">Ещё ${events.length-4} события — в разделах «Домашние дела», «Кредиты и рассрочки» и «Важные даты».</p>`:''}`:'<div class="v84-empty">В ближайшие 14 дней нет дел или платежей, требующих внимания.</div>';
 }
-function v86RenderAll(){v86RenderPulse();v86RenderCalendar();v86RenderCompare();v86RenderReminders()}
+function v86RenderAll(){v86RenderPulse();v86RenderCalendar();v86RenderCompare();v86RenderReminders();v97RenderHomePayments()}
 
 
 /* v87: Scenario-only family advisor. Never writes synthetic expense operations. */

@@ -128,6 +128,7 @@ def build(output: Path) -> None:
                   'docs/PRIVATE_RESTORE_ACCEPTANCE.md','docs/DEVICE_QUEUE_CAPTURE_MAC_RU.md',
                   'docs/CATEGORY_MODEL_RU.md','docs/HOSTING_PLAN_RU.md','docs/PRODUCT_FREE_PRO_RU.md',
                   'docs/PAYMENTS_PLAN_RU.md','docs/FEEDBACK_DELIVERY.md','docs/ACCOUNT_ACCESS_PLAN_RU.md','docs/UX_ACCEPTANCE_RU.md',
+                  'docs/DEVICE_ACCEPTANCE_V97_RU.md','tools/check_touch_flows.py',
                   'tools/capture_local_queue.js',
                   'tools/export_private_server_backup.py','tools/verify_private_backup.py',
                   'tools/restore_private_backup.py','server/001_family_state_cas.sql',
