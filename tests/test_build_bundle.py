@@ -25,6 +25,12 @@ class DemoBundle(unittest.TestCase):
         for marker in ['gmail.com','supabase.co','9946-WZ3/00067','666991984','247264029','1985-11-27','1988-12-04','2018-01-13','2026-05-17','2023-10-07','МАРИЧЕВ','Маричев','Сергей','Виктория']:
             self.assertNotIn(marker,self.demo)
         self.assertIn('София',self.demo)
+        self.assertNotIn('английский алисы',self.demo)
+        self.assertIn('английский софии',self.demo)
+        self.assertNotIn('telegramSergey',self.demo)
+        self.assertNotIn('telegramVictoria',self.demo)
+        self.assertIn('telegramAlexey',self.demo)
+        self.assertIn('telegramElena',self.demo)
         self.assertIn('marichevy_demo_state_v10',self.demo)
         self.assertNotIn('marichevy_state_v10',self.demo)
 

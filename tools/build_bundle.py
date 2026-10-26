@@ -46,7 +46,7 @@ def transform_demo(source: str) -> str:
     html = html[:start]+region+html[end:]
     html = html.replace('4500000','120000').replace('85885','11000').replace('90000','11000').replace('2026-09-02','2026-12-15')
     for old, new in sorted(NAMES.items(), key=lambda p: -len(p[0])):
-        html = html.replace(old, new).replace(old.upper(), new.upper())
+        html = html.replace(old, new).replace(old.upper(), new.upper()).replace(old.lower(), new.lower()).replace(old.title(), new.title())
     for old,new in {'alice':'sofia','maya':'ilya','deni':'ginger','marichevy-finance':'family-demo','11.10.2026':'15.01.2027','2026-09-01':'2026-12-15','2041-09-02':'2027-12-15'}.items():
         html=html.replace(old,new)
     html = html.replace('marichevy_', 'marichevy_demo_')
@@ -89,7 +89,7 @@ def transform_demo(source: str) -> str:
     for value in original_values:
         if value and value in html:
             raise ValueError('Original CONFIG value survived')
-    for value in ['9946-WZ3/00067','1985-11-27','1988-12-04','2018-01-13','2026-05-17','2023-10-07','666991984','247264029','gmail.com','supabase.co','МАРИЧЕВ','Маричев','Сергей','Виктория','Алиса','Майя']:
+    for value in ['9946-WZ3/00067','1985-11-27','1988-12-04','2018-01-13','2026-05-17','2023-10-07','666991984','247264029','gmail.com','supabase.co','МАРИЧЕВ','Маричев','Сергей','Виктория','Алиса','Майя','алисы','Sergey','Victoria']:
         if value in html:
             raise ValueError('Personal marker survived transformation')
     return html
