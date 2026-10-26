@@ -519,3 +519,64 @@ DEVICE_QUEUE_CAPTURE_MAC_RU.md. Реальные очереди ещё не по
 Fixed catalog повторно подтвердил прежнюю схему/права/helper; metadata cron.job
 присутствует, команды задач/Edge Functions/внешние writers не исследовались и не
 объявляются отсутствующими. Публикация server+HTML остаётся отдельным финальным шагом.
+
+
+## Публичные аккаунты, отдельные семьи и приглашения · 26 октября 2026
+
+Начальный checkout codex/pr5-release-candidate/ab0ffd4 был чистым; main read-only
+подтвердил bfc7ce5. Личный index SHA e74cac6110464717027365934ae35d57f41297f38ad3cd4ef8802e5522009a67
+не изменён. Пользователь разрешил реализацию следующего этапа; публикация настоящего
+банка, Auth-конфигурации, платежей или писем настоящим адресатам не выполнялась.
+
+Добавлены public shell, полный depersonalized финансовый iframe, generator,
+Python same-origin gateway и SMTP worker. Кэш/очереди привязаны к backend+AuthUUID+
+householdUUID; parent владеет refresh, late responses не переключают аккаунт.
+Справочники имеют стабильные ID с архивированием; новые финансовые документы пусты.
+Новая схема finance_app отделена от старых таблиц. Definer RPC проверяют текущий
+подтверждённый auth.users, роли, блокировку семьи, CAS и last-owner. Приглашение
+72h/hash/адресат/одноразовое принятие; исходный токен воспроизводится HMAC только
+с защищённым ключом, в БД его нет. Лимиты действуют сразу во всех семьях.
+
+Независимый review обнаружил и устранил повторное принятие второго pending invite
+после удаления, обход почтового лимита через несколько семей, stale refresh/login,
+viewer initial sync/queue restore, динамические кнопки изменения, превышение SMTP
+lease и обход размера документа через прямой RPC. Реальный full-stack нашёл
+same-document invitation hashchange; добавлены синхронный scrub и две регрессии.
+
+Актуальные public58/58 (PostgreSQL30, shell17, iframe11) и gateway14/14 прошли.
+Полный локальный реальный GoTrue/PostgREST/SMTP/PG/Chromium:43 проверки, source_unchanged,
+ноль JS/external requests. Секреты/письма только в памяти, Docker resources удалены.
+Отчёт preview/public-accounts-stack-report.json привязан к исходникам. Chromium
+не выдаётся за физический iPhone/Safari; local SMTP acceptance не за external inbox.
+
+На fixed marichevy-finance-staging/iqpoxphtvtogjowruufe добавлен только новый 004
+namespace. Hash миграции 4121e1a891ffe919d4452eef48701ca56c04c7e5a5d25ebb39ab7140eaf4a24f
+в marker-комментарии записан в той же транзакции. Настоящий HTTPS probe33 прошёл;
+его4 вымышленных Auth и новые семьи удалены. Before/after fingerprint пяти старых
+таблиц, Auth UUID, прав/RLS/колонок/constraints и legacyRPC совпал. Первый probe
+прошёл30 assertions, затем ошибся ожидая403 вместо предусмотренного CAS200/not_found;
+исправлен только harness, повтор33 зелёный. Никакогоproduction чтения/записи.
+
+Настройка Auth API403: доступ к hostedSMTP/read-config не подтверждён; настоящий
+signupSMTP, HTTPSredirect/edge deployment остаются отдельной защищённой настройкой.
+ПокупкаPRO/entitlement/payment webhook не подключены. Самостоятельные новые семьи
+FREE; серверный тариф нельзя изменить финансовымJSON. Реальные очереди/постоянный
+резерв владельца/внешние writers остаются условиями совместного выпуска. Reusable
+snapshot среды после privatebackup не публикуется; одно финальное согласие не запрошено.
+
+Финальная сверка полной копии выявила отсутствие отдельных household catalogs в
+финансовомJSON. Публичный devicecapture дополнен whitelisted household_metadata
+и SHA-256, сохраняет ID/архив/legacystrings, отказывается при изменении метаданных
+или доступа во время hashing. Обычный JSON/import не менялся; owner-only ручное
+восстановление описано без доверия к scope из файла. Две новые download-регрессии
+проверяют точные rawpending, отсутствие auth/role/plan/invites и midhash refusal.
+Независимый review не нашёл блокера. Реальный fullstack43 повторён на последних
+источниках:43PASS/10.57s, ноль JS/externalrequests, source_unchanged=true.
+
+Итоговый общий прогон:472/472,269.034s,безskips,
+/workspace/v95-accounts-verified-regression-20261026.log. ЛичныйHTML неизменён.
+Сборка публичного кандидата explicit11files/manifest проверена на воспроизводимость,
+symlink/secret markers и точное совпадение исходников. В generatedHTML убрана
+унаследованная лишняя пустая строка EOF; generator/iframe и source-bound realstack
+повторно прошли на последних байтах:13/13 iframe(8.591s) и43 realstack(10.59s),
+source_unchanged=true,JS/external=0.
