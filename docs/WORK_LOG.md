@@ -967,3 +967,22 @@ source bytes/Unix modes прошли. Code-only ZIP содержит 458 фай�
 отчёт preview/mac-private-backup-helper-v95-report.json. Никакого настоящего
 Darwin запуска или owner-capture этими проверками не заявляется. App/client
 и production/main неизменны, app588 повторно не запускались без нового основания.
+
+Первый запуск комплекта на настоящем Mac завершился общим bootstrap отказом
+до main banner/profile prompt. Native acceptance/capture не подтверждены.
+Путь, введённый затем в launcher end prompt, сохранился только как неиспользуемая
+строка read; чтение профиля и интерпретация пути shell-командой не выполнялись.
+Общее сообщение ошибочно объединяет integrity/runtime/native-load причины;
+готовится отдельная маленькая read-only диагностика code-only файлов без чтения
+профиля и без повторного скачивания runtimes. Это не обход проверки целостности,
+quarantine или защиты вставки. Значения/личные пути со снимка не внесены в Git.
+
+Отдельная диагностика исходного закреплённого Mac комплекта подготовлена двумя
+code-only файлами: mac-diagnose.cjs и Check Mac helper.command. 8/8 tests passed,
+независимый review clear; строгий fixed-manifest readback исходного actual ZIP
+прошёл. Новый ZIP preview/mac-helper-check-v95.zip — 5039 bytes, SHAe0a1cd10… .
+Она не вызывает main/selftest/DB open, не читает profile/PRIVATE output и не
+исправляет файлы. Загрузка native modules допускается только после проверки всех
+байтов; ошибки выводятся фиксированными кодами/категориями, без raw paths/messages.
+Причина первоначального отказа всё ещё неизвестна до диагностики у владельца.
+Исходные bootstrap/77MB ZIP, банк, main и production не менялись.
