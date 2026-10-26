@@ -141,10 +141,14 @@ function currentProfile(){
     html = html.replace("'2026-12-15'", "(BANK_LOAN_INFO.contractDate||today())")
     html = html.replace('min="2026-12-15"', 'min="${BANK_LOAN_INFO.contractDate||today()}"')
     html = html.replace("'2027-12-15'", 'today()')
-    html = html.replace("function v81BeneficiaryOptions(){return ['Не указано','Общее','Алексей','Елена','София','Илья','Рыжик','Бим','Оба ребёнка','Все питомцы']}",
-        "function v81BeneficiaryOptions(){return ['Не указано',...PEOPLE]}")
-    html = exact_sub(html, r" const choices=prefix==='e'\?\['Общее',\.\.\.\['Алексей'[^\n]*?;if\(!choices.includes\(target\)\)choices.push\(target\);",
-        " const choices=prefix==='e'?PEOPLE.slice():v81BeneficiaryOptions();if(!choices.includes(target))choices.push(target);", 'beneficiary choices')
+    # The shared direction model uses scoped PEOPLE plus this family's saved
+    # custom targets. Do not replace it with fixed demo-family names.
+    if html.count('function v81BeneficiaryOptions(){return v99BeneficiaryChoices()}') != 1:
+        raise ValueError('Beneficiary model changed; review public scope')
+    html = exact_sub(html, r"\['Бим','Рыжик'\]\.includes\(name\)",
+        "(window.__FINANCE_BRIDGE__.pets||[]).includes(name)", 'direction pet roles')
+    html = exact_sub(html, r" const choices=v81BeneficiaryOptions\(\);if\(!choices.includes\(target\)\)choices.push\(target\);",
+        " const choices=v81BeneficiaryOptions();if(!choices.includes(target))choices.push(target);", 'beneficiary choices')
     html = html.replace("['София','Илья','Оба ребёнка'].includes(b)", "(window.__FINANCE_BRIDGE__.children||[]).includes(b)")
     html = exact_sub(html, r'const V84_PERSON_COLORS=Object\.freeze\(\{[^\n]*\}\);',
         "const V84_PERSON_COLORS=Object.freeze(Object.fromEntries(PEOPLE.map((name,i)=>[name,['#3f69e8','#a657db','#f59c1b','#13a780','#617b9b'][i%5]])));", 'person colors')

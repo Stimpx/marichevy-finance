@@ -59,7 +59,7 @@ class HomeFocus(unittest.TestCase):
         self.assertTrue(self.page.locator('#home').evaluate("node=>node.classList.contains('v73-focus')"))
         visible=self.page.locator('#home').evaluate("""root=>[...root.children].filter(node=>
           node.getBoundingClientRect().height>0).map(node=>node.id||node.className)""")
-        self.assertCountEqual(visible,['hero','v96MonthlyReview','v97HomePayments',
+        self.assertCountEqual(visible,['v99HomeSpending','v99HomeDirections','v99HomeSlices','hero','v96MonthlyReview','v97HomePayments',
                                       'v73-overview-toolbar','v97HomeRecent'])
         self.assertEqual(self.page.locator('#recent .v96-recent-row').count(),3)
         self.assertEqual(self.page.locator('#home .hero .quick button:visible').count(),2)
@@ -74,7 +74,7 @@ class HomeFocus(unittest.TestCase):
             self.assertTrue(self.page.locator(selector).is_visible(),selector)
         self.assertEqual(self.page.locator('#recent .v96-recent-row').count(),8)
         self.assertEqual(self.page.locator('#v73OverviewToggle').get_attribute('aria-expanded'),'true')
-        self.assertLess(self.page.locator('#v73OverviewToggle').bounding_box()['y'],500)
+        self.assertGreater(self.page.locator('#v73OverviewToggle').bounding_box()['y'],self.page.locator('#v99HomeSpending').bounding_box()['y'])
         self.assertEqual(self.page.evaluate("localStorage.getItem('marichevy_v73_short_overview')"),'0')
         self.page.get_by_role('button',name='Свернуть до главного',exact=True).click()
         self.assertFalse(self.page.locator('#v86Calendar').is_visible())
@@ -127,6 +127,7 @@ class HomeFocus(unittest.TestCase):
         self.assertTrue(self.page.locator('#v86Calendar').is_visible())
         self.assertEqual(self.page.locator('#v86CalendarMonth').input_value(),'2026-09')
         self.assertEqual(self.page.evaluate('v86CalendarFilter'),'pending')
+        self.page.wait_for_function("document.getElementById('v86Calendar').getBoundingClientRect().top<100")
         self.assertLess(self.page.locator('#v86Calendar').bounding_box()['y'],100)
         self.assertEqual(self.records(),before)
 

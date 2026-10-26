@@ -32,8 +32,11 @@ class ExpenseForm(unittest.TestCase):
             order:[...document.querySelector('.v91-form').children].slice(1,5).map(x=>x.querySelector('input,select').id),
             merchantOutsideDetails:!eStore.closest('details'),detailsOpen:v90Extra.open})""")
         self.assertEqual(result['date'],result['today'])
-        self.assertEqual(result['target'],'Общее')
-        self.assertEqual(result['people'], [[x,x] for x in ['Общее','Сергей','Виктория','Алиса','Майя','Дени','Макс']])
+        # An unchosen destination must stay explicit instead of implying a family expense.
+        self.assertEqual(result['target'],'Не указано')
+        choices=dict(result['people'])
+        for name in ['Не указано','Общее','Сергей','Виктория','Алиса','Майя','Дени','Макс']:
+            self.assertEqual(choices.get(name),name)
         self.assertEqual(result['order'],['eAmount','v90Search','eBeneficiary','eStore'])
         self.assertTrue(result['merchantOutsideDetails'])
         self.assertFalse(result['detailsOpen'])
@@ -49,7 +52,27 @@ class ExpenseForm(unittest.TestCase):
                 self.page.locator('#v90Quick button').filter(has_text=label).click()
                 self.assertEqual(self.page.locator('#eCategory').input_value(),category)
                 self.assertEqual(self.page.locator('#eSubcategory').input_value(),detail)
-                self.assertEqual(self.page.locator('#eBeneficiary').input_value(),'Общее')
+                self.assertEqual(self.page.locator('#eBeneficiary').input_value(),'Не указано')
+
+    def test_unselected_recipient_stays_unspecified_in_display_and_saved_expense(self):
+        self.prepare()
+        result=self.page.evaluate("""async () => {
+            state.entries=[{id:'fictional-prior',type:'expense',date:today(),amount:3,
+                category:'Продукты',beneficiary:'Сергей',who:'Сергей',store:'Виктория супермаркет'}];
+            const previous=JSON.stringify(state.entries[0]);
+            clearEntry();v90Choose('Продукты');eStore.value='Виктория супермаркет';
+            v90Paint();v99RenderEntryDirections();eAmount.value='17,25';
+            const selected=eBeneficiary.value;
+            const tiles=[...document.querySelectorAll('#v99EntryDirectionTiles button')]
+                .filter(button=>button.getAttribute('aria-pressed')==='true')
+                .map(button=>button.dataset.v99EntryDirection);
+            await addEntry();
+            const entry=state.entries.at(-1);
+            return {selected,tiles,stored:entry.beneficiary,display:v86ExpenseTarget(entry),
+                priorUnchanged:JSON.stringify(state.entries[0])===previous};
+        }""")
+        self.assertEqual(result,{'selected':'Не указано','tiles':['unspecified'],
+            'stored':'Не указано','display':'Не указано','priorUnchanged':True})
 
     def test_search_recognizes_every_control_case(self):
         self.prepare()

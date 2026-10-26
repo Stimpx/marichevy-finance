@@ -366,7 +366,7 @@ class CategoryReview(unittest.TestCase):
         new_group = self.page.locator('#categoryLegend button').filter(has_text=groups['next'])
         self.assertEqual(old_group.count(), 1)
         self.assertEqual(new_group.count(), 1)
-        self.assertRegex(old_group.locator('b').inner_text(), r'^20\s*₽')
+        self.assertRegex(old_group.locator('b').inner_text(), r'^20,00\s*₽')
         self.assertIn('120,50', new_group.inner_text())
         self.assertIn('140,50', self.page.locator('#donutTotal').inner_text())
         self.assertEqual(self.page.evaluate('v97DraftFields()'), draft)

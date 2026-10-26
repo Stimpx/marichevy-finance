@@ -131,7 +131,7 @@ class CategorySuggestions(unittest.TestCase):
                     selected:eCategory.value,target:eBeneficiary.value,
                     unchanged:JSON.stringify(state.entries)===window.__diaperHistory
                 })""")
-                self.assertEqual(result,{'first':'Дети','selected':'','target':'Общее','unchanged':True})
+                self.assertEqual(result,{'first':'Дети','selected':'','target':'Не указано','unchanged':True})
 
     def test_child_goods_choice_saves_existing_id_and_preserves_owner_target_and_history(self):
         self.prepare()
@@ -178,7 +178,7 @@ class CategorySuggestions(unittest.TestCase):
                     selected:eCategory.value,target:eBeneficiary.value,
                     unchanged:JSON.stringify(state.entries)===window.__diaperHistory
                 })""")
-                self.assertEqual(result,{'first':category,'selected':'','target':'Общее','unchanged':True})
+                self.assertEqual(result,{'first':category,'selected':'','target':'Не указано','unchanged':True})
 
     def test_household_goods_keep_their_category_and_child_goods_are_manually_available(self):
         self.prepare()

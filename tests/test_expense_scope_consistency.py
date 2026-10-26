@@ -68,21 +68,36 @@ class ExpenseScopeConsistency(unittest.TestCase):
     def test_car_month_category_group_special_article_and_auto_focus_agree(self):
         self.seed_car()
         result=self.page.evaluate("""() => {
-            const special=[...document.querySelectorAll('#familyBars .special-expense-row')]
-                .find(row=>row.querySelector('span')?.textContent==='Автомобиль');
+            const tile=document.querySelector('#v99HomeDirectionTiles [data-v99-direction="car"]');
             const grouped=groupedExpenseEntries(expenses(month()))
                 .filter(e=>e.category==='Автомобиль').reduce((n,e)=>n+e.amount,0);
             const expectedYear=state.entries.filter(e=>e.type==='expense'&&
                 (window.__scopeCarIds.includes(e.id)||e.id==='fictional-prior-month')&&e.date.startsWith(month().slice(0,4)))
                 .reduce((n,e)=>n+e.amount,0);
+            const expectedIds=[...window.__scopeCarIds].sort();
+            const monthTotal=sum(expenses(month()));
+            const recipients=v86TargetTotals(expenses(month())).reduce((n,[,amount])=>n+amount,0);
+            tile.click();
+            const tileDrillIds=[...document.querySelectorAll('#v84DrillEntries [data-record-action="drill-entry-edit"]')]
+                .map(button=>JSON.parse(button.dataset.recordArgs)[0]).sort();
             return {expected:money(window.__scopeCarTotal),car:carMonthTotal.textContent,
-                special:special?.querySelector('b')?.textContent,
+                tile:tile.querySelector('strong')?.textContent,expectedTile:money2(window.__scopeCarTotal),
+                expectedIds,tileDrillIds,drillMode:v96DrillContext.mode,drillMonth:v96DrillContext.month,
+                total:document.getElementById('v99HomeExpenseTotal').textContent,expectedTotal:money2(monthTotal),
+                recipients,monthTotal,
                 analytics:document.querySelector('#v81LifeSummary strong')?.textContent,
                 grouped:money(grouped),year:carYearTotal.textContent,expectedYear:money(expectedYear),
                 unchanged:window.__scopeOriginal===JSON.stringify(state.entries)};
         }""")
-        for view in ('car','special','analytics','grouped'):
+        for view in ('car','analytics','grouped'):
             self.assertEqual(result[view],result['expected'],view)
+        self.assertEqual(result['tile'],result['expectedTile'])
+        self.assertEqual(result['tileDrillIds'],result['expectedIds'])
+        self.assertEqual(result['drillMode'],'direction')
+        self.assertEqual(result['drillMonth'],self.page.evaluate('month()'))
+        # The car tile is another cut of existing rows, never another family expense.
+        self.assertEqual(result['total'],result['expectedTotal'])
+        self.assertEqual(result['recipients'],result['monthTotal'])
         self.assertEqual(result['year'],result['expectedYear'])
         self.assertTrue(result['unchanged'])
 

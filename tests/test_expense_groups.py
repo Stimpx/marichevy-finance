@@ -46,8 +46,8 @@ class ExpenseGroups(unittest.TestCase):
           totals:Object.fromEntries(EXPENSE_GROUPS.map(group=>[group.title,v84SpendGroup(month(),group.title)])),
           total:sum(expenses(month())),unknown:expenseGroup('constructor'),
           colors:['Подписки и сервисы','Работа'].map(v84GroupColor)})""")
-        self.assertEqual(len(result['groups']),10)
-        self.assertEqual(len({row[0] for row in result['groups']}),10)
+        self.assertEqual(len(result['groups']),11)
+        self.assertEqual(len({row[0] for row in result['groups']}),11)
         self.assertEqual(result['totals']['Подписки и сервисы'],0.10)
         self.assertEqual(result['totals']['Работа'],0.30)
         self.assertEqual(result['totals']['Досуг и привычки'],0.20)

@@ -86,6 +86,20 @@ def transform_demo(source: str) -> str:
  if(localStorage.getItem('marichevy_demo_state_v10')===null && localStorage.getItem('marichevy_demo_pending_v10')===null && !Object.keys(localStorage).some(k=>k.startsWith('marichevy_demo_')&&/backup|corrupt/.test(k))) {
  const stamp=new Date().toISOString(),parts=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Moscow',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()),pick=type=>parts.find(p=>p.type===type).value,date=pick('year')+'-'+pick('month')+'-'+pick('day');
  const entries=[['demo-income',80000,'income','Зарплата','Алексей','Демоработодатель'],['demo-food',285.40,'expense','Продукты','Общее','КБ'],['demo-pyaterochka',253.80,'expense','Продукты','Общее','Пятёрочка'],['demo-dixy',318.25,'expense','Продукты','Общее','Дикси'],['demo-vkusvill',425.70,'expense','Продукты','Общее','ВкусВилл'],['demo-pharmacy',239.90,'expense','Аптека и медицина','Общее','Горздрав'],['demo-diapers',1199.90,'expense','Дом','София','Детский мир'],['demo-clothes',975.25,'expense','Одежда','Елена','фамилия'],['demo-service',790.10,'expense','Развлечения','Алексей','OpenAI'],['demo-subscription',349.90,'expense','Подписки','Общее','Учебный онлайн-сервис'],['demo-work',260,'expense','Работа','Алексей','Учебный рабочий сервис'],['demo-unclear',225,'expense','Вкусняшки','Общее','КБ'],['demo-school',350,'expense','Школа и занятия','София','Школьная столовая'],['demo-pet',600,'expense','Животные','Бим','Зоомагазин']].map(([id,amount,type,category,who,store])=>({id,amount,type,category,who,beneficiary:who,store,date,pay:'Карта',comment:id==='demo-diapers'?'Подгузники для ребёнка':id==='demo-service'?'Подписка ChatGPT':id==='demo-unclear'?'':'Фиктивный пример',created_at:stamp,updated_at:stamp}));
+ // Fictional monthly slices for the family dashboard; never copied from real history.
+ entries.push(...[
+  {id:'demo-pilates',amount:1450.50,category:'Спорт и здоровье',beneficiary:'Елена',store:'Учебная студия',comment:'Пилатес'},
+  {id:'demo-vitamins',amount:650.25,category:'Спорт и здоровье',beneficiary:'Алексей',store:'Горздрав',comment:'Витамин D'},
+  {id:'demo-glasses',amount:2150.75,category:'Аптека и медицина',beneficiary:'Елена',store:'Учебная оптика',comment:'Очки'},
+  {id:'demo-taxi-one',amount:345.20,category:'Транспорт',subcategory:'Такси',beneficiary:'Елена',store:'Учебное такси',comment:'Поездка на работу'},
+  {id:'demo-taxi-two',amount:420.15,category:'Транспорт',subcategory:'Такси',beneficiary:'Алексей',store:'Учебное такси',comment:'Поездка домой'},
+  {id:'demo-hosting',amount:750.35,category:'Подписки',subcategory:'Хостинг и домены',beneficiary:'Алексей',store:'Учебный хостинг',comment:'Хостинг'},
+  {id:'demo-gift',amount:995.45,category:'Подарки',beneficiary:'София',store:'Детский мир',comment:'Подарок на праздник'},
+  {id:'demo-utilities',amount:1650.65,category:'ЖКХ',beneficiary:'Общее',store:'Учебные коммунальные услуги',comment:'Электричество'},
+  {id:'demo-car',amount:1290.30,category:'Авто и транспорт',subcategory:'Бензин',beneficiary:'Алексей',store:'ЛУКОЙЛ',comment:'Заправка'},
+  {id:'demo-split-unlinked',amount:460.80,category:'Кредит',subcategory:'Рассрочка / Сплит',beneficiary:'Общее',store:'Учебный Сплит',comment:'Платёж без привязки к графику'},
+  {id:'demo-purpose-review',amount:399.40,category:'Аптека и медицина',beneficiary:'Елена',store:'Учебная студия',comment:'Пилатес'}
+ ].map(e=>({type:'expense',date,pay:'Карта',who:e.beneficiary,created_at:stamp,updated_at:stamp,...e})));
  localStorage.setItem('marichevy_demo_state_v10',JSON.stringify({entries,intelligence:{budgets:[{id:'demo-old-budget',group:'Досуг и привычки',amount:3000,created_at:stamp,updated_at:stamp}]},settings:{loans:{loanBank:'Демобанк',loan1:11000},notifications:{enabled:false,telegram:false}}}));
  }}catch(_){}
 })();</script>'''
