@@ -872,3 +872,35 @@ access control checks / TypeError: Load failed). Read-only просмотр v94
 синхронизацию исходной вкладки после сохранения файла. Сервер, HTML и main
 не менялись; это docs-only фиксация, прежние 588 app/17 helper проверок не
 повторялись и не заменяют проверки настоящего сохранённого файла.
+
+
+## 26 октября · разрешение основного выпуска и фактическая проверка доступа
+
+Владелец подтвердил AirDrop iPhone capture на свой Mac; файл показан в Finder.
+Затем явно попросил публиковать и обновлять основную версию, подтвердил паузу
+ввода на всех устройствах и Chrome как браузер Mac. Разрешение выпуска теперь
+есть; повторный запрос не заменяет фактическое закрытие технических условий.
+Hash/restore устройств и raw Chrome Mac ещё не подтверждены.
+
+Подготовлен отдельный static commit f21a9c1705f4299b0a6f09c80d3e5f80437b7c5c,
+отправлен только в release-ветку; diff против remote main bfc7ce5 — index.html.
+Все шесть static файлов совпадают с ранее проверенным пакетом, HTML SHAde2828a8.
+Точный HTML прошёл новый hosted browser runner: 14 checks, 9 клиентских сценариев,
+40 verified HTTPS, один CAS-конфликт. Только существующий фиктивный staging v2,
+без bootstrap/reset и production data; native CORS не заявлен проверенным.
+Публичный отчёт — preview/family-staging-browser-current-report.json.
+
+Получен новый read-only серверный snapshot после паузы ввода; catalog/membership
+соответствуют ожидаемым исходникам. Свежий offline restore четырёх app-таблиц,
+roundtrip/FK/RLS и репетиция 001–003/CAS passed. Оригиналы и все receipts приватны
+вне checkout. Это не Supabase/Auth restore и не сверка локальных очередей.
+
+Неизменяющий metadata SELECT в запрошенном write-capable API режиме фактически
+выполнился как supabase_read_only_user с transaction_read_only=on, без postgres
+membership. DDL/DML не посылались; это подтверждённый блокер установки миграций.
+Сохранён отдельный proxy secret requirement PRODUCTION_SUPABASE_DEPLOY_TOKEN
+только для api.supabase.com; существующие keys не заменялись и не раскрывались.
+В draft сохранены также необходимые домены API/HTTPS-проверки, прежние домены
+сохранены. Draft save подтверждён, значения/применение/reuse snapshot не заявлены.
+Установка не выполнена, main/production неизменны. Частные файлы не публикуются
+в snapshot среды; текущий inspection token не используется для обхода границ.
