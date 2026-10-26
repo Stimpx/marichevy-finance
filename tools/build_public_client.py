@@ -12,7 +12,7 @@ import json
 from pathlib import Path
 import re
 from urllib.parse import quote
-from build_bundle import ICON, exact_sub, transform_demo
+from build_bundle import ICON, MERCHANT_PLACEHOLDER, detach_merchant_catalog, exact_sub, transform_demo
 from serve_staging import CONFIG_RE
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -53,6 +53,7 @@ def replace_function(html: str, name: str, replacement: str) -> str:
 
 def transform_public(source: str) -> str:
     html = remove_demo_wrappers(transform_demo(source))
+    html, merchant_catalog = detach_merchant_catalog(html)
     # The source embeds personal installation artwork as data URLs too.
     html = re.sub(r'<link\b[^>]*rel=["\x27](?:icon|apple-touch-icon)["\x27][^>]*>', '', html)
     html, count = CONFIG_RE.subn('const CONFIG=Object.freeze('+CONFIG_MARKER+');', html)
@@ -223,7 +224,7 @@ function currentProfile(){
             raise ValueError('Identity or configuration marker survived: '+marker)
     if html.count(CONFIG_MARKER) != 1 or html.count(RUNTIME_MARKER) != 1:
         raise ValueError('Expected exactly one runtime/configuration marker')
-    return html.rstrip() + '\n'
+    return html.replace(MERCHANT_PLACEHOLDER, merchant_catalog).rstrip() + '\n'
 
 
 def build(output: Path | None = None) -> Path:

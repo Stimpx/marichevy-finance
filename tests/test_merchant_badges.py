@@ -1,4 +1,4 @@
-"""Local merchant aliases, badges and explicit autocomplete; fictional stores only."""
+"""Local merchant aliases, embedded logos and explicit autocomplete; fictional stores only."""
 import json
 import time
 import unittest
@@ -36,15 +36,15 @@ class MerchantBadges(unittest.TestCase):
           document.getElementById('fMonth').value=month();
         }""")
 
-    def test_requested_brand_aliases_are_decorative_local_marks(self):
+    def test_requested_brand_aliases_use_safe_local_assets(self):
         self.prepare();requests=[]
         self.page.on('request',lambda request: requests.append(request.url))
-        result=self.page.evaluate("""() => ['КБ','к&б','КрасноеБелое','Красное & Белое','Красное и Белое',
+        result=self.page.evaluate(r"""() => ['КБ','к&б','КрасноеБелое','Красное & Белое','Красное и Белое',
           'ДЕТСКИЙ МИР','Детский-мир','фамилия','Familia','familia'].map(store=>{
             const box=document.createElement('div');box.innerHTML=v96MerchantBadge(store);
             return {display:v96MerchantDisplayName(store),brand:box.firstElementChild?.dataset.merchantBrand,
               hidden:box.firstElementChild?.getAttribute('aria-hidden'),
-              external:box.querySelectorAll('img,image,use,[src],[href],script,[onerror]').length};
+              external:[...box.querySelectorAll('script,[onerror],image,use,[href],[src]')].filter(node=>node.tagName==='SCRIPT'||node.hasAttribute('onerror')||node.hasAttribute('href')||(node.hasAttribute('src')&&!/^data:image\/(?:png|svg\+xml);base64,/.test(node.getAttribute('src')))).length};
           })""")
         for record in result[:5]:
             self.assertEqual(record['display'],'Красное & Белое');self.assertEqual(record['brand'],'krasnoe-beloe')
@@ -58,12 +58,12 @@ class MerchantBadges(unittest.TestCase):
     def test_unknown_names_are_safe_and_boundaries_do_not_guess_brands(self):
         self.prepare()
         names=['КБ Альфа банк','КБанк','Банк КрасноеБелое','Детский мирный','нефамилия','MyFamiliaShop',
-               '<img src="https://merchant.invalid/track" onerror="window.__merchantXss=1">','Хатимаки']
-        result=self.page.evaluate("""names=>names.map(store=>{
+               '<img src="https://merchant.invalid/track" onerror="window.__merchantXss=1">','Моя вымышленная лавка']
+        result=self.page.evaluate(r"""names=>names.map(store=>{
           const first=v96MerchantBadge(store),second=v96MerchantBadge(store);
           const box=document.createElement('div');box.innerHTML=first;
           return {same:first===second,display:v96MerchantDisplayName(store),brand:box.firstElementChild?.dataset.merchantBrand,
-            external:box.querySelectorAll('img,image,use,[src],[href],script,[onerror]').length};
+            external:[...box.querySelectorAll('script,[onerror],image,use,[href],[src]')].filter(node=>node.tagName==='SCRIPT'||node.hasAttribute('onerror')||node.hasAttribute('href')||(node.hasAttribute('src')&&!/^data:image\/(?:png|svg\+xml);base64,/.test(node.getAttribute('src')))).length};
         })""",names)
         for name,record in zip(names,result):
             self.assertEqual(record['display'],name);self.assertEqual(record['brand'],'generic')
@@ -73,7 +73,7 @@ class MerchantBadges(unittest.TestCase):
 
     def test_all_four_operation_views_show_badges_without_rewriting_history(self):
         self.prepare();self.seed_merchants()
-        result=self.page.evaluate("""() => {
+        result=self.page.evaluate(r"""() => {
           const before=JSON.stringify(state.entries);renderToday();renderHistory();renderHome();
           v84Drill('group',expenseEntryGroup(state.entries[0]),'home');
           return {before,after:JSON.stringify(state.entries),

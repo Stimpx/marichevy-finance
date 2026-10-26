@@ -67,12 +67,15 @@ class PublicTemplate(unittest.TestCase):
     def test_full_ui_is_depersonalized_without_seeded_records(self):
         source = (ROOT / 'index.html').read_text()
         template = transform_public(source)
+        from build_bundle import detach_merchant_catalog
+        personal_text, catalogue = detach_merchant_catalog(template)
+        self.assertEqual(catalogue, detach_merchant_catalog(source)[1])
         self.assertEqual(template, (ROOT / 'public/ledger-template.html').read_text())
         original = set(re.findall(r'(?:async )?function (\w+)\(', source))
         delivered = set(re.findall(r'(?:async )?function (\w+)\(', template))
         self.assertEqual(original, delivered)
         for marker in ['gmail.com','Сергей','Виктория','Алиса','Майя','Алексей','Елена','София','Илья','Демобанк','1985-11-27','9946-WZ3/00067','supabase.co','offline-demo','__FINANCE_STORAGE__','__FINANCE_CONFIG__']:
-            self.assertNotIn(marker, template)
+            self.assertNotIn(marker, personal_text)
         self.assertIn('const FAMILY_BIRTHS=[];', template)
         self.assertIn('const FAMILY_WEDDING=null;', template)
         self.assertIn('const BANK_LOAN_SCHEDULE=[];', template)

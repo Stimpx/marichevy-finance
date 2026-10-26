@@ -111,17 +111,30 @@ class HelpGuide(unittest.TestCase):
     def test_expanded_help_fits_phone_and_desktop_widths(self):
         self.prepare()
         self.assertEqual(self.page.locator('#help').count(),1)
-        for width in (1280,390,320):
-            with self.subTest(width=width):
+        for width,zoom in ((1280,1),(768,1),(390,1),(320,1),(1280,2),(768,2),(390,2),(320,2)):
+            with self.subTest(width=width,zoom=zoom):
                 self.page.set_viewport_size({'width':width,'height':844})
+                self.page.evaluate('(zoom)=>document.documentElement.style.zoom=zoom',str(zoom))
                 result=self.page.evaluate("""() => {
                     go('help');document.querySelectorAll('#help details').forEach(n=>{n.open=true});
                     return {overflow:document.documentElement.scrollWidth>innerWidth+1,
                         outside:[...document.querySelectorAll('#help summary,#help .v96-help-toc a')].some(n=>{
                             const r=n.getBoundingClientRect();return r.width<=0||r.left<0||r.right>innerWidth+1;
+                        }),summaries:[...document.querySelectorAll('#help summary')].map(n=>{
+                            const r=n.getBoundingClientRect(),card=n.parentElement.getBoundingClientRect();
+                            const title=n.firstElementChild.getBoundingClientRect(),subtitle=n.querySelector('small')?.getBoundingClientRect();
+                            return {height:r.height,cardInset:r.left-card.left,titleInset:title.left-card.left,
+                                subtitleInset:subtitle?subtitle.left-title.left:0};
                         })};
                 }""")
-                self.assertEqual(result,{'overflow':False,'outside':False})
+                self.assertFalse(result['overflow'])
+                self.assertFalse(result['outside'])
+                for summary in result['summaries']:
+                    self.assertGreaterEqual(summary['height'],44*zoom)
+                    self.assertLessEqual(summary['cardInset'],2*zoom)
+                    self.assertGreaterEqual(summary['titleInset'],32*zoom)
+                    self.assertLessEqual(summary['titleInset'],60*zoom)
+                    self.assertLessEqual(abs(summary['subtitleInset']),1)
 
 
 if __name__=='__main__':

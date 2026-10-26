@@ -27,8 +27,11 @@ class SanitizedStagingClient(unittest.TestCase):
         self.assertIn(HOUSE, html)
         self.assertIn(helper.STATE_KEY, html)
         self.assertIn(helper.PENDING_KEY, html)
+        from build_bundle import detach_merchant_catalog
+        personal_text, catalogue = detach_merchant_catalog(html)
+        self.assertEqual(catalogue, detach_merchant_catalog(source)[1])
         for private in ["gmail.com", "Сергей", "Виктория", "1985-11-27", "9946-WZ3/00067"]:
-            self.assertNotIn(private, html)
+            self.assertNotIn(private, personal_text)
         for bypass in ["window.fetch=()=>Promise.reject", "startCloudSync=()=>{}", "showApp();setStatus('ДЕМО"]:
             self.assertNotIn(bypass, html)
         for actual in ["async function gateLogin()", "async function verifyCachedSession(",

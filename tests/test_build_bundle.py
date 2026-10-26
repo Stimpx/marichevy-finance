@@ -19,11 +19,13 @@ class DemoBundle(unittest.TestCase):
 
     def test_personal_configuration_is_removed(self):
         import re
+        personal_text, catalogue = bundle.detach_merchant_catalog(self.demo)
+        self.assertTrue(catalogue)
         values=re.findall(r"(?:url|key|household):'([^']*)'",bundle.CONFIG_RE.search(self.source)[0])
         for value in values:
             self.assertNotIn(value,self.demo)
         for marker in ['gmail.com','supabase.co','9946-WZ3/00067','666991984','247264029','1985-11-27','1988-12-04','2018-01-13','2026-05-17','2023-10-07','МАРИЧЕВ','Маричев','Сергей','Виктория']:
-            self.assertNotIn(marker,self.demo)
+            self.assertNotIn(marker,personal_text)
         self.assertIn('София',self.demo)
         self.assertNotIn('английский алисы',self.demo)
         self.assertIn('английский софии',self.demo)
@@ -44,6 +46,15 @@ class DemoBundle(unittest.TestCase):
     def test_changed_source_shape_fails_closed(self):
         with self.assertRaises(ValueError):
             bundle.transform_demo(self.source.replace('const FAMILY_BIRTHS=', 'const RENAMED_BIRTHS='))
+
+    def test_neutral_brand_names_and_images_survive_redaction_exactly(self):
+        _, source_catalogue = bundle.detach_merchant_catalog(self.source)
+        _, demo_catalogue = bundle.detach_merchant_catalog(self.demo)
+        self.assertEqual(demo_catalogue, source_catalogue)
+        self.assertIn('Виктория супермаркет', demo_catalogue)
+        self.assertNotIn('Елена супермаркет', self.demo)
+        with self.assertRaises(ValueError):
+            bundle.transform_demo(self.source.replace('Виктория супермаркет', 'Личное имя в каталоге', 1))
 
     def test_bundle_allowlists_and_determinism(self):
         with tempfile.TemporaryDirectory() as folder:

@@ -154,7 +154,10 @@ class HomeFocus(unittest.TestCase):
                 self.assertLessEqual(layout['doc'],width+1)
                 for part in layout['parts']:
                     self.assertGreaterEqual(part['left'],0,part);self.assertLessEqual(part['right'],width+1,part)
-                    if part['tag']=='BUTTON':self.assertGreaterEqual(part['height'],44,part)
+                    # CSSOM can report 43.9998779 for a 44px target after a
+                    # viewport resize; keep the touch requirement with a tiny
+                    # floating-point tolerance, rather than whole-pixel slack.
+                    if part['tag']=='BUTTON':self.assertGreaterEqual(part['height']+0.01,44,part)
                     self.assertLessEqual(part['scroll'],part['client']+2,part)
         self.assertEqual(self.records(),before)
 
