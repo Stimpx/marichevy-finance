@@ -8,9 +8,12 @@ rollback passed. The current client also passed real-server browser flows,
 including same-record/edit-delete conflicts and offline reload. See
 [RELEASE_CANDIDATE.md](RELEASE_CANDIDATE.md) for exact hashes and evidence.
 
-**Production has not been changed or validated.** Its actual schema, grants,
-policies, triggers and membership model still require read-only inspection.
-The staging fixture membership policy is not a production migration.
+**Production has not been migrated.** Catalog-only inspection and closed
+read-only app-data export/local restore have been completed; the fresh check on
+26 October 2026 still finds the expected original tables, RLS and membership
+helper. These checks do not prove all external writers or production browser
+authorization. Repeat schema/grant/policy/trigger verification immediately before
+the coordinated release. The staging fixture membership policy is not a production migration.
 Live browser flows forward verified HTTPS through a test route bridge; actual
 Safari/Yandex and native browser proxy/CA remain separate acceptance.
 

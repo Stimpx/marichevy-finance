@@ -762,3 +762,26 @@ commit `77affa1`: к main добавлен только `index.html`, остал
 сохраняет44px с0.01px floating-point допуском. Повторный полный прогон542/542.
 SVG sanitizer дополнен отрицательными URL/CSSescape сценариями и положительным
 paint-class; no native Safari, production writes или env snapshots.
+
+
+## 26 октября 2026: свежий резерв и локальная репетиция перед выпуском
+
+Начало с чистого `9747c5e`. Сообщение владельца «Поехали» разрешает продолжить подготовку, не
+публикацию. Прочитаны runtime/network/Docker инструкции; действуют прежние
+read-only backup/local restore разрешения. Настройки среды не менялись.
+
+Повторный фиксированный project identity GET 200 и read-only snapshot 201 прошли;
+новые оригиналы+manifest+export receipt приватны, вне checkout, 0700/0600.
+Offline restore четырёх app-таблиц passed: точное совпадение, FK/NOT NULL/RLS,
+репетиция 001–003 и локальный CAS с откатом. Числа истории, IDs, хеши настоящего
+снимка и количества не выведены в чат/репозиторий. Это не полный Auth restore.
+Повторный catalog+membership inspection подтвердил исходную форму таблиц и
+allowlisted helper; production queries только read_only, никаких DDL/DML.
+
+Владелец сообщил свежие обычные JSON iPhone/Mac/Windows. Каждый используемый
+профиль требует raw+ordinary pair и закрытой сверки; это ещё не done. Копия
+сервера у владельца вне temporary worker и внешние writers остаются открытыми.
+Исправлены устаревшие ссылки SYNC_SERVER/DEVICE_ACCEPTANCE: первые inspections
+уже были, 72-touch квитанция историческая, фактический клиент остаётсяSHA 9f3b79e.
+Функциональный код не менялся, общий 542-test результат `9747c5e` не переносился
+на иной HTML; HTML тот же. Итоговое разрешение на установку не запрашивалось.
