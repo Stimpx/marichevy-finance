@@ -21,6 +21,7 @@ STATIC = {'index.html', 'favicon.svg', 'favicon.ico', 'favicon-32.png', 'apple-t
 OPERATOR = {
     'server/001_family_state_cas.sql', 'server/002_restrict_table_capabilities.sql',
     'server/003_bound_membership_lookup.sql', 'server/activate_household.sql',
+    'server/activate_household_api.sql',
     'server/rollback_household.sql', 'docs/RELEASE_RUNBOOK.md',
     'docs/PRIVATE_RESTORE_ACCEPTANCE.md', 'docs/DEVICE_QUEUE_CAPTURE_MAC_RU.md',
     'docs/LOCAL_QUEUE_BACKUP_RU.md', 'docs/SYNC_SERVER.md',

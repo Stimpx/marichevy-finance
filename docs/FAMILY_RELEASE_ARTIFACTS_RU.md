@@ -13,13 +13,23 @@
 | --- | --- |
 | `family-static.zip` | Только шесть файлов сайта: `index.html`, `favicon.svg`, `favicon.ico`, `favicon-32.png`, `apple-touch-icon.png`, `CNAME`. |
 | `family-static.MANIFEST.json` | Внешний список SHA-256 этих шести файлов, SHA/размер ZIP, Git HEAD и признак незакоммиченных изменений. Внутри статического ZIP нет manifest или других дополнительных файлов. |
-| `family-operator.zip` | Только SQL 001–003, шаблоны активации/возврата и перечисленные ниже инструкции для сопровождающего. На сайт этот пакет не выкладывают. |
+| `family-operator.zip` | Только SQL 001–003, psql-шаблоны активации/возврата, параметризованная API-активация и перечисленные ниже инструкции для сопровождающего. На сайт этот пакет не выкладывают. |
 | `family-operator.MANIFEST.json` | Внешний список SHA-256 операторских файлов и ZIP, с той же идентификацией исходного кандидата. |
 
 Операторские инструкции: `RELEASE_RUNBOOK.md`, `PRIVATE_RESTORE_ACCEPTANCE.md`,
 `DEVICE_QUEUE_CAPTURE_MAC_RU.md`, `LOCAL_QUEUE_BACKUP_RU.md`, `SYNC_SERVER.md`,
 `PRODUCTION_SCHEMA_FINDINGS.md` и этот документ, все из `docs/`.
 Точный список закреплён в `OPERATOR_FILES` и проверяется тестом.
+
+`server/activate_household_api.sql` — отдельное одно SQL-выражение для четырёх
+связанных параметров Management API: проверенное имя БД, настроенная семья,
+проверенная revision и PostgreSQL SHA-256 от data::text. Требует postgres и
+read_only:false, блокирует строку и атомарно проверяет точную сохранность JSON,
+времени/автора, ожидаемое увеличение revision и очищенный receipt. Это не RPC
+приложения и не универсальный SQL executor. При неоднозначном HTTP-ответе нельзя
+автоматически повторять активацию или придумывать rollback anchor. Receipt
+сохраняется закрыто до публикации клиента. Psql-шаблон по-прежнему нельзя
+отправлять как готовое тело Management API.
 
 Ни один пакет не включает `public/`, account gateway, SQL 004, отдельную
 регистрацию публичных аккаунтов, FREE-документы, `preview/`, демо, `.env`, Git,

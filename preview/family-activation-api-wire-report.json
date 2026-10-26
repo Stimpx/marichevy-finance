@@ -1,0 +1,25 @@
+{
+  "activation_bound_parameters": 4,
+  "activation_http_status": 201,
+  "activation_query_count": 1,
+  "activation_sql_sha256": "7fc72248cd65e790dfec12abc4da1811ae2146f414b8be46cd5cd7ae5244e248",
+  "checks": [
+    "fixed healthy project and exact known two-family three-user V2 fixture verified",
+    "reviewed capability and membership hardening verified before metadata writes",
+    "actual Management API write context is postgres with read_only off",
+    "exact reviewed sync guard and sole enabled row trigger verified",
+    "one guarded fixture-only protocol lowering preserves exact JSON text time and author",
+    "exact SQL artifact accepted as one Management API query with four bound parameters",
+    "actual API activation preserves exact JSON text time author and advances revision once",
+    "other fictional family membership Auth inventory and V2 fixture remain unchanged"
+  ],
+  "fixture_final_protocol_2": true,
+  "fixture_only": true,
+  "fixture_version": 2,
+  "format": "marichevy-family-activation-api-wire-report-v1",
+  "observed_at_utc": "2026-10-26T20:56:37.486804+00:00",
+  "outcome": "passed",
+  "production_tested": false,
+  "project_ref": "iqpoxphtvtogjowruufe",
+  "recovery_used": false
+}
