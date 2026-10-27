@@ -26,14 +26,59 @@ if ! cd "$(/usr/bin/dirname "$0")" 2>/dev/null; then
 fi
 task_addon=$(pwd -P)
 task_parent=$(/usr/bin/dirname "$task_addon")
-if [ -f "$task_parent/mac-private-backup-helper-v95/MANIFEST.json" ]; then
+# HELPER_FOLDER_SELECTION_BEGIN
+task_helper_folder_valid() {
+  [ -d "$1" ] && [ ! -L "$1" ] &&
+    [ -f "$1/Start Mac backup.command" ] && [ ! -L "$1/Start Mac backup.command" ] &&
+    [ -f "$1/MANIFEST.json" ] && [ ! -L "$1/MANIFEST.json" ] &&
+    [ -d "$1/runtime" ] && [ ! -L "$1/runtime" ] &&
+    [ -d "$1/runtime/$task_arch" ] && [ ! -L "$1/runtime/$task_arch" ] &&
+    [ -f "$1/runtime/$task_arch/node" ] && [ -x "$1/runtime/$task_arch/node" ] &&
+    [ ! -L "$1/runtime/$task_arch/node" ]
+}
+task_choose_helper_script='on run
+try
+set selectedFolder to choose folder with prompt "Выбери РАСПАКОВАННУЮ папку старого помощника резервной копии mac-private-backup-helper-v95. Внутри должны быть Start Mac backup.command и папка runtime." default location (path to downloads folder)
+return POSIX path of selectedFolder
+on error number -128
+return "helper-selection-cancelled"
+end try
+end run'
+task_wrong_helper_script='on run
+try
+display dialog "Нужна папка старого помощника резервной копии, в которой есть Start Mac backup.command и папка runtime. Выбранная папка для этого запуска не подходит. Выбери другую папку; начинать заново не нужно." buttons {"Завершить", "Выбрать другую папку"} default button "Выбрать другую папку" cancel button "Завершить" with title "Выбор помощника резервной копии"
+return "choose-again"
+on error number -128
+return "helper-selection-cancelled"
+end try
+end run'
+if task_helper_folder_valid "$task_parent/mac-private-backup-helper-v95"; then
   task_bundle="$task_parent/mac-private-backup-helper-v95"
 else
-  printf '%s\n' 'Скопируй путь к РАСПАКОВАННОЙ папке mac-private-backup-helper-v95, которая уже работала на этом Mac.'
-  printf '%s\n' 'Нужна папка программы, не профиль Chrome и не файл резервной копии.'
-  printf '%s' 'Путь к папке помощника: '
-  IFS= read -r task_bundle
+  printf '%s\n' 'Этап: выбор папки исходного помощника'
+  while :; do
+    task_bundle=$(/usr/bin/env -i PATH=/usr/bin:/bin:/usr/sbin:/sbin LANG=ru_RU.UTF-8 /usr/bin/osascript -e "$task_choose_helper_script" 2>/dev/null) || {
+      printf '%s\n' 'Результат: failed' 'Коды: verification-helper-selection-failed'; task_finish;
+    }
+    if [ "$task_bundle" = helper-selection-cancelled ]; then
+      printf '%s\n' 'Результат: failed' 'Коды: verification-helper-selection-cancelled'; task_finish
+    fi
+    task_bundle=${task_bundle%/}
+    if task_helper_folder_valid "$task_bundle"; then
+      break
+    fi
+    task_folder_action=$(/usr/bin/env -i PATH=/usr/bin:/bin:/usr/sbin:/sbin LANG=ru_RU.UTF-8 /usr/bin/osascript -e "$task_wrong_helper_script" 2>/dev/null) || {
+      printf '%s\n' 'Результат: failed' 'Коды: verification-helper-selection-failed'; task_finish;
+    }
+    if [ "$task_folder_action" = helper-selection-cancelled ]; then
+      printf '%s\n' 'Результат: failed' 'Коды: verification-helper-selection-cancelled'; task_finish
+    fi
+    if [ "$task_folder_action" != choose-again ]; then
+      printf '%s\n' 'Результат: failed' 'Коды: verification-helper-selection-failed'; task_finish
+    fi
+  done
 fi
+# HELPER_FOLDER_SELECTION_END
 task_node="$task_bundle/runtime/$task_arch/node"
 task_bootstrap="$task_addon/app/mac-bootstrap.cjs"
 if [ -L "$task_bundle" ] || [ ! -f "$task_bundle/MANIFEST.json" ] || [ -L "$task_node" ] || [ ! -x "$task_node" ] || [ -L "$task_bootstrap" ] || [ ! -f "$task_bootstrap" ]; then
