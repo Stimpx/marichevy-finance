@@ -32,6 +32,8 @@ class DrillHelpLayout(unittest.TestCase):
                         modal:rect(modal),row:rect(row),date:rect(row.querySelector('.v85-drill-date')),
                         name:rect(row.querySelector('.v85-drill-name')),
                         amount:rect(row.querySelector('.v84-drill-sum')),
+                        details:row.querySelector('.v85-drill-details')?
+                          rect(row.querySelector('.v85-drill-details')):null,
                         buttons:[...row.querySelectorAll('.v96-drill-entry-actions button')].map(rect)}));
                     }''')
                     self.assertGreater(len(rows), 0)
@@ -47,6 +49,19 @@ class DrillHelpLayout(unittest.TestCase):
                         self.assertLessEqual(min(abs(row['amount']['y'] - row['name']['y']),
                             abs(row['amount']['y'] - row['date']['y'])), 10,
                             'amount must share the first text row baseline')
+                        if width >= 1024:
+                            # Equal top edges do not align a short amount with
+                            # a taller touch target. Their visual centres must
+                            # share the title line, with metadata underneath.
+                            centre = lambda item: item['y'] + item['h'] / 2
+                            for element in [row['date'], row['name'], *row['buttons']]:
+                                self.assertLessEqual(abs(centre(element) - centre(row['amount'])), 2,
+                                    'wide-row title, amount and action controls must share a visual centre')
+                            if row['details']:
+                                self.assertGreaterEqual(row['details']['y'],
+                                    max(item['bottom'] for item in
+                                        [row['date'], row['name'], row['amount'], *row['buttons']]),
+                                    'metadata must sit below the aligned primary line')
                         for element in [row['date'], row['name'], row['amount'], *row['buttons']]:
                             self.assertGreaterEqual(element['x'], row['modal']['x'] - 1)
                             self.assertLessEqual(element['right'], row['modal']['right'] + 1)
