@@ -92,7 +92,8 @@ class ResponsiveEditorLayout(unittest.TestCase):
             .map(id=>document.getElementById(id)).filter(el=>el.getBoundingClientRect().width);
           const canvas=document.createElement('canvas').getContext('2d');
           const fields=controls.map(el=>{
-            const style=getComputedStyle(el);canvas.font=style.font;
+            const style=getComputedStyle(el);canvas.font=style.font||`${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+            canvas.letterSpacing=style.letterSpacing==='normal'?'0px':style.letterSpacing;
             const label=el.tagName==='SELECT'?el.selectedOptions[0].textContent:
               el.type==='date'?'27.10.2026':'';
             return {id:el.id,...rect(el),required:label?canvas.measureText(label).width+
@@ -176,7 +177,9 @@ class ResponsiveEditorLayout(unittest.TestCase):
                   const front=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);
                   return r.top>=0&&r.bottom<=innerHeight&&el.contains(front)}'''))
                 self.assertTrue(save.evaluate('''el=>{const style=getComputedStyle(el);
-                  const ctx=document.createElement('canvas').getContext('2d');ctx.font=style.font;
+                  const ctx=document.createElement('canvas').getContext('2d');
+                  ctx.font=style.font||`${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+                  ctx.letterSpacing=style.letterSpacing==='normal'?'0px':style.letterSpacing;
                   return ctx.measureText(el.textContent.trim()).width <= el.clientWidth-
                     parseFloat(style.paddingLeft)-parseFloat(style.paddingRight)+1}'''),
                     'save label must remain readable as a whole word at enlarged text')
