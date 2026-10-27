@@ -508,7 +508,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover,input[type="month"]:
  #history .filters>.v75-all-dates{width:100%;margin:0}
 }
 /* Keep each operation's amount and actions visible on tablets and laptops. */
-@media(max-width:1500px){
+@media(max-width:1700px){
  .v76-history-wrap{border:0;overflow:visible;background:transparent}
  .v76-history-table{min-width:0;width:100%;border-collapse:separate;border-spacing:0 10px;table-layout:auto}
  .v76-history-table colgroup,.v76-history-table thead{display:none}
@@ -1804,6 +1804,74 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 @media(max-width:1100px){.v99-entry-direction-tiles{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-width:600px){.v99-entry-direction-tiles{grid-template-columns:repeat(3,minmax(0,1fr))}.v99-entry-direction{font-size:12px;padding:10px 6px}.v99-direction-editor{padding:12px}.v99-direction-editor .actions>.btn{min-width:0;white-space:normal}}
 /* V99_ENTRY_DIRECTIONS_STYLE_END */
+</style>
+<style id="v100ResponsiveTransactions">
+/* Size transaction controls by the space inside their dialog, not the page. */
+#editModal{padding:16px;align-items:center;overscroll-behavior:contain}
+#editModal>.modal{width:min(860px,100%);max-width:100%;max-height:calc(100dvh - 32px);padding:clamp(18px,3vw,28px);overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable;container-type:inline-size;container-name:v100edit}
+#editModal h2{font-size:clamp(22px,2.5vw,28px);line-height:1.25;margin:0 0 20px}
+#editForm .form-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 20px;align-items:start}
+#editForm .field{min-width:0;margin:0}
+#editForm .field label{min-height:1.4em;line-height:1.4;margin:0 0 7px;font-size:13px}
+#editForm .field input,#editForm .field select{font-size:16px;min-height:50px;width:100%;min-width:0}
+#editForm .v100-edit-store{grid-column:1/-1}
+#editForm .v96-amount-tools{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+#editForm .v96-amount-tools button{flex:0 1 auto;min-height:44px;padding:8px 10px;font-size:12px;line-height:1.3;white-space:normal;overflow-wrap:anywhere}
+#editForm .v96-clipboard-status:empty{display:none}
+#editModal>.modal>.actions{gap:10px;margin-top:20px}
+#editModal>.modal>.actions .btn{min-height:46px;min-width:120px;white-space:normal}
+#editForm input[type=date]{min-inline-size:0;padding-inline:12px}
+#editForm input[type=date]::-webkit-calendar-picker-indicator{padding:4px;margin-left:4px;flex:none}
+@container v100edit (max-width:520px){#editForm .form-grid{grid-template-columns:minmax(0,1fr)}#editForm .field.full,#editForm .v100-edit-store{grid-column:1}}
+@media(max-width:600px){#editModal{padding:10px}#editModal>.modal{padding:18px 16px;max-height:calc(100dvh - 20px);border-radius:20px}#editModal h2{margin-bottom:16px}#editForm .form-grid{grid-template-columns:minmax(0,1fr);gap:14px}#editModal>.modal>.actions .btn{flex:1 1 8.5em;min-width:0;word-break:normal;overflow-wrap:normal}}
+/* The new-operation form needs the same readable amount/tool widths. */
+#today .v91-entry{container-type:inline-size;container-name:v100entry}
+#today .v91-form{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}
+#today .v91-form>.v95-amount,#today .v91-form>.v91-category{grid-column:auto}
+#today .v91-form>.v95-operation{width:min(28em,100%);max-width:100%;grid-column:1/-1}
+#today .v91-form .v96-amount-tools{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+#today .v91-form .v96-amount-tools button{flex:0 1 auto;min-height:44px;padding:8px 10px;font-size:12px;line-height:1.3;white-space:normal;overflow-wrap:anywhere}
+#today .v91-form .v96-clipboard-status:empty{display:none}
+@container v100entry (max-width:34em){#today .v91-form{grid-template-columns:minmax(0,1fr)}#today .v91-form>.v95-amount,#today .v91-form>.v91-category{grid-column:1}}
+@media(max-width:600px){#today .v91-form{grid-template-columns:minmax(0,1fr)}#today .v91-form>.v95-amount,#today .v91-form>.v91-category{grid-column:1}}
+/* Filters wrap before their ordinary labels become abbreviated. */
+#history .filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(15em,100%),1fr));gap:10px;align-items:start}
+#history .filters>input,#history .filters>select{width:100%;max-width:100%;min-width:0;min-height:48px;font-size:15px;flex:none}
+#history .filters>#fSearch{grid-column:1/-1}
+#history .filters select{padding-right:38px}
+#history .filters>#fMonth{grid-column:auto}
+/* Text actions use their own width; icon actions remain reachable together. */
+#history .v76-col-actions{width:300px}
+#history .v76-action-group{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:7px}
+#history .v76-action-group .btn{flex:0 1 auto;width:auto;min-height:44px;padding:8px 11px;font-size:12px;line-height:1.35;overflow-wrap:normal}
+#history .v100-history-icon-actions{display:inline-flex;flex:0 0 auto;align-items:center;gap:6px;max-width:100%}
+#history .v76-action-group .btn[data-action="edit"],#history .v76-action-group .btn[data-action="delete"]{flex:0 0 44px;width:44px;min-width:44px;padding:9px}
+@media(max-width:1700px){
+ #history .v76-history-table{display:block;border:0}
+ #history .v76-history-table tbody{display:grid;gap:12px}
+ #history .v76-history-table tr.v76-entry-row{margin:0;grid-template-columns:minmax(0,1fr) minmax(0,.7fr);gap:6px 14px;box-shadow:none}
+ #history .v76-history-table td.v76-amount{min-width:0;max-width:100%;font-size:17px!important;white-space:normal!important;overflow-wrap:anywhere;text-align:right}
+ #history .v76-action-group{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:7px}
+ #history .v76-action-group .btn{flex:0 1 auto;width:auto;min-height:44px;padding:8px 11px;font-size:12px;line-height:1.35;overflow-wrap:normal}
+ #history .v76-action-group .btn[data-action="edit"],#history .v76-action-group .btn[data-action="delete"]{flex:0 0 44px;width:44px;min-width:44px;padding:9px}
+ #history .v76-history-table td.v76-actions{padding-top:10px!important}
+}
+@media(min-width:700px) and (max-width:1700px){
+ #history .v76-history-table tr.v76-entry-row{padding:16px 18px}
+ #history .v76-history-table td.v76-shop{grid-column:2;grid-row:3;text-align:right;overflow-wrap:anywhere}
+ #history .v76-history-table td.v76-comment{grid-row:4}
+ #history .v76-history-table td.v76-actions{grid-row:5}
+}
+@media(max-width:600px){#history .filters{grid-template-columns:minmax(0,1fr)}#history .filters>#fSearch{grid-column:1}#history .v76-history-table tr.v76-entry-row{padding:14px 12px}#history .v76-action-group{gap:6px}#history .v76-action-group .btn{font-size:12px;padding-inline:9px}}
+/* Navigation text can wrap without shifting out of the sidebar. */
+.side{scrollbar-gutter:stable}
+.side .brand{min-width:0;max-width:100%;white-space:normal;align-items:flex-start}
+.side .brand-heading{min-width:0;white-space:normal;overflow-wrap:anywhere;line-height:1.25}
+.side .brand-heading small{white-space:normal;overflow-wrap:anywhere}
+.side .side-edition{white-space:normal;flex-wrap:wrap;line-height:1.5}
+#nav,#nav button,#nav .v81-nav-label{min-width:0;max-width:100%}
+#nav button{transform:none;white-space:normal}
+#nav .v81-nav-label{overflow-wrap:anywhere;text-align:left}
 </style>
 </head>
 <body>
@@ -4509,13 +4577,13 @@ function openEdit(id,returnDrill=null){
  v96EditReturnContext=returnDrill&&['group','person','direction'].includes(returnDrill.mode)?{...returnDrill}:null;
  document.getElementById('editForm').innerHTML=`<div class="form-grid">
  <div class="field"><label>Тип</label><select id="xType"><option value="expense">Расход</option><option value="income">Доход</option><option value="transfer">Перевод</option><option value="cash">Наличные</option></select></div>
- <div class="field"><label>Сумма</label><input id="xAmount" type="text" inputmode="decimal" maxlength="24" value="${esc(e.amount)}">${v96AmountToolsHtml('xAmount')}</div>
+ <div class="field v100-edit-amount"><label>Сумма</label><input id="xAmount" type="text" inputmode="decimal" maxlength="24" value="${esc(e.amount)}">${v96AmountToolsHtml('xAmount')}</div>
  <div class="field"><label>Категория</label><select id="xCat">${categoryOptions(e.category)}</select></div>
  <div class="field v81-edit-detail"><label for="xSubcategory">Уточнение расхода</label><select id="xSubcategory"></select></div>
  <div class="field v81-edit-detail"><label for="xBeneficiary">Для кого или чего?</label><select id="xBeneficiary"></select></div>
  <div class="field" id="v86EditWhoField"><label>Кто получил доход?</label><select id="xWho">${editPeople.map(x=>`<option value="${esc(x)}"${x===recordedWho?' selected':''}>${esc(x||'Не указано')}</option>`).join('')}</select></div>
  <div class="field"><label for="xDate">Дата</label><input id="xDate" type="date" value="${esc(e.date)}" aria-describedby="xDateError"><p id="xDateError" class="error" role="alert" hidden></p></div>
- <div class="field"><label>Место / источник</label><input id="xStore" value="${esc(e.store)}"></div>
+ <div class="field v100-edit-store"><label>Место / источник</label><input id="xStore" value="${esc(e.store)}"></div>
  <div class="field full"><label for="xComment">Комментарий <span class="v76-optional">· необязательно</span></label><input id="xComment" maxlength="200" value="${esc(e.comment)}"></div></div>`;
  v96InstallMerchantAutocomplete('xStore');
  document.getElementById('xType').value=e.type;v81FillDetails('x',e.category,e.subcategory||'',v86ExpenseTarget(e));
@@ -4826,7 +4894,7 @@ function renderHistory(){
    <td data-label="Место / источник" class="v76-shop"><span class="v96-merchant-cell">${v96MerchantBadge(shop)}<span class="v76-ellipsis" title="${safeFull(shop)}">${safeFull(v96MerchantDisplayName(shop)||'—')}</span></span></td>
    <td data-label="Комментарий" class="v76-comment"><span class="v76-ellipsis" title="${safeFull(comment)}">${safeFull(comment||'—')}</span></td>
    <td data-label="Сумма" class="v76-amount ${e.type==='income'?'money-green':e.type==='expense'?'money-red':''}">${amountText(e)}</td>
-   <td data-label="Действия" class="v76-actions"><div class="v76-action-group"><button type="button" class="btn small" ${recordAction('entry-repeat',e.id)}>Повторить</button><button type="button" class="btn small" ${recordAction('favorite-from-entry',e.id)}>В избранное</button><button class="btn small" aria-label="Редактировать операцию" title="Редактировать" data-action="edit" data-id="${esc(e.id)}"><svg class="v83-line-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L9 17l-4 1 1-4z"/></svg></button><button class="btn small danger" aria-label="Удалить операцию" title="Удалить" data-action="delete" data-id="${esc(e.id)}"><svg class="v83-line-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 14h10l1-14M9 7V4h6v3"/></svg></button></div></td>
+   <td data-label="Действия" class="v76-actions"><div class="v76-action-group"><button type="button" class="btn small" ${recordAction('entry-repeat',e.id)}>Повторить</button><button type="button" class="btn small" ${recordAction('favorite-from-entry',e.id)}>В избранное</button><span class="v100-history-icon-actions"><button class="btn small" aria-label="Редактировать операцию" title="Редактировать" data-action="edit" data-id="${esc(e.id)}"><svg class="v83-line-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L9 17l-4 1 1-4z"/></svg></button><button class="btn small danger" aria-label="Удалить операцию" title="Удалить" data-action="delete" data-id="${esc(e.id)}"><svg class="v83-line-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 14h10l1-14M9 7V4h6v3"/></svg></button></span></div></td>
   </tr>`
  }).join('')||'<tr class="v76-empty-row"><td colspan="8" class="empty">Операций не найдено. Попробуйте изменить фильтры или выберите «Все даты».</td></tr>';
 }
