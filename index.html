@@ -1919,6 +1919,20 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 #help .v96-help-category-grid{grid-template-columns:repeat(auto-fit,minmax(min(23em,100%),1fr))}
 @media(max-width:600px){#help .v96-help-topic>.v96-help-body{padding-inline-end:var(--v96-help-inset)}#help .v96-help-topic>summary{padding-inline:var(--v96-help-inset)}}
 </style>
+<style id="v102DateActionsAndHelpSurface">
+/* Family badges have their own column, independent of their label length. */
+#birthdayList{container-type:inline-size;container-name:v102dates}
+#dates .birthday-row-family .birthday-row-actions{font-size:12px;width:20em;max-width:100%;container-type:inline-size;container-name:v102dateactions}
+#dates .birthday-row-family .birthday-actions{display:grid;grid-template-columns:minmax(0,8em) minmax(0,1fr);align-items:center;justify-content:stretch;gap:8px;width:100%}
+#dates .birthday-row-family .birthday-actions .btn{display:inline-flex;align-items:center;justify-content:center;width:100%;min-width:0;min-height:44px;white-space:normal;word-break:normal;overflow-wrap:normal;line-height:1.4}
+#dates .birthday-row-family .birthday-family-badge{width:100%;margin-left:0;justify-content:center;white-space:normal;word-break:normal;overflow-wrap:normal;line-height:1.4;text-align:center}
+#dates .birthday-row:not(.birthday-row-family) .birthday-actions>.btn{flex:0 0 auto;min-width:max-content;max-width:100%;white-space:normal;line-height:1.4}
+@container v102dateactions (max-width:18em){#dates .birthday-row-family .birthday-actions{grid-template-columns:minmax(0,1fr)}#dates .birthday-row-family .birthday-family-badge{justify-content:flex-start;text-align:left;width:auto;justify-self:start}}
+@media(min-width:761px){@container v102dates (max-width:60em){#dates .birthday-row{grid-template-columns:72px minmax(0,1fr)!important}#dates .birthday-row-actions{grid-column:2!important;grid-row:2}#dates .birthday-actions{justify-content:flex-start}}}
+/* The help cards fill the page; only the prose retains a readable measure. */
+#help.v96-help{width:100%;max-width:none;margin-inline:0}
+#help .v96-help-hero>p{max-inline-size:min(100%,78ch)}
+</style>
 </head>
 <body>
 <noscript><div style="padding:14px;background:#fff3cd;color:#664d03;text-align:center;font:600 14px/1.4 system-ui">Для работы «Маричевы · Траты.Банк» необходимо включить JavaScript.</div></noscript>
