@@ -1876,11 +1876,13 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 <style id="v101ReadableDrillAndHelp">
 /* Keep a transaction's amount and actions on the same reading line. */
 #v84DrillModal .v84-modal{width:min(920px,100%);max-height:calc(100dvh - 40px);container-type:inline-size;container-name:v101drill;scrollbar-gutter:stable}
-#v84DrillEntries .v85-drill-entry{grid-template-columns:6.5em minmax(0,1fr) max-content max-content;grid-template-areas:"date content amount actions";align-items:start;gap:12px;padding:14px 0}
-#v84DrillEntries .v85-drill-date{grid-area:date;line-height:1.5;padding-top:3px}
-#v84DrillEntries .v85-drill-content{grid-area:content;min-width:0}
-#v84DrillEntries .v85-drill-entry>.v84-drill-sum{grid-area:amount;font-size:15px;line-height:1.5;padding-top:2px;max-width:100%;white-space:normal;overflow-wrap:anywhere}
-#v84DrillEntries .v96-drill-entry-actions{grid-area:actions;display:flex;flex-direction:row;flex-wrap:wrap;align-items:flex-start;justify-content:flex-end;gap:7px;min-width:0;max-width:100%}
+#v84DrillEntries .v85-drill-entry{grid-template-columns:6.5em minmax(0,1fr) max-content max-content;grid-template-areas:"date name amount actions" ". details details details";align-items:center;gap:6px 12px;padding:14px 0}
+#v84DrillEntries .v85-drill-date{grid-area:date;line-height:1.5;padding-top:0}
+#v84DrillEntries .v85-drill-content{display:contents}
+#v84DrillEntries .v85-drill-name{grid-area:name;min-width:0}
+#v84DrillEntries .v85-drill-details{grid-area:details;margin-top:0}
+#v84DrillEntries .v85-drill-entry>.v84-drill-sum{grid-area:amount;font-size:15px;line-height:1.5;padding-top:0;max-width:100%;white-space:normal;overflow-wrap:anywhere}
+#v84DrillEntries .v96-drill-entry-actions{grid-area:actions;display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:7px;min-width:0;max-width:100%}
 #v84DrillEntries .v96-drill-entry-actions .btn{flex:0 1 auto;min-height:44px;font-size:12px;line-height:1.35;padding:9px 11px;white-space:normal;word-break:normal;overflow-wrap:normal}
 #v84DrillModal .v84-drill-summary strong{max-width:100%;overflow-wrap:anywhere}
 #v84DrillModal .v84-drill-filter button{max-width:100%;white-space:normal;line-height:1.4;text-align:left;overflow-wrap:anywhere}
@@ -1889,14 +1891,14 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 #v81LifeAnalytics .v81-life-summary>div{min-width:0}
 #v81LifeAnalytics .v81-life-summary small,#v81LifeAnalytics .v81-life-summary strong,#v81LifeAnalytics .v81-life-summary span{max-width:100%;overflow-wrap:anywhere}
 @container v101drill (max-width:48em){
- #v84DrillEntries .v85-drill-entry{grid-template-columns:6.5em minmax(0,1fr) max-content;grid-template-areas:"date content amount" ". actions actions";row-gap:8px}
+ #v84DrillEntries .v85-drill-entry{grid-template-columns:6.5em minmax(0,1fr) max-content;grid-template-areas:"date name amount" ". details details" ". actions actions";row-gap:8px}
  #v84DrillEntries .v96-drill-entry-actions{justify-content:flex-start}
 }
 @media(max-width:900px){
- #v84DrillEntries .v85-drill-entry{grid-template-columns:6.5em minmax(0,1fr) max-content;grid-template-areas:"date content amount" ". actions actions";row-gap:8px}
+ #v84DrillEntries .v85-drill-entry{grid-template-columns:6.5em minmax(0,1fr) max-content;grid-template-areas:"date name amount" ". details details" ". actions actions";row-gap:8px}
  #v84DrillEntries .v96-drill-entry-actions{justify-content:flex-start}
 }
-@container v101drill (max-width:34em){#v84DrillEntries .v85-drill-entry{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"date amount" "content content" "actions actions"}}
+@container v101drill (max-width:34em){#v84DrillEntries .v85-drill-entry{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"date amount" "name name" "details details" "actions actions"}}
 @media(max-width:600px){
  #v84DrillModal{padding:10px}
  #v84DrillModal .v84-modal{padding:18px 16px;max-height:calc(100dvh - 20px)}
@@ -1905,7 +1907,7 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
  #v84DrillModal .v84-drill-summary{grid-template-columns:repeat(auto-fit,minmax(min(8em,100%),1fr));gap:8px}
  #v84DrillModal .v84-drill-summary>div:first-child{grid-column:1/-1}
  #v84DrillModal .v84-drill-summary strong{font-size:18px}
- #v84DrillEntries .v85-drill-entry{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"date amount" "content content" "actions actions"}
+ #v84DrillEntries .v85-drill-entry{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"date amount" "name name" "details details" "actions actions"}
 }
 /* The heading, prose and lists share one readable, centered help surface. */
 #help.v96-help{width:100%;max-width:min(100%,90ch);margin-inline:auto}
