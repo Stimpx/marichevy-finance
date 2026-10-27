@@ -70,9 +70,11 @@ class DrillHelpLayout(unittest.TestCase):
                     self.assertEqual(before, page.evaluate('JSON.stringify(state)'))
                     context.close()
 
-    def test_expanded_help_has_a_readable_measure_and_consistent_gutters(self):
-        for width, height in layouts.PROFILES:
-            with self.subTest(width=width, height=height):
+    def test_expanded_help_text_fills_its_card_with_consistent_gutters(self):
+        profiles = [(width, height, 1) for width, height in layouts.PROFILES]
+        profiles += [(320, 740, 2), (820, 1180, 2), (1440, 900, 1.5)]
+        for width, height, scale in profiles:
+            with self.subTest(width=width, height=height, text_scale=scale):
                 page, context = self.page(width, height)
                 before = page.evaluate('JSON.stringify(state)')
                 page.evaluate('''() => {
@@ -80,35 +82,45 @@ class DrillHelpLayout(unittest.TestCase):
                     document.getElementById(id).open=true;
                   document.querySelector('#help .v96-help-category').open=true;
                 }''')
+                if scale != 1:
+                    layouts.enlarge_text(page, scale)
                 geometry = page.evaluate('''() => {
                   const rect=el=>{const r=el.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,right:r.right}};
-                  const context=document.createElement('canvas').getContext('2d');
+                  const contentWidth=el=>{const s=getComputedStyle(el);return el.clientWidth-
+                    parseFloat(s.paddingLeft)-parseFloat(s.paddingRight)};
                   const body=document.querySelector('#help-start > .v96-help-body');
-                  const para=body.querySelector('p'),style=getComputedStyle(para);
-                  context.font=style.font||`${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
-                  const unit=context.measureText('0').width;
+                  const para=body.querySelector('p');
                   const blocks=[...document.querySelectorAll('#help details[open] > .v96-help-body > p,'+
                     '#help details[open] > .v96-help-body > ol,'+
                     '#help details[open] > .v96-help-body > ul,'+
-                    '#help details[open] > .v96-help-body > dl')].filter(el=>el.getBoundingClientRect().height);
+                    '#help details[open] > .v96-help-body > dl,'+
+                    '#help .v96-help-hero > p:not(.v96-help-eyebrow)')].filter(el=>el.getBoundingClientRect().height);
                   const surface=document.querySelector('#help'),parent=surface.parentElement;
-                  const parentStyle=getComputedStyle(parent);
-                  return {surface:rect(surface),availableWidth:parent.clientWidth-
-                    parseFloat(parentStyle.paddingLeft)-parseFloat(parentStyle.paddingRight),
-                    paragraph:rect(para),unit,heading:rect(document.querySelector('#help-start summary h3')),
-                    blocks:blocks.map(el=>({rect:rect(el),parent:rect(el.parentElement)})),
+                  return {surface:rect(surface),availableWidth:contentWidth(parent),
+                    paragraph:rect(para),heading:rect(document.querySelector('#help-start summary h3')),
+                    textContainerWidth:contentWidth(body),textContainerFont:parseFloat(getComputedStyle(body).fontSize),
+                    paragraphAlignment:getComputedStyle(para).textAlign,
+                    listItemAlignment:getComputedStyle(body.querySelector('li')).textAlign,
+                    blocks:blocks.map(el=>({rect:rect(el),parent:rect(el.parentElement),
+                      availableWidth:contentWidth(el.parentElement)})),
                     doc:document.documentElement.scrollWidth};
                 }''')
                 self.records.append({'view': 'expanded-help-reading', 'width': width,
-                    'height': height, **geometry})
-                self.assertLessEqual(geometry['paragraph']['w'] / geometry['unit'], 94,
-                    'help lines should have a readable character measure, not span a wide dashboard')
+                    'height': height, 'text_scale': scale, **geometry})
                 self.assertLessEqual(abs(geometry['surface']['w'] - geometry['availableWidth']), 2,
-                    'help cards must use the page width; limit prose rather than the whole section')
+                    'help cards must use the page width')
                 self.assertLessEqual(abs(geometry['paragraph']['x'] - geometry['heading']['x']), 2,
                     'expanded paragraphs and topic heading must share a left gutter')
                 self.assertLessEqual(geometry['doc'], width + 1)
+                has_wide_text = width > 760 and geometry['textContainerWidth'] > 45 * geometry['textContainerFont']
+                expected_alignment = ('justify',) if has_wide_text else ('left', 'start')
+                self.assertIn(geometry['paragraphAlignment'], expected_alignment,
+                    'wide help paragraphs align both edges; phones must avoid stretched word spacing')
+                self.assertIn(geometry['listItemAlignment'], expected_alignment,
+                    'numbered instructions must follow the same alignment as paragraphs')
                 for block in geometry['blocks']:
+                    self.assertLessEqual(abs(block['rect']['w'] - block['availableWidth']), 2,
+                        'help prose and lists must fill their own card instead of a narrow left column')
                     self.assertGreaterEqual(block['rect']['x'], block['parent']['x'] - 1)
                     self.assertLessEqual(block['rect']['right'], block['parent']['right'] + 1)
                     self.assertGreaterEqual(block['rect']['x'], -1)

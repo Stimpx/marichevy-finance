@@ -1,0 +1,21 @@
+{
+  "format": "marichevy-help-text-alignment-v1",
+  "status": "passed",
+  "source_html_sha256": "7845e519a01578c38c5a20f24a85745395dc48047347998a039b3c2ed9d92f30",
+  "fictional_only": true,
+  "focused_test_methods": 23,
+  "focused_suites": {
+    "public_ledger": 15,
+    "drill_help_geometry": 3,
+    "help_guide": 5
+  },
+  "help_profiles": 15,
+  "previous_r4_rejected_profiles": 9,
+  "responsive_policy": "full-width prose and lists; justify only wide text columns, start-align narrow/mobile text",
+  "visual_review": "v95-layout-r5-review.json",
+  "demo_archive_sha256": "11415d560ce0f96590ab6173d2d46508b24e76071d71b1bb8f04432197064d8e",
+  "demo_archive_bytes": 1343525,
+  "native_devices_tested": false,
+  "full_suite_repeated": false,
+  "production_changed": false
+}

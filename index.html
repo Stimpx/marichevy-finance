@@ -1909,10 +1909,13 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
  #v84DrillModal .v84-drill-summary strong{font-size:18px}
  #v84DrillEntries .v85-drill-entry{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"date amount" "name name" "details details" "actions actions"}
 }
-/* The heading, prose and lists share one readable, centered help surface. */
-#help.v96-help{width:100%;max-width:min(100%,90ch);margin-inline:auto}
+/* Help prose uses the card width and shares the heading's reading gutter. */
+#help.v96-help{width:100%;max-width:none;margin-inline:0}
 #help .v96-help-topic>.v96-help-body{padding-right:calc(var(--v96-help-inset) + var(--v96-help-marker) + var(--v96-help-gap));padding-top:6px}
-#help .v96-help-body p,#help .v96-help-body ol,#help .v96-help-body ul,#help .v96-help-body dl{max-width:100%;max-inline-size:min(100%,78ch);white-space:normal;min-width:0;overflow-wrap:anywhere}
+#help .v96-help-body,#help .v96-help-hero{container-type:inline-size;container-name:v103helptext}
+#help .v96-help-body p,#help .v96-help-body ol,#help .v96-help-body ul,#help .v96-help-body dl{width:100%;max-width:none;max-inline-size:none;white-space:normal;min-width:0;overflow-wrap:anywhere}
+#help .v96-help-body p,#help .v96-help-body li,#help .v96-help-body dd,#help .v96-help-hero>p{text-align:justify;text-align-last:start;hyphens:auto}
+@container v103helptext (max-width:45em){#help .v96-help-body p,#help .v96-help-body li,#help .v96-help-body dd,#help .v96-help-hero>p{text-align:start}}
 #help .v96-help-body>ol,#help .v96-help-body>ul{box-sizing:border-box;padding-inline-start:1.5em;padding-inline-end:0;margin-block:14px}
 #help .v96-help-body li{padding-inline-start:.2em;margin-block:.65em}
 #help .v96-help-body h4{margin-top:1.4em;margin-bottom:.5em}
@@ -1929,9 +1932,7 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 #dates .birthday-row:not(.birthday-row-family) .birthday-actions>.btn{flex:0 0 auto;min-width:max-content;max-width:100%;white-space:normal;line-height:1.4}
 @container v102dateactions (max-width:18em){#dates .birthday-row-family .birthday-actions{grid-template-columns:minmax(0,1fr)}#dates .birthday-row-family .birthday-family-badge{justify-content:flex-start;text-align:left;width:auto;justify-self:start}}
 @media(min-width:761px){@container v102dates (max-width:60em){#dates .birthday-row{grid-template-columns:72px minmax(0,1fr)!important}#dates .birthday-row-actions{grid-column:2!important;grid-row:2}#dates .birthday-actions{justify-content:flex-start}}}
-/* The help cards fill the page; only the prose retains a readable measure. */
-#help.v96-help{width:100%;max-width:none;margin-inline:0}
-#help .v96-help-hero>p{max-inline-size:min(100%,78ch)}
+@media(max-width:760px){#help .v96-help-body p,#help .v96-help-body li,#help .v96-help-body dd,#help .v96-help-hero>p{text-align:start}}
 </style>
 </head>
 <body>
