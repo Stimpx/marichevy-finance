@@ -5,23 +5,34 @@
 const FIXED_PROJECT='kqndxecziamypdjpxhyq';
 const MAX_FILE=32*1024*1024, MAX_TOTAL=128*1024*1024;
 const INPUT_SLOTS=Object.freeze([
-  Object.freeze({slot:'server',kind:'server',prompt:'Серверная копия рабочей семьи: выбери CSV или JSON.'}),
-  Object.freeze({slot:'mac-export',kind:'ordinary',prompt:'Mac / Chrome, рабочая семья: выбери обычный JSON банка.'}),
-  Object.freeze({slot:'mac-capture',kind:'capture',prompt:'Mac / Chrome, тот же профиль: выбери JSON частной очереди.'}),
-  Object.freeze({slot:'iphone-export',kind:'ordinary',prompt:'iPhone / Safari, рабочая семья: выбери обычный JSON банка.'}),
-  Object.freeze({slot:'iphone-capture',kind:'capture',prompt:'iPhone / Safari, та же вкладка: выбери JSON частной очереди.'}),
-  Object.freeze({slot:'windows-export',kind:'ordinary',prompt:'Windows / рабочий браузер, рабочая семья: выбери обычный JSON банка.'}),
-  Object.freeze({slot:'windows-capture',kind:'capture',prompt:'Windows / тот же профиль: выбери JSON частной очереди.'}),
+  Object.freeze({slot:'server',kind:'server',label:'серверная копия',prompt:'Файл 1 из 7. Серверная копия рабочей семьи: выбери CSV или JSON.'}),
+  Object.freeze({slot:'mac-export',kind:'ordinary',label:'обычный JSON Mac',prompt:'Файл 2 из 7. Mac / Chrome, рабочая семья: выбери обычный JSON банка.'}),
+  Object.freeze({slot:'mac-capture',kind:'capture',label:'очередь Mac',prompt:'Файл 3 из 7. Mac / Chrome, тот же профиль: выбери JSON частной очереди.'}),
+  Object.freeze({slot:'iphone-export',kind:'ordinary',label:'обычный JSON iPhone',prompt:'Файл 4 из 7. iPhone / Safari, рабочая семья: выбери обычный JSON банка.'}),
+  Object.freeze({slot:'iphone-capture',kind:'capture',label:'очередь iPhone',prompt:'Файл 5 из 7. iPhone / Safari, та же вкладка: выбери JSON частной очереди.'}),
+  Object.freeze({slot:'windows-export',kind:'ordinary',label:'обычный JSON Windows',prompt:'Файл 6 из 7. Windows / рабочий браузер, рабочая семья: выбери обычный JSON банка.'}),
+  Object.freeze({slot:'windows-capture',kind:'capture',label:'очередь Windows',prompt:'Файл 7 из 7. Windows / тот же профиль: выбери JSON частной очереди.'}),
 ]);
 const ATTEST_SCRIPT='on run argv\n'+
+  'try\n'+
   'display dialog "Выбирай только копии своего рабочего банка finance.marichev.pro: обычный JSON и отдельную очередь одного и того же профиля на каждом устройстве. Серверный файл должен быть выгружен из проверенного рабочего проекта Supabase. Файлы останутся на этом Mac. Продолжить?" '+
   'buttons {"Отмена", "Подтверждаю"} default button "Подтверждаю" cancel button "Отмена" with title "Частная сверка банка"\n'+
-  'return "scope-confirmed"\nend run';
+  'return "scope-confirmed"\non error number -128\nreturn "selection-cancelled"\nend try\nend run';
 const CHOOSE_SCRIPT='on run argv\n'+
+  'try\n'+
   'set selectedFile to choose file with prompt (item 1 of argv)\n'+
-  'return POSIX path of selectedFile\nend run';
+  'return POSIX path of selectedFile\non error number -128\nreturn "selection-cancelled"\nend try\nend run';
+const DUPLICATE_SCRIPT='on run argv\n'+
+  'try\n'+
+  'set explanation to "Этот файл уже выбран для другого пункта:" & return & (item 2 of argv) & return & return & '+
+  '"Сейчас запрашивается:" & return & (item 1 of argv) & return & return & '+
+  '"Предыдущие выборы сохранены. Выбери другой файл для текущего пункта или исправь прежний выбор. Переименование или копирование того же файла не заменяет копию с нужного устройства."\n'+
+  'set chosenAction to button returned of (display dialog explanation buttons {"Завершить", "Исправить прежний", "Выбрать другой"} '+
+  'default button "Выбрать другой" cancel button "Завершить" with title "Файл уже выбран")\n'+
+  'if chosenAction is "Исправить прежний" then return "correct-previous"\n'+
+  'return "choose-current"\non error number -128\nreturn "selection-cancelled"\nend try\nend run';
 const OWN_CODES=new Set(['verified-launch-required','unsupported-owner-runtime',
-  'owner-selection-cancelled','owner-selection-failed','owner-selection-invalid',
+  'owner-selection-cancelled','owner-selection-failed','owner-selection-invalid','owner-selection-timeout',
   'owner-scope-not-attested','input-path-unsafe','input-file-invalid',
   'input-file-size-limit','input-total-size-limit','input-file-changed',
   'input-file-read-failed','input-file-close-failed','duplicate-selected-file',
@@ -79,16 +90,32 @@ function createWorkflow(injected={}){
     }catch(error){
       if(error instanceof WorkflowError)throw error;
       // Do not parse stderr, which may contain a private path.
-      fail('owner-selection-cancelled');
+      fail(error?.killed===true&&error?.signal==='SIGTERM'?'owner-selection-timeout':'owner-selection-failed');
     }
   }
   async function selectInputs(){
-    if(await nativeRun(ATTEST_SCRIPT)!=='scope-confirmed')fail('owner-scope-not-attested');
-    const selected=[];
-    for(const slot of INPUT_SLOTS){
-      const filename=normalizedFile(await nativeRun(CHOOSE_SCRIPT,[slot.prompt]),path);
-      if(selected.some(item=>item.filename===filename))fail('duplicate-selected-file');
-      selected.push({slot,filename});
+    const attested=await nativeRun(ATTEST_SCRIPT);
+    if(attested==='selection-cancelled')fail('owner-selection-cancelled');
+    if(attested!=='scope-confirmed')fail('owner-scope-not-attested');
+    // Only paths and public slot labels are retained until every choice is
+    // complete. Correcting one slot never opens or reselects the other files.
+    const selected=Array(INPUT_SLOTS.length).fill(null);
+    let index=0;
+    while(index!==-1){
+      const slot=INPUT_SLOTS[index],chosen=await nativeRun(CHOOSE_SCRIPT,[slot.prompt]);
+      if(chosen==='selection-cancelled')fail('owner-selection-cancelled');
+      const filename=normalizedFile(chosen,path);
+      const previous=selected.findIndex((item,position)=>position!==index&&item?.filename===filename);
+      if(previous!==-1){
+        const action=await nativeRun(DUPLICATE_SCRIPT,[slot.prompt,INPUT_SLOTS[previous].prompt]);
+        if(action==='selection-cancelled')fail('owner-selection-cancelled');
+        if(action==='correct-previous'){index=previous;continue;}
+        if(action==='choose-current')continue;
+        fail('owner-selection-invalid');
+      }
+      selected[index]={slot,filename};
+      log('Выбран файл '+(index+1)+' из '+INPUT_SLOTS.length+': '+slot.label+'.');
+      index=selected.findIndex(item=>item===null);
     }
     return selected;
   }
@@ -261,5 +288,5 @@ async function main(options){
 module.exports=Object.freeze({main,FIXED_PROJECT,INPUT_SLOTS,MAX_FILE,MAX_TOTAL,WorkflowError,
   implementation_status:'device-workflow-ready-restore-hook-required',_createWorkflowForTests:createWorkflow,
   _identityForTests:identity,_normalizedFileForTests:normalizedFile,
-  _scriptsForTests:Object.freeze({attest:ATTEST_SCRIPT,choose:CHOOSE_SCRIPT})});
+  _scriptsForTests:Object.freeze({attest:ATTEST_SCRIPT,choose:CHOOSE_SCRIPT,duplicate:DUPLICATE_SCRIPT})});
 

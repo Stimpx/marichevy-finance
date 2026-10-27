@@ -38,6 +38,8 @@ function localFs(overrides={}){
 }
 async function fixtureWorkflow(extra={}){
   const events=[],lines=[];let choice=0,created,restoreCalls=0,readCalls=0;
+  const requests=[],plan=extra.plan?[...extra.plan]:null;
+  const originals=await Promise.all(q.files.map(filename=>fs.readFile(filename)));
   const fsApi={...fs,
     async lstat(filename,options){events.push({kind:'stat',filename});let st=mapped(await fs.lstat(filename,options));
       if(extra.sizeOverride&&q.files.includes(filename))st.size=BigInt(extra.sizeOverride);
@@ -63,14 +65,32 @@ async function fixtureWorkflow(extra={}){
     assert.equal(executable,'/usr/bin/osascript');
     assert.equal(args[0],'-e');assert.equal(args[2],'--');
     assert.equal(options.encoding,'utf8');
-    events.push({kind:'choice',index:choice});
-    if(extra.cancelAt===choice)throw new Error(q.marker+' /PRIVATE/path');
-    if(choice===0){choice++;assert.equal(args[1],api._scriptsForTests.attest);
+    events.push({kind:'choice',index:choice});const call=choice++;
+    if(extra.cancelAt===call)return {stdout:'selection-cancelled\n',stderr:''};
+    if(extra.nativeFailureAt===call){
+      const error=new Error(q.marker+' /PRIVATE/path');
+      if(extra.timeout){error.killed=true;error.signal='SIGTERM';}
+      throw error;
+    }
+    if(call===0){assert.equal(args[1],api._scriptsForTests.attest);
       return {stdout:extra.deny?'no\n':'scope-confirmed\n',stderr:''};}
+    if(plan){
+      const item=plan.shift();assert(item,'unexpected native chooser restart');
+      if(item.kind==='duplicate'){
+        assert.equal(args[1],api._scriptsForTests.duplicate);
+        assert.deepEqual(args.slice(3),[api.INPUT_SLOTS[item.current].prompt,api.INPUT_SLOTS[item.previous].prompt]);
+        requests.push({kind:'duplicate',current:item.current,previous:item.previous});
+        return {stdout:item.response+'\n',stderr:''};
+      }
+      assert.equal(item.kind,'choose');assert.equal(args[1],api._scriptsForTests.choose);
+      assert.equal(args[3],api.INPUT_SLOTS[item.slot].prompt);
+      requests.push({kind:'choose',slot:item.slot});
+      return {stdout:q.files[item.file]+'\n',stderr:''};
+    }
     assert.equal(args[1],api._scriptsForTests.choose);
-    assert.equal(args[3],api.INPUT_SLOTS[choice-1].prompt);
-    const filename=extra.duplicate&&choice===2?q.files[0]:q.files[choice-1];
-    choice++;return {stdout:filename+'\n',stderr:''};
+    assert.equal(args[3],api.INPUT_SLOTS[call-1].prompt);
+    requests.push({kind:'choose',slot:call-1});
+    return {stdout:q.files[call-1]+'\n',stderr:''};
   };
   const workflow=api._createWorkflowForTests({fs:fsApi,uid:()=>501,euid:()=>501,platform:'darwin',
     arch:'arm64',execFile,load,log:line=>lines.push(line)});
@@ -84,7 +104,8 @@ async function fixtureWorkflow(extra={}){
   };
   if(extra.restore==='failed')options.restore=async()=>{restoreCalls++;throw new Error(q.marker);};
   if(extra.restore==='unverified')options.restore=async()=>({outcome:'passed',restore_execution_verified:false});
-  return {workflow,options,events,lines,get created(){return created;},get readCalls(){return readCalls;},
+  return {workflow,options,events,lines,requests,originals,get remainingPlan(){return plan?.length??0;},
+    get created(){return created;},get readCalls(){return readCalls;},
     get restoreCalls(){return restoreCalls;}};
 }
 (async()=>{
@@ -110,6 +131,9 @@ async function fixtureWorkflow(extra={}){
     }
     assert(f.lines.every(line=>!line.includes(q.marker)&&!line.includes(q.oldRoot)));
     assert(f.lines.some(line=>line==='Коды: local-restore-not-ready'));
+    assert.deepEqual(f.lines.filter(line=>line.startsWith('Выбран файл ')),
+      api.INPUT_SLOTS.map((slot,index)=>`Выбран файл ${index+1} из 7: ${slot.label}.`));
+    assert(api.INPUT_SLOTS.every((slot,index)=>slot.prompt.startsWith(`Файл ${index+1} из 7. `)));
   }else if(mode==='cancel'){
     const f=await fixtureWorkflow({cancelAt:q.cancelAt});
     assert.equal(await f.workflow.main(f.options),1);
@@ -122,11 +146,46 @@ async function fixtureWorkflow(extra={}){
     assert.equal(f.events.filter(e=>e.kind==='choice').length,1);
     assert.equal(f.events.filter(e=>['stat','open','create'].includes(e.kind)).length,0);
     assert(f.lines.includes('Коды: owner-scope-not-attested'));
-  }else if(mode==='duplicate'){
-    const f=await fixtureWorkflow({duplicate:true});
+  }else if(mode==='native-failure'){
+    const f=await fixtureWorkflow({nativeFailureAt:q.failureAt,timeout:q.timeout});
     assert.equal(await f.workflow.main(f.options),1);
     assert.equal(f.events.filter(e=>['stat','open','create'].includes(e.kind)).length,0);
-    assert(f.lines.includes('Коды: duplicate-selected-file'));
+    assert(f.lines.includes('Коды: '+(q.timeout?'owner-selection-timeout':'owner-selection-failed')));
+    assert(!f.lines.includes('Коды: owner-selection-cancelled'));
+    assert(f.lines.every(line=>!line.includes(q.marker)));
+  }else if(mode==='duplicate-retry'||mode==='duplicate-correct-previous'||mode==='duplicate-finish'){
+    const choose=(slot,file=slot)=>({kind:'choose',slot,file});
+    const current=mode==='duplicate-correct-previous'?6:2,previous=1;
+    const recovery={kind:'duplicate',current,previous,response:
+      mode==='duplicate-retry'?'choose-current':mode==='duplicate-correct-previous'?'correct-previous':'selection-cancelled'};
+    const plan=mode==='duplicate-correct-previous'?
+      [choose(0),choose(1,6),...Array.from({length:5},(_,i)=>choose(i+2)),recovery,choose(1),choose(6)]:
+      [choose(0),choose(1),choose(2,1),recovery,...(mode==='duplicate-finish'?[]:
+        Array.from({length:5},(_,i)=>choose(i+2)))];
+    const f=await fixtureWorkflow({plan});
+    const status=await f.workflow.main(f.options);
+    assert.equal(f.remainingPlan,0);
+    assert.equal(f.requests.filter(item=>item.kind==='duplicate').length,1);
+    if(mode==='duplicate-finish'){
+      assert.equal(status,1);assert.equal(f.created,undefined);assert.equal(f.readCalls,0);
+      assert.equal(f.events.filter(e=>['stat','open','create'].includes(e.kind)).length,0);
+      assert(f.lines.includes('Коды: owner-selection-cancelled'));
+    }else{
+      assert.equal(status,2);
+      const indexes=f.requests.filter(item=>item.kind==='choose').map(item=>item.slot);
+      assert.deepEqual(indexes,mode==='duplicate-retry'?[0,1,2,2,3,4,5,6]:[0,1,2,3,4,5,6,1,6]);
+      const lastChoice=f.events.map((event,index)=>event.kind==='choice'?index:-1).filter(i=>i>=0).at(-1);
+      assert(f.events.findIndex(e=>['stat','open','create'].includes(e.kind))>lastChoice);
+      const report=JSON.parse(await fs.readFile(path.join(f.created,'verification-report.json'),'utf8'));
+      assert.equal(report.source_files.length,7);assert.equal(report.release_authorized,false);
+      for(let i=0;i<q.files.length;i++){
+        assert.equal(hash(await fs.readFile(q.files[i])),hash(f.originals[i]));
+        assert.equal(report.source_files[i].sha256,hash(f.originals[i]));
+      }
+      assert(!f.lines.includes('Коды: duplicate-selected-file'));
+    }
+    assert(f.lines.every(line=>!line.includes(q.marker)&&!line.includes(q.oldRoot)&&
+      q.files.every(filename=>!line.includes(filename))));
   }else if(mode==='duplicate-inode'){
     const f=await fixtureWorkflow({duplicateInode:true});
     assert.equal(await f.workflow.main(f.options),1);assert.equal(f.readCalls,0);
@@ -354,8 +413,20 @@ const api=require(process.argv[1]),lines=[];console.log=line=>lines.push(line);
     def test_owner_scope_confirmation_is_required(self):
         self.run_case('deny')
 
-    def test_duplicate_selection_stops_before_file_reads(self):
-        self.run_case('duplicate')
+    def test_duplicate_current_selection_retries_without_restarting_previous_slots(self):
+        self.run_case('duplicate-retry')
+
+    def test_duplicate_can_correct_previous_slot_then_return_to_first_missing(self):
+        self.run_case('duplicate-correct-previous')
+
+    def test_finishing_duplicate_recovery_never_reads_selected_files(self):
+        self.run_case('duplicate-finish')
+
+    def test_native_failure_and_timeout_are_not_reported_as_owner_cancellation(self):
+        for failure_at in (0, 1, 4):
+            for timeout in (False, True):
+                with self.subTest(failure_at=failure_at, timeout=timeout):
+                    self.run_case('native-failure', failureAt=failure_at, timeout=timeout)
 
     def test_distinct_selected_names_cannot_reuse_one_inode(self):
         self.run_case('duplicate-inode')

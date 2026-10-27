@@ -58,6 +58,10 @@ const api=require(process.argv[1]),core=require(path.join(path.dirname(process.a
 const decoder=require(path.join(path.dirname(process.argv[1]),'owner-export.cjs'));
 const adapter=require(path.join(path.dirname(process.argv[1]),'local-restore.cjs'));
 let choice=0,created,restoreCalls=0;const lines=[];
+const correctedSelection=input.mode==='duplicate-correction';
+const pickerPlan=correctedSelection?
+  [[0,0],[1,6],[2,2],[3,3],[4,4],[5,5],[6,6],['duplicate',6,1],[1,1],[6,6]]:
+  api.INPUT_SLOTS.map((slot,index)=>[index,index]);
 function rootStat(stat){return {...stat,uid:0n,isFile:()=>stat.isFile(),
   isDirectory:()=>stat.isDirectory(),isSymbolicLink:()=>stat.isSymbolicLink()};}
 const io={...fs,async lstat(filename,options){const stat=await fs.lstat(filename,options);
@@ -69,9 +73,15 @@ const workflow=api._createWorkflowForTests({fs:io,platform:'darwin',arch:'arm64'
     assert.equal(options.encoding,'utf8');
     if(choice===0){choice++;assert.equal(args[1],api._scriptsForTests.attest);
       return {stdout:'scope-confirmed\n',stderr:''};}
+    const step=pickerPlan[choice++-1];assert(step,'unexpected picker restart');
+    if(step[0]==='duplicate'){
+      assert.equal(args[1],api._scriptsForTests.duplicate);
+      assert.deepEqual(args.slice(3),[api.INPUT_SLOTS[step[1]].prompt,api.INPUT_SLOTS[step[2]].prompt]);
+      return {stdout:'correct-previous\n',stderr:''};
+    }
     assert.equal(args[1],api._scriptsForTests.choose);
-    assert.equal(args[3],api.INPUT_SLOTS[choice-1].prompt);
-    const filename=input.files[choice++-1];assert.equal(typeof filename,'string');
+    assert.equal(args[3],api.INPUT_SLOTS[step[0]].prompt);
+    const filename=input.files[step[1]];assert.equal(typeof filename,'string');
     return {stdout:filename+'\n',stderr:''};
   },
   load:filename=>{
@@ -100,16 +110,17 @@ function stable(stat){return [stat.dev,stat.ino,stat.mode,stat.uid,stat.gid,stat
         assert.equal(hash(await fs.readFile(path.join(created,name))),hash(bytes));
       }});
     }});
-  assert.equal(choice,8);assert.equal(restoreCalls,1);
+  assert.equal(choice,pickerPlan.length+1);assert.equal(restoreCalls,1);
   assert.equal(observations.created,1);assert.equal(observations.closed,true);
   assert.equal(observations.callbacks,2);assert.equal(observations.networkAttempts,0);
   assert.deepEqual(observations.closureObserved,
     ['server-restored-PRIVATE.json','server-restore-receipt-PRIVATE.json']);
-  assert.equal(result,input.mode==='matching'?0:2);
-  const expectedIssues=input.mode==='matching'?[]:
+  const matching=input.mode==='matching'||correctedSelection;
+  assert.equal(result,matching?0:2);
+  const expectedIssues=matching?[]:
     input.mode==='unknown-field'?['device-export-diverges','divergent-active-values']:
     input.mode==='pending'?['pending-acknowledgement-required']:['conflict-packets'];
-  const outcome=input.mode==='matching'?'passed':'review_required';
+  const outcome=matching?'passed':'review_required';
   const report=JSON.parse(await fs.readFile(path.join(created,'verification-report.json'),'utf8'));
   assert.equal(report.outcome,outcome);assert.deepEqual(report.issues,expectedIssues);
   assert.equal(report.restore_execution_verified,true);assert.equal(report.release_authorized,false);
@@ -157,6 +168,8 @@ function stable(stat){return [stat.dev,stat.ino,stat.mode,stat.uid,stat.gid,stat
   assert.deepEqual(lines,[
     'Этап: загрузка системного модуля',
     'Этап: выбор семи копий',
+    ...(correctedSelection?[0,1,2,3,4,5,1,6]:[0,1,2,3,4,5,6]).map(index=>
+      `Выбран файл ${index+1} из 7: ${api.INPUT_SLOTS[index].label}.`),
     'Этап: проверка выбранных файлов',
     'Этап: сравнение копий',
     'Этап: локальная проверка восстановления',
@@ -278,6 +291,9 @@ class PrivateVerificationIntegration(unittest.TestCase):
 
     def test_actual_csv_seven_file_workflow_restores_same_four_tables_after_close(self):
         self.run_case("matching")
+
+    def test_corrected_previous_selection_restores_same_actual_four_tables(self):
+        self.run_case("duplicate-correction")
 
     def test_unknown_device_field_remains_review_despite_actual_restore_success(self):
         self.run_case("unknown-field")
