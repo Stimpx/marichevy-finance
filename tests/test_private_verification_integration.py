@@ -155,6 +155,11 @@ function stable(stat){return [stat.dev,stat.ino,stat.mode,stat.uid,stat.gid,stat
   for(const flag of ['network_used','production_changed','original_files_modified',
     'supabase_auth_restored','supabase_platform_restored','release_authorized'])assert.equal(receipt[flag],false);
   assert.deepEqual(lines,[
+    'Этап: загрузка системного модуля',
+    'Этап: выбор семи копий',
+    'Этап: проверка выбранных файлов',
+    'Этап: сравнение копий',
+    'Этап: локальная проверка восстановления',
     'Результат: '+outcome,
     'Коды: '+(expectedIssues.length?expectedIssues.join(', '):'none'),
     'Частные копии и отчёт сохранены в новой папке PRIVATE-verification-… рядом с помощником.',

@@ -138,11 +138,14 @@ async function run(){
     if(process.argv.length!==3)fail('verification-arguments');
     const oldBundleRoot=process.argv[2],addonRoot=path.dirname(__dirname);
     if(oldBundleRoot===addonRoot)fail('verification-code-root');
+    console.log('Этап: проверка исходного помощника');
     await verifyOldBundle(oldBundleRoot);
+    console.log('Этап: проверка программы сверки');
     await verifyAddon(addonRoot);
     const selectedNode=path.join(oldBundleRoot,'runtime',process.arch,'node');
     if(process.execPath!==selectedNode||sha(await bytes(selectedNode))!==NODE_PINS[process.arch])fail('verification-runtime');
     clearLoaderOverrides();
+    console.log('Этап: загрузка программы сверки');
     const main=require('./mac-main.cjs'),localRestore=require('./local-restore.cjs');
     if(typeof main.main!=='function'||typeof localRestore.restore!=='function')fail('verification-entry-point');
     process.exitCode=await main.main({oldBundleRoot,addonRoot:__dirname,restore:localRestore.restore});

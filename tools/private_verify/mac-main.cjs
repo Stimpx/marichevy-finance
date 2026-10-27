@@ -178,10 +178,13 @@ function createWorkflow(injected={}){
       owner=ownerUid();
       const core=load(path.posix.join(options.addonRoot,'core.cjs'));
       const decoder=load(path.posix.join(options.addonRoot,'owner-export.cjs'));
+      log('Этап: загрузка системного модуля');
       const macos=load(path.posix.join(options.oldBundleRoot,'app','macos.cjs'));
       if(core.STATUS?.ready!==true||typeof decoder.decodeOwnerExport!=='function'||typeof macos.createPrivateDirectory!=='function')
         fail('local-core-not-ready');
+      log('Этап: выбор семи копий');
       const selected=await selectInputs(); // Every chooser finishes before input I/O.
+      log('Этап: проверка выбранных файлов');
       const proofs=[],inodes=new Set();let total=0;
       for(const item of selected){
         const proof=await inspectInput(item.filename,owner);
@@ -198,6 +201,7 @@ function createWorkflow(injected={}){
       const devices=[];
       for(let index=1;index<inputs.length;index+=2)devices.push({
         exported:core.parse(inputs[index].bytes),captured:core.parse(inputs[index+1].bytes),scope_verified_by_owner:true});
+      log('Этап: сравнение копий');
       const compared=core.compareDevices({server,devices,project:FIXED_PROJECT,household,scopeAttested:true});
       report={...compared,format:'marichevy-private-local-verification-v1',
         phase:'device-comparison-and-optional-local-restore',restore_execution_verified:false,release_authorized:false,
@@ -217,6 +221,7 @@ function createWorkflow(injected={}){
           report.issues.push('local-restore-not-ready');report.outcome='review_required';
         }else{
           let restored;
+          log('Этап: локальная проверка восстановления');
           try{restored=await options.restore({backupJson:decoded.backupJson,server,project:FIXED_PROJECT,household,
             writePrivateArtifact:(name,bytes)=>writePrivate(outputDir,name,bytes,owner)});}
           catch(_){fail('local-restore-failed');}

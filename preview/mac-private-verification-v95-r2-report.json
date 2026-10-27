@@ -1,0 +1,31 @@
+{
+  "format": "marichevy-private-verification-macos-report-v1",
+  "outcome": "built-code-only",
+  "contains_private_data": false,
+  "bytes": 4503663,
+  "sha256": "e2d688885b3f0a7ebb5510aa322ab5c531c104e1b11727f694fe26c33a8723e0",
+  "file_count": 16,
+  "manifest_sha256": "e9df28663598db9d2752507682be0bc89ee6e626112658ccf89d5c572a7dcbed",
+  "bootstrap_sha256": "9950018976c33fc1fe197ac82a7d1f790fcfb6179576e178f48725842a02c2f7",
+  "existing_helper_manifest_sha256": "5136a4d4a3c864f6643b00322bab2405b6a4efd904f169a46a9394f442f422b4",
+  "native_owner_mac_acceptance": "pending",
+  "native_owner_mac_passed": false,
+  "production_changed": false,
+  "release_authorized": false,
+  "restore_scope": "offline-four-app-tables-auth-id-stubs",
+  "supabase_auth_or_platform_restored": false,
+  "server_concurrency_tested_by_this_addon": false,
+  "targeted_tests": {
+    "mac_workflow": 17,
+    "bundle_trust_chain": 13,
+    "real_bash_signal_handling": 4,
+    "actual_seven_file_postgresql_integration": 4
+  },
+  "test_total": 38,
+  "tests_passed": true,
+  "underlying_owner_sigkill_cause_known": false,
+  "owner_native_reconciliation_verified": false,
+  "stage_messages_contain_only_fixed_program_steps": true,
+  "runtime_version_probe_precedes_main": true,
+  "os_security_settings_changed": false
+}

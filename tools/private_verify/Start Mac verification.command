@@ -4,7 +4,7 @@ set -u
 umask 077
 task_result=1
 task_finish() {
-  printf '\n%s\n' 'Сверка завершена. В чат сообщи только результат и коды; файлы оставь у себя.'
+  printf '\n%s\n' 'Работа программы завершена. В чат сообщи только результат и коды; файлы оставь у себя.'
   if [ -t 0 ]; then
     printf '%s' 'Нажми Enter, чтобы закрыть окно: '
     IFS= read -r task_end
@@ -52,7 +52,24 @@ if [ "$task_bootstrap_actual" != __ADDON_BOOTSTRAP_SHA256__ ]; then
   printf '%s\n' 'Коды: verification-source-checksum'
   task_finish
 fi
+printf '%s\n' 'Этап: запуск среды программы'
+/usr/bin/env -i PATH=/usr/bin:/bin:/usr/sbin:/sbin LANG=ru_RU.UTF-8 "$task_node" --version >/dev/null 2>/dev/null
+task_runtime_result=$?
+if [ "$task_runtime_result" -ne 0 ]; then
+  task_result=$task_runtime_result
+  printf '%s\n' 'Результат: failed'
+  case "$task_runtime_result" in
+    137) printf '%s\n' 'Коды: verification-runtime-signal-9' ;;
+    *) printf '%s\n' 'Коды: verification-runtime-start-failed' ;;
+  esac
+  task_finish
+fi
 printf '%s\n' 'Проверяем файлы программы. Затем откроется выбор семи копий банка; профиль браузера не читается.'
 /usr/bin/env -i PATH=/usr/bin:/bin:/usr/sbin:/sbin LANG=ru_RU.UTF-8 "$task_node" --no-global-search-paths "$task_bootstrap" "$task_bundle" 2>/dev/null
 task_result=$?
+case "$task_result" in
+  0|1|2) ;; # The application already printed its verified result and codes.
+  137) printf '%s\n' 'Результат: failed' 'Коды: verification-process-signal-9' ;;
+  *) printf '%s\n' 'Результат: failed' 'Коды: verification-process-unexpected-exit' ;;
+esac
 task_finish
