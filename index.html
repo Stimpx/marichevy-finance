@@ -1873,6 +1873,50 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 #nav button{transform:none;white-space:normal}
 #nav .v81-nav-label{overflow-wrap:anywhere;text-align:left}
 </style>
+<style id="v101ReadableDrillAndHelp">
+/* Keep a transaction's amount and actions on the same reading line. */
+#v84DrillModal .v84-modal{width:min(920px,100%);max-height:calc(100dvh - 40px);container-type:inline-size;container-name:v101drill;scrollbar-gutter:stable}
+#v84DrillEntries .v85-drill-entry{grid-template-columns:6.5em minmax(0,1fr) max-content max-content;grid-template-areas:"date content amount actions";align-items:start;gap:12px;padding:14px 0}
+#v84DrillEntries .v85-drill-date{grid-area:date;line-height:1.5;padding-top:3px}
+#v84DrillEntries .v85-drill-content{grid-area:content;min-width:0}
+#v84DrillEntries .v85-drill-entry>.v84-drill-sum{grid-area:amount;font-size:15px;line-height:1.5;padding-top:2px;max-width:100%;white-space:normal;overflow-wrap:anywhere}
+#v84DrillEntries .v96-drill-entry-actions{grid-area:actions;display:flex;flex-direction:row;flex-wrap:wrap;align-items:flex-start;justify-content:flex-end;gap:7px;min-width:0;max-width:100%}
+#v84DrillEntries .v96-drill-entry-actions .btn{flex:0 1 auto;min-height:44px;font-size:12px;line-height:1.35;padding:9px 11px;white-space:normal;word-break:normal;overflow-wrap:normal}
+#v84DrillModal .v84-drill-summary strong{max-width:100%;overflow-wrap:anywhere}
+#v84DrillModal .v84-drill-filter button{max-width:100%;white-space:normal;line-height:1.4;text-align:left;overflow-wrap:anywhere}
+/* The page behind the dialog must also reflow when text is enlarged. */
+#v81LifeAnalytics .v81-life-summary{grid-template-columns:repeat(auto-fit,minmax(min(12em,100%),1fr))}
+#v81LifeAnalytics .v81-life-summary>div{min-width:0}
+#v81LifeAnalytics .v81-life-summary small,#v81LifeAnalytics .v81-life-summary strong,#v81LifeAnalytics .v81-life-summary span{max-width:100%;overflow-wrap:anywhere}
+@container v101drill (max-width:48em){
+ #v84DrillEntries .v85-drill-entry{grid-template-columns:6.5em minmax(0,1fr) max-content;grid-template-areas:"date content amount" ". actions actions";row-gap:8px}
+ #v84DrillEntries .v96-drill-entry-actions{justify-content:flex-start}
+}
+@media(max-width:900px){
+ #v84DrillEntries .v85-drill-entry{grid-template-columns:6.5em minmax(0,1fr) max-content;grid-template-areas:"date content amount" ". actions actions";row-gap:8px}
+ #v84DrillEntries .v96-drill-entry-actions{justify-content:flex-start}
+}
+@container v101drill (max-width:34em){#v84DrillEntries .v85-drill-entry{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"date amount" "content content" "actions actions"}}
+@media(max-width:600px){
+ #v84DrillModal{padding:10px}
+ #v84DrillModal .v84-modal{padding:18px 16px;max-height:calc(100dvh - 20px)}
+ #v84DrillModal .v84-modal-head{gap:12px;margin-bottom:16px}
+ #v84DrillModal .v84-close{flex:0 0 44px;min-width:44px;min-height:44px}
+ #v84DrillModal .v84-drill-summary{grid-template-columns:repeat(auto-fit,minmax(min(8em,100%),1fr));gap:8px}
+ #v84DrillModal .v84-drill-summary>div:first-child{grid-column:1/-1}
+ #v84DrillModal .v84-drill-summary strong{font-size:18px}
+ #v84DrillEntries .v85-drill-entry{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"date amount" "content content" "actions actions"}
+}
+/* The heading, prose and lists share one readable, centered help surface. */
+#help.v96-help{width:100%;max-width:min(100%,90ch);margin-inline:auto}
+#help .v96-help-topic>.v96-help-body{padding-right:calc(var(--v96-help-inset) + var(--v96-help-marker) + var(--v96-help-gap));padding-top:6px}
+#help .v96-help-body p,#help .v96-help-body ol,#help .v96-help-body ul,#help .v96-help-body dl{max-width:100%;max-inline-size:min(100%,78ch);white-space:normal;min-width:0;overflow-wrap:anywhere}
+#help .v96-help-body>ol,#help .v96-help-body>ul{box-sizing:border-box;padding-inline-start:1.5em;padding-inline-end:0;margin-block:14px}
+#help .v96-help-body li{padding-inline-start:.2em;margin-block:.65em}
+#help .v96-help-body h4{margin-top:1.4em;margin-bottom:.5em}
+#help .v96-help-category-grid{grid-template-columns:repeat(auto-fit,minmax(min(23em,100%),1fr))}
+@media(max-width:600px){#help .v96-help-topic>.v96-help-body{padding-inline-end:var(--v96-help-inset)}#help .v96-help-topic>summary{padding-inline:var(--v96-help-inset)}}
+</style>
 </head>
 <body>
 <noscript><div style="padding:14px;background:#fff3cd;color:#664d03;text-align:center;font:600 14px/1.4 system-ui">Для работы «Маричевы · Траты.Банк» необходимо включить JavaScript.</div></noscript>
@@ -5975,7 +6019,7 @@ function v84Drill(mode,key,source='analytics',returnContext=null){
      const name=store||category;
      const details=[store&&category!==store?v99CategoryLabel(category):'',e.subcategory||'',e.beneficiary?`Для: ${e.beneficiary}`:'',e.comment||''].filter(Boolean);
      const date=/^\d{4}-\d{2}-\d{2}$/.test(String(e.date||''))?String(e.date).slice(8,10)+'.'+String(e.date).slice(5,7)+'.'+String(e.date).slice(0,4):String(e.date||'');
-     return `<div class="v84-drill-entry v85-drill-entry"><time class="v85-drill-date">${esc(date)}</time><div class="v85-drill-content"><b class="v85-drill-name">${v96MerchantBadge(e.store)}${esc(v96MerchantDisplayName(e.store)||name)}</b>${details.length?`<div class="v85-drill-details">${details.map(d=>`<span>${esc(d)}</span>`).join('')}</div>`:''}</div><div class="v96-drill-entry-actions"><span class="v84-drill-sum">${money2(e.amount)}</span><button type="button" class="btn small" aria-label="Изменить операцию: ${esc(name)}, ${esc(date)}" ${recordAction('drill-entry-edit',e.id)}>Изменить</button><button type="button" class="btn small" ${recordAction('entry-repeat',e.id)}>Повторить</button></div></div>`;
+     return `<div class="v84-drill-entry v85-drill-entry"><time class="v85-drill-date">${esc(date)}</time><div class="v85-drill-content"><b class="v85-drill-name">${v96MerchantBadge(e.store)}${esc(v96MerchantDisplayName(e.store)||name)}</b>${details.length?`<div class="v85-drill-details">${details.map(d=>`<span>${esc(d)}</span>`).join('')}</div>`:''}</div><span class="v84-drill-sum">${money2(e.amount)}</span><div class="v96-drill-entry-actions"><button type="button" class="btn small" aria-label="Изменить операцию: ${esc(name)}, ${esc(date)}" ${recordAction('drill-entry-edit',e.id)}>Изменить</button><button type="button" class="btn small" ${recordAction('entry-repeat',e.id)}>Повторить</button></div></div>`;
    }).join(''):'<div class="v84-empty">Записей пока нет</div>';
  }
  root.querySelectorAll('button[data-v84-sub]').forEach(b=>b.addEventListener('click',()=>show(b.dataset.v84Sub)));show(v96DrillContext.sub);
