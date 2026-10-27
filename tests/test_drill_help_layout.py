@@ -91,7 +91,10 @@ class DrillHelpLayout(unittest.TestCase):
                     '#help details[open] > .v96-help-body > ol,'+
                     '#help details[open] > .v96-help-body > ul,'+
                     '#help details[open] > .v96-help-body > dl')].filter(el=>el.getBoundingClientRect().height);
-                  return {surface:rect(document.querySelector('#help')),
+                  const surface=document.querySelector('#help'),parent=surface.parentElement;
+                  const parentStyle=getComputedStyle(parent);
+                  return {surface:rect(surface),availableWidth:parent.clientWidth-
+                    parseFloat(parentStyle.paddingLeft)-parseFloat(parentStyle.paddingRight),
                     paragraph:rect(para),unit,heading:rect(document.querySelector('#help-start summary h3')),
                     blocks:blocks.map(el=>({rect:rect(el),parent:rect(el.parentElement)})),
                     doc:document.documentElement.scrollWidth};
@@ -100,6 +103,8 @@ class DrillHelpLayout(unittest.TestCase):
                     'height': height, **geometry})
                 self.assertLessEqual(geometry['paragraph']['w'] / geometry['unit'], 94,
                     'help lines should have a readable character measure, not span a wide dashboard')
+                self.assertLessEqual(abs(geometry['surface']['w'] - geometry['availableWidth']), 2,
+                    'help cards must use the page width; limit prose rather than the whole section')
                 self.assertLessEqual(abs(geometry['paragraph']['x'] - geometry['heading']['x']), 2,
                     'expanded paragraphs and topic heading must share a left gutter')
                 self.assertLessEqual(geometry['doc'], width + 1)

@@ -91,6 +91,9 @@ function currentProfile(){
     info = "{contractDate:'',principal:0,rate:0,scheduledPayment:0,averagePayment:0,psk:0,fullCost:0,totalPrincipal:0,totalInterest:0,creditPayments:0,appraisal:0,propertyInsurance:0,personalInsurance:0,endDate:''}"
     html = exact_sub(html, r'const BANK_LOAN_INFO=Object\.freeze\(\{.*?\}\);',
         'const BANK_LOAN_INFO=Object.freeze('+info+');', 'loan info')
+    for element_id in ('loanPrincipal', 'loanScheduledPayment', 'loanEndDate'):
+        html = exact_sub(html, r'<b id="'+element_id+r'">[^<]*</b>',
+            '<b id="'+element_id+'">—</b>', 'blank '+element_id)
     html = exact_sub(html, r'<div class="section-head"><div><h2>Ипотека · Демобанк</h2>[^\n]*',
         '<div class="section-head"><div><h2>Банковский кредит</h2><div class="hint">Банковский график для этой семьи не добавлен. Добавьте своё обязательство в разделе кредитов и рассрочек.</div></div></div>', 'blank contract heading')
     html = exact_sub(html, r'<div class="credit-note" id="loanRateNote">[^\n]*',

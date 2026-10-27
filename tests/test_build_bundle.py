@@ -1,7 +1,10 @@
 """Fictional demo publication boundary; never uses actual transactions."""
 import importlib.util
+from decimal import Decimal
+from html import unescape
 import json
 from pathlib import Path
+import re
 import sys
 import tempfile
 import unittest
@@ -55,6 +58,51 @@ class DemoBundle(unittest.TestCase):
         self.assertNotIn('Елена супермаркет', self.demo)
         with self.assertRaises(ValueError):
             bundle.transform_demo(self.source.replace('Виктория супермаркет', 'Личное имя в каталоге', 1))
+
+    def test_loan_contract_values_describe_the_fictional_schedule(self):
+        info = json.loads(re.search(
+            r'const BANK_LOAN_INFO=Object\.freeze\((\{.*?\})\);', self.demo, re.S)[1])
+        schedule = json.loads(re.search(
+            r'const BANK_LOAN_SCHEDULE=(\[.*?\]);', self.demo, re.S)[1])
+        start = self.demo.index('<div class="card loan-contract-info">')
+        end = self.demo.index('<section class="section" id="goals">', start)
+        contract = self.demo[start:end]
+        fields = dict((unescape(label), unescape(re.sub(r'<[^>]*>', '', value)))
+            for label, value in re.findall(
+                r'<div><span>([^<]+)</span><b>(.*?)</b></div>', contract, re.S))
+        self.assertEqual(len(fields), 13, 'keep the contract summary useful in the demo')
+        for label, key in {
+            'ПСК': 'psk', 'Полная стоимость': 'fullCost',
+            'Всего процентов по графику': 'totalInterest',
+            'Платёж по графику': 'scheduledPayment', 'Средний платёж': 'averagePayment',
+            'Имущественное страхование': 'propertyInsurance',
+            'Личное страхование': 'personalInsurance', 'Оценка': 'appraisal',
+        }.items():
+            with self.subTest(field=label):
+                number = re.sub(r'[^\d,.-]', '', fields[label]).replace(',', '.')
+                self.assertEqual(Decimal(number), Decimal(str(info[key])),
+                    'visible demo value must agree with the calculation input')
+        self.assertEqual(int(re.search(r'\d+', fields['Срок'])[0]), len(schedule))
+        day, month, year = info['contractDate'].split('.')
+        normalized_date = fields['Дата'].replace('декабря', month)
+        self.assertEqual([int(part) for part in re.findall(r'\d+', normalized_date)],
+            [int(day), int(month), int(year)])
+        self.assertNotRegex(contract, r'—\s*(?:₽|%|год\w*|месяц\w*|сентябр\w*)',
+            'unknown data must be a whole value, not a dash joined to leftover units')
+
+    def test_demo_loan_redaction_preserves_controls_and_complete_copy(self):
+        start = self.demo.index('<div class="card credit-hero-card">')
+        end = self.demo.index('<section class="section" id="goals">', start)
+        loans = self.demo[start:end]
+        self.assertRegex(loans, r'<button[^>]*data-loan-range="1"[^>]*>1 год</button>')
+        self.assertRegex(loans, r'<button[^>]*data-loan-range="3"[^>]*>3 года</button>')
+        self.assertRegex(loans, r'id="earlyPlanTotal">0\s*₽</b>')
+        self.assertRegex(loans, r'id="earlyPlanCount">0 платежей</span>')
+        self.assertRegex(loans, r'id="loanActualTotal">0\s*₽</b>')
+        plain = unescape(re.sub(r'<[^>]*>', ' ', loans))
+        self.assertNotRegex(plain, r'—\s*(?:₽|%|год\w*|месяц\w*|платеж\w*|сентябр\w*)')
+        self.assertNotIn('фактические строки банковского Excel-графика', plain)
+        self.assertIn('учебн', plain.lower(), 'fictional loan must be labelled as an example')
 
     def test_bundle_allowlists_and_determinism(self):
         with tempfile.TemporaryDirectory() as folder:

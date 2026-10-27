@@ -1919,6 +1919,20 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 #help .v96-help-category-grid{grid-template-columns:repeat(auto-fit,minmax(min(23em,100%),1fr))}
 @media(max-width:600px){#help .v96-help-topic>.v96-help-body{padding-inline-end:var(--v96-help-inset)}#help .v96-help-topic>summary{padding-inline:var(--v96-help-inset)}}
 </style>
+<style id="v102DateActionsAndHelpSurface">
+/* Family badges have their own column, independent of their label length. */
+#birthdayList{container-type:inline-size;container-name:v102dates}
+#dates .birthday-row-family .birthday-row-actions{font-size:12px;width:20em;max-width:100%;container-type:inline-size;container-name:v102dateactions}
+#dates .birthday-row-family .birthday-actions{display:grid;grid-template-columns:minmax(0,8em) minmax(0,1fr);align-items:center;justify-content:stretch;gap:8px;width:100%}
+#dates .birthday-row-family .birthday-actions .btn{display:inline-flex;align-items:center;justify-content:center;width:100%;min-width:0;min-height:44px;white-space:normal;word-break:normal;overflow-wrap:normal;line-height:1.4}
+#dates .birthday-row-family .birthday-family-badge{width:100%;margin-left:0;justify-content:center;white-space:normal;word-break:normal;overflow-wrap:normal;line-height:1.4;text-align:center}
+#dates .birthday-row:not(.birthday-row-family) .birthday-actions>.btn{flex:0 0 auto;min-width:max-content;max-width:100%;white-space:normal;line-height:1.4}
+@container v102dateactions (max-width:18em){#dates .birthday-row-family .birthday-actions{grid-template-columns:minmax(0,1fr)}#dates .birthday-row-family .birthday-family-badge{justify-content:flex-start;text-align:left;width:auto;justify-self:start}}
+@media(min-width:761px){@container v102dates (max-width:60em){#dates .birthday-row{grid-template-columns:72px minmax(0,1fr)!important}#dates .birthday-row-actions{grid-column:2!important;grid-row:2}#dates .birthday-actions{justify-content:flex-start}}}
+/* The help cards fill the page; only the prose retains a readable measure. */
+#help.v96-help{width:100%;max-width:none;margin-inline:0}
+#help .v96-help-hero>p{max-inline-size:min(100%,78ch)}
+</style>
 </head>
 <body>
 <noscript><div style="padding:14px;background:#fff3cd;color:#664d03;text-align:center;font:600 14px/1.4 system-ui">Для работы «Семейный Банк · Траты.Банк» необходимо включить JavaScript.</div></noscript>
@@ -2205,8 +2219,8 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 <div class="card credit-hero-card">
 <div class="section-head"><div><h2>Банковский кредит</h2><div class="hint">Банковский график для этой семьи не добавлен. Добавьте своё обязательство в разделе кредитов и рассрочек.</div></div></div>
 <div class="credit-kpis">
-<div><small>Сумма кредита</small><b id="loanPrincipal">—₽</b></div>
-<div><small>Платёж по графику</small><b id="loanScheduledPayment">—₽</b></div>
+<div><small>Сумма кредита</small><b id="loanPrincipal">—</b></div>
+<div><small>Платёж по графику</small><b id="loanScheduledPayment">—</b></div>
 <div><small>Остаток по модели</small><b id="loanBalanceNow">—</b></div>
 <div><small>Дата окончания</small><b id="loanEndDate">—</b></div>
 <div><small>Следующий платёж</small><b id="loanNextPayment">—</b></div>
@@ -2214,7 +2228,7 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 <div class="credit-note" id="loanRateNote">График не добавлен.</div>
 </div>
 <div class="grid2">
-<div class="card"><h2>Как меняется долг</h2><div class="hint">Вместо —полосок — одна понятная история кредита.</div><div class="loan-chart-toolbar"><div class="loan-range"><button data-loan-range="1" onclick="setLoanRange(1)" type="button">—год</button><button data-loan-range="3" onclick="setLoanRange(3)" type="button">—года</button><button data-loan-range="all" onclick="setLoanRange('all')" type="button">Весь срок</button></div><span class="hint" id="loanChartSummary">—</span></div><div class="loan-svg-wrap"><div class="loan-chart-tooltip" id="loanChartTooltip">Остаток<b>—</b></div><svg aria-label="График изменения долга" id="loanDebtSvg" preserveaspectratio="none" role="img" viewbox="0 0 900 310"></svg></div><div class="loan-chart-legend"><span><i></i>Остаток основного долга</span><span><i class="end"></i>Полное погашение</span></div></div>
+<div class="card"><h2>Как меняется долг</h2><div class="hint">Учебный график с ежемесячными платежами.</div><div class="loan-chart-toolbar"><div class="loan-range"><button data-loan-range="1" onclick="setLoanRange(1)" type="button">1 год</button><button data-loan-range="3" onclick="setLoanRange(3)" type="button">3 года</button><button data-loan-range="all" onclick="setLoanRange('all')" type="button">Весь срок</button></div><span class="hint" id="loanChartSummary">—</span></div><div class="loan-svg-wrap"><div class="loan-chart-tooltip" id="loanChartTooltip">Остаток<b>—</b></div><svg aria-label="График изменения долга" id="loanDebtSvg" preserveaspectratio="none" role="img" viewbox="0 0 900 310"></svg></div><div class="loan-chart-legend"><span><i></i>Остаток основного долга</span><span><i class="end"></i>Полное погашение</span></div></div>
 <div class="card"><h2>Проценты vs тело кредита</h2><div class="hint">Суммарно по актуальному банковскому графику</div><div id="loanSplitChart"></div></div>
 </div>
 <div class="card early-card">
@@ -2233,8 +2247,8 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 <label class="early-strategy"><span>Как пересчитать ипотеку</span><select id="earlyMode"><option value="term">Уменьшить срок</option><option value="payment">Уменьшить платёж</option></select></label>
 </div>
 <div class="early-scenario-grid">
-<div class="early-scenario"><small>План досрочных платежей</small><b id="earlyPlanTotal">—₽</b><span id="earlyPlanCount">—платежей</span></div>
-<div class="early-scenario"><small>Свободно на досрочное погашение</small><b id="earlyFreeMoney">—₽</b><span>по введённому вами плану</span></div>
+<div class="early-scenario"><small>План досрочных платежей</small><b id="earlyPlanTotal">0 ₽</b><span id="earlyPlanCount">0 платежей</span></div>
+<div class="early-scenario"><small>Свободно на досрочное погашение</small><b id="earlyFreeMoney">0 ₽</b><span>по введённому вами плану</span></div>
 <div class="early-scenario"><small>В дату первого досрочного платежа</small><b id="earlyFirstTotal">—</b><span>досрочно в тело + начисленные проценты</span></div>
 <div class="early-scenario"><small>Новый остаток после первого взноса</small><b id="earlyFirstBalance">—</b><span>ориентир по модели</span></div>
 </div>
@@ -2242,8 +2256,8 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 <div class="early-result" id="earlyResult"></div>
 </div>
 <div class="card" id="v96UnassignedCredit"><div class="section-head"><div><h2>Расходы без привязки к кредиту или рассрочке</h2><div class="hint">Эти записи ещё не связаны с конкретным обязательством и не считаются оплатой банка. Если платёж уже внесён, добавьте график Сплита и выберите «Из истории» — новый расход не нужен.</div></div></div>
-<div class="v77-loan-actual-grid v96-unassigned-credit"><div><small>Всего без привязки</small><b id="loanActualTotal">—₽</b></div><div><small>В текущем месяце</small><b id="v77LoanActualMonth">—₽</b></div></div><details class="v77-installment-details"><summary>Посмотреть оплаты по месяцам</summary><div id="loanActualMonths" class="v77-loan-months"></div></details></div>
-<div class="card"><div class="section-head"><div><h2>График платежей</h2><div class="hint">Дата — крайний срок платежа из актуального банковского графика. Проценты, тело, платёж и остаток взяты из Excel-графика банка.</div></div><button class="btn small" onclick="toggleLoanSchedule()">Показать / скрыть</button></div><div id="loanScheduleWrap" style="display:none"><div class="table-wrap"><table class="table loan-table"><thead><tr><th>№</th><th>Дата</th><th>Платёж</th><th>Проценты</th><th>Тело</th><th>Остаток</th></tr></thead><tbody id="loanScheduleBody"></tbody></table></div></div></div>
+<div class="v77-loan-actual-grid v96-unassigned-credit"><div><small>Всего без привязки</small><b id="loanActualTotal">0 ₽</b></div><div><small>В текущем месяце</small><b id="v77LoanActualMonth">0 ₽</b></div></div><details class="v77-installment-details"><summary>Посмотреть оплаты по месяцам</summary><div id="loanActualMonths" class="v77-loan-months"></div></details></div>
+<div class="card"><div class="section-head"><div><h2>График платежей</h2><div class="hint">Дата — срок платежа в учебном графике. Суммы, проценты и остаток вымышлены.</div></div><button class="btn small" onclick="toggleLoanSchedule()">Показать / скрыть</button></div><div id="loanScheduleWrap" style="display:none"><div class="table-wrap"><table class="table loan-table"><thead><tr><th>№</th><th>Дата</th><th>Платёж</th><th>Проценты</th><th>Тело</th><th>Остаток</th></tr></thead><tbody id="loanScheduleBody"></tbody></table></div></div></div>
 <div class="card loan-contract-info"><h2>Условия договора</h2><p class="hint">Договор не добавлен.</p></div>
 </section>
 <section class="section" id="goals">

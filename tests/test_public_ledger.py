@@ -79,6 +79,9 @@ class PublicTemplate(unittest.TestCase):
         self.assertIn('const FAMILY_BIRTHS=[];', template)
         self.assertIn('const FAMILY_WEDDING=null;', template)
         self.assertIn('const BANK_LOAN_SCHEDULE=[];', template)
+        for element_id in ('loanPrincipal', 'loanScheduledPayment', 'loanEndDate'):
+            self.assertIn('<b id="'+element_id+'">—</b>', template,
+                'an unconfigured family must not inherit fictional loan figures')
         self.assertIn('let state=blankState();', template)
         self.assertNotIn('window.fetch=()=>Promise.reject', template)
         self.assertNotIn('boot().catch', template)

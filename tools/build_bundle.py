@@ -57,11 +57,39 @@ def transform_demo(source: str) -> str:
     html = exact_sub(html, r'const BANK_LOAN_SCHEDULE=\[.*?\];', 'const BANK_LOAN_SCHEDULE='+json.dumps(rows)+';', 'loan schedule')
     info = dict(contractDate='15.12.2026',principal=120000,rate=.1,scheduledPayment=11000,averagePayment=11000,psk=10,fullCost=132000,totalPrincipal=120000,totalInterest=12000,creditPayments=132000,appraisal=0,propertyInsurance=0,personalInsurance=0,endDate='15.12.2027')
     html = exact_sub(html, r'const BANK_LOAN_INFO=Object\.freeze\(\{.*?\}\);', 'const BANK_LOAN_INFO=Object.freeze('+json.dumps(info)+');', 'loan info')
-    # Preserve functional tags/IDs while clearing the personal contract's static prose.
+    # Replace complete personal display fields with coherent fictional values.
+    # Redacting numeric fragments also swallowed spaces and damaged dates,
+    # currency units and the functional 1/3-year chart controls.
     start = html.index('<div class="card credit-hero-card">')
     end = html.index('<section class="section" id="goals">', start)
     region = html[start:end]
-    region = re.sub(r'>([^<>]+)<', lambda m: '>'+re.sub(r'\d[\d\s.,%№/A-Z-]*', '—', m[1])+'<', region)
+    region = exact_sub(region,
+        r'<div class="section-head"><div><h2>Ипотека · [^<]+</h2>[^\n]*',
+        '<div class="section-head"><div><h2>Ипотека · Демобанк</h2><div class="hint">Учебный пример кредита. Все суммы и даты вымышлены.</div></div><span class="contract-badge">10% годовых</span></div>',
+        'fictional loan heading')
+    for element_id, value in {'loanPrincipal':'120 000 ₽', 'loanScheduledPayment':'11 000 ₽',
+                              'loanEndDate':'15.12.2027'}.items():
+        region = exact_sub(region, r'<b id="'+element_id+r'">[^<]*</b>',
+            '<b id="'+element_id+'">'+value+'</b>', 'fictional '+element_id)
+    region = exact_sub(region, r'<div class="credit-note" id="loanRateNote">[^<]*</div>',
+        '<div class="credit-note" id="loanRateNote">Учебный график: 12 платежей по 11 000 ₽ с 15 января по 15 декабря 2027 года. Основной долг — 120 000 ₽, проценты — 12 000 ₽. Дополнительные расходы в примере не предусмотрены.</div>',
+        'fictional loan note')
+    region = exact_sub(region, r'<div class="hint">Вместо [^<]*</div>',
+        '<div class="hint">Учебный график с ежемесячными платежами.</div>',
+        'fictional loan chart hint')
+    region = exact_sub(region, r'<h2>График платежей</h2><div class="hint">[^<]*</div>',
+        '<h2>График платежей</h2><div class="hint">Дата — срок платежа в учебном графике. Суммы, проценты и остаток вымышлены.</div>',
+        'fictional loan schedule hint')
+    contract = [('Договор','Учебный пример'), ('Дата','15 декабря 2026'),
+        ('Программа','Учебный кредит'), ('Срок','12 месяцев'), ('ПСК','10% годовых'),
+        ('Полная стоимость','132 000 ₽'), ('Всего процентов по графику','12 000 ₽'),
+        ('Платёж по графику','11 000 ₽'), ('Средний платёж','11 000 ₽'),
+        ('Дата платежа','15-го числа по учебному графику'),
+        ('Имущественное страхование','0 ₽'), ('Личное страхование','0 ₽'), ('Оценка','0 ₽')]
+    region = exact_sub(region, r'<div class="card loan-contract-info">[^\n]*',
+        '<div class="card loan-contract-info"><h2>Условия договора</h2><div class="contract-grid">'+
+        ''.join('<div><span>'+label+'</span><b>'+value+'</b></div>' for label,value in contract)+
+        '</div></div>', 'fictional contract conditions')
     html = html[:start]+region+html[end:]
     html = html.replace('4500000','120000').replace('85885','11000').replace('90000','11000').replace('2026-09-02','2026-12-15')
     for old, new in sorted(NAMES.items(), key=lambda p: -len(p[0])):

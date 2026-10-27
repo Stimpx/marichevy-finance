@@ -1,0 +1,37 @@
+{
+  "source_html_sha256": "8f90a6abd6f3ab96be4002f2d4707b42744b346250f07e0b59297f8fa5756322",
+  "demo_generator_sha256": "51c6cb4f46319d83da19b852e1a56e9db7019d60a96ad54d24520ea4eea6da58",
+  "fictional_only": true,
+  "engine": "Chromium",
+  "native_device_claim": false,
+  "views": [
+    {
+      "view": "loan-contract",
+      "width": 1440,
+      "fields": 13,
+      "partial_placeholders": false
+    },
+    {
+      "view": "help",
+      "width": 1440,
+      "helpWidth": 1088.75,
+      "availableWidth": 1088.7199999999998,
+      "documentWidth": 1440,
+      "state_unchanged": true
+    },
+    {
+      "view": "loan-contract",
+      "width": 390,
+      "fields": 13,
+      "partial_placeholders": false
+    },
+    {
+      "view": "help",
+      "width": 390,
+      "helpWidth": 370,
+      "availableWidth": 370,
+      "documentWidth": 390,
+      "state_unchanged": true
+    }
+  ]
+}
