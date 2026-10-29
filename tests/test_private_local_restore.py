@@ -79,6 +79,46 @@ def wrapper(tables=None, timezone="UTC"):
 
 
 class PrivateLocalRestore(unittest.TestCase):
+    def test_windows_asset_reader_keeps_exact_pins_without_posix_flags_or_engine_import(self):
+        # This isolates the Windows branch, not native WinAPI acceptance. The
+        # existing integration cases below still execute the actual PG engine.
+        code = r"""
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
+const filename=process.argv[1],root=path.dirname(filename),source=fs.readFileSync(filename,'utf8');
+let mode='valid',calls=0,engineImports=0;
+const deniedFs=new Proxy({}, {get(){throw Error('POSIX_READER_MUST_NOT_RUN')}});
+const exports={};const context={module:{exports},exports,Buffer,Blob,WebAssembly,console,
+  __dirname:root,process:{platform:'win32'},require(name){
+    if(name==='node:fs')return deniedFs;
+    if(name==='./windows-io.cjs')return {readCodeFileSync(file,maximum){
+      calls++;const bytes=fs.readFileSync(file);assert.equal(maximum,bytes.length);
+      if(mode==='throw')throw Error('PRIVATE_NATIVE_PATH_MUST_NOT_LEAK');
+      if(mode==='wrong-type')return new Uint8Array(bytes);
+      if(mode==='size')return bytes.subarray(1);
+      if(mode==='hash'){const changed=Buffer.from(bytes);changed[0]^=1;return changed;}
+      return bytes;
+    }};
+    if(name==='./pglite/index.cjs'){engineImports++;throw Error('ENGINE_MUST_NOT_LOAD');}
+    return require(name.startsWith('./')?path.join(root,name):name);
+  }};
+vm.runInNewContext(source+'\nglobalThis.testAssetBytes=assetBytes;',context,{filename});
+const read=context.testAssetBytes;
+for(const relative of ['sql-sources.json','pglite/index.cjs','pglite/pglite.wasm',
+  'pglite/pglite.data','pglite/package.json','pglite/LICENSE']){
+  mode='valid';assert.deepEqual(read(relative),fs.readFileSync(path.join(root,relative)));
+  for(mode of ['throw','wrong-type','size','hash'])assert.throws(()=>read(relative),
+    error=>error.code==='local-restore-asset-integrity'&&error.message==='local-restore-asset-integrity');
+}
+assert.equal(calls,30);assert.equal(engineImports,0);
+assert.throws(()=>read('../outside'),error=>error.code==='local-restore-asset-integrity');
+process.stdout.write('windows-asset-pin-branch-passed');
+"""
+        result = subprocess.run(["node", "-e", code, str(MODULE)], cwd=ROOT,
+                                capture_output=True, text=True, timeout=30)
+        self.assertEqual(result.returncode, 0, result.stderr[-1000:])
+        self.assertEqual(result.stdout, "windows-asset-pin-branch-passed")
+        self.assertEqual(result.stderr, "")
+
     def test_trusted_sql_sources_are_exact_reviewed_restore_and_migrations(self):
         source = json.loads((MODULE.parent / "sql-sources.json").read_text())
         for name in ("SCHEMA", "BOOTSTRAP_SQL", "INSERT_SQL", "READBACK_SQL"):

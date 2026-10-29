@@ -45,6 +45,17 @@ function assetBytes(relative){
   try{
     // The outer bootstrap validates every ancestor and the complete closure.
     // Recheck the fixed leaf's bytes before any engine import or compilation.
+    if(process.platform==='win32'){
+      // Windows has no POSIX O_NOFOLLOW. The checked native reader opens the
+      // same regular file without following reparse points and denies writes
+      // and deletion while reading. Pins are still enforced here, before the
+      // engine is imported; callers cannot supply replacement asset bytes.
+      const reader=require('./windows-io.cjs');
+      const bytes=reader.readCodeFileSync(path.join(__dirname,...relative.split('/')),pin[1]);
+      if(!Buffer.isBuffer(bytes)||bytes.length!==pin[1]||sha(bytes)!==pin[0])
+        fail('local-restore-asset-integrity');
+      return bytes;
+    }
     if(typeof fs.constants.O_NOFOLLOW!=='number')fail('local-restore-asset-integrity');
     const filename=path.join(__dirname,...relative.split('/'));
     fd=fs.openSync(filename,fs.constants.O_RDONLY|fs.constants.O_NOFOLLOW|fs.constants.O_NONBLOCK);
