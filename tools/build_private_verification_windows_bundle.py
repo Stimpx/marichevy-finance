@@ -51,19 +51,30 @@ MAX_FILE = 160 * 1024 * 1024
 # CMD expands one fixed, short command. The captured source bytes are checked
 # before ScriptBlock creation; no execution policy is changed. No owner text
 # appears in code or in a shell argument.
-PREFLIGHT_LOADER = r"""$ErrorActionPreference = 'Stop'; $launchStream = $null; try {
-$launchPath = [IO.Path]::Combine((Get-Location).ProviderPath, 'Start Windows verification.ps1');
+PREFLIGHT_LOADER = r"""$ErrorActionPreference = 'Stop'; $launchStream = $null; $launchStage = 'shell'; try {
+if ($PSVersionTable.PSVersion.Major -lt 5) { Write-Output 'Result: failed'; Write-Output 'Codes: verification-shell-version-unsupported'; return };
+if ($ExecutionContext.SessionState.LanguageMode -ne 'FullLanguage') { Write-Output 'Result: failed'; Write-Output 'Codes: verification-shell-restricted'; return };
+$launchStage = 'folder'; $launchRoot = (Get-Location).ProviderPath;
+if (-not $launchRoot) { throw 'fixed' };
+$launchPath = [IO.Path]::Combine($launchRoot, 'Start Windows verification.ps1');
+$launchStage = 'metadata';
 $launchItem = Get-Item -LiteralPath $launchPath -Force;
 if ($launchItem.PSIsContainer -or ($launchItem.Attributes -band [IO.FileAttributes]::ReparsePoint) -or $launchItem.Length -le 0 -or $launchItem.Length -gt 1048576) { throw 'fixed' };
+$launchStage = 'open';
 $launchStream = [IO.File]::Open($launchPath, [IO.FileMode]::Open, [IO.FileAccess]::Read, [IO.FileShare]::Read);
+$launchStage = 'read';
 $launchBytes = New-Object byte[] $launchStream.Length; $launchOffset = 0;
-while ($launchOffset -lt $launchBytes.Length) { $launchRead = $launchStream.Read($launchBytes, $launchOffset, $launchBytes.Length-$launchOffset); if ($launchRead -le 0) { throw 'fixed' }; $launchOffset += $launchRead };
+while ($launchOffset -lt $launchBytes.Length) { $launchRead = $launchStream.Read($launchBytes, $launchOffset, $launchBytes.Length - $launchOffset); if ($launchRead -le 0) { throw 'fixed' }; $launchOffset += $launchRead };
 if ($launchStream.ReadByte() -ne -1) { throw 'fixed' };
+$launchStage = 'hash';
 $launchHash = [Security.Cryptography.SHA256]::Create(); try { $launchActual = ([BitConverter]::ToString($launchHash.ComputeHash($launchBytes))).Replace('-', '').ToLowerInvariant() } finally { $launchHash.Dispose() };
 if ($launchActual -cne '__WINDOWS_PREFLIGHT_SHA256__') { throw 'fixed' };
+$launchStage = 'utf8';
 $launchEncoding = [Text.UTF8Encoding]::new($false, $true);
-& ([ScriptBlock]::Create($launchEncoding.GetString($launchBytes)));
-} catch { Write-Output 'Result: failed'; Write-Output 'Codes: verification-launch-loader-failed' } finally { if ($null -ne $launchStream) { $launchStream.Dispose() } }
+$launchSource = $launchEncoding.GetString($launchBytes);
+$launchStage = 'parse'; $launchScript = [ScriptBlock]::Create($launchSource);
+$launchStage = 'invoke'; & $launchScript;
+} catch { Write-Output 'Result: failed'; Write-Output ('Codes: verification-launch-loader-' + $launchStage) } finally { if ($null -ne $launchStream) { $launchStream.Dispose() } }
 """
 
 
