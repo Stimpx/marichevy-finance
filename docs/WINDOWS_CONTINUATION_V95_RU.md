@@ -345,6 +345,28 @@ verified/activation_revision через Download CSV на флешку. Private 
 напоминания пока остаются приостановлены. Сам activation и main/Pages на этом
 checkpoint ещё не подтверждены выполненными.
 
+### Активация сохранена и интерфейс опубликован
+
+Владелец выполнил локальный activation.sql и показал настоящий результат
+verified1 / activation_revision1 в production SQL Editor, затем сообщил
+«Сохранил» в ответ на инструкцию сохранить CSV на флешку. Private household/data
+параметры со скриншота не переписывались. Worker сохранил только фиксированные
+receipt metadata вне checkout. Это реальный activation anchor, а не live revision,
+подставленная задним числом.
+
+После свежей проверки base/head/files PR6 переведён из Draft и слит штатным merge
+с --match-head-commit53b5b428acf8b6f922796b191dcb9af456d0c68c, без admin bypass.
+Merge main3f7f589ce845430eea546427a4daad60f48e1bd2 меняет только index.html
+относительно прежнего bfc7ce5. Pages run40948459100 завершён success именно для
+merge; HTTPS GET канонического домена вернул2 437 623байта и ожидаемый HTML SHA
+7845e519a01578c38c5a20f24a85745395dc48047347998a039b3c2ed9d92f30.
+
+Текущий итог — FAMILY_V95_PRODUCTION_RECEIPT_RU.md. Вход/история/ACK настоящей
+записи на втором устройстве ещё ожидаются; напоминания остаются paused. Для
+возврата запрошен только полный resume_config_sha256 из сохранённого cron-pause.csv,
+без финансовых файлов/команды/ключей. Шаблон возврата по произвольному текущему
+fingerprint не исполнять. После новых v95 записей нельзя включать старый v94 writer.
+
 ### Свежий резерв с исходной контрольной точкой
 
 `preview/server-before-update-backup-v95.sql` — один read-only SELECT в прежнем
