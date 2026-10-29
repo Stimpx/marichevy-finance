@@ -377,6 +377,17 @@ job1 family-reminders по исходному сохранённому cron-paus
 проверен и заполненный private SQL подготовлен вне checkout; фактический
 результат active=true ещё не получен.
 
+### Напоминания возобновлены; переключение завершено
+
+Владелец выполнил подготовленный по сохранённому cron-pause.csv private SQL и
+показал результат production SQL Editor: jobid=1 / active=true. Это настоящий
+native receipt возврата job1 family-reminders, а не результат тестового stand-in.
+Проверка конфигурации осталась привязана к сохранённому anchor; private hash в Git
+не записан. Доставка отдельного уведомления не проверялась. Публикация,
+активация, пользовательская приёмка синхронизации и возврат cron завершены;
+повторный запуск активации или resume не нужен. Актуальный итог —
+FAMILY_V95_PRODUCTION_RECEIPT_RU.md.
+
 ### Свежий резерв с исходной контрольной точкой
 
 `preview/server-before-update-backup-v95.sql` — один read-only SELECT в прежнем
