@@ -180,6 +180,25 @@ backend-сессии он может сообщить отсутствие prepa
 запрос в проверенном SQL Editor и экспортировать технический результат как CSV.
 Cron/Edge/external writers этим SELECT не проверяются.
 
+### Получен текущий каталог из SQL Editor
+
+Владелец выполнил этот SELECT в проверенном production SQL Editor и передал
+однострочный CSV `schema_report`. Маркер, catalog_only, database/role postgres,
+read_only off и PostgreSQL170011 совпали. Отчёт сопоставлен с контрактами001–003:
+все четыре app-таблицы обычные postgres-owned с RLS, family_state содержит ровно
+исходные четыре колонки, ожидаемые PK/FK валидированы; пользовательских app triggers
+нет. Ровно пять прежних authenticated policies и исходный membership helper
+с известным definition fingerprint совпадают. Sync-колонок и CAS/guard ещё нет.
+Лишние TRUNCATE/TRIGGER и anon EXECUTE остаются в изученной исходной форме;
+их устраняют002/003 с транзакционными проверками эффективных прав.
+
+Содержимое CSV, финансовые строки и private параметры в Git не добавлены.
+В каталоге обнаружены cron.job и cron.job_run_details с RLS; наличие/активность
+задач не следует из этого отчёта. Следующий SELECT возвращает только counts и
+признаки unfiltered visibility. Нулевой count при активной RLS-фильтрации не
+считается отсутствием заданий. Свежий резерв/сверка guard parameters и фактические
+миграции/активация/Pages ещё не выполнены.
+
 ## Что подтверждает прежний hosted-прогон
 
 Проверка выполнена по Git-объектам и code-only отчёту, без чтения частных резервов
