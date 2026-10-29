@@ -2,6 +2,8 @@
 -- Run in the independently verified marichevy-finance production SQL Editor.
 -- This does not change expenses, the command, schedule, or credentials.
 -- Save the final result privately; restore only the same saved configuration.
+-- Clear the failed earlier attempt if its transaction is still open.
+ROLLBACK;
 BEGIN;
 SET LOCAL lock_timeout = '5s';
 DO $pause$
@@ -15,7 +17,9 @@ BEGIN
     RAISE EXCEPTION 'cutover-cron-identity-mismatch';
   END IF;
 
-  SELECT * INTO before_job FROM cron.job WHERE jobid = 1 FOR UPDATE;
+  -- Managed pg_cron grants SELECT here, not caller-side UPDATE/row locking.
+  -- alter_job performs its own authorized UPDATE and holds the row lock.
+  SELECT * INTO before_job FROM cron.job WHERE jobid = 1;
   IF NOT FOUND THEN
     RAISE EXCEPTION 'cutover-cron-job-mismatch';
   END IF;

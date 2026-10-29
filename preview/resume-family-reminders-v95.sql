@@ -1,6 +1,7 @@
 -- OPERATOR TEMPLATE: use only after the bank update and checks are complete.
 -- Replace the placeholder with resume_config_sha256 saved from the pause.
 -- The unchanged placeholder fails closed. Do not substitute a newly read hash.
+ROLLBACK;
 BEGIN;
 SET LOCAL lock_timeout = '5s';
 DO $resume$
@@ -16,7 +17,8 @@ BEGIN
     RAISE EXCEPTION 'cutover-cron-identity-or-receipt-mismatch';
   END IF;
 
-  SELECT * INTO before_job FROM cron.job WHERE jobid = 1 FOR UPDATE;
+  -- Use the extension API; direct row locking requires an unavailable grant.
+  SELECT * INTO before_job FROM cron.job WHERE jobid = 1;
   IF NOT FOUND THEN
     RAISE EXCEPTION 'cutover-cron-resume-mismatch';
   END IF;

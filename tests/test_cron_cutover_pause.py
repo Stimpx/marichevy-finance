@@ -4,6 +4,10 @@ PGlite has no native pg_cron C extension and fixes its database to template1.
 The exact production SQL must refuse that database. Other cases change only
 the one database guard literal in a test copy and model cron.alter_job in SQL.
 This proves transactional guards and receipts, not native extension acceptance.
+Restricted-role cases additionally adapt the one current_user guard literal to
+a fictional SELECT-only operator. A SECURITY DEFINER SQL stand-in models the
+native C function's internal write boundary; it does not claim the real C
+function is declared SECURITY DEFINER (the production catalog says it is not).
 """
 from __future__ import annotations
 
@@ -47,6 +51,24 @@ const marker='FICTIONAL_CREDENTIAL_MUST_NOT_APPEAR';
   await db.exec(`CREATE FUNCTION cron.alter_job(job_id bigint,schedule text DEFAULT NULL,
    command text DEFAULT NULL,database text DEFAULT NULL,username text DEFAULT NULL,
    active boolean DEFAULT NULL) RETURNS void LANGUAGE plpgsql AS $mock$ BEGIN ${mutation} END $mock$;`);
+  if(request.restricted){
+   await db.exec(`CREATE ROLE fixture_cron_owner NOLOGIN NOSUPERUSER;
+    CREATE ROLE fixture_operator NOLOGIN NOSUPERUSER NOINHERIT BYPASSRLS;
+    ALTER SCHEMA cron OWNER TO fixture_cron_owner;
+    ALTER SCHEMA net OWNER TO fixture_cron_owner;
+    ALTER TABLE cron.job OWNER TO fixture_cron_owner;
+    ALTER TABLE cron.job_run_details OWNER TO fixture_cron_owner;
+    ALTER TABLE net.http_request_queue OWNER TO fixture_cron_owner;
+    ALTER FUNCTION cron.alter_job(bigint,text,text,text,text,boolean) OWNER TO fixture_cron_owner;
+    ALTER FUNCTION cron.alter_job(bigint,text,text,text,text,boolean) SECURITY DEFINER;
+    ALTER FUNCTION cron.alter_job(bigint,text,text,text,text,boolean) SET search_path=pg_catalog,cron;
+    REVOKE ALL ON cron.job,cron.job_run_details,net.http_request_queue FROM PUBLIC,fixture_operator;
+    GRANT USAGE ON SCHEMA cron,net TO fixture_operator;
+    GRANT SELECT ON cron.job,cron.job_run_details,net.http_request_queue,public.fictional_history TO fixture_operator;
+    REVOKE ALL ON FUNCTION cron.alter_job(bigint,text,text,text,text,boolean) FROM PUBLIC;
+    GRANT EXECUTE ON FUNCTION cron.alter_job(bigint,text,text,text,text,boolean) TO fixture_operator;
+    UPDATE cron.job SET username='fixture_operator';`);
+  }
   let savedHash=null;
   if(request.resume){
    await db.exec('UPDATE cron.job SET active=false;');
@@ -57,15 +79,39 @@ const marker='FICTIONAL_CREDENTIAL_MUST_NOT_APPEAR';
   const guard="current_database() <> 'postgres'";
   assert.equal(original.split(guard).length,2);
   let sql=request.exact?original:original.replace(guard,"current_database() <> 'template1'");
+  if(request.restricted){
+   const roleGuard="current_user <> 'postgres'";
+   assert.equal(sql.split(roleGuard).length,2);
+   sql=sql.replace(roleGuard,"current_user <> 'fixture_operator'");
+   await db.exec('SET ROLE fixture_operator;');
+   assert.equal((await db.query("SELECT current_user AS actor,rolsuper AS superuser FROM pg_roles WHERE rolname=current_user")).rows[0].superuser,false);
+   const access=async()=> (await db.query("SELECT has_table_privilege('cron.job','SELECT') AS read,has_table_privilege('cron.job','UPDATE') AS write,has_function_privilege('cron.alter_job(bigint,text,text,text,text,boolean)','EXECUTE') AS execute,row_security_active('cron.job') AS filtered")).rows[0];
+   const permissions=await access();
+   assert.deepEqual(permissions,{read:true,write:false,execute:true,filtered:false});
+   assert.equal((await db.query('SELECT count(*)::text AS n FROM cron.job')).rows[0].n,'1');
+   for(const denied of ['SELECT * FROM cron.job WHERE jobid=1 FOR UPDATE','UPDATE cron.job SET active=active WHERE jobid=1']){
+    let code=null;try{await db.query(denied);}catch(error){code=error.code;}assert.equal(code,'42501');
+   }
+   request.permissions=permissions;
+  }
   if(request.resume&&!request.unfilled){
    assert.equal(sql.split('REPLACE_WITH_SAVED_RESUME_CONFIG_SHA256').length,2);
    sql=sql.replace('REPLACE_WITH_SAVED_RESUME_CONFIG_SHA256',savedHash);
   }
   const read=async()=>({jobs:(await db.query("SELECT to_jsonb(j)::text AS raw FROM cron.job j ORDER BY jobid")).rows,
    history:(await db.query("SELECT data::text AS raw FROM public.fictional_history ORDER BY id")).rows});
-  const before=await read();let results,error=null;
+  // A caller's failed prior transaction is cleared by the SQL under test.
+  // Read the independent before-state first, before constructing that failure.
+  const before=await read();
+  if(request.aborted){await db.exec('BEGIN;');try{await db.query('SELECT * FROM cron.job WHERE jobid=1 FOR UPDATE');}catch(error){assert.equal(error.code,'42501');}}
+  let results,error=null;
   try{results=await db.exec(sql);}catch(e){error=e;await db.exec('ROLLBACK');}
   const after=await read();
+  if(request.restricted){
+   const actualPermissions=(await db.query("SELECT has_table_privilege('cron.job','SELECT') AS read,has_table_privilege('cron.job','UPDATE') AS write,has_function_privilege('cron.alter_job(bigint,text,text,text,text,boolean)','EXECUTE') AS execute,row_security_active('cron.job') AS filtered")).rows[0];
+   assert.deepEqual(actualPermissions,request.permissions);
+   let code=null;try{await db.query('UPDATE cron.job SET active=active WHERE jobid=1');}catch(error){code=error.code;}assert.equal(code,'42501');
+  }
   if(request.reject){
    assert(error);assert.equal(error.code,'P0001');
    assert.equal(error.message,request.reject);
@@ -161,6 +207,18 @@ class CronCutoverPause(unittest.TestCase):
     def test_resume_unfilled_template_refuses(self):
         self.run_engine(resume=True, unfilled=True,
                         reject="cutover-cron-identity-or-receipt-mismatch")
+
+    def test_select_only_operator_pauses_without_granting_update_or_row_lock(self):
+        result = self.run_engine(restricted=True, aborted=True)
+        self.assertTrue(result["only_active_changed"])
+
+    def test_select_only_operator_resumes_saved_config_without_granting_update(self):
+        result = self.run_engine(restricted=True, resume=True)
+        self.assertTrue(result["only_active_changed"])
+
+    def test_select_only_operator_tampering_rolls_back_without_acl_change(self):
+        self.run_engine(restricted=True, mode="tamper",
+                        reject="cutover-cron-pause-unverified")
 
 
 if __name__ == "__main__":
