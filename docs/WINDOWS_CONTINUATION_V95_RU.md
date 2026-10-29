@@ -324,6 +324,27 @@ Pages main:/, HTTPS/CNAME и точное совпадение публично�
 activation receipt. Новое разрешение на уже авторизованный семейный выпуск
 не требуется; неизвестное фактическое состояние нельзя считать подтверждённым.
 
+### Production001–003 применены; флешка подтверждена
+
+Владелец выполнил install-family-sync-v95.sql в том же проверенном production
+SQL Editor. Финальная строка показала true для всех шести фактических флагов:
+schema_ready, cas_ready, table_permissions_ready, membership_ready,
+activation_pending, ready. Это настоящий receipt применения001–003 и hardening,
+а не результат локальной фикстуры. Activation_pending подтверждает единственную
+family_state с protocol1/revision0/last_request_id NULL; это ожидаемый baseline
+ранее подготовленного fresh checkpoint, не произвольно выбранная новая revision.
+Полное финансовое содержимое worker не читал; следующий activation guard должен
+сверить сохранённый PostgreSQL data hash непосредственно перед переключением.
+
+Владелец отдельно написал: «копия на флешке готова». Условие независимой копии
+закрыто в рамках данного порядка (успешная папка, обаCSV, подготовленные файлы).
+Следующий шаг — открыть сохранённый локально activation.sql в текстовом редакторе,
+выполнить его один раз в том же SQL Editor и сохранить фактический результат
+verified/activation_revision через Download CSV на флешку. Private SQL/plan
+в чат не запрашивать. Новый клиент и PR6 публиковать после этого receipt;
+напоминания пока остаются приостановлены. Сам activation и main/Pages на этом
+checkpoint ещё не подтверждены выполненными.
+
 ### Свежий резерв с исходной контрольной точкой
 
 `preview/server-before-update-backup-v95.sql` — один read-only SELECT в прежнем
