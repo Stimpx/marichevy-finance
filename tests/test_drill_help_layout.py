@@ -40,7 +40,7 @@ class DrillHelpLayout(unittest.TestCase):
                     self.records.append({'view': 'drill-row-alignment', 'width': width,
                         'height': height, 'rows': rows})
                     for row in rows:
-                        self.assertEqual(len(row['buttons']), 2)
+                        self.assertEqual(len(row['buttons']), 3)
                         self.assertLessEqual(abs(row['buttons'][0]['y'] - row['buttons'][1]['y']), 2,
                             'edit and repeat must not create a tall right-side action column')
                         # Compact rows put date+amount above the title; wide rows
