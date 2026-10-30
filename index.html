@@ -1846,23 +1846,37 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 #history .v76-action-group .btn{flex:0 1 auto;width:auto;min-height:44px;padding:8px 11px;font-size:12px;line-height:1.35;overflow-wrap:normal}
 #history .v100-history-icon-actions{display:inline-flex;flex:0 0 auto;align-items:center;gap:6px;max-width:100%}
 #history .v76-action-group .btn[data-action="edit"],#history .v76-action-group .btn[data-action="delete"]{flex:0 0 44px;width:44px;min-width:44px;padding:9px}
+#history .v76-history-wrap{container-type:inline-size;container-name:v104history}
 @media(max-width:1700px){
  #history .v76-history-table{display:block;border:0}
- #history .v76-history-table tbody{display:grid;gap:12px}
- #history .v76-history-table tr.v76-entry-row{margin:0;grid-template-columns:minmax(0,1fr) minmax(0,.7fr);gap:6px 14px;box-shadow:none}
+ #history .v76-history-table tbody{display:grid;gap:8px}
+ #history .v76-history-table tr.v76-entry-row{margin:0;grid-template-columns:minmax(0,1fr) minmax(0,.7fr);grid-template-areas:"date type" "category amount" "who shop" "comment comment" "actions actions";gap:4px 12px;padding:12px 14px;align-items:center;box-shadow:none;border-radius:14px}
+ #history .v76-history-table tr.v104-no-comment{grid-template-areas:"date type" "category amount" "who shop" "actions actions"}
+ #history .v76-history-table td.v76-date{grid-area:date}
+ #history .v76-history-table td:nth-child(2){grid-area:type}
+ #history .v76-history-table td.v76-cat{grid-area:category}
+ #history .v76-history-table td:nth-child(4){grid-area:who}
+ #history .v76-history-table td.v76-shop{grid-area:shop;text-align:right;overflow-wrap:anywhere}
+ #history .v76-history-table td.v76-comment{grid-area:comment;padding-top:4px!important}
+ #history .v76-history-table tr.v104-no-comment td.v76-comment{display:none!important}
+ #history .v76-history-table td.v76-amount{grid-area:amount}
  #history .v76-history-table td.v76-amount{min-width:0;max-width:100%;font-size:17px!important;white-space:normal!important;overflow-wrap:anywhere;text-align:right}
  #history .v76-action-group{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:7px}
  #history .v76-action-group .btn{flex:0 1 auto;width:auto;min-height:44px;padding:8px 11px;font-size:12px;line-height:1.35;overflow-wrap:normal}
  #history .v76-action-group .btn[data-action="edit"],#history .v76-action-group .btn[data-action="delete"]{flex:0 0 44px;width:44px;min-width:44px;padding:9px}
- #history .v76-history-table td.v76-actions{padding-top:10px!important}
+ #history .v76-history-table td.v76-actions{grid-area:actions;border-top:0;padding-top:0!important}
+ @container v104history (min-width:42em){
+  #history .v76-history-table tr.v76-entry-row{grid-template-columns:6.5em minmax(0,1fr) max-content;grid-template-areas:"date category amount" "type who actions" "shop shop actions" "comment comment comment"}
+  #history .v76-history-table tr.v104-no-comment{grid-template-areas:"date category amount" "type who actions" "shop shop actions"}
+  #history .v76-history-table td:nth-child(2){justify-self:start}
+  #history .v76-history-table td.v76-shop{text-align:left}
+ }
+ @container v104history (min-width:56em){
+  #history .v76-history-table tr.v76-entry-row{grid-template-columns:6.5em minmax(0,1fr) minmax(5.5em,.65fr) max-content max-content;grid-template-areas:"date category who amount actions" "type shop shop amount actions" "comment comment comment comment comment";column-gap:14px}
+  #history .v76-history-table tr.v104-no-comment{grid-template-areas:"date category who amount actions" "type shop shop amount actions"}
+ }
 }
-@media(min-width:700px) and (max-width:1700px){
- #history .v76-history-table tr.v76-entry-row{padding:16px 18px}
- #history .v76-history-table td.v76-shop{grid-column:2;grid-row:3;text-align:right;overflow-wrap:anywhere}
- #history .v76-history-table td.v76-comment{grid-row:4}
- #history .v76-history-table td.v76-actions{grid-row:5}
-}
-@media(max-width:600px){#history .filters{grid-template-columns:minmax(0,1fr)}#history .filters>#fSearch{grid-column:1}#history .v76-history-table tr.v76-entry-row{padding:14px 12px}#history .v76-action-group{gap:6px}#history .v76-action-group .btn{font-size:12px;padding-inline:9px}}
+@media(max-width:600px){#history .filters{grid-template-columns:minmax(0,1fr)}#history .filters>#fSearch{grid-column:1}#history .v76-history-table tr.v76-entry-row{padding:12px}#history .v76-action-group{gap:6px}#history .v76-action-group .btn{font-size:12px;padding-inline:9px}}
 /* Navigation text can wrap without shifting out of the sidebar. */
 .side{scrollbar-gutter:stable}
 .side .brand{min-width:0;max-width:100%;white-space:normal;align-items:flex-start}
@@ -1959,10 +1973,20 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 <button data-page="settings"><svg class="v81-nav-svg" aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.4-2.3.9a7 7 0 0 0-1.6-.9L14.6 3H9.4L9 6.1a7 7 0 0 0-1.6.9l-2.3-.9-2 3.4 2 1.5a7 7 0 0 0 0 2l-2 1.5 2 3.4 2.3-.9a7 7 0 0 0 1.6.9L9.4 21h5.2l.4-3.1a7 7 0 0 0 1.6-.9l2.3.9 2-3.4-2-1.5a7 7 0 0 0 .1-1z"/></svg><span class="v81-nav-label">Настройки</span></button>
 <button data-page="help"><svg class="v81-nav-svg" aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M9.5 8.5a2.5 2.5 0 0 1 5 0c0 2-2.5 2-2.5 4M12 16v1"/></svg><span class="v81-nav-label">Как пользоваться</span></button><button data-page="plans"><svg class="v81-nav-svg" aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4"/></svg><span class="v81-nav-label">FREE / PRO</span></button></div><div class="v73-sidebar-foot"><span class="v73-live-dot"></span><span>Личный кабинет семьи<br/><small>Только ваши данные</small></span></div>
 </aside>
+<style id="v104GlobalCalculatorStyle">
+.top .v104-header-tools{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:10px;max-width:100%;min-width:0}
+.top .v104-header-tools>.userbar{width:auto;max-width:100%;min-width:0;flex:0 1 auto}
+.v104-header-tools #userLabel{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.v104-global-calculator{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 13px;border:1px solid #dce5f3;background:#fff;color:#355284;font-size:13px;white-space:nowrap}
+.v104-global-calculator svg{flex:none}
+#v96Calculator #v96CalcApply[hidden]{display:none!important}
+@media(max-width:1024px){.top .v104-header-tools{width:100%;justify-content:flex-start}.top .v104-header-tools>.userbar{flex:1 1 14em}}
+@media(max-width:600px){.top .v104-header-tools{gap:8px}.v104-global-calculator{font-size:12px;padding-inline:11px}.top .v104-header-tools>.userbar{padding:7px 9px;font-size:12px}}
+</style>
 <main class="main">
 <header class="top">
 <div class="title"><div class="page-eyebrow">МАРИЧЕВЫ · СЕМЕЙНЫЙ БАНК</div><h1 id="pageTitle">Финансовый центр семьи</h1><p id="pageSub">Все деньги семьи — в одном понятном месте.</p></div>
-<div class="userbar"><span class="dot off" id="statusDot"></span><span id="userLabel">Вход не выполнен</span><button class="btn small" id="authBtn">Войти</button></div>
+<div class="v104-header-tools"><button type="button" id="v104GlobalCalculator" class="btn v104-global-calculator" aria-label="Открыть калькулятор" aria-haspopup="dialog" onclick="v96OpenCalculator()"><svg aria-hidden="true" width="18" height="20" viewBox="0 0 20 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="2" y="1" width="16" height="22" rx="3"/><path d="M6 5h8v4H6zM6 13h1M13 13h1M6 17h1M13 17h1"/></svg><span>Калькулятор</span></button><div class="userbar"><span class="dot off" id="statusDot"></span><span id="userLabel">Вход не выполнен</span><button class="btn small" id="authBtn">Войти</button></div></div>
 </header>
 <section class="section active" id="home">
 <section id="v99HomeSpending" class="v99-home-spending" aria-labelledby="v99SpendingTitle">
@@ -2503,6 +2527,7 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
  <p>Если в одном чеке товары разных назначений, можно внести отдельные части с проверенными суммами. Их сумма должна равняться чеку; не добавляйте затем ещё и весь чек целиком. Существующие общие записи не делятся автоматически.</p>
 </div></details>
 <details class="v96-help-topic" id="help-calculator"><summary><h3>Калькулятор суммы, копирование и вставка</h3></summary><div class="v96-help-body">
+ <p>Кнопка «Калькулятор» в шапке рядом с профилем доступна в любом разделе. Посчитайте и скопируйте результат; для подстановки в сумму операции откройте калькулятор из самой формы.</p>
  <ol>
   <li>Рядом с суммой новой или редактируемой операции откройте калькулятор.</li>
   <li>Введите вымышленный расчёт, например <code>(250 + 125,50) / 2</code>. Поддерживаются сложение, вычитание, умножение, деление и скобки. Проценты, формулы из таблиц и произвольные команды не поддерживаются.</li>
@@ -3484,6 +3509,7 @@ document.addEventListener('click',event=>{
   case 'favorite-remove':v97RemoveFavorite(...args);break;
   case 'entry-edit':openEdit(...args);break;
   case 'drill-entry-edit':v96EditFromDrill(...args);break;
+  case 'drill-entry-delete':v96DeleteFromDrill(...args);break;
   case 'entry-delete':deleteEntry(...args);break;
   case 'board-delete':deleteBoardItem(...args);break;
   case 'goal-deposit':addGoalDeposit(...args);break;
@@ -4299,6 +4325,7 @@ async function v96PasteAmount(targetId){
  v96ClipboardStatus(target,'Вставлено в поле. Операция ещё не сохранена.');return true;
 }
 let v96CalculatorTarget=null;
+let v104CalculatorOpener=null;
 let v96CalculatorGeneration=0;
 function v96CalculatorDialog(){
  let dialog=document.getElementById('v96Calculator');if(dialog)return dialog;
@@ -4314,7 +4341,7 @@ function v96CalculatorDialog(){
   else if(key!=='='){input.setRangeText(key,start,end,'end');input.focus()}
   v96RefreshCalculatedAmount();
  }));
- dialog.addEventListener('cancel',()=>{v96CalculatorTarget=null;v96CalculatorGeneration++});
+ dialog.addEventListener('cancel',event=>{event.preventDefault();v96CloseCalculator()});
  dialog.addEventListener('click',event=>{if(event.target===dialog){const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)v96CloseCalculator()}});
  document.body.appendChild(dialog);return dialog;
 }
@@ -4324,25 +4351,33 @@ function v96RefreshCalculatedAmount(){
  if(!input.value.trim()){message.textContent='Введите расчёт или вставьте его из буфера.';return null}
  try{
   const value=v96CalculateAmount(input.value);result.value=value.text;
-  apply.disabled=value.cents<=0;
-  message.textContent=value.cents<=0?'Для операции нужна сумма больше нуля.':value.rounded?'Результат округлён до копеек.':'Точный результат в копейках.';
+  apply.disabled=!v96CalculatorTarget||value.cents<=0;
+  message.textContent=v96CalculatorTarget&&value.cents<=0?'Для операции нужна сумма больше нуля.':value.rounded?'Результат округлён до копеек.':'Точный результат в копейках.';
   return value;
  }catch(error){
   message.textContent=error.message==='division-by-zero'?'На ноль делить нельзя.':error.message==='amount-too-large'?'Сумма слишком большая.':error.message==='expression-too-complex'?'Расчёт слишком длинный или сложный.':'Проверьте расчёт: числа с двумя знаками после запятой, +, −, ×, ÷ и скобки.';
   return null;
  }
 }
-function v96OpenCalculator(targetId){
- const target=document.getElementById(targetId);if(!target||!['eAmount','xAmount'].includes(targetId)||document.getElementById('appRoot').classList.contains('auth-locked'))return false;
+function v96OpenCalculator(targetId=null){
+ const standalone=targetId===null,target=standalone?null:document.getElementById(targetId);
+ if(document.getElementById('appRoot').classList.contains('auth-locked')||(!standalone&&(!target||!['eAmount','xAmount'].includes(targetId))))return false;
  v96CalculatorGeneration++;v96CalculatorTarget=target;
+ v104CalculatorOpener=target||document.getElementById('v104GlobalCalculator');
  const dialog=v96CalculatorDialog();
- document.getElementById('v96CalcExpression').value=target.value;
+ document.getElementById('v96CalcTitle').textContent=standalone?'Калькулятор':'Калькулятор суммы';
+ dialog.querySelector('label[for="v96CalcExpression"]').textContent=standalone?'Расчёт':'Расчёт, ₽';
+ dialog.querySelector('label[for="v96CalcResult"]').textContent=standalone?'Результат':'Результат, ₽';
+ document.getElementById('v96CalcApply').hidden=standalone;
+ dialog.querySelector('.v96-calc-actions .btn:last-child').textContent=standalone?'Закрыть':'Отмена';
+ dialog.querySelector('.hint').textContent=standalone?'Результат можно скопировать.':'Подставится только сумма. Операцию сохраните отдельно.';
+ document.getElementById('v96CalcExpression').value=target?.value||'';
  for(const id of ['v96CalcExpressionClipboardStatus','v96CalcResultClipboardStatus'])document.getElementById(id).textContent='';
  v96RefreshCalculatedAmount();if(!dialog.open)dialog.showModal();
  const input=document.getElementById('v96CalcExpression');input.focus();input.select();
 }
 function v96CloseCalculator(restoreFocus=true){
- const target=v96CalculatorTarget;v96CalculatorTarget=null;v96CalculatorGeneration++;
+ const target=v104CalculatorOpener;v104CalculatorOpener=null;v96CalculatorTarget=null;v96CalculatorGeneration++;
  document.getElementById('v96Calculator')?.close();
  for(const id of ['v96CalcExpression','v96CalcResult']){const field=document.getElementById(id);if(field)field.value=''}
  for(const id of ['v96CalcExpressionClipboardStatus','v96CalcResultClipboardStatus','v96CalcMessage']){const label=document.getElementById(id);if(label)label.textContent=''}
@@ -4666,7 +4701,7 @@ async function addEntry(){
 function deleteEntry(id){
  const e=state.entries.find(x=>x.id===id);if(!e)return;
  if(!confirm('Удалить операцию '+money(e.amount)+'?'))return;
- state.deletedEntries=state.deletedEntries||{};state.deletedEntries[id]=new Date().toISOString();state.entries=state.entries.filter(x=>x.id!==id);renderAll();saveAll().then(ok=>toast(localSaveMessage(ok,'Удаление сохранено')))
+ state.deletedEntries=state.deletedEntries||{};state.deletedEntries[id]=new Date().toISOString();state.entries=state.entries.filter(x=>x.id!==id);renderAll();return saveAll().then(ok=>{toast(localSaveMessage(ok,'Удаление сохранено'));return ok})
 }
 function openEdit(id,returnDrill=null){
  if(v98CategoryEdit)v98CloseCategoryEdit(false);
@@ -4985,7 +5020,7 @@ function renderHistory(){
  document.getElementById('historyBody').innerHTML=arr.map(e=>{
   const date=String(e.date||''),dateLabel=/^\d{4}-\d{2}-\d{2}$/.test(date)?date.slice(8,10)+'.'+date.slice(5,7)+'.'+date.slice(0,4):date;
   const shop=String(e.store||'').trim(),comment=String(e.comment||'').trim();
-  return `<tr class="v76-entry-row">
+  return `<tr class="v76-entry-row${comment?'':' v104-no-comment'}">
    <td data-label="Дата" class="v76-date">${safeFull(dateLabel)}</td>
    <td data-label="Тип"><span class="pill ${e.type==='income'?'v76-income-pill':''}">${typeName(e.type)}</span></td>
    <td data-label="Категория" class="v76-cat">${safeFull(e.category||'—')}${e.subcategory?`<small class="v81-row-subcategory">${safeFull(e.subcategory)}</small>`:''}</td>
@@ -6036,7 +6071,7 @@ function v84Drill(mode,key,source='analytics',returnContext=null){
      const name=store||category;
      const details=[store&&category!==store?v99CategoryLabel(category):'',e.subcategory||'',e.beneficiary?`Для: ${e.beneficiary}`:'',e.comment||''].filter(Boolean);
      const date=/^\d{4}-\d{2}-\d{2}$/.test(String(e.date||''))?String(e.date).slice(8,10)+'.'+String(e.date).slice(5,7)+'.'+String(e.date).slice(0,4):String(e.date||'');
-     return `<div class="v84-drill-entry v85-drill-entry"><time class="v85-drill-date">${esc(date)}</time><div class="v85-drill-content"><b class="v85-drill-name">${v96MerchantBadge(e.store)}${esc(v96MerchantDisplayName(e.store)||name)}</b>${details.length?`<div class="v85-drill-details">${details.map(d=>`<span>${esc(d)}</span>`).join('')}</div>`:''}</div><span class="v84-drill-sum">${money2(e.amount)}</span><div class="v96-drill-entry-actions"><button type="button" class="btn small" aria-label="Изменить операцию: ${esc(name)}, ${esc(date)}" ${recordAction('drill-entry-edit',e.id)}>Изменить</button><button type="button" class="btn small" ${recordAction('entry-repeat',e.id)}>Повторить</button></div></div>`;
+     return `<div class="v84-drill-entry v85-drill-entry"><time class="v85-drill-date">${esc(date)}</time><div class="v85-drill-content"><b class="v85-drill-name">${v96MerchantBadge(e.store)}${esc(v96MerchantDisplayName(e.store)||name)}</b>${details.length?`<div class="v85-drill-details">${details.map(d=>`<span>${esc(d)}</span>`).join('')}</div>`:''}</div><span class="v84-drill-sum">${money2(e.amount)}</span><div class="v96-drill-entry-actions"><button type="button" class="btn small" aria-label="Изменить операцию: ${esc(name)}, ${esc(date)}" ${recordAction('drill-entry-edit',e.id)}>Изменить</button><button type="button" class="btn small" ${recordAction('entry-repeat',e.id)}>Повторить</button><button type="button" class="btn small danger" aria-label="Удалить операцию: ${esc(name)}, ${esc(date)}" ${recordAction('drill-entry-delete',e.id)}>Удалить</button></div></div>`;
    }).join(''):'<div class="v84-empty">Записей пока нет</div>';
  }
  root.querySelectorAll('button[data-v84-sub]').forEach(b=>b.addEventListener('click',()=>show(b.dataset.v84Sub)));show(v96DrillContext.sub);
@@ -6048,6 +6083,19 @@ function v96EditFromDrill(id){
  if(!v96DrillContext||!modal.classList.contains('open')||!state.entries.some(entry=>entry.id===id))return;
  const context={...v96DrillContext,scrollTop:modal.querySelector('.v84-modal').scrollTop};
  v84CloseDrill();openEdit(id,context);document.getElementById('xAmount')?.focus();
+}
+function v96DeleteFromDrill(id){
+ const modal=document.getElementById('v84DrillModal');
+ if(!v96DrillContext||!modal.classList.contains('open')||!state.entries.some(entry=>entry.id===id))return;
+ const context={...v96DrillContext,scrollTop:modal.querySelector('.v84-modal').scrollTop};
+ const pending=deleteEntry(id);if(!pending)return;
+ const returnView=v96RestoreDrill(context,localSaveMessage(false),true);
+ pending.then(ok=>{
+  if(returnView&&v96DrillContext===returnView&&modal.classList.contains('open')){
+   const latest={...returnView,scrollTop:modal.querySelector('.v84-modal').scrollTop};
+   v96RestoreDrill(latest,localSaveMessage(ok,'Удаление сохранено'),true);
+  }
+ });
 }
 function v96RestoreDrill(context,message=context?.status||'',refresh=false){
  if(!context||!['group','person','direction'].includes(context.mode))return null;
