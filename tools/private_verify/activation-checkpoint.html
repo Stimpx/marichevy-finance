@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="ru">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-__SCRIPT_SHA256__'; style-src 'sha256-__STYLE_SHA256__'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'none'">
+<title>Подготовка переключения банка</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3f5fa;color:#19283f;font:16px/1.5 system-ui,sans-serif}main{max-width:800px;margin:28px auto;padding:25px;background:white;border:1px solid #dbe1ed;border-radius:18px}h1{font-size:25px;line-height:1.2;margin-top:0}label{display:block;font-weight:650;margin:20px 0 8px}input{max-width:100%;font:14px system-ui}button{min-height:46px;margin:8px 8px 8px 0;padding:10px 18px;border:0;border-radius:10px;background:#345bd7;color:white;font:600 15px system-ui;cursor:pointer}button:disabled{opacity:.5;cursor:default}button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #ffae38;outline-offset:3px}textarea{width:100%;min-height:90px;padding:12px;border:1px solid #c3ccdf;border-radius:10px;font:14px/1.5 ui-monospace,monospace}small{display:block;color:#52627c;margin-top:18px}#downloads[hidden]{display:none}@media(max-width:600px){main{margin:12px;padding:18px}button{width:100%}}
+</style>
+<main>
+<h1>Подготовка переключения банка</h1>
+<p>Выбери успешную папку сверки и свежий серверный резерв. Страница проверит, что серверный снимок совпадает с уже проверенным и восстановленным.</p>
+<label for="folder">1. Папка успешной сверки PRIVATE-verification-…</label>
+<button id="choose-folder" type="button">Выбрать папку сверки</button>
+<input id="folder" type="file" webkitdirectory multiple hidden>
+<label for="fresh">2. Свежий серверный резерв CSV</label>
+<button id="choose-fresh" type="button">Выбрать свежий резерв</button>
+<input id="fresh" type="file" accept=".csv,.json" hidden>
+<p><button id="check" type="button">Проверить и подготовить</button></p>
+<p id="notice" role="status" aria-live="polite">Файлы читаются локально. Сетевые соединения запрещены.</p>
+<textarea id="codes" readonly spellcheck="false" aria-label="Служебные коды"></textarea>
+<section id="downloads" hidden aria-label="Подготовленные закрытые файлы">
+<button type="button" data-download="activation">Сохранить activation.sql</button>
+<button type="button" data-download="cleanup">Сохранить cleanup.sql</button>
+<button type="button" data-download="plan">Сохранить activation-plan.json</button>
+<p>Сохрани подготовленные файлы в отдельную папку, рядом с папкой сверки.</p>
+</section>
+<small>Подготовка файлов не выполняет SQL и не устанавливает обновление. Сохрани служебные коды для чата; закрытые SQL и JSON оставь у себя. Исходные файлы не изменяются.</small>
+</main>
+<script>
+'use strict';
+const SQL=__ACTIVATION_SQL_JSON__;
+const PROJECT='kqndxecziamypdjpxhyq',SQLPIN='7fc72248cd65e790dfec12abc4da1811ae2146f414b8be46cd5cd7ae5244e248';
+const ENGINE='pglite-0.3.14-postgresql-17.5-wasm-in-memory';
+const SLOTS=Object.freeze(['server','mac-export','mac-capture','iphone-export','iphone-capture','windows-export','windows-capture']);
+const NAMES=Object.freeze([...SLOTS.map(s=>s+(s==='server'?'.bin':'.json')),'verification-report.json','server-restored-PRIVATE.json','server-restore-receipt-PRIVATE.json']);
+const MAXFILE=32*1024*1024,MAXTOTAL=160*1024*1024;
+const CODES=new Set(['checkpoint-folder-invalid','checkpoint-size-limit','checkpoint-json-invalid','checkpoint-csv-invalid','checkpoint-report-invalid','checkpoint-source-mismatch','checkpoint-restore-invalid','checkpoint-fresh-invalid','checkpoint-snapshot-changed','checkpoint-plan-invalid','checkpoint-input-missing','checkpoint-read-failed']);
+const byId=id=>document.getElementById(id),own=(x,k)=>Object.prototype.hasOwnProperty.call(x,k);
+const obj=x=>x!==null&&typeof x==='object'&&!Array.isArray(x);
+const hex=x=>typeof x==='string'&&/^[a-f0-9]{64}$/.test(x);
+const uuid=x=>typeof x==='string'&&/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/.test(x)&&x!=='00000000-0000-0000-0000-000000000000';
+const utf8=x=>new TextEncoder().encode(x);
+let generation=0,prepared=null;
+function fail(code){throw new Error(CODES.has(code)?code:'checkpoint-read-failed');}
+function requireValue(value,code){if(!value)fail(code);}
+function invalidate(){generation++;prepared=null;byId('downloads').hidden=true;byId('codes').value='';byId('notice').textContent='Файлы выбраны. Нажми «Проверить и подготовить».';byId('check').disabled=false;}
+function status(outcome,code){byId('codes').value='Result: '+outcome+'\nCodes: '+code;byId('notice').textContent=outcome==='prepared-not-executed'?'Снимок совпал. Закрытые файлы подготовлены, SQL не выполнялся.':outcome==='review_required'?'Серверный снимок изменился. Нужна проверка расхождения.':'Проверка остановлена. Передай в чат только служебные коды.';}
+function safeString(value){for(let i=0;i<value.length;i++){const c=value.charCodeAt(i);if(c>=0xd800&&c<=0xdbff){const n=value.charCodeAt(++i);if(!(n>=0xdc00&&n<=0xdfff))return false;}else if(c>=0xdc00&&c<=0xdfff)return false;}return true;}
+// Parse only outer metadata. The financial snapshot_json value stays a string.
+function parse(text){
+  let at=0,nodes=0;
+  const bad=()=>fail('checkpoint-json-invalid'),white=()=>{while(/[\x20\t\r\n]/.test(text[at]||'!'))at++;};
+  function string(){const start=at++;while(at<text.length){const c=text.charCodeAt(at++);if(c===34){let value;try{value=JSON.parse(text.slice(start,at));}catch(_){bad();}if(!safeString(value))bad();return value;}if(c<32)bad();if(c===92){if(at>=text.length)bad();const escape=text[at++];if(escape==='u'){if(!/^[0-9a-fA-F]{4}$/.test(text.slice(at,at+4)))bad();at+=4;}else if(!'"\\/bfnrt'.includes(escape))bad();}}bad();}
+  function value(depth){if(depth>64||++nodes>30000)bad();white();const c=text[at];
+    if(c==='"')return string();
+    if(c==='{'){at++;const result=Object.create(null);white();if(text[at]==='}'){at++;return result;}for(;;){white();if(text[at]!=='"')bad();const key=string();if(own(result,key))bad();white();if(text[at++]!==':')bad();result[key]=value(depth+1);white();const end=text[at++];if(end==='}')return result;if(end!==',')bad();}}
+    if(c==='['){at++;const result=[];white();if(text[at]===']'){at++;return result;}for(;;){result.push(value(depth+1));white();const end=text[at++];if(end===']')return result;if(end!==',')bad();}}
+    for(const [token,result]of [['true',true],['false',false],['null',null]])if(text.slice(at,at+token.length)===token){at+=token.length;return result;}
+    const token=/^-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?/.exec(text.slice(at));
+    if(!token||!/^\-?(?:0|[1-9][0-9]*)$/.test(token[0]))bad();at+=token[0].length;const number=Number(token[0]);if(!Number.isSafeInteger(number))bad();return number;
+  }
+  const result=value(0);white();if(at!==text.length)bad();return result;
+}
+function decode(bytes){try{const text=new TextDecoder('utf-8',{fatal:true,ignoreBOM:true}).decode(bytes);const clean=text.charCodeAt(0)===0xfeff?text.slice(1):text;if(clean.charCodeAt(0)===0xfeff)fail('checkpoint-csv-invalid');return clean;}catch(_){fail('checkpoint-csv-invalid');}}
+function backupText(bytes){
+  const text=decode(bytes);if(text.trimStart().startsWith('{'))return text;
+  const rows=[];let at=0;
+  while(at<text.length){if(rows.length>=2)fail('checkpoint-csv-invalid');const row=[];for(;;){let field='';
+    if(text[at]==='"'){at++;let closed=false;while(at<text.length){const end=text.indexOf('"',at);if(end<0)fail('checkpoint-csv-invalid');field+=text.slice(at,end);at=end+1;if(text[at]==='"'){field+='"';at++;}else{closed=true;break;}}if(!closed||(at<text.length&&![',','\r','\n'].includes(text[at])))fail('checkpoint-csv-invalid');}
+    else{const start=at;while(at<text.length&&![',','\r','\n'].includes(text[at])){if(text[at]==='"')fail('checkpoint-csv-invalid');at++;}field=text.slice(start,at);}
+    row.push(field);if(row.length>1)fail('checkpoint-csv-invalid');if(text[at]===','){at++;continue;}if(text[at]==='\r'){if(text[at+1]!=='\n')fail('checkpoint-csv-invalid');at+=2;}else if(text[at]==='\n')at++;rows.push(row);break;
+  }}
+  requireValue(rows.length===2&&rows.every(r=>r.length===1)&&rows[0][0]==='backup_json'&&rows[1][0].trim(),'checkpoint-csv-invalid');return rows[1][0];
+}
+async function digest(bytes){return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),x=>x.toString(16).padStart(2,'0')).join('');}
+async function read(file){try{const bytes=new Uint8Array(await file.arrayBuffer());requireValue(bytes.length===file.size&&bytes.length>0&&bytes.length<=MAXFILE,'checkpoint-size-limit');return bytes;}catch(error){if(CODES.has(error?.message))throw error;fail('checkpoint-read-failed');}}
+function inventory(files,fresh){
+  requireValue(files.length===NAMES.length&&fresh,'checkpoint-input-missing');const chosen=new Map();let root=null,total=fresh.size;
+  for(const file of files){const parts=(file.webkitRelativePath||'').split('/');requireValue(parts.length===2&&parts[0]&&parts[1]===file.name&&NAMES.includes(file.name)&&!chosen.has(file.name),'checkpoint-folder-invalid');if(root===null)root=parts[0];requireValue(root===parts[0],'checkpoint-folder-invalid');chosen.set(file.name,file);total+=file.size;}
+  for(const file of [...files,fresh])requireValue(Number.isSafeInteger(file.size)&&file.size>0&&file.size<=MAXFILE,'checkpoint-size-limit');requireValue(total<=MAXTOTAL,'checkpoint-size-limit');return chosen;
+}
+async function wrapper(value,code){
+  requireValue(obj(value)&&value.format==='marichevy-private-server-backup-v1'&&value.read_only===true&&value.project_ref===PROJECT&&uuid(value.configured_household)&&value.configured_household_count===1&&typeof value.database_timezone==='string'&&/^[A-Za-z0-9_+./:-]{1,100}$/.test(value.database_timezone)&&typeof value.snapshot_json==='string'&&safeString(value.snapshot_json)&&hex(value.snapshot_json_sha256),code);
+  requireValue(await digest(utf8(value.snapshot_json))===value.snapshot_json_sha256,code);
+}
+function validateReport(report){
+  requireValue(obj(report)&&report.format==='marichevy-private-local-verification-v1'&&report.phase==='device-comparison-and-optional-local-restore'&&report.outcome==='passed'&&Array.isArray(report.issues)&&report.issues.length===0&&report.restore_execution_verified===true&&report.release_authorized===false&&report.network_used===false&&report.inputs_modified===false&&obj(report.restore)&&report.restore.outcome==='passed'&&report.restore.restore_execution_verified===true&&Array.isArray(report.source_files)&&report.source_files.length===7&&obj(report.checks),'checkpoint-report-invalid');
+  for(const key of ['input_scope_and_capture_hashes_valid','device_scope_is_owner_attestation','period_cent_and_known_links_valid','device_variants_match_server'])requireValue(report.checks[key]===true,'checkpoint-report-invalid');
+  const seen=new Set();for(const source of report.source_files){requireValue(obj(source)&&SLOTS.includes(source.slot)&&!seen.has(source.slot)&&Number.isSafeInteger(source.bytes)&&source.bytes>0&&source.bytes<=MAXFILE&&hex(source.sha256),'checkpoint-report-invalid');seen.add(source.slot);}
+}
+function validateReceipt(receipt){
+  requireValue(obj(receipt)&&receipt.format==='marichevy-private-local-restore-receipt-v1'&&receipt.outcome==='passed'&&receipt.engine===ENGINE&&receipt.outcome_scope==='four-app-table-restore-only'&&receipt.source_digest_scope==='decoded-backup-json-utf8','checkpoint-restore-invalid');
+  for(const key of ['restore_execution_verified','four_table_roundtrip_verified','foreign_keys_and_not_null_restored','local_clone_rls_verified','minimal_auth_user_stubs_only','migration_rehearsal_preserved_original_columns','migration_rehearsal_local_cas_verified','source_scope_is_owner_attestation'])requireValue(receipt[key]===true,'checkpoint-restore-invalid');
+  for(const key of ['release_authorized','network_used','production_changed','original_files_modified','supabase_auth_restored','supabase_platform_restored','source_unknown_delivery_checks_reproduced','app_data_review_required'])requireValue(receipt[key]===false,'checkpoint-restore-invalid');
+  for(const key of ['source_file_sha256','source_snapshot_json_sha256','readback_file_sha256','readback_snapshot_json_sha256'])requireValue(hex(receipt[key]),'checkpoint-restore-invalid');
+}
+function plan(value,household){
+  requireValue(obj(value)&&Object.keys(value).sort().join('|')===['format','activation_sql_sha256','expected_database','household_id','expected_revision','expected_data_sha256'].sort().join('|')&&value.format==='marichevy-sync-activation-plan-v1'&&value.activation_sql_sha256===SQLPIN&&value.expected_database==='postgres'&&value.household_id===household&&uuid(value.household_id)&&value.expected_revision===0&&hex(value.expected_data_sha256),'checkpoint-plan-invalid');
+  return value;
+}
+const literal=value=>"E'"+value.replaceAll('\\','\\\\').replaceAll("'","''")+"'";
+async function verify(chosen,fresh,current){
+  const bytes=new Map();for(const name of NAMES){bytes.set(name,await read(chosen.get(name)));if(current!==generation)return null;}
+  const report=parse(decode(bytes.get('verification-report.json'))),receipt=parse(decode(bytes.get('server-restore-receipt-PRIVATE.json')));
+  validateReport(report);validateReceipt(receipt);
+  for(const source of report.source_files){const raw=bytes.get(source.slot+(source.slot==='server'?'.bin':'.json'));requireValue(raw.length===source.bytes&&await digest(raw)===source.sha256,'checkpoint-source-mismatch');}
+  const originalText=backupText(bytes.get('server.bin')),original=parse(originalText),readback=parse(decode(bytes.get('server-restored-PRIVATE.json')));
+  await wrapper(original,'checkpoint-source-mismatch');await wrapper(readback,'checkpoint-restore-invalid');
+  const originalDigest=await digest(utf8(originalText));
+  requireValue(originalDigest===receipt.source_file_sha256&&original.snapshot_json_sha256===receipt.source_snapshot_json_sha256&&await digest(bytes.get('server-restored-PRIVATE.json'))===receipt.readback_file_sha256&&readback.snapshot_json_sha256===receipt.readback_snapshot_json_sha256&&readback.source_backup_sha256===originalDigest&&readback.restore_scope==='offline-four-app-tables-auth-id-stubs'&&readback.engine===ENGINE&&readback.configured_household===original.configured_household&&readback.database_timezone===original.database_timezone,'checkpoint-restore-invalid');
+  const next=parse(backupText(await read(fresh)));await wrapper(next,'checkpoint-fresh-invalid');
+  requireValue(next.configured_household===original.configured_household&&next.database_timezone===original.database_timezone&&next.database_name==='postgres'&&next.database_role==='postgres'&&next.transaction_read_only==='off'&&next.export_method==='sql-editor-select-v1'&&hex(next.query_sha256),'checkpoint-fresh-invalid');
+  const params=plan(next.activation_checkpoint,next.configured_household);
+  requireValue(next.snapshot_json===original.snapshot_json&&next.snapshot_json_sha256===original.snapshot_json_sha256,'checkpoint-snapshot-changed');
+  requireValue(await digest(utf8(SQL))===SQLPIN,'checkpoint-plan-invalid');
+  const random=crypto.getRandomValues(new Uint8Array(12)),statement='marichevy_activation_'+Array.from(random,x=>x.toString(16).padStart(2,'0')).join('');
+  const args=[literal(params.expected_database),literal(params.household_id)+'::uuid','0',literal(params.expected_data_sha256)].join(', ');
+  return {activation:'-- PRIVATE PREPARED SCRIPT: not executed by this page.\n-- Save verified / activation_revision privately before cleanup.\nPREPARE '+statement+'(text,uuid,bigint,text) AS\n'+SQL.trimEnd()+'\nEXECUTE '+statement+'('+args+');\n',cleanup:'-- Run separately only after saving the activation result.\nDEALLOCATE '+statement+';\n',plan:JSON.stringify(params,null,2)+'\n'};
+}
+for(const id of ['folder','fresh'])byId(id).addEventListener('change',invalidate);
+for(const id of ['folder','fresh'])byId('choose-'+id).addEventListener('click',()=>byId(id).click());
+byId('check').addEventListener('click',async()=>{
+  const current=++generation;prepared=null;byId('downloads').hidden=true;byId('codes').value='';byId('check').disabled=true;byId('notice').textContent='Проверка сохранённых копий…';
+  try{const freshFiles=Array.from(byId('fresh').files||[]);requireValue(freshFiles.length===1,'checkpoint-input-missing');const selected=inventory(Array.from(byId('folder').files||[]),freshFiles[0]);const result=await verify(selected,freshFiles[0],current);if(current!==generation)return;prepared=result;byId('downloads').hidden=false;status('prepared-not-executed','none');}
+  catch(error){if(current!==generation)return;const code=CODES.has(error?.message)?error.message:'checkpoint-read-failed';status(code==='checkpoint-snapshot-changed'?'review_required':'failed',code);}
+  finally{if(current===generation)byId('check').disabled=false;}
+});
+for(const button of document.querySelectorAll('[data-download]'))button.addEventListener('click',()=>{
+  if(!prepared)return;const kind=button.dataset.download,name={activation:'activation.sql',cleanup:'cleanup.sql',plan:'activation-plan.json'}[kind];if(!name)return;
+  const url=URL.createObjectURL(new Blob([prepared[kind]],{type:kind==='plan'?'application/json;charset=utf-8':'text/plain;charset=utf-8'})),anchor=document.createElement('a');anchor.href=url;anchor.download=name;anchor.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+});
+</script>
+</html>

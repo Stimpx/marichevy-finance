@@ -1,0 +1,23 @@
+{
+  "format": "marichevy-macos-runtime-pin-v1",
+  "version": "v22.23.4",
+  "official_shasums_sha256": "c90c3f1478fda8308b22cc1a1b0dc536169196444e67ee8b5c582fd351d02bce",
+  "architectures": {
+    "arm64": {
+      "arch": "arm64",
+      "source_url": "https://nodejs.org/dist/v22.23.4/node-v22.23.4-darwin-arm64.tar.xz",
+      "archive_sha256": "037650d0839f457747396f052073fb48333d31bf5abd3c98b74da20d89ebb1ad",
+      "node_sha256": "2cc28a1880d0774616959f2210ee739bffa6ac695c887e8988a496a21271f6c0",
+      "node_bytes": 113002944,
+      "node_license_sha256": "c738ae413cf561f174e34f6961f8ca458aae2369a73640dda6234c629b98bcc4"
+    },
+    "x64": {
+      "arch": "x64",
+      "source_url": "https://nodejs.org/dist/v22.23.4/node-v22.23.4-darwin-x64.tar.xz",
+      "archive_sha256": "f42abca7aaac61efc57d49fb42ea84fc53bbeba9a749cb03a291ce6e4e7a69c1",
+      "node_sha256": "e55a748c81980fda1399e65b686708960d6bb9b7e8ea5913d85a97c6a19e7a7b",
+      "node_bytes": 115497712,
+      "node_license_sha256": "c738ae413cf561f174e34f6961f8ca458aae2369a73640dda6234c629b98bcc4"
+    }
+  }
+}

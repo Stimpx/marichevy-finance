@@ -1,0 +1,38 @@
+{
+  "format": "marichevy-drill-help-regression-v1",
+  "status": "passed",
+  "source_html_sha256": "d44a3fc9c55875f4f0600b66ef2630755da732c63876a35d7723eb053604c77f",
+  "data": "fictional-only",
+  "focused_test_methods": 38,
+  "focused_suites": {
+    "responsive_geometry": 4,
+    "drill_help_geometry": 3,
+    "analytics_edit": 10,
+    "help_guide": 5,
+    "public_ledger": 15,
+    "all_sections_sweep": 1
+  },
+  "all_sections_sweep": {
+    "sections": 13,
+    "widths": [
+      320,
+      360,
+      390,
+      430,
+      768,
+      1024,
+      1280,
+      1512,
+      1920
+    ],
+    "views": 189,
+    "passed": true
+  },
+  "visual_review": "v95-layout-r2-review.json",
+  "demo_archive_sha256": "1aa9914b276a6fe12d0bb212022fd072693635398d5eba2f1f6460b91c95a796",
+  "demo_archive_bytes": 1343229,
+  "full_696_suite_repeated": false,
+  "previous_full_suite_report": "v95-layout-regression-report.json",
+  "native_gadgets_tested": false,
+  "production_changed": false
+}

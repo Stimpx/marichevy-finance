@@ -1,0 +1,1722 @@
+[
+  {
+    "brand": "krasnoe-beloe",
+    "value": "Красное & Белое",
+    "aliases": [
+      "кб",
+      "к&б",
+      "красноебелое",
+      "красное белое",
+      "красное и белое",
+      "krasnoe beloe",
+      "krasnoe & beloe",
+      "krasnoe i beloe"
+    ],
+    "sector": "groceries"
+  },
+  {
+    "brand": "detskiy-mir",
+    "value": "Детский мир",
+    "aliases": [
+      "детмир",
+      "детский-мир",
+      "detskiy mir",
+      "detsky mir",
+      "detmir"
+    ],
+    "sector": "children"
+  },
+  {
+    "brand": "familia",
+    "value": "Familia",
+    "aliases": [
+      "фамилия",
+      "фамилиа",
+      "familia offprice"
+    ],
+    "sector": "fashion"
+  },
+  {
+    "brand": "pyaterochka",
+    "value": "Пятёрочка",
+    "aliases": [
+      "пятерочка",
+      "пятёрка магазин",
+      "пятерка магазин",
+      "пятерочька",
+      "pyaterochka",
+      "pyatyorochka",
+      "5ka",
+      "5ка"
+    ],
+    "sector": "groceries"
+  },
+  {
+    "brand": "dixy",
+    "value": "Дикси",
+    "aliases": [
+      "dixy",
+      "diksi",
+      "дикси магазин"
+    ],
+    "sector": "groceries"
+  },
+  {
+    "brand": "vkusvill",
+    "value": "ВкусВилл",
+    "aliases": [
+      "вкусвил",
+      "вкусвилл",
+      "вкус вилл",
+      "вкус вил",
+      "vkusvill",
+      "vkusvil",
+      "vkus vill",
+      "избёнка",
+      "избенка",
+      "вкуссвилл",
+      "вкуссвил"
+    ],
+    "sector": "groceries"
+  },
+  {
+    "brand": "magnit",
+    "value": "Магнит",
+    "aliases": [
+      "magnit",
+      "магнит у дома",
+      "магнит семейный",
+      "магнит экстра"
+    ],
+    "sector": "groceries"
+  },
+  {
+    "brand": "perekrestok",
+    "value": "Перекрёсток",
+    "aliases": [
+      "перекресток",
+      "перекрёсток магазин",
+      "perekrestok",
+      "perekryostok",
+      "perekrestok ru"
+    ],
+    "sector": "groceries"
+  },
+  {
+    "brand": "lenta",
+    "value": "Лента",
+    "aliases": [
+      "lenta",
+      "лента гипермаркет",
+      "супер лента",
+      "гипер лента",
+      "мини лента"
+    ],
+    "sector": "groceries"
+  },
+  {
+    "brand": "auchan",
+    "value": "Ашан",
+    "aliases": [
+      "auchan",
+      "ашан сити",
+      "ашан гипермаркет",
+      "ashan"
+    ],
+    "sector": "groceries"
+  },
+  {
+    "brand": "azbuka-vkusa",
+    "value": "Азбука вкуса",
+    "aliases": [
+      "азбукавкуса",
+      "azbuka vkusa",
+      "azbukavkusa",
+      "ав дейли",
+      "ab daily"
+    ],
+    "sector": "groceries"
+  },
+  {
+    "brand": "verny",
+    "value": "Верный",
+    "aliases": [
+      "верный магазин",
+      "verny",
+      "vernyi",
+      "verniy"
+    ],
+    "sector": "groceries"
+  },
+  {
+    "brand": "chizhik",
+    "value": "Чижик",
+    "aliases": [
+      "чижик магазин",
+      "chizhik",
+      "chijik"
+    ],
+    "sector": "groceries"
+  },
+  {
+    "brand": "svetofor",
+    "value": "Светофор",
+    "aliases": [
+      "светофор магазин",
+      "svetofor",
+      "svetofor market"
+    ],
+    "sector": "groceries"
+  },
+  {
+    "brand": "okey",
+    "value": "О’КЕЙ",
+    "aliases": [
+      "окей",
+      "о кей",
+      "okey",
+      "o key",
+      "okey market",
+      "окей гипермаркет"
+    ],
+    "sector": "groceries"
+  },
+  {
+    "brand": "globus",
+    "value": "Глобус",
+    "aliases": [
+      "глобус гипермаркет",
+      "globus",
+      "globus hypermarket",
+      "globus ru"
+    ],
+    "sector": "groceries"
+  },
+  {
+    "brand": "yarche",
+    "value": "Ярче!",
+    "aliases": [
+      "ярче",
+      "ярче магазин",
+      "yarche",
+      "yarche plus"
+    ],
+    "sector": "groceries"
+  },
+  {
+    "brand": "bristol",
+    "value": "Бристоль",
+    "aliases": [
+      "bristol",
+      "бристол",
+      "бристоль магазин"
+    ],
+    "sector": "groceries"
+  },
+  {
+    "brand": "avoska",
+    "value": "Авоська",
+    "aliases": [
+      "авоська магазин",
+      "avoska",
+      "avos ka"
+    ],
+    "sector": "groceries"
+  },
+  {
+    "brand": "magnolia",
+    "value": "Магнолия",
+    "aliases": [
+      "магнолия магазин",
+      "magnolia",
+      "magnoliya"
+    ],
+    "sector": "groceries"
+  },
+  {
+    "brand": "fasol",
+    "value": "Фасоль",
+    "aliases": [
+      "фасоль магазин",
+      "fasol",
+      "fasol market"
+    ],
+    "sector": "groceries"
+  },
+  {
+    "brand": "viktoria",
+    "value": "Виктория супермаркет",
+    "aliases": [
+      "виктория магазин",
+      "виктория супермаркет",
+      "victoria supermarket",
+      "viktoria supermarket",
+      "victoria market"
+    ],
+    "sector": "groceries"
+  },
+  {
+    "brand": "metro",
+    "value": "METRO Cash & Carry",
+    "aliases": [
+      "metro cash carry",
+      "metro cash and carry",
+      "метро кэш энд керри",
+      "метро кеш энд керри",
+      "метро гипермаркет"
+    ],
+    "sector": "groceries"
+  },
+  {
+    "brand": "myasnov",
+    "value": "Мясновъ",
+    "aliases": [
+      "мяснов",
+      "myasnov",
+      "myasnov ru",
+      "мясновъ магазин"
+    ],
+    "sector": "groceries"
+  },
+  {
+    "brand": "monetka",
+    "value": "Монетка",
+    "aliases": [
+      "monetka",
+      "монетка магазин",
+      "monetka supermarket"
+    ],
+    "sector": "groceries"
+  },
+  {
+    "brand": "krasny-yar",
+    "value": "Красный Яр",
+    "aliases": [
+      "красныйяр",
+      "krasny yar",
+      "krasniy yar",
+      "красный яр гастроном"
+    ],
+    "sector": "groceries"
+  },
+  {
+    "brand": "pobeda",
+    "value": "Победа магазин",
+    "aliases": [
+      "победа дискаунтер",
+      "магазин победа",
+      "pobeda market",
+      "pobeda supermarket"
+    ],
+    "sector": "groceries"
+  },
+  {
+    "brand": "samokat",
+    "value": "Самокат",
+    "aliases": [
+      "самокат доставка",
+      "samokat",
+      "samokat delivery"
+    ],
+    "sector": "groceries"
+  },
+  {
+    "brand": "kuper",
+    "value": "Купер",
+    "aliases": [
+      "kuper",
+      "сбермаркет",
+      "sbermarket",
+      "сбер маркет",
+      "купер доставка"
+    ],
+    "sector": "groceries"
+  },
+  {
+    "brand": "yandex-lavka",
+    "value": "Яндекс Лавка",
+    "aliases": [
+      "яндекславка",
+      "яндекс лавка",
+      "yandex lavka",
+      "yandexlavka",
+      "ya lavka"
+    ],
+    "sector": "groceries"
+  },
+  {
+    "brand": "gorzdrav",
+    "value": "Горздрав",
+    "aliases": [
+      "гор здрав",
+      "gorzdrav",
+      "gorzdrav org",
+      "горздрав аптека"
+    ],
+    "sector": "pharmacy"
+  },
+  {
+    "brand": "rigla",
+    "value": "Ригла",
+    "aliases": [
+      "rigla",
+      "ригла аптека",
+      "rigla ru"
+    ],
+    "sector": "pharmacy"
+  },
+  {
+    "brand": "apteka-36-6",
+    "value": "Аптека 36,6",
+    "aliases": [
+      "36 6",
+      "36,6",
+      "36.6",
+      "аптека 366",
+      "apteka 36 6",
+      "366 ru",
+      "36 и 6"
+    ],
+    "sector": "pharmacy"
+  },
+  {
+    "brand": "stolichki",
+    "value": "Столички",
+    "aliases": [
+      "столички аптека",
+      "аптеки столички",
+      "stolichki",
+      "stolichki ru"
+    ],
+    "sector": "pharmacy"
+  },
+  {
+    "brand": "eapteka",
+    "value": "ЕАПТЕКА",
+    "aliases": [
+      "е аптека",
+      "еаптека",
+      "eapteka",
+      "e apteka",
+      "сбер еаптека",
+      "sber eapteka"
+    ],
+    "sector": "pharmacy"
+  },
+  {
+    "brand": "apteka-ru",
+    "value": "Аптека.ру",
+    "aliases": [
+      "аптека ру",
+      "аптекару",
+      "apteka ru",
+      "apteka.ru",
+      "aptekaru"
+    ],
+    "sector": "pharmacy"
+  },
+  {
+    "brand": "planeta-zdorovya",
+    "value": "Планета здоровья",
+    "aliases": [
+      "планетаздоровья",
+      "planeta zdorovya",
+      "planeta zdorovia",
+      "planetazdorovo"
+    ],
+    "sector": "pharmacy"
+  },
+  {
+    "brand": "zdravcity",
+    "value": "Здравсити",
+    "aliases": [
+      "здрав сити",
+      "zdravcity",
+      "zdrav city",
+      "здравсити аптека"
+    ],
+    "sector": "pharmacy"
+  },
+  {
+    "brand": "neopharm",
+    "value": "Неофарм",
+    "aliases": [
+      "нео фарм",
+      "neopharm",
+      "neofarm",
+      "неофарм аптека"
+    ],
+    "sector": "pharmacy"
+  },
+  {
+    "brand": "samson-pharma",
+    "value": "Самсон-Фарма",
+    "aliases": [
+      "самсон фарма",
+      "самсонфарма",
+      "samson pharma",
+      "samson farma"
+    ],
+    "sector": "pharmacy"
+  },
+  {
+    "brand": "asna",
+    "value": "АСНА",
+    "aliases": [
+      "asna",
+      "асна аптека",
+      "asna ru"
+    ],
+    "sector": "pharmacy"
+  },
+  {
+    "brand": "bud-zdorov",
+    "value": "Будь Здоров!",
+    "aliases": [
+      "будь здоров аптека",
+      "аптека будь здоров",
+      "bud zdorov",
+      "budzdorov"
+    ],
+    "sector": "pharmacy"
+  },
+  {
+    "brand": "aprel",
+    "value": "Аптека Апрель",
+    "aliases": [
+      "апрель аптека",
+      "apteka aprel",
+      "aprel pharmacy",
+      "аптеки апрель"
+    ],
+    "sector": "pharmacy"
+  },
+  {
+    "brand": "dialog",
+    "value": "Аптека Диалог",
+    "aliases": [
+      "диалог аптека",
+      "dialog pharmacy",
+      "apteka dialog",
+      "dialog apteka"
+    ],
+    "sector": "pharmacy"
+  },
+  {
+    "brand": "vita",
+    "value": "Аптека Вита",
+    "aliases": [
+      "вита аптека",
+      "вита экспресс",
+      "vita express",
+      "vita pharmacy",
+      "apteka vita"
+    ],
+    "sector": "pharmacy"
+  },
+  {
+    "brand": "maksavit",
+    "value": "МАКСАВИТ",
+    "aliases": [
+      "максавит",
+      "макса вит",
+      "maksavit",
+      "maxavit",
+      "максавит аптека"
+    ],
+    "sector": "pharmacy"
+  },
+  {
+    "brand": "implozia",
+    "value": "Имплозия",
+    "aliases": [
+      "имплозия аптека",
+      "implozia",
+      "implosia",
+      "imploziya"
+    ],
+    "sector": "pharmacy"
+  },
+  {
+    "brand": "zhivika",
+    "value": "Живика",
+    "aliases": [
+      "живика аптека",
+      "zhivika",
+      "jivika",
+      "zhivika ru"
+    ],
+    "sector": "pharmacy"
+  },
+  {
+    "brand": "farmlend",
+    "value": "Фармленд",
+    "aliases": [
+      "фарм ленд",
+      "farmlend",
+      "pharmland",
+      "фармленд аптека"
+    ],
+    "sector": "pharmacy"
+  },
+  {
+    "brand": "doctor-stoletov",
+    "value": "Доктор Столетов",
+    "aliases": [
+      "докторстолетов",
+      "doctor stoletov",
+      "doktor stoletov",
+      "dr stoletov",
+      "столетов аптека"
+    ],
+    "sector": "pharmacy"
+  },
+  {
+    "brand": "invitro",
+    "value": "ИНВИТРО",
+    "aliases": [
+      "invitro",
+      "инвитро лаборатория",
+      "лаборатория инвитро",
+      "invitro laboratory"
+    ],
+    "sector": "health"
+  },
+  {
+    "brand": "wildberries",
+    "value": "Wildberries",
+    "aliases": [
+      "wb",
+      "вб",
+      "вайлдберриз",
+      "вайлдберис",
+      "валберис",
+      "валберриз",
+      "вайлдберриес",
+      "вайлд берриз",
+      "wild berries",
+      "wildberies"
+    ],
+    "sector": "marketplace"
+  },
+  {
+    "brand": "ozon",
+    "value": "Ozon",
+    "aliases": [
+      "озон",
+      "ozon ru",
+      "ozon.ru",
+      "озон магазин"
+    ],
+    "sector": "marketplace"
+  },
+  {
+    "brand": "yandex-market",
+    "value": "Яндекс Маркет",
+    "aliases": [
+      "яндексмаркет",
+      "яндекс маркет",
+      "yandex market",
+      "yandexmarket",
+      "market yandex"
+    ],
+    "sector": "marketplace"
+  },
+  {
+    "brand": "aliexpress",
+    "value": "AliExpress",
+    "aliases": [
+      "алиэкспресс",
+      "али экспресс",
+      "aliexpres",
+      "ali express",
+      "aliexpress ru"
+    ],
+    "sector": "marketplace"
+  },
+  {
+    "brand": "megamarket",
+    "value": "Мегамаркет",
+    "aliases": [
+      "мега маркет",
+      "megamarket",
+      "сбермегамаркет",
+      "сбер мегамаркет",
+      "sbermegamarket",
+      "sber megamarket"
+    ],
+    "sector": "marketplace"
+  },
+  {
+    "brand": "avito",
+    "value": "Авито",
+    "aliases": [
+      "avito",
+      "авито ру",
+      "avito ru"
+    ],
+    "sector": "marketplace"
+  },
+  {
+    "brand": "lamoda",
+    "value": "Lamoda",
+    "aliases": [
+      "ламода",
+      "ла мода",
+      "la moda",
+      "lamoda ru"
+    ],
+    "sector": "marketplace"
+  },
+  {
+    "brand": "joom",
+    "value": "Joom",
+    "aliases": [
+      "джум",
+      "джоом",
+      "joom ru"
+    ],
+    "sector": "marketplace"
+  },
+  {
+    "brand": "flowwow",
+    "value": "Flowwow",
+    "aliases": [
+      "флаувау",
+      "флоувау",
+      "фловоу",
+      "flow wow",
+      "flowwow ru"
+    ],
+    "sector": "marketplace"
+  },
+  {
+    "brand": "magnit-market",
+    "value": "Магнит Маркет",
+    "aliases": [
+      "магнитмаркет",
+      "magnit market",
+      "magnitmarket",
+      "казаньэкспресс",
+      "казан экспресс",
+      "kazanexpress",
+      "kazan express"
+    ],
+    "sector": "marketplace"
+  },
+  {
+    "brand": "akusherstvo",
+    "value": "Акушерство.ру",
+    "aliases": [
+      "акушерство ру",
+      "акушерствору",
+      "akusherstvo",
+      "akusherstvo ru",
+      "акушерство магазин"
+    ],
+    "sector": "children"
+  },
+  {
+    "brand": "korablik",
+    "value": "Кораблик",
+    "aliases": [
+      "korablik",
+      "кораблик магазин",
+      "korablik ru"
+    ],
+    "sector": "children"
+  },
+  {
+    "brand": "vot-on-ya",
+    "value": "ВотОнЯ",
+    "aliases": [
+      "вот он я",
+      "вотоня",
+      "votonia",
+      "vot on ya",
+      "votonya"
+    ],
+    "sector": "children"
+  },
+  {
+    "brand": "gulliver",
+    "value": "Gulliver",
+    "aliases": [
+      "гулливер",
+      "гулливер одежда",
+      "gulliver kids",
+      "gulliver market"
+    ],
+    "sector": "children"
+  },
+  {
+    "brand": "motherbear",
+    "value": "Motherbear",
+    "aliases": [
+      "мазербеар",
+      "мазербир",
+      "mother bear",
+      "motherbear ru"
+    ],
+    "sector": "children"
+  },
+  {
+    "brand": "kari-kids",
+    "value": "Kari Kids",
+    "aliases": [
+      "кари кидс",
+      "karikids",
+      "кари дети",
+      "kari kids ru"
+    ],
+    "sector": "children"
+  },
+  {
+    "brand": "vkusno-i-tochka",
+    "value": "Вкусно — и точка",
+    "aliases": [
+      "вкусно и точка",
+      "вкусноиточка",
+      "vkusno i tochka",
+      "vkusnoitochka"
+    ],
+    "sector": "cafe"
+  },
+  {
+    "brand": "burger-king",
+    "value": "Бургер Кинг",
+    "aliases": [
+      "бургеркинг",
+      "burger king",
+      "burgerking",
+      "бургер кинг ресторан"
+    ],
+    "sector": "cafe"
+  },
+  {
+    "brand": "kfc",
+    "value": "KFC",
+    "aliases": [
+      "кфс",
+      "кфц",
+      "кей эф си",
+      "k f c"
+    ],
+    "sector": "cafe"
+  },
+  {
+    "brand": "rostics",
+    "value": "Rostic’s",
+    "aliases": [
+      "ростикс",
+      "rostics",
+      "rostic s",
+      "ростикс ресторан"
+    ],
+    "sector": "cafe"
+  },
+  {
+    "brand": "dodo",
+    "value": "Додо Пицца",
+    "aliases": [
+      "додо",
+      "додопицца",
+      "dodo pizza",
+      "dodopizza",
+      "dodo"
+    ],
+    "sector": "cafe"
+  },
+  {
+    "brand": "teremok",
+    "value": "Теремок",
+    "aliases": [
+      "teremok",
+      "теремок блины",
+      "теремок ресторан"
+    ],
+    "sector": "cafe"
+  },
+  {
+    "brand": "kroshka-kartoshka",
+    "value": "Крошка Картошка",
+    "aliases": [
+      "крошкакартошка",
+      "kroshka kartoshka",
+      "kroshka-kartoshka",
+      "крошка картошка кафе"
+    ],
+    "sector": "cafe"
+  },
+  {
+    "brand": "shokoladnitsa",
+    "value": "Шоколадница",
+    "aliases": [
+      "шоколадница кафе",
+      "shokoladnitsa",
+      "shokoladnica",
+      "shokoladniza"
+    ],
+    "sector": "cafe"
+  },
+  {
+    "brand": "coffeemania",
+    "value": "Кофемания",
+    "aliases": [
+      "кофе мания",
+      "coffeemania",
+      "kofemania",
+      "coffe mania"
+    ],
+    "sector": "cafe"
+  },
+  {
+    "brand": "coffee-house",
+    "value": "Кофе Хауз",
+    "aliases": [
+      "кофехауз",
+      "coffee house",
+      "coffeehouse",
+      "кофе хаус"
+    ],
+    "sector": "cafe"
+  },
+  {
+    "brand": "stars-coffee",
+    "value": "Stars Coffee",
+    "aliases": [
+      "старс кофе",
+      "старс коффи",
+      "starscoffee",
+      "старз кофе"
+    ],
+    "sector": "cafe"
+  },
+  {
+    "brand": "surf-coffee",
+    "value": "Surf Coffee",
+    "aliases": [
+      "серф кофе",
+      "сёрф кофе",
+      "серфкофе",
+      "surfcoffee",
+      "surf coffee x"
+    ],
+    "sector": "cafe"
+  },
+  {
+    "brand": "one-price-coffee",
+    "value": "One Price Coffee",
+    "aliases": [
+      "ван прайс кофе",
+      "ванпрайс кофе",
+      "уан прайс кофе",
+      "onepricecoffee",
+      "one price"
+    ],
+    "sector": "cafe"
+  },
+  {
+    "brand": "double-b",
+    "value": "Даблби",
+    "aliases": [
+      "дабл би",
+      "double b",
+      "doubleb",
+      "double bee",
+      "кофе даблби"
+    ],
+    "sector": "cafe"
+  },
+  {
+    "brand": "tanuki",
+    "value": "Тануки",
+    "aliases": [
+      "tanuki",
+      "тануки ресторан",
+      "тануки доставка"
+    ],
+    "sector": "cafe"
+  },
+  {
+    "brand": "yakitoria",
+    "value": "Якитория",
+    "aliases": [
+      "yakitoria",
+      "яки тория",
+      "якитория ресторан",
+      "yakitoriya"
+    ],
+    "sector": "cafe"
+  },
+  {
+    "brand": "khatimaki",
+    "value": "Хатимаки",
+    "aliases": [
+      "хатимаки ресторан",
+      "khatimaki",
+      "hatimaki",
+      "хати маки"
+    ],
+    "sector": "cafe"
+  },
+  {
+    "brand": "mumu",
+    "value": "Му-Му",
+    "aliases": [
+      "му му",
+      "муму кафе",
+      "кафе му му",
+      "mumu",
+      "mu mu"
+    ],
+    "sector": "cafe"
+  },
+  {
+    "brand": "anderson",
+    "value": "АндерСон",
+    "aliases": [
+      "андерсон кафе",
+      "anderson cafe",
+      "anderson family",
+      "andersson cafe"
+    ],
+    "sector": "cafe"
+  },
+  {
+    "brand": "yandex-food",
+    "value": "Яндекс Еда",
+    "aliases": [
+      "яндекседа",
+      "яндекс еда",
+      "yandex food",
+      "yandexfood",
+      "yandex eda",
+      "yandexeda",
+      "yandex eats"
+    ],
+    "sector": "cafe"
+  },
+  {
+    "brand": "yobidoyobi",
+    "value": "Ёбидоёби",
+    "aliases": [
+      "ебидоеби",
+      "ёби доёби",
+      "еби доеби",
+      "yobidoyobi",
+      "yobi do yobi",
+      "yobidoebi"
+    ],
+    "sector": "cafe"
+  },
+  {
+    "brand": "magnit-cosmetic",
+    "value": "Магнит Косметик",
+    "aliases": [
+      "магниткосметик",
+      "магнит косметика",
+      "magnit cosmetic",
+      "magnit cosmetics"
+    ],
+    "sector": "beauty"
+  },
+  {
+    "brand": "ulybka-radugi",
+    "value": "Улыбка радуги",
+    "aliases": [
+      "улыбкарадуги",
+      "ulybka radugi",
+      "ulybkaradugi",
+      "улыбка радуги магазин"
+    ],
+    "sector": "beauty"
+  },
+  {
+    "brand": "podruzhka",
+    "value": "Подружка",
+    "aliases": [
+      "podruzhka",
+      "подружка магазин",
+      "podrygka",
+      "podrugka"
+    ],
+    "sector": "beauty"
+  },
+  {
+    "brand": "letoile",
+    "value": "Лэтуаль",
+    "aliases": [
+      "летуаль",
+      "л этуаль",
+      "letoile",
+      "l etoile",
+      "l'etoile",
+      "лэтуаль магазин"
+    ],
+    "sector": "beauty"
+  },
+  {
+    "brand": "rive-gauche",
+    "value": "Рив Гош",
+    "aliases": [
+      "ривгош",
+      "rive gauche",
+      "rivegauche",
+      "рив гош магазин"
+    ],
+    "sector": "beauty"
+  },
+  {
+    "brand": "gold-apple",
+    "value": "Золотое Яблоко",
+    "aliases": [
+      "золотоеяблоко",
+      "gold apple",
+      "goldapple",
+      "golden apple",
+      "золотое яблоко магазин"
+    ],
+    "sector": "beauty"
+  },
+  {
+    "brand": "ile-de-beaute",
+    "value": "ИЛЬ ДЕ БОТЭ",
+    "aliases": [
+      "иль де боте",
+      "ильдеботе",
+      "ile de beaute",
+      "iledebeaute",
+      "ильдеботэ"
+    ],
+    "sector": "beauty"
+  },
+  {
+    "brand": "yves-rocher",
+    "value": "Ив Роше",
+    "aliases": [
+      "ивроше",
+      "yves rocher",
+      "yvesrocher",
+      "ив роше магазин"
+    ],
+    "sector": "beauty"
+  },
+  {
+    "brand": "mixit",
+    "value": "MIXIT",
+    "aliases": [
+      "миксит",
+      "микс ит",
+      "mixit ru",
+      "mix it"
+    ],
+    "sector": "beauty"
+  },
+  {
+    "brand": "randewoo",
+    "value": "Рандеву парфюмерия",
+    "aliases": [
+      "randewoo",
+      "randewoo ru",
+      "рандеву духи",
+      "рандеву парфюм",
+      "рандеву косметика"
+    ],
+    "sector": "beauty"
+  },
+  {
+    "brand": "dns",
+    "value": "DNS",
+    "aliases": [
+      "днс",
+      "ди эн эс",
+      "dns shop",
+      "dns-shop",
+      "dns магазин"
+    ],
+    "sector": "electronics"
+  },
+  {
+    "brand": "mvideo",
+    "value": "М.Видео",
+    "aliases": [
+      "мвидео",
+      "м видео",
+      "mvideo",
+      "m video",
+      "m.video"
+    ],
+    "sector": "electronics"
+  },
+  {
+    "brand": "eldorado",
+    "value": "Эльдорадо",
+    "aliases": [
+      "eldorado",
+      "эльдорадо магазин",
+      "eldorado ru"
+    ],
+    "sector": "electronics"
+  },
+  {
+    "brand": "citilink",
+    "value": "Ситилинк",
+    "aliases": [
+      "сити линк",
+      "citilink",
+      "citylink",
+      "citilink ru"
+    ],
+    "sector": "electronics"
+  },
+  {
+    "brand": "restore",
+    "value": "restore:",
+    "aliases": [
+      "re store",
+      "re-store",
+      "рестор",
+      "ре стор",
+      "restore ru"
+    ],
+    "sector": "electronics"
+  },
+  {
+    "brand": "technopark",
+    "value": "Технопарк",
+    "aliases": [
+      "техно парк",
+      "technopark",
+      "tehnopark",
+      "technopark ru"
+    ],
+    "sector": "electronics"
+  },
+  {
+    "brand": "holodilnik",
+    "value": "Холодильник.ру",
+    "aliases": [
+      "холодильник ру",
+      "holodilnik",
+      "holodilnik ru",
+      "holodilnik.ru"
+    ],
+    "sector": "electronics"
+  },
+  {
+    "brand": "onlinetrade",
+    "value": "ОНЛАЙН ТРЕЙД.РУ",
+    "aliases": [
+      "онлайнтрейд",
+      "онлайн трейд",
+      "onlinetrade",
+      "onlinetrade ru",
+      "online trade ru"
+    ],
+    "sector": "electronics"
+  },
+  {
+    "brand": "lemana-pro",
+    "value": "Лемана ПРО",
+    "aliases": [
+      "леманапро",
+      "lemana pro",
+      "lemanapro",
+      "леруа мерлен",
+      "леруамерлен",
+      "leroy merlin",
+      "leroymerlin"
+    ],
+    "sector": "home"
+  },
+  {
+    "brand": "petrovich",
+    "value": "Петрович",
+    "aliases": [
+      "petrovich",
+      "петрович магазин",
+      "петрович стройматериалы",
+      "petrovich ru"
+    ],
+    "sector": "home"
+  },
+  {
+    "brand": "obi",
+    "value": "ОБИ",
+    "aliases": [
+      "obi",
+      "оби магазин",
+      "obi ru",
+      "obi hypermarket"
+    ],
+    "sector": "home"
+  },
+  {
+    "brand": "vseinstrumenti",
+    "value": "ВсеИнструменты.ру",
+    "aliases": [
+      "все инструменты",
+      "всеинструменты",
+      "все инструменты ру",
+      "vseinstrumenti",
+      "vseinstrumenty",
+      "vseinstrumenti ru"
+    ],
+    "sector": "home"
+  },
+  {
+    "brand": "hoff",
+    "value": "Hoff",
+    "aliases": [
+      "хофф",
+      "хоф",
+      "hoff ru",
+      "хофф мебель"
+    ],
+    "sector": "home"
+  },
+  {
+    "brand": "askona",
+    "value": "Askona",
+    "aliases": [
+      "аскона",
+      "askona ru",
+      "аскона магазин"
+    ],
+    "sector": "home"
+  },
+  {
+    "brand": "ikea",
+    "value": "IKEA",
+    "aliases": [
+      "икеа",
+      "икея",
+      "ikea store",
+      "ikea ru"
+    ],
+    "sector": "home"
+  },
+  {
+    "brand": "fix-price",
+    "value": "Fix Price",
+    "aliases": [
+      "фикс прайс",
+      "фикспрайс",
+      "fixprice",
+      "fix-price",
+      "фикс праис"
+    ],
+    "sector": "home"
+  },
+  {
+    "brand": "galamart",
+    "value": "Галамарт",
+    "aliases": [
+      "гала март",
+      "galamart",
+      "галамарт магазин"
+    ],
+    "sector": "home"
+  },
+  {
+    "brand": "domovoy",
+    "value": "Домовой",
+    "aliases": [
+      "домовой магазин",
+      "domovoy",
+      "domovoi",
+      "домовой товары для дома"
+    ],
+    "sector": "home"
+  },
+  {
+    "brand": "lukoil",
+    "value": "ЛУКОЙЛ",
+    "aliases": [
+      "лукойл азс",
+      "lukoil",
+      "лукоил",
+      "lukoil azs"
+    ],
+    "sector": "fuel"
+  },
+  {
+    "brand": "gazpromneft",
+    "value": "Газпромнефть",
+    "aliases": [
+      "газпром нефть",
+      "gazpromneft",
+      "gazprom neft",
+      "газпромнефть азс"
+    ],
+    "sector": "fuel"
+  },
+  {
+    "brand": "rosneft",
+    "value": "Роснефть",
+    "aliases": [
+      "рос нефть",
+      "rosneft",
+      "ros neft",
+      "роснефть азс"
+    ],
+    "sector": "fuel"
+  },
+  {
+    "brand": "tatneft",
+    "value": "Татнефть",
+    "aliases": [
+      "тат нефть",
+      "tatneft",
+      "tat neft",
+      "татнефть азс"
+    ],
+    "sector": "fuel"
+  },
+  {
+    "brand": "teboil",
+    "value": "Teboil",
+    "aliases": [
+      "тебойл",
+      "тебоил",
+      "teb oil",
+      "тебойл азс"
+    ],
+    "sector": "fuel"
+  },
+  {
+    "brand": "bashneft",
+    "value": "Башнефть",
+    "aliases": [
+      "баш нефть",
+      "bashneft",
+      "bash neft",
+      "башнефть азс"
+    ],
+    "sector": "fuel"
+  },
+  {
+    "brand": "gazprom-azs",
+    "value": "АЗС Газпром",
+    "aliases": [
+      "газпром азс",
+      "gazprom azs",
+      "gazprom petrol",
+      "азс gazprom"
+    ],
+    "sector": "fuel"
+  },
+  {
+    "brand": "irbis",
+    "value": "АЗС Ирбис",
+    "aliases": [
+      "ирбис азс",
+      "irbis azs",
+      "irbis petrol",
+      "азс irbis"
+    ],
+    "sector": "fuel"
+  },
+  {
+    "brand": "bethowen",
+    "value": "Бетховен",
+    "aliases": [
+      "бетховен зоомагазин",
+      "bethowen",
+      "bethoven",
+      "бетховен питомцы"
+    ],
+    "sector": "pets"
+  },
+  {
+    "brand": "chetyre-lapy",
+    "value": "Четыре Лапы",
+    "aliases": [
+      "4 лапы",
+      "4лапы",
+      "четырелапы",
+      "четыре лапы магазин",
+      "4lapy",
+      "chetyre lapy"
+    ],
+    "sector": "pets"
+  },
+  {
+    "brand": "petshop",
+    "value": "Petshop.ru",
+    "aliases": [
+      "петшоп",
+      "пет шоп",
+      "petshop",
+      "pet shop",
+      "petshop ru"
+    ],
+    "sector": "pets"
+  },
+  {
+    "brand": "le-murrr",
+    "value": "Ле’Муррр",
+    "aliases": [
+      "лемуррр",
+      "ле муррр",
+      "лемур",
+      "le murrr",
+      "lemurrr",
+      "ле мур"
+    ],
+    "sector": "pets"
+  },
+  {
+    "brand": "magizoo",
+    "value": "Магизоо",
+    "aliases": [
+      "маги зоо",
+      "magizoo",
+      "magi zoo",
+      "магизоо магазин"
+    ],
+    "sector": "pets"
+  },
+  {
+    "brand": "zoozavr",
+    "value": "Зоозавр",
+    "aliases": [
+      "зоо завр",
+      "zoozavr",
+      "zoo zavr",
+      "зоозавр магазин"
+    ],
+    "sector": "pets"
+  },
+  {
+    "brand": "mts",
+    "value": "МТС",
+    "aliases": [
+      "mts",
+      "мтс связь",
+      "mts mobile",
+      "мтс оплата"
+    ],
+    "sector": "telecom"
+  },
+  {
+    "brand": "megafon",
+    "value": "МегаФон",
+    "aliases": [
+      "мега фон",
+      "megafon",
+      "mega fon",
+      "мегафон связь"
+    ],
+    "sector": "telecom"
+  },
+  {
+    "brand": "beeline",
+    "value": "Билайн",
+    "aliases": [
+      "beeline",
+      "bee line",
+      "би лайн",
+      "билайн связь"
+    ],
+    "sector": "telecom"
+  },
+  {
+    "brand": "t2",
+    "value": "t2",
+    "aliases": [
+      "т2",
+      "теле2",
+      "теле 2",
+      "tele2",
+      "tele 2",
+      "t 2",
+      "t2 связь"
+    ],
+    "sector": "telecom"
+  },
+  {
+    "brand": "rostelecom",
+    "value": "Ростелеком",
+    "aliases": [
+      "ростеле ком",
+      "rostelecom",
+      "rostelekom",
+      "ростелеком интернет"
+    ],
+    "sector": "telecom"
+  },
+  {
+    "brand": "yota",
+    "value": "Yota",
+    "aliases": [
+      "йота",
+      "ёта",
+      "иота",
+      "yota связь"
+    ],
+    "sector": "telecom"
+  },
+  {
+    "brand": "yandex-plus",
+    "value": "Яндекс Плюс",
+    "aliases": [
+      "яндексплюс",
+      "яндекс плюс",
+      "yandex plus",
+      "yandexplus",
+      "ya plus"
+    ],
+    "sector": "online"
+  },
+  {
+    "brand": "kinopoisk",
+    "value": "Кинопоиск",
+    "aliases": [
+      "кино поиск",
+      "кинопоиск плюс",
+      "kinopoisk",
+      "kino poisk",
+      "kinopoisk hd"
+    ],
+    "sector": "online"
+  },
+  {
+    "brand": "okko",
+    "value": "Okko",
+    "aliases": [
+      "окко",
+      "okko tv",
+      "окко кино",
+      "okko kino"
+    ],
+    "sector": "online"
+  },
+  {
+    "brand": "ivi",
+    "value": "Иви",
+    "aliases": [
+      "ivi",
+      "ivi ru",
+      "иви кино",
+      "ivi tv"
+    ],
+    "sector": "online"
+  },
+  {
+    "brand": "wink",
+    "value": "Wink",
+    "aliases": [
+      "винк",
+      "wink tv",
+      "винк кино",
+      "wink ru"
+    ],
+    "sector": "online"
+  },
+  {
+    "brand": "vk-music",
+    "value": "VK Музыка",
+    "aliases": [
+      "вк музыка",
+      "вкмузыка",
+      "vk music",
+      "vkmusic",
+      "vk музыка",
+      "boom музыка"
+    ],
+    "sector": "online"
+  },
+  {
+    "brand": "chatgpt",
+    "value": "ChatGPT",
+    "aliases": [
+      "чатгпт",
+      "чат гпт",
+      "чат джипити",
+      "чат жпт",
+      "chat gpt",
+      "openai chatgpt",
+      "open ai chatgpt"
+    ],
+    "sector": "online"
+  },
+  {
+    "brand": "litres",
+    "value": "Литрес",
+    "aliases": [
+      "litres",
+      "лит рес",
+      "litres ru",
+      "литрес книги"
+    ],
+    "sector": "online"
+  },
+  {
+    "brand": "sportmaster",
+    "value": "Спортмастер",
+    "aliases": [
+      "спорт мастер",
+      "sportmaster",
+      "sport master",
+      "спортмастер магазин"
+    ],
+    "sector": "fashion"
+  },
+  {
+    "brand": "kari",
+    "value": "Kari",
+    "aliases": [
+      "кари",
+      "kari shoes",
+      "кари обувь",
+      "kari ru"
+    ],
+    "sector": "fashion"
+  },
+  {
+    "brand": "ostin",
+    "value": "O’STIN",
+    "aliases": [
+      "остин",
+      "o stin",
+      "ostin",
+      "ostin ru",
+      "остин одежда"
+    ],
+    "sector": "fashion"
+  },
+  {
+    "brand": "befree",
+    "value": "Befree",
+    "aliases": [
+      "бифри",
+      "би фри",
+      "be free",
+      "befree ru"
+    ],
+    "sector": "fashion"
+  },
+  {
+    "brand": "zarina",
+    "value": "Zarina",
+    "aliases": [
+      "зарина",
+      "zarina ru",
+      "зарина одежда"
+    ],
+    "sector": "fashion"
+  },
+  {
+    "brand": "desport",
+    "value": "Деспорт",
+    "aliases": [
+      "desport",
+      "де спорт",
+      "desport ru",
+      "деспорт магазин"
+    ],
+    "sector": "fashion"
+  }
+]

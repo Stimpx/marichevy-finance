@@ -1,0 +1,24 @@
+{
+  "format": "marichevy-drill-center-alignment-v1",
+  "status": "passed",
+  "source_html_sha256": "904298dced16566513b0bd57e6f2f4ba4d4477a81bfa9cf422dc01ce4320df16",
+  "data": "fictional-only",
+  "focused_test_methods": 32,
+  "focused_suites": {
+    "responsive_geometry": 4,
+    "drill_help_geometry": 3,
+    "analytics_edit": 10,
+    "public_ledger": 15
+  },
+  "negative_regression": {
+    "previous_r2_html_fails": true,
+    "desktop_failure_cases": 8,
+    "previous_center_offset_css_px": 9.75
+  },
+  "visual_review": "v95-layout-r3-review.json",
+  "demo_archive_sha256": "886fecb23c9f801e38932eb597ec2e22292e3eafec6e0513180d453ac7f5ad00",
+  "demo_archive_bytes": 1343257,
+  "full_suite_repeated": false,
+  "native_gadgets_tested": false,
+  "production_changed": false
+}

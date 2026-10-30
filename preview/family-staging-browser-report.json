@@ -1,0 +1,27 @@
+{
+  "outcome": "passed",
+  "fixture_version": 2,
+  "fixture_only": true,
+  "production_tested": false,
+  "client_sha256": "db7417956e4dd06df7042e195537ef58e619f9fef792d2f85450c175fca118e3",
+  "network_path": "real verified HTTPS forwarded through Playwright route bridge; native CORS untested",
+  "observed_at": "2026-10-26T10:28:47.067963+00:00",
+  "browser": {
+    "checks": [
+      "two actual UI logins authorized",
+      "both clients read existing synthetic history",
+      "actual clients resolve a real server revision conflict",
+      "both additions survive both reloads exactly once",
+      "offline pending survives reload without clearing storage",
+      "queued edit reaches both real clients after login",
+      "same-record conflict retains both variants and local queue after reload",
+      "real edit/delete conflict preserves unsent edit regardless of clocks",
+      "foreign account cannot unlock cached household UI"
+    ],
+    "forwarded_real_https_requests": 40,
+    "real_cas_conflicts": 1,
+    "integration_requests_blocked": 0,
+    "native_browser_cors_tested": false,
+    "production_tested": false
+  }
+}
