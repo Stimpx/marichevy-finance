@@ -1959,15 +1959,33 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 @media(max-width:600px){#help .v96-help-topic>.v96-help-body{padding-inline-end:var(--v96-help-inset)}#help .v96-help-topic>summary{padding-inline:var(--v96-help-inset)}}
 </style>
 <style id="v102DateActionsAndHelpSurface">
-/* Family badges have their own column, independent of their label length. */
+/* Important dates share one action grid; event labels belong beside the name. */
 #birthdayList{container-type:inline-size;container-name:v102dates}
-#dates .birthday-row-family .birthday-row-actions{font-size:12px;width:20em;max-width:100%;container-type:inline-size;container-name:v102dateactions}
-#dates .birthday-row-family .birthday-actions{display:grid;grid-template-columns:minmax(0,8em) minmax(0,1fr);align-items:center;justify-content:stretch;gap:8px;width:100%}
-#dates .birthday-row-family .birthday-actions .btn{display:inline-flex;align-items:center;justify-content:center;width:100%;min-width:0;min-height:44px;white-space:normal;word-break:normal;overflow-wrap:normal;line-height:1.4}
-#dates .birthday-row-family .birthday-family-badge{width:100%;margin-left:0;justify-content:center;white-space:normal;word-break:normal;overflow-wrap:normal;line-height:1.4;text-align:center}
-#dates .birthday-row:not(.birthday-row-family) .birthday-actions>.btn{flex:0 0 auto;min-width:max-content;max-width:100%;white-space:normal;line-height:1.4}
-@container v102dateactions (max-width:18em){#dates .birthday-row-family .birthday-actions{grid-template-columns:minmax(0,1fr)}#dates .birthday-row-family .birthday-family-badge{justify-content:flex-start;text-align:left;width:auto;justify-self:start}}
-@media(min-width:761px){@container v102dates (max-width:60em){#dates .birthday-row{grid-template-columns:72px minmax(0,1fr)!important}#dates .birthday-row-actions{grid-column:2!important;grid-row:2}#dates .birthday-actions{justify-content:flex-start}}}
+#dates .birthday-row,#dates .birthday-row-family{min-height:100px;border:1px solid #e5ebf3;border-radius:14px;background:#fff;align-items:center!important}
+#dates .birthday-date{width:64px;height:auto;min-height:64px;padding:6px 0;gap:2px;border-radius:13px}
+#dates .birthday-date b{line-height:1}
+#dates .birthday-date span{line-height:1.3}
+#dates .birthday-name-line>b{font-size:15px;font-weight:600;line-height:1.4}
+#dates .birthday-main>span,#dates .birthday-note{font-size:12px;color:#64748b;line-height:1.5}
+#dates .birthday-phone{font-size:12px;font-weight:500;line-height:1.5}
+#dates .birthday-main .birthday-family-badge{display:inline-flex;align-items:center;justify-content:flex-start;gap:6px;min-height:0;width:auto;max-width:100%;margin:0;padding:0;border:0;border-radius:0;background:transparent;color:#718096;font-size:11px;font-weight:500;line-height:1.5;white-space:normal;word-break:normal;overflow-wrap:anywhere;text-align:left}
+#dates .birthday-main .birthday-family-badge:before{content:'';flex:0 0 4px;width:4px;height:4px;border-radius:50%;background:#afbdd0}
+#dates .birthday-row-actions{font-size:12px;width:26em;max-width:100%;min-width:0;align-self:center;justify-self:end;container-type:inline-size;container-name:v106dateactions}
+#dates .birthday-actions,#dates .birthday-row-family .birthday-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch;justify-content:stretch;gap:8px;width:100%}
+#dates .birthday-actions>.btn{display:inline-flex;align-items:center;justify-content:center;grid-column:auto;grid-row:1;width:100%;max-width:100%;min-width:0;min-height:44px;height:100%;padding:10px 12px;border:1px solid #e0e6ee;border-radius:10px;background:#f8fafc;color:#4e6079;font-size:12px;font-weight:500;line-height:1.4;text-align:center;text-decoration:none;white-space:normal;word-break:normal;overflow-wrap:normal;box-shadow:none;transform:none}
+#dates .birthday-actions>.btn.primary{grid-column:1;background:#f7faff;border-color:#d9e3f4;color:#43659a;box-shadow:none}
+#dates .birthday-actions>.btn[data-record-action="birthday-edit"]{grid-column:2}
+#dates .birthday-actions>.btn.danger{grid-column:3;background:#fff;border-color:#eadde2;color:#ac5f73}
+#dates .birthday-actions>.btn:hover{background:#edf2f8;border-color:#cbd7e7;color:#304d77;box-shadow:none;transform:none}
+#dates .birthday-actions>.btn.danger:hover{background:#fcf1f4;border-color:#e4c8d2;color:#a13f5b}
+#dates .birthday-actions>.btn:focus-visible{outline:2px solid #829ac4;outline-offset:2px}
+#dates .birthday-no-phone-action{display:flex;grid-column:1;grid-row:1;align-items:center;justify-content:center;min-height:44px;font-size:11px;line-height:1.5;color:#7b879a;text-align:center}
+@container v106dateactions (max-width:24em){
+ #dates .birthday-actions,#dates .birthday-row-family .birthday-actions{grid-template-columns:minmax(0,1fr)}
+ #dates .birthday-actions>.btn,#dates .birthday-actions>.btn.primary,#dates .birthday-actions>.btn.danger,#dates .birthday-actions>.btn[data-record-action="birthday-edit"],#dates .birthday-no-phone-action{grid-column:1;grid-row:auto}
+}
+@media(min-width:761px){@container v102dates (max-width:68em){#dates .birthday-row{grid-template-columns:72px minmax(0,1fr)!important}#dates .birthday-row-actions{grid-column:2!important;grid-row:2;justify-self:start}}}
+@media(max-width:760px){#dates .birthday-date{width:56px;height:auto;min-height:60px}#dates .birthday-row-actions{justify-self:start}}
 @media(max-width:760px){#help .v96-help-body p,#help .v96-help-body li,#help .v96-help-body dd,#help .v96-help-hero>p{text-align:start}}
 </style>
 </head>
@@ -5863,10 +5881,11 @@ function renderDates(){
     const meta=b.kind==='wedding'?[`Свадьба ${b.date.slice(0,4)} года`,`Сейчас ${weddingYearsText(weddingYears(b))}`,`Следующая: ${weddingName(weddingNextYears(b))} свадьба`,d===0?'сегодня':d===1?'завтра':`через ${d} дн.`].join(' · '):[b.group||'',b.time?` ${b.time}`:'',d===0?'сегодня':d===1?'завтра':`через ${d} дн.`].filter(Boolean).join(' · ');
     const note=b.note&&b.note!==z.name?`<div class="birthday-note"> ${esc(b.note)}</div>`:'';
     const phoneBlock=phone?`<a class="birthday-phone" href="tel:${esc(v80PhoneHref(b.phone))}"> ${esc(phone)}</a>`:'';
-    const actions=fam?`<div class="birthday-actions"><button type="button" class="btn small" ${recordAction('birthday-edit',b.id)}>Изменить</button><span class="birthday-family-badge">${b.kind==='wedding'?' Годовщина':' Семейная дата'}</span></div>`:`<div class="birthday-actions">${phone?`<a class="btn small primary" href="tel:${esc(v80PhoneHref(b.phone))}">Позвонить</a>`:`<span class="btn small disabled">Нет номера</span>`}<button type="button" class="btn small" ${recordAction('birthday-edit',b.id)}>Изменить</button><button type="button" class="btn small danger" ${recordAction('birthday-delete',b.id)}>Удалить</button></div>`;
+    const badge=fam?`<span class="birthday-family-badge">${b.kind==='wedding'?'Годовщина':'Семейная дата'}</span>`:'';
+    const actions=fam?`<div class="birthday-actions"><button type="button" class="btn small" ${recordAction('birthday-edit',b.id)}>Изменить</button></div>`:`<div class="birthday-actions">${phone?`<a class="btn small primary" href="tel:${esc(v80PhoneHref(b.phone))}">Позвонить</a>`:`<span class="birthday-no-phone-action">Нет номера</span>`}<button type="button" class="btn small" ${recordAction('birthday-edit',b.id)}>Изменить</button><button type="button" class="btn small danger" ${recordAction('birthday-delete',b.id)}>Удалить</button></div>`;
     return `<div class="birthday-row ${fam?'birthday-row-family':''}">
       <div class="birthday-date"><b>${day}</b><span>${month}</span></div>
-      <div class="birthday-main"><div class="birthday-name-line"><b>${b.kind==='wedding'?' ':''}${esc(b.name)}</b>${z.symbol?`<span class="zodiac-pill" title="${esc(z.name)}">${z.symbol} ${esc(z.name)}</span>`:''}</div><span>${esc(meta)}</span>${phoneBlock}${note}</div>
+      <div class="birthday-main"><div class="birthday-name-line"><b>${b.kind==='wedding'?' ':''}${esc(b.name)}</b>${badge}${z.symbol?`<span class="zodiac-pill" title="${esc(z.name)}">${z.symbol} ${esc(z.name)}</span>`:''}</div><span>${esc(meta)}</span>${phoneBlock}${note}</div>
       <div class="birthday-row-actions">${actions}</div>
     </div>`;
   }).join('');
