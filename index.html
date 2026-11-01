@@ -1707,7 +1707,7 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 .v96-recent-actions{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:8px}
 .v96-recent-actions .btn{min-height:44px}
 .spendable-meta{min-width:0}.spendable-meta>div{min-width:0}.spendable-meta b{white-space:nowrap;font-variant-numeric:tabular-nums}
-@media(min-width:1100px){.v96-recent-row{grid-template-columns:minmax(0,1fr) auto auto;align-items:center}.v96-recent-actions{grid-column:3;grid-row:1/3}.v96-recent-details{grid-column:1/3}}
+@media(min-width:1100px){.v96-recent-row{grid-template-columns:minmax(0,1fr) auto auto;align-items:center}.v96-recent-row:last-child{padding-bottom:16px}.v96-recent-amount{grid-column:2;grid-row:1/3;align-self:center}.v96-recent-actions{grid-column:3;grid-row:1/3}.v96-recent-details{grid-column:1}}
 @media(max-width:900px){.spendable-card{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:410px){.spendable-meta{grid-template-columns:repeat(2,minmax(0,1fr))!important}.spendable-meta>div:last-child{grid-column:1/-1}.v96-recent-amount{font-size:15px}}
 </style>
@@ -1879,7 +1879,8 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 #history .v76-action-group .btn.danger{color:#a18c95}
 #history .v76-action-group .btn.danger:hover,#history .v76-action-group .btn.danger:focus-visible{background:#fcf0f2;color:#c44c61}
 #history .v105-history-table tr.v76-empty-row td{display:block;padding:28px 16px;font-size:13px;color:#7b899d}
-@container v105historycard (min-width:54em){#history .filters{grid-template-columns:repeat(5,minmax(0,1fr))}}
+@container v105historycard (min-width:54em){#history .filters{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@container v105historycard (min-width:75em){#history .filters{grid-template-columns:repeat(6,minmax(0,1fr))}}
 @container v105ledger (min-width:54em){
  #history .v105-history-table{display:table}
  #history .v105-history-table colgroup{display:table-column-group}
@@ -1987,6 +1988,81 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 @media(min-width:761px){@container v102dates (max-width:68em){#dates .birthday-row{grid-template-columns:72px minmax(0,1fr)!important}#dates .birthday-row-actions{grid-column:2!important;grid-row:2;justify-self:start}}}
 @media(max-width:760px){#dates .birthday-date{width:56px;height:auto;min-height:60px}#dates .birthday-row-actions{justify-self:start}}
 @media(max-width:760px){#help .v96-help-body p,#help .v96-help-body li,#help .v96-help-body dd,#help .v96-help-hero>p{text-align:start}}
+</style>
+<style id="v107UnifiedSelects">
+/* Select-only comboboxes retain the original select as the value source. */
+.section.v107-has-selects{animation:none!important}
+.v107-select{position:relative;display:inline-flex;vertical-align:middle;max-width:100%;min-width:0;padding:0!important;border:0!important;background:none!important;box-shadow:none!important}
+.v107-select[hidden]{display:none!important}
+.v107-select.v107-select-block,.field>.v107-select,.filters>.v107-select,.v84-input-wrap>.v107-select,.v88-control>.v107-select,.early-strategy>.v107-select{display:flex;width:100%}
+.v107-select.month-select{width:min(16em,100%);max-width:100%;margin:0}
+#dates .birthday-form>.field>.v107-select{--v107-select-height:52px!important}
+.v107-select>.v107-native-select{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;min-width:0!important;min-height:0!important;margin:0!important;opacity:0!important;pointer-events:none!important;z-index:-1}
+.v107-select>.v107-select-trigger{display:inline-flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-width:0;min-height:var(--v107-select-height,46px);margin:0;padding:11px 13px;border:1px solid #dfe6f0;border-radius:12px;background:#fbfcfe;color:#33465f;font:500 13px/1.45 Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;text-align:left;white-space:normal;box-shadow:none;cursor:pointer;transform:none}
+.v107-select-trigger .v107-select-value{flex:1;min-width:0;overflow-wrap:anywhere}
+.v107-select-trigger .v107-select-chevron{flex:none;width:16px;height:16px;color:#7b8ba3;transition:transform .15s}
+.v107-select-trigger[aria-expanded="true"] .v107-select-chevron{transform:rotate(180deg)}
+.v107-select>.v107-select-trigger:hover{border-color:#bdccdf;background:#fff;transform:none}
+.v107-select>.v107-select-trigger:focus-visible,.v107-select>.v107-select-trigger[aria-expanded="true"]{outline:2px solid #c9d8f3;outline-offset:2px;border-color:#809ac4;background:#fff;box-shadow:none}
+.v107-select>.v107-select-trigger:disabled{opacity:.55;cursor:default;background:#f3f5f8;box-shadow:none}
+.v107-select-panel{position:fixed;inset:auto;z-index:2147483000;box-sizing:border-box;min-width:0;max-width:calc(100vw - 16px);margin:0;padding:6px;border:1px solid #dfe6f0;border-radius:14px;background:#fff;color:#33465f;box-shadow:0 16px 44px rgba(28,49,82,.14),0 3px 10px rgba(28,49,82,.05);overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;font:400 13px/1.45 Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+.v107-select-panel[hidden]{display:none!important}
+.v107-select-panel:popover-open{display:block}
+.v107-select-option{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px;padding:10px 12px;border:1px solid transparent;border-radius:9px;cursor:pointer;overflow-wrap:anywhere}
+.v107-select-option .v107-select-option-text{min-width:0;flex:1}
+.v107-select-option .v107-select-check{flex:none;width:17px;height:17px;color:#43699e;opacity:0}
+.v107-select-option[aria-selected="true"]{font-weight:600;color:#365e94;background:#f2f6fd}
+.v107-select-option[aria-selected="true"] .v107-select-check{opacity:1}
+.v107-select-option[data-active="true"]{background:#edf3ff;border-color:#dbe6f7;color:#304f7e}
+.v107-select-option[aria-disabled="true"]{opacity:.45;cursor:default;background:none;border-color:transparent}
+.v107-select-group{padding:9px 12px 5px;color:#76869d;font-size:11px;font-weight:600;line-height:1.5}
+.v107-select-empty{padding:14px 12px;color:#76869d}
+@media(max-width:760px){.v107-select>.v107-select-trigger,.v107-select-panel{font-size:16px}.v107-select-option{min-height:46px}.v107-select.month-select{width:min(15em,100%)}}
+@media(max-width:650px){#dates .birthday-form>.field>.v107-select{--v107-select-height:50px!important}}
+@media(prefers-reduced-motion:reduce){.v107-select-chevron{transition:none}}
+
+</style>
+<style id="v108UnifiedCalendars">
+/* Shared calendar surface; native input values and form APIs remain intact. */
+input[data-v108-calendar]{padding-right:46px!important;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%2364768f' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='5' width='18' height='16' rx='3'/%3E%3Cpath d='M7 3v4M17 3v4M3 10h18'/%3E%3C/svg%3E")!important;background-repeat:no-repeat!important;background-size:19px 19px!important;background-position:right 13px center!important;cursor:pointer}
+input[data-v108-calendar]::-webkit-calendar-picker-indicator{display:none!important}
+input[data-v108-calendar]:disabled,input[data-v108-calendar][readonly]{cursor:default}
+.v108-calendar{position:fixed;inset:auto;margin:0;z-index:1000002;width:352px;max-width:calc(100vw - 8px);max-height:calc(100dvh - 12px);box-sizing:border-box;overflow:auto;padding:12px;border:1px solid #dfe6f0;border-radius:16px;background:#fff;color:#283b55;box-shadow:0 16px 50px rgba(22,42,72,.15),0 3px 12px rgba(22,42,72,.06);font:400 13px/1.4 Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;container-type:inline-size;container-name:v108panel;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.v108-calendar[hidden]{display:none!important}
+.v108-calendar::backdrop{background:transparent}
+.v108-calendar button,.v108-calendar input{box-sizing:border-box;max-width:100%;min-width:0;font:inherit}
+.v108-calendar button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:6px 8px;border:1px solid transparent;border-radius:10px;background:transparent;color:#3d536f;box-shadow:none;line-height:1.25;cursor:pointer;transform:none}
+.v108-calendar button:hover:not(:disabled){background:#f1f5fa;border-color:#e4ebf5;transform:none}
+.v108-calendar button:focus-visible,.v108-calendar input:focus-visible{outline:2px solid #7894bf;outline-offset:-2px}
+.v108-calendar button:disabled{color:#abb4c1;cursor:default;background:transparent;opacity:.7}
+.v108-calendar .v108-caption{margin:0 4px 6px;font-size:.846em;font-weight:500;line-height:1.4;color:#7b899b;overflow-wrap:anywhere}
+.v108-calendar .v108-header{display:grid;grid-template-columns:44px minmax(0,1fr) 44px;align-items:center;gap:4px;margin-bottom:7px}
+.v108-calendar .v108-nav{width:44px;min-width:44px;padding:0}
+.v108-calendar .v108-nav svg{width:18px;height:18px;flex:none}
+.v108-calendar .v108-period{width:100%;font-weight:600;color:#314a6b;white-space:normal;overflow-wrap:anywhere}
+.v108-calendar .v108-year-wrap{display:flex;align-items:center;justify-content:center;gap:6px;min-width:0}
+.v108-calendar .v108-year{display:block;width:6ch;min-width:0;max-width:100%;min-height:44px;padding:6px 8px;border:1px solid #e0e7f1;border-radius:10px;background:#fafcff;color:#314a6b;font-size:1.077em;font-weight:600;line-height:1.4;text-align:center;appearance:textfield;-moz-appearance:textfield}
+.v108-calendar .v108-year::-webkit-inner-spin-button,.v108-calendar .v108-year::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.v108-calendar .v108-year-label{font-size:.923em;line-height:1.4;color:#7b899b}
+.v108-calendar .v108-weekdays,.v108-calendar .v108-week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:0}
+.v108-calendar .v108-weekdays{margin-bottom:3px}
+.v108-calendar .v108-weekdays span{display:block;padding:6px 0;text-align:center;font-size:.846em;font-weight:500;line-height:1.4;color:#8592a5}
+.v108-calendar .v108-day{width:100%;min-height:44px;padding:0;font-size:1em;font-weight:500;line-height:1.2;border-radius:9px;font-variant-numeric:tabular-nums}
+.v108-calendar .v108-day.v108-outside{color:#98a4b4}
+.v108-calendar .v108-day[aria-current="date"]{color:#466da9;border-color:#d9e4f5}
+.v108-calendar .v108-day[aria-selected="true"],.v108-calendar .v108-month[aria-selected="true"]{color:#365d96;background:#eaf1fc;border-color:#d1dff3;font-weight:600}
+.v108-calendar .v108-day[aria-selected="true"]:hover,.v108-calendar .v108-month[aria-selected="true"]:hover{background:#e1ebfa}
+.v108-calendar .v108-months{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;padding:3px 0}
+.v108-calendar .v108-month-row{display:contents}
+.v108-calendar .v108-month{width:100%;min-height:44px;white-space:normal;overflow-wrap:anywhere;line-height:1.4}
+.v108-calendar .v108-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-top:9px;padding-top:8px;border-top:1px solid #edf1f7}
+.v108-calendar .v108-footer button{font-size:.923em;font-weight:500;min-height:44px;padding:8px 10px;white-space:normal}
+.v108-calendar .v108-footer .v108-today{color:#476da5}
+.v108-calendar .v108-month-hint{margin:8px 4px 0;color:#7b899b;font-size:.846em;line-height:1.5}
+@container v108panel (max-width:22em){.v108-calendar .v108-months{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:360px){.v108-calendar{padding:10px 1px}.v108-calendar .v108-header,.v108-calendar .v108-footer,.v108-calendar .v108-caption,.v108-calendar .v108-months,.v108-calendar .v108-month-hint{margin-left:6px;margin-right:6px}}
+@media(prefers-reduced-motion:reduce){.v108-calendar button{transition:none}}
+
 </style>
 </head>
 <body>
@@ -2189,7 +2265,7 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 </section>
 <section class="section" id="history">
 <div class="card"><h2>Все операции</h2><div class="hint">Поиск по магазинам и комментариям, фильтры и любые месяцы — история остаётся с вами.</div>
-<div class="filters"><input id="fSearch" placeholder="Поиск: магазин, комментарий..."/><select id="fWho" aria-label="Фильтр по старым участникам записи"></select><select id="fGroup" aria-label="Группа расходов"><option value="">Все группы</option></select><select id="fCat" aria-label="Точная категория"></select><select id="fType"><option value="">Все операции</option><option value="expense">Расходы</option><option value="income">Доходы</option><option value="transfer">Переводы</option><option value="cash">Наличные</option></select><input id="fMonth" type="month" aria-label="Месяц или все даты"/></div>
+<div class="filters"><input id="fSearch" placeholder="Поиск: магазин, комментарий..."/><select id="fWho" aria-label="Фильтр по старым участникам записи"></select><select id="fGroup" aria-label="Группа расходов"><option value="">Все группы</option></select><select id="fCat" aria-label="Точная категория"></select><select id="fType"><option value="">Все операции</option><option value="expense">Расходы</option><option value="income">Доходы</option><option value="transfer">Переводы</option><option value="cash">Наличные</option></select><input id="fMonth" type="month" aria-label="Месяц или все даты"/><input id="fDay" type="date" aria-label="День операций"/></div>
 <div class="v76-history-tools"><span id="historyCount" aria-live="polite">Загружаем операции…</span><div class="v76-tool-buttons"><button class="btn small v75-all-dates" onclick="clearHistoryMonth()" type="button">Все даты</button><button class="v76-reset-btn" type="button" onclick="resetHistoryFilters()">Сбросить фильтры</button></div></div>
 <div class="table-wrap v105-history-wrap"><table class="table v105-history-table"><colgroup><col class="v105-col-date"><col><col class="v105-col-sum"><col class="v105-col-actions"></colgroup><thead><tr><th>Дата</th><th>Операция</th><th>Сумма</th><th aria-label="Действия"></th></tr></thead><tbody id="historyBody"></tbody></table></div></div>
 </section>
@@ -2377,12 +2453,23 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 <div class="card"><div class="section-head"><div><h2>Семейные события и дни рождения</h2><div class="hint">Можно редактировать и семейные даты, и контакты. Годовщина свадьбы рассчитывается по годам автоматически.</div></div></div><div id="v79WeddingFeature" class="v79-wedding-feature"></div><div id="birthdayList"></div></div>
 </section>
 <section class="section" id="settings">
+<style id="v109BrandingFilePickerStyle">
+#v96BrandingCard .v109-branding-picker{position:relative;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:12px 14px;border:1px dashed #dce4f2;border-radius:14px;background:#fafcff;min-width:0}
+#v96BrandingCard .v109-branding-file-hint{flex:1 1 11em;min-width:0;font-size:12px;line-height:1.5;color:#728196;overflow-wrap:anywhere}
+#v96BrandingCard .v109-branding-picker>.v88-upload-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;flex:0 1 auto;min-width:0;max-width:100%;min-height:44px;padding:10px 14px;border:1px solid transparent;border-radius:12px;background:#edf2fb;color:#334e7c;box-shadow:none;font-size:12px;font-weight:600;line-height:1.4;text-align:center;white-space:normal;word-break:normal}
+#v96BrandingCard .v109-branding-picker>.v88-upload-button svg{flex:0 0 17px;width:17px;height:17px}
+#v96BrandingCard .v109-branding-picker>.v88-upload-button:hover{background:#e5edf9;transform:none}
+#v96BrandingCard .v109-branding-picker>.v88-upload-button:focus-visible{outline:3px solid #98b2ff;outline-offset:2px}
+#v96BrandingCard .v109-branding-picker>.v88-upload-button:disabled{opacity:.5;cursor:default}
+#v96BrandingCard .v109-branding-native{position:absolute!important;left:0;top:0;width:1px!important;height:1px;min-height:0!important;padding:0!important;margin:0;border:0;opacity:0;overflow:hidden;pointer-events:none}
+@media(max-width:600px){#v96BrandingCard .v109-branding-picker{padding:12px;gap:10px}}
+</style>
 <section class="card v96-branding" id="v96BrandingCard" aria-labelledby="v96BrandingTitle">
  <h2 id="v96BrandingTitle">Логотип и значок вкладки</h2>
  <p class="hint">Оформление вашей семьи. Выберите картинки, проверьте предпросмотр и сохраните. PNG, JPG, WebP или ICO до 1 МБ и 2048 × 2048 пикселей. Изменения не затрагивают операции.</p>
  <div class="v96-branding-grid">
-  <div class="v96-branding-item"><label for="v96LogoFile">Логотип</label><input id="v96LogoFile" type="file" accept="image/png,image/jpeg,image/webp,image/x-icon,image/vnd.microsoft.icon" onchange="v96StageBranding('logo',this.files?.[0])"><div class="v96-branding-preview"><img id="v96LogoPreview" alt="Предпросмотр логотипа" hidden><span id="v96LogoDefault">Стандартный логотип</span></div><div class="actions"><button type="button" class="btn small" id="v96LogoSave" onclick="v96SaveBranding('logo')" disabled>Сохранить логотип</button><button type="button" class="btn small" onclick="v96ResetBranding('logo')">Стандартный логотип</button></div></div>
-  <div class="v96-branding-item"><label for="v96FaviconFile">Фавикон · значок вкладки</label><input id="v96FaviconFile" type="file" accept="image/png,image/jpeg,image/webp,image/x-icon,image/vnd.microsoft.icon" onchange="v96StageBranding('favicon',this.files?.[0])"><div class="v96-branding-preview"><img id="v96FaviconPreview" alt="Предпросмотр фавикона" hidden><span id="v96FaviconDefault">Стандартный значок</span></div><div class="actions"><button type="button" class="btn small" id="v96FaviconSave" onclick="v96SaveBranding('favicon')" disabled>Сохранить фавикон</button><button type="button" class="btn small" onclick="v96ResetBranding('favicon')">Стандартный фавикон</button></div></div>
+  <div class="v96-branding-item"><label for="v109LogoChoose">Логотип</label><div class="v109-branding-picker"><span id="v109LogoFileHint" class="v109-branding-file-hint">PNG, JPG, WebP или ICO · до 1 МБ</span><button type="button" id="v109LogoChoose" class="v88-upload-button" aria-label="Выбрать логотип" aria-describedby="v109LogoFileHint" onclick="v109ChooseBrandingFile('logo')" disabled><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="17" height="17"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="8" cy="9" r="1.5"/><path d="m4 17 6-5 4 3 3-2 4 4"/></svg><span>Выбрать файл</span></button><input id="v96LogoFile" class="v109-branding-native" type="file" accept="image/png,image/jpeg,image/webp,image/x-icon,image/vnd.microsoft.icon" aria-hidden="true" tabindex="-1" onchange="v96StageBranding('logo',this.files?.[0])"></div><div class="v96-branding-preview"><img id="v96LogoPreview" alt="Предпросмотр логотипа" hidden><span id="v96LogoDefault">Стандартный логотип</span></div><div class="actions"><button type="button" class="btn small" id="v96LogoSave" onclick="v96SaveBranding('logo')" disabled>Сохранить логотип</button><button type="button" class="btn small" onclick="v96ResetBranding('logo')">Стандартный логотип</button></div></div>
+  <div class="v96-branding-item"><label for="v109FaviconChoose">Фавикон · значок вкладки</label><div class="v109-branding-picker"><span id="v109FaviconFileHint" class="v109-branding-file-hint">PNG, JPG, WebP или ICO · до 1 МБ</span><button type="button" id="v109FaviconChoose" class="v88-upload-button" aria-label="Выбрать значок вкладки" aria-describedby="v109FaviconFileHint" onclick="v109ChooseBrandingFile('favicon')" disabled><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="17" height="17"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="8" cy="9" r="1.5"/><path d="m4 17 6-5 4 3 3-2 4 4"/></svg><span>Выбрать файл</span></button><input id="v96FaviconFile" class="v109-branding-native" type="file" accept="image/png,image/jpeg,image/webp,image/x-icon,image/vnd.microsoft.icon" aria-hidden="true" tabindex="-1" onchange="v96StageBranding('favicon',this.files?.[0])"></div><div class="v96-branding-preview"><img id="v96FaviconPreview" alt="Предпросмотр фавикона" hidden><span id="v96FaviconDefault">Стандартный значок</span></div><div class="actions"><button type="button" class="btn small" id="v96FaviconSave" onclick="v96SaveBranding('favicon')" disabled>Сохранить фавикон</button><button type="button" class="btn small" onclick="v96ResetBranding('favicon')">Стандартный фавикон</button></div></div>
  </div>
  <div class="actions"><button type="button" class="btn primary" id="v96BrandingSave" onclick="v96SaveBranding('all')" disabled>Сохранить оформление</button><button type="button" class="btn" onclick="v96ResetBranding('all')">Вернуть стандартное оформление</button></div>
  <p id="v96BrandingStatus" role="status" aria-live="polite">Новый файл сначала появится в предпросмотре. Сохраните, чтобы применить его.</p>
@@ -3717,6 +3804,12 @@ async function v96RasterBranding(file,kind){
   if(!v96BrandingSafeData(data,kind))throw Error('size');return data;
  }finally{image.onload=image.onerror=null;URL.revokeObjectURL(url)}
 }
+function v109ChooseBrandingFile(kind){
+ if(!['logo','favicon'].includes(kind)||v96BrandingBusy||document.getElementById('appRoot').classList.contains('auth-locked'))return false;
+ const input=document.getElementById(kind==='logo'?'v96LogoFile':'v96FaviconFile');
+ if(!input)return false;
+ input.value='';input.click();return true;
+}
 async function v96StageBranding(kind,file){
  if(!file||!['logo','favicon'].includes(kind))return false;
  const generation=++v96BrandingGeneration[kind],epoch=authEpoch;
@@ -3748,6 +3841,7 @@ function v96RenderBrandingChoices(){
   const title=kind==='logo'?'Logo':'Favicon',image=document.getElementById('v96'+title+'Preview'),fallback=document.getElementById('v96'+title+'Default'),button=document.getElementById('v96'+title+'Save');if(!image)continue;
   const candidate=Object.prototype.hasOwnProperty.call(v96BrandingDraft,kind)?v96BrandingDraft[kind]:saved[kind+'DataUrl'],data=v96BrandingSafeData(candidate,kind);
   image.hidden=!data;if(data)image.src=data;else image.removeAttribute('src');fallback.hidden=!!data;button.disabled=v96BrandingBusy||!Object.prototype.hasOwnProperty.call(v96BrandingDraft,kind);
+  const choose=document.getElementById('v109'+title+'Choose');if(choose)choose.disabled=v96BrandingBusy||document.getElementById('appRoot').classList.contains('auth-locked');
  }
  const all=document.getElementById('v96BrandingSave');if(all)all.disabled=v96BrandingBusy||!Object.keys(v96BrandingDraft).length;
 }
@@ -3779,7 +3873,7 @@ function showApp(){
  renderAll();
 }
 function showGate(){
- v98ClearCategoryReview();
+ v110ClosePickers();v98ClearCategoryReview();
  document.getElementById('appRoot').classList.add('auth-locked');
  v99RenderEntryDirections();
  document.getElementById('authGate').style.display='flex';
@@ -4122,7 +4216,14 @@ function toast(t){
   const x=document.createElement('div');x.textContent=message;x.style='position:fixed;right:18px;bottom:18px;z-index:200;background:#111a2d;color:#fff;padding:13px 16px;border-radius:13px;box-shadow:0 15px 40px #0003';document.body.appendChild(x);setTimeout(()=>x.remove(),2200);
  });
 }
-function go(page){const sections=document.querySelectorAll('.section');sections.forEach(s=>{s.classList.remove('active');s.style.display='none'});const target=document.getElementById(page);if(!target||!target.classList.contains('section'))return;target.classList.add('active');target.style.display=page==='home'?'flex':'block';document.querySelectorAll('#nav button[data-page],#mobileNav button[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===(page==='categoryReview'?'analytics':page)));const moreBtn=document.getElementById('v74MoreToggle');if(moreBtn)moreBtn.classList.toggle('active',['income','car','loans','goals','chores','dates','settings','help','plans'].includes(page));document.getElementById('pageTitle').textContent=(NAV[page]||[page,''])[0];document.getElementById('pageSub').textContent=(NAV[page]||[page,''])[1];if(page==='history')renderHistory();if(page==='today')renderToday();if(page==='analytics')renderAnalytics();if(page==='income')renderIncome();if(page==='car')renderCar();if(page==='goals')renderGoals();if(page==='chores')renderChores();if(page==='dates')renderDates();if(page==='loans')renderLoans();if(page==='settings')settingsFields();v84RenderAll();window.scrollTo(0,0)}
+let v110PickerRefreshQueued=false;
+function v110RefreshPickers(){
+ if(v110PickerRefreshQueued)return;
+ v110PickerRefreshQueued=true;
+ queueMicrotask(()=>{v110PickerRefreshQueued=false;window.v107RefreshSelects?.();window.v108RefreshCalendars?.()});
+}
+function v110ClosePickers(){window.v107CloseSelects?.();window.v108CloseCalendars?.()}
+function go(page){v110ClosePickers();const sections=document.querySelectorAll('.section');sections.forEach(s=>{s.classList.remove('active');s.style.display='none'});const target=document.getElementById(page);if(!target||!target.classList.contains('section'))return;target.classList.add('active');target.style.display=page==='home'?'flex':'block';document.querySelectorAll('#nav button[data-page],#mobileNav button[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===(page==='categoryReview'?'analytics':page)));const moreBtn=document.getElementById('v74MoreToggle');if(moreBtn)moreBtn.classList.toggle('active',['income','car','loans','goals','chores','dates','settings','help','plans'].includes(page));document.getElementById('pageTitle').textContent=(NAV[page]||[page,''])[0];document.getElementById('pageSub').textContent=(NAV[page]||[page,''])[1];if(page==='history')renderHistory();if(page==='today')renderToday();if(page==='analytics')renderAnalytics();if(page==='income')renderIncome();if(page==='car')renderCar();if(page==='goals')renderGoals();if(page==='chores')renderChores();if(page==='dates')renderDates();if(page==='loans')renderLoans();if(page==='settings')settingsFields();v84RenderAll();window.scrollTo(0,0);v110RefreshPickers()}
 document.querySelectorAll('#nav button[data-page],#mobileNav button[data-page]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));
 
 function fillSelect(id,items,all=false){
@@ -4140,7 +4241,9 @@ function refreshHistoryPeriods(){
  const html=opts.join('');['homeMonth','analyticsMonth','incomeMonth','carMonth'].forEach((id,i)=>{const el=document.getElementById(id);if(!el||el.dataset.periodSignature===first+'|'+last)return;const previous=selected[i];el.innerHTML=html;el.value=opts.some(x=>x.includes('value="'+previous+'"'))?previous:month();el.dataset.periodSignature=first+'|'+last});
  const fm=document.getElementById('fMonth');if(fm){fm.min=first;fm.max=last}
 }
-function clearHistoryMonth(){const el=document.getElementById('fMonth');if(el){el.value='';renderHistory()}}
+function clearHistoryMonth(){for(const id of ['fMonth','fDay']){const el=document.getElementById(id);if(el)el.value=''}renderHistory()}
+function filterHistoryDay(){const day=document.getElementById('fDay')?.value||'';if(day)document.getElementById('fMonth').value=day.slice(0,7);renderHistory()}
+function filterHistoryMonth(){const day=document.getElementById('fDay');if(day)day.value='';renderHistory()}
 function amountText(e){return (e.type==='income'?'+':e.type==='expense'?'−':'↔ ')+money(e.amount)}
 
 // v81: optional detailed purpose and beneficiary; historical primary categories are immutable.
@@ -4181,7 +4284,7 @@ function v81FillDetails(prefix,category,detail='',beneficiary){
  sub.innerHTML=values.map(x=>`<option value="${esc(x)}">${x?esc(x):'Без уточнения'}</option>`).join('');sub.value=detail;
  const choices=v81BeneficiaryOptions();if(!choices.includes(target))choices.push(target);
  who.innerHTML=choices.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');who.value=target;
- if(typeof v99RenderEntryDirections==='function')v99RenderEntryDirections();
+ if(typeof v99RenderEntryDirections==='function')v99RenderEntryDirections();v110RefreshPickers();
 }
 function v81EntryDetailText(e){return [e.category,e.subcategory].filter(Boolean).join(' / ')}
 function v81EntrySubjectText(e){return String(e.beneficiary||'')}
@@ -4768,10 +4871,10 @@ function openEdit(id,returnDrill=null){
  document.getElementById('xType').value=e.type;v81FillDetails('x',e.category,e.subcategory||'',v86ExpenseTarget(e));
  document.getElementById('xCat').addEventListener('change',ev=>v81FillDetails('x',ev.target.value));
  document.getElementById('xType').addEventListener('change',ev=>{document.querySelectorAll('.v81-edit-detail').forEach(el=>el.style.display=ev.target.value==='expense'?'block':'none');const whoField=document.getElementById('v86EditWhoField');if(whoField)whoField.style.display=ev.target.value==='income'?'block':'none';});
- document.querySelectorAll('.v81-edit-detail').forEach(el=>el.style.display=e.type==='expense'?'block':'none');document.getElementById('v86EditWhoField').style.display=e.type==='income'?'block':'none';document.getElementById('editModal').classList.add('open')
+ document.querySelectorAll('.v81-edit-detail').forEach(el=>el.style.display=e.type==='expense'?'block':'none');document.getElementById('v86EditWhoField').style.display=e.type==='income'?'block':'none';document.getElementById('editModal').classList.add('open');v110RefreshPickers()
 }
 function closeEdit(restoreDrill=true){
- if(v98CategoryEdit){v98CloseCategoryEdit(restoreDrill);return}
+ v110ClosePickers();if(v98CategoryEdit){v98CloseCategoryEdit(restoreDrill);return}
  const context=v96EditReturnContext;v96EditReturnContext=null;
  document.getElementById('editModal').classList.remove('open');editId=null;
  if(restoreDrill&&context)v96RestoreDrill(context);
@@ -5058,8 +5161,8 @@ function renderHome(){
 function renderToday(){const arr=state.entries.filter(e=>e.date===today()).sort((a,b)=>String(b.created_at).localeCompare(String(a.created_at)));document.getElementById('todayList').innerHTML=arr.length?arr.map(e=>{const label=V90_CATEGORIES.find(x=>x[0]===e.category)?.[1]||e.category;return `<article class="v91-transaction"><div class="v91-transaction-main"><b>${v96MerchantBadge(e.store)}${esc(v96MerchantDisplayName(e.store)||label||typeName(e.type))}</b><small>${esc([label,e.subcategory,e.type==='expense'?'Для: '+v86ExpenseTarget(e):e.who].filter(Boolean).join(' · '))}</small>${e.comment?`<p>${esc(e.comment)}</p>`:''}</div><strong class="${e.type==='income'?'money-green':e.type==='expense'?'money-red':''}">${amountText(e)}</strong><div class="v91-row-actions"><button class="btn small" ${recordAction('entry-edit',e.id)}>Изменить</button><button type="button" class="btn small" ${recordAction('entry-repeat',e.id)}>Повторить</button><button type="button" class="btn small" ${recordAction('favorite-from-entry',e.id)}>В избранное</button><button class="btn small" ${recordAction('entry-delete',e.id)}>Удалить</button></div></article>`}).join(''):'<div class="empty">За сегодня операций нет.</div>'}
 
 function renderHistory(){
- const q=document.getElementById('fSearch').value.trim().toLowerCase(),who=document.getElementById('fWho').value,cat=document.getElementById('fCat').value,group=document.getElementById('fGroup')?.value||'',type=document.getElementById('fType').value,m=document.getElementById('fMonth').value;
- const arr=state.entries.filter(e=>(!m||String(e.date||'').startsWith(m))&&(!who||(e.type==='expense'?v86ExpenseTarget(e):e.who)===who)&&(!cat||e.category===cat)&&(!group||(e.type==='expense'&&expenseEntryGroup(e)===group))&&(!type||e.type===type)&&(!q||[v96MerchantSearchText(e.store),e.comment,e.category,e.subcategory,e.beneficiary,e.who,e.date].join(' ').toLowerCase().includes(q))).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||''))||String(b.created_at||'').localeCompare(String(a.created_at||'')));
+ const q=document.getElementById('fSearch').value.trim().toLowerCase(),who=document.getElementById('fWho').value,cat=document.getElementById('fCat').value,group=document.getElementById('fGroup')?.value||'',type=document.getElementById('fType').value,m=document.getElementById('fMonth').value,day=document.getElementById('fDay')?.value||'';
+ const arr=state.entries.filter(e=>(day?String(e.date||'')===day:!m||String(e.date||'').startsWith(m))&&(!who||(e.type==='expense'?v86ExpenseTarget(e):e.who)===who)&&(!cat||e.category===cat)&&(!group||(e.type==='expense'&&expenseEntryGroup(e)===group))&&(!type||e.type===type)&&(!q||[v96MerchantSearchText(e.store),e.comment,e.category,e.subcategory,e.beneficiary,e.who,e.date].join(' ').toLowerCase().includes(q))).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||''))||String(b.created_at||'').localeCompare(String(a.created_at||'')));
  const count=document.getElementById('historyCount');if(count)count.textContent=arr.length+' '+(arr.length%10===1&&arr.length%100!==11?'операция':([2,3,4].includes(arr.length%10)&&![12,13,14].includes(arr.length%100)?'операции':'операций'))+' найдено';
  const safeFull=(v)=>esc(String(v??''));
  document.getElementById('historyBody').innerHTML=arr.map(e=>{
@@ -5081,7 +5184,7 @@ document.getElementById('historyBody').addEventListener('click',event=>{
 function resetHistoryFilters(){
  const q=document.getElementById('fSearch');if(q)q.value='';
  for(const id of ['fWho','fGroup','fCat','fType']){const el=document.getElementById(id);if(el)el.value=''}
- const m=document.getElementById('fMonth');if(m)m.value='';
+ for(const id of ['fMonth','fDay']){const el=document.getElementById(id);if(el)el.value=''}
  renderHistory();
 }
 
@@ -5717,7 +5820,7 @@ function birthdayDays(b){
   return Math.round((target-Date.UTC(year,Number(now.slice(5,7))-1,Number(now.slice(8))))/86400000);
 }
 function ageNext(b){const y=new Date().getFullYear();return y+1-Number(b.date.slice(0,4))}
-function resetBirthdayForm(){v80PhoneHint();['bdName','bdDate','bdPhone','bdNote'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});const id=document.getElementById('bdEditId');if(id)id.value='';const banner=document.getElementById('birthdayEditing');if(banner){banner.style.display='none';banner.textContent=' Измените дату и сохраните.'}const btn=document.getElementById('birthdaySubmitBtn');if(btn)btn.textContent=' Добавить человека';const cancel=document.getElementById('birthdayCancelBtn');if(cancel)cancel.style.display='none';const group=document.getElementById('bdGroup');if(group)group.value='Близкие'}
+function resetBirthdayForm(){v80PhoneHint();['bdName','bdDate','bdPhone','bdNote'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});const id=document.getElementById('bdEditId');if(id)id.value='';const banner=document.getElementById('birthdayEditing');if(banner){banner.style.display='none';banner.textContent=' Измените дату и сохраните.'}const btn=document.getElementById('birthdaySubmitBtn');if(btn)btn.textContent=' Добавить человека';const cancel=document.getElementById('birthdayCancelBtn');if(cancel)cancel.style.display='none';const group=document.getElementById('bdGroup');if(group)group.value='Близкие';v110RefreshPickers()}
 function cancelBirthdayEdit(){resetBirthdayForm()}
 function editBirthday(id){
   const b=getBirthdayRows().find(x=>x.id===id);if(!b)return;
@@ -5730,7 +5833,7 @@ function editBirthday(id){
   const banner=document.getElementById('birthdayEditing');if(banner){banner.style.display='block';banner.textContent=b.kind==='wedding'?' Изменение семейной годовщины. Год свадьбы нужен для расчёта названия каждой годовщины.':' Изменение семейной даты. Данные сохранятся в общей семейной истории.'}
   const btn=document.getElementById('birthdaySubmitBtn');if(btn)btn.textContent=' Сохранить изменения';
   const cancel=document.getElementById('birthdayCancelBtn');if(cancel)cancel.style.display='inline-flex';
-  document.getElementById('bdName')?.scrollIntoView({behavior:'smooth',block:'center'});
+  document.getElementById('bdName')?.scrollIntoView({behavior:'smooth',block:'center'});v110RefreshPickers();
 }
 function addBirthday(){
   const name=document.getElementById('bdName').value.trim(),date=document.getElementById('bdDate').value,phoneInput=document.getElementById('bdPhone'),phoneText=phoneInput.value.trim(),phone=phoneText?v80PhoneCanonical(phoneText):'',group=document.getElementById('bdGroup').value,note=document.getElementById('bdNote').value.trim(),edit=document.getElementById('bdEditId').value.trim();
@@ -6180,7 +6283,7 @@ for(const [id,kind] of [['donut','group'],['peopleDonut','person']]){
 }
 for(const id of ['analyticsMonth','homeMonth'])document.getElementById(id)?.addEventListener('change',v84RenderAll);
 
-function renderAll(){v97RenderFavorites();refreshHistoryPeriods();renderHome();renderToday();renderHistory();renderAnalytics();renderIncome();renderCar();renderGoals();renderLoans();renderChores();renderDates();renderFamilyBoard();renderFamilySpark();renderTodayHeader();renderTodayAdvice();settingsFields();try{renderEarlyRepayment()}catch(err){console.warn('early repayment render',err)}v84RenderAll();v96ApplyBranding();v96RenderBrandingChoices();v99RenderEntryDirections()}
+function renderAll(){v97RenderFavorites();refreshHistoryPeriods();renderHome();renderToday();renderHistory();renderAnalytics();renderIncome();renderCar();renderGoals();renderLoans();renderChores();renderDates();renderFamilyBoard();renderFamilySpark();renderTodayHeader();renderTodayAdvice();settingsFields();try{renderEarlyRepayment()}catch(err){console.warn('early repayment render',err)}v84RenderAll();v96ApplyBranding();v96RenderBrandingChoices();v99RenderEntryDirections();v110RefreshPickers()}
 function exportCsv(){
  const columns=['Дата','Тип','Категория','Участник','Сумма ₽','Где / источник','Оплата','Комментарий','Откуда','Куда','Уточнение расхода','Для кого'];
  const safe=(v)=>'"'+String(v??'').replace(/^[=+@\-\t\r]/,x=>"'"+x).replace(/"/g,'""')+'"';
@@ -6318,7 +6421,9 @@ document.getElementById('importFile').addEventListener('change',async e=>{
  finally{e.target.value=''}
 });
 
-['fSearch','fWho','fGroup','fCat','fType','fMonth'].forEach(id=>document.getElementById(id).addEventListener('input',renderHistory));
+['fSearch','fWho','fGroup','fCat','fType'].forEach(id=>document.getElementById(id).addEventListener('input',renderHistory));
+document.getElementById('fMonth').addEventListener('input',filterHistoryMonth);
+document.getElementById('fDay').addEventListener('input',filterHistoryDay);
 v77Init();
 const earlyModeEl=document.getElementById('earlyMode');if(earlyModeEl)earlyModeEl.addEventListener('change',renderEarlyRepayment);if(document.getElementById('earlyPlanRows'))refreshEarlyPlan();
 document.getElementById('authBtn').addEventListener('click',()=>session?logout():openAuth());
@@ -6801,7 +6906,432 @@ function fitDonutTotals(){
 let donutFitFrame;const queueDonutFit=()=>{cancelAnimationFrame(donutFitFrame);donutFitFrame=requestAnimationFrame(fitDonutTotals)};
 new MutationObserver(queueDonutFit).observe(document.body,{childList:true,subtree:true,characterData:true});
 window.addEventListener('resize',queueDonutFit);queueDonutFit();
-</script></body>
+</script><script id="v107UnifiedSelectsScript">
+/* Progressive enhancement: original select IDs, options and events are preserved. */
+(function v107InstallSelects(){
+ 'use strict';
+ if(window.v107RefreshSelects)return;
+ const records=new Set(),byNative=new WeakMap();
+ let serial=0,opened=null,queued=false,typing='',typingAt=0;
+ const own='[data-v107-ui],[data-v108-ui],[data-v107-ignore]';
+ const svg=(path,cls)=>{const icon=document.createElementNS('http://www.w3.org/2000/svg','svg');icon.setAttribute('viewBox','0 0 24 24');icon.setAttribute('fill','none');icon.setAttribute('stroke','currentColor');icon.setAttribute('stroke-width','1.8');icon.setAttribute('stroke-linecap','round');icon.setAttribute('stroke-linejoin','round');icon.setAttribute('aria-hidden','true');icon.classList.add(cls);const p=document.createElementNS(icon.namespaceURI,'path');p.setAttribute('d',path);icon.appendChild(p);return icon};
+ const locked=()=>document.getElementById('appRoot')?.classList.contains('auth-locked');
+ function visible(node){if(!node?.isConnected)return false;const r=node.getBoundingClientRect(),s=getComputedStyle(node);return r.width>0&&r.height>0&&s.visibility!=='hidden'&&s.display!=='none'}
+ function settleEntrance(record){record.trigger.closest('.section')?.getAnimations?.().forEach(animation=>{if(animation.animationName==='v44fade')try{animation.finish()}catch{}})}
+ function enabled(option){return !option.disabled&&!option.closest('optgroup')?.disabled&&!option.hidden}
+ function interactable(record){const dialog=document.querySelector('dialog[open]');return !locked()&&record.native.isConnected&&record.wrapper.contains(record.native)&&!record.native.matches(':disabled')&&visible(record.trigger)&&(!dialog||dialog.contains(record.trigger))}
+ function labelText(native){
+  const direct=native.getAttribute('aria-label');if(direct)return direct;
+  const labelled=native.getAttribute('aria-labelledby');if(labelled){const text=labelled.split(/\s+/).map(id=>document.getElementById(id)?.textContent||'').join(' ').trim();if(text)return text}
+  const labels=[...(native.labels||[])];if(!labels.length){const sibling=native.closest('.field')?.querySelector('label');if(sibling)labels.push(sibling)}
+  const text=labels.map(label=>{const copy=label.cloneNode(true);copy.querySelectorAll('select,button,.v107-select').forEach(el=>el.remove());return copy.textContent.trim()}).filter(Boolean).join(' ');
+  return text||native.title||'Выбор значения';
+ }
+ function sync(record){
+  const {native,trigger,value}=record;
+  const nativeStyle=getComputedStyle(native);record.wrapper.hidden=native.hidden||nativeStyle.display==='none'||nativeStyle.visibility==='hidden';
+  const text=native.selectedOptions[0]?.label||native.selectedOptions[0]?.textContent||'Не выбрано';
+  if(value.textContent!==text)value.textContent=text;
+  const label=labelText(native);if(trigger.getAttribute('aria-label')!==label)trigger.setAttribute('aria-label',label);
+  const described=[native.getAttribute('aria-describedby'),value.id].filter(Boolean).join(' ');if(trigger.getAttribute('aria-describedby')!==described)trigger.setAttribute('aria-describedby',described);
+  trigger.disabled=native.matches(':disabled')||!native.options.length;
+  trigger.setAttribute('aria-required',native.required?'true':'false');
+  if(native.getAttribute('aria-invalid')==='true')trigger.setAttribute('aria-invalid','true');else trigger.removeAttribute('aria-invalid');
+  if(opened===record){if(!interactable(record)){close(false);return}const signature=optionSignature(native);if(signature!==record.signature){render(record);place(record)}}
+ }
+ function optionSignature(native){return [...native.options].map((option,index)=>[index,option.value,option.label,option.selected,option.disabled,option.hidden,option.closest('optgroup')?.label||'',option.closest('optgroup')?.disabled||false].join('\u0001')).join('\u0002')}
+ function install(native){
+  if(byNative.has(native)||native.multiple||native.size>1||native.hidden||native.closest('[data-v108-ui],[data-v107-ignore]')||native.style.display==='none')return;
+  const wrapper=document.createElement('span'),trigger=document.createElement('button'),value=document.createElement('span');
+  const initialStyle=getComputedStyle(native),controlHeight=Math.max(44,parseFloat(initialStyle.minHeight)||0,parseFloat(initialStyle.height)||0);
+  const uid='v107Select'+(++serial),parent=native.parentNode,oldTab=native.getAttribute('tabindex'),oldHidden=native.getAttribute('aria-hidden');
+  wrapper.className='v107-select '+native.className;wrapper.dataset.v107Ui='select';
+  if(native.getAttribute('style'))wrapper.setAttribute('style',native.getAttribute('style'));
+  wrapper.style.setProperty('--v107-select-height',controlHeight+'px');
+  if(native.closest('.field,.filters,.v84-input-wrap,.v88-control,.early-strategy')||native.style.width==='100%')wrapper.classList.add('v107-select-block');
+  trigger.type='button';trigger.id=uid+'Trigger';trigger.className='v107-select-trigger';trigger.setAttribute('role','combobox');trigger.setAttribute('aria-haspopup','listbox');trigger.setAttribute('aria-expanded','false');trigger.setAttribute('aria-controls',uid+'List');
+  value.id=uid+'Value';value.className='v107-select-value';trigger.append(value,svg('m6 9 6 6 6-6','v107-select-chevron'));
+  const record={native,wrapper,trigger,value,uid,panel:null,active:-1,signature:'',oldTab,oldHidden};
+  try{
+   parent.insertBefore(wrapper,native);wrapper.append(native,trigger);native.classList.add('v107-native-select');native.tabIndex=-1;native.setAttribute('aria-hidden','true');native.closest('.section')?.classList.add('v107-has-selects');records.add(record);byNative.set(native,record);
+   trigger.addEventListener('pointerdown',event=>{if(event.button===0){event.preventDefault();settleEntrance(record);trigger.focus({preventScroll:true})}});
+   trigger.addEventListener('click',event=>{event.preventDefault();if(opened===record)close(true);else open(record)});
+   trigger.addEventListener('keydown',event=>key(record,event));
+   native.addEventListener('focus',()=>{if(interactable(record)){settleEntrance(record);trigger.focus({preventScroll:true})}});
+   native.addEventListener('input',()=>sync(record));native.addEventListener('change',()=>sync(record));
+   native.addEventListener('invalid',event=>{event.preventDefault();if(visible(trigger))trigger.focus()});
+   sync(record);
+  }catch(error){records.delete(record);byNative.delete(native);native.classList.remove('v107-native-select');if(oldTab===null)native.removeAttribute('tabindex');else native.setAttribute('tabindex',oldTab);if(oldHidden===null)native.removeAttribute('aria-hidden');else native.setAttribute('aria-hidden',oldHidden);if(wrapper.parentNode){wrapper.parentNode.insertBefore(native,wrapper);wrapper.remove()}}
+ }
+ function refresh(){
+  queued=false;
+  for(const record of records){if(!record.native.isConnected||record.native.parentNode!==record.wrapper){if(opened===record)close(false);record.panel?.remove();records.delete(record);byNative.delete(record.native);if(record.native.isConnected){record.native.classList.remove('v107-native-select');if(record.oldTab===null)record.native.removeAttribute('tabindex');else record.native.setAttribute('tabindex',record.oldTab);if(record.oldHidden===null)record.native.removeAttribute('aria-hidden');else record.native.setAttribute('aria-hidden',record.oldHidden)}}}
+  document.querySelectorAll('select').forEach(install);records.forEach(sync);
+ }
+ function schedule(){if(queued)return;queued=true;queueMicrotask(refresh)}
+ function panel(record){
+  if(record.panel)return record.panel;
+  const list=document.createElement('div');list.id=record.uid+'List';list.className='v107-select-panel';list.dataset.v107Ui='select-panel';list.hidden=true;list.setAttribute('role','listbox');list.setAttribute('aria-label',labelText(record.native));
+  if(typeof list.showPopover==='function')list.setAttribute('popover','manual');
+  list.addEventListener('pointerdown',event=>event.preventDefault());
+  list.addEventListener('click',event=>{const item=event.target.closest('[data-v107-index]');if(item&&list.contains(item))commit(record,Number(item.dataset.v107Index))});
+  list.addEventListener('pointermove',event=>{const item=event.target.closest('[data-v107-index]');if(item&&item.getAttribute('aria-disabled')!=='true'){record.active=Number(item.dataset.v107Index);activate(record,false)}});
+  document.body.appendChild(list);record.panel=list;return list;
+ }
+ function render(record){
+  const list=panel(record),fragment=document.createDocumentFragment();let group=null;
+  for(const [index,option] of [...record.native.options].entries()){
+   if(option.hidden)continue;
+   const parent=option.closest('optgroup');if(parent&&parent!==group){const heading=document.createElement('div');heading.className='v107-select-group';heading.textContent=parent.label;heading.setAttribute('aria-hidden','true');fragment.appendChild(heading)}group=parent;
+   const item=document.createElement('div');item.id=record.uid+'Option'+index;item.className='v107-select-option';item.dataset.v107Index=String(index);item.setAttribute('role','option');item.setAttribute('aria-selected',option.selected?'true':'false');if(!enabled(option))item.setAttribute('aria-disabled','true');
+   const text=document.createElement('span');text.className='v107-select-option-text';text.textContent=option.label||option.textContent;item.append(text,svg('m5 12 4 4L19 6','v107-select-check'));fragment.appendChild(item);
+  }
+  if(!fragment.childNodes.length){const empty=document.createElement('div');empty.className='v107-select-empty';empty.textContent='Нет доступных вариантов';fragment.appendChild(empty)}
+  list.replaceChildren(fragment);record.signature=optionSignature(record.native);
+  if(record.active<0||!record.native.options[record.active]||!enabled(record.native.options[record.active]))record.active=[...record.native.options].findIndex(enabled);
+  activate(record,false);
+ }
+ function activate(record,scroll=true){
+  if(!record.panel)return;
+  record.panel.querySelectorAll('[data-v107-index]').forEach(item=>item.dataset.active=Number(item.dataset.v107Index)===record.active?'true':'false');
+  const target=document.getElementById(record.uid+'Option'+record.active);if(target){record.trigger.setAttribute('aria-activedescendant',target.id);if(scroll){const top=target.offsetTop,bottom=top+target.offsetHeight;if(top<record.panel.scrollTop)record.panel.scrollTop=top;else if(bottom>record.panel.scrollTop+record.panel.clientHeight)record.panel.scrollTop=bottom-record.panel.clientHeight}}
+  else record.trigger.removeAttribute('aria-activedescendant');
+ }
+ function place(record){
+  if(opened!==record||!record.panel)return;
+  if(!interactable(record)){close(false);return}
+  const viewport=window.visualViewport,leftEdge=viewport?.offsetLeft||0,topEdge=viewport?.offsetTop||0,width=viewport?.width||innerWidth,height=viewport?.height||innerHeight;
+  const rect=record.trigger.getBoundingClientRect(),gap=6,margin=8,below=topEdge+height-rect.bottom-gap-margin,above=rect.top-topEdge-gap-margin;
+  const up=below<180&&above>below,room=Math.min(320,Math.max(0,up?above:below)),panelWidth=Math.min(Math.max(rect.width,180),width-margin*2);
+  if(room<44||panelWidth<44){close(false);return}
+  const list=record.panel;list.style.width=panelWidth+'px';list.style.maxHeight=room+'px';list.style.left=Math.min(Math.max(rect.left,leftEdge+margin),leftEdge+width-margin-panelWidth)+'px';
+  const actual=Math.min(list.scrollHeight,room);list.style.top=(up?rect.top-gap-actual:rect.bottom+gap)+'px';
+ }
+ function open(record,edge){
+  refresh();if(!interactable(record)||record.trigger.disabled)return;
+  settleEntrance(record);
+  close(false);document.dispatchEvent(new CustomEvent('v107-picker-open',{detail:{type:'select',kind:'select',source:record.trigger,trigger:record.trigger}}));
+  opened=record;record.active=record.native.selectedIndex;const options=[...record.native.options];if(edge==='first')record.active=options.findIndex(enabled);else if(edge==='last')for(let i=options.length-1;i>=0;i--)if(enabled(options[i])){record.active=i;break}
+  render(record);record.panel.hidden=false;
+  try{if(record.panel.hasAttribute('popover'))record.panel.showPopover()}catch{record.panel.removeAttribute('popover')}
+  record.trigger.setAttribute('aria-expanded','true');place(record);if(opened===record){activate(record);record.trigger.focus({preventScroll:true})}
+ }
+ function close(restore=false){
+  const record=opened;if(!record)return;opened=null;typing='';record.trigger.setAttribute('aria-expanded','false');record.trigger.removeAttribute('aria-activedescendant');
+  if(record.panel){try{if(record.panel.matches(':popover-open'))record.panel.hidePopover()}catch{}record.panel.hidden=true}
+  if(restore&&interactable(record))record.trigger.focus({preventScroll:true});
+ }
+ function commit(record,index){
+  if(opened!==record||!interactable(record))return;
+  const option=record.native.options[index];if(!option||!enabled(option))return;
+  const changed=record.native.selectedIndex!==index;record.native.selectedIndex=index;close(false);sync(record);
+  if(changed){record.native.dispatchEvent(new Event('input',{bubbles:true}));record.native.dispatchEvent(new Event('change',{bubbles:true}))}
+  schedule();if(interactable(record))record.trigger.focus({preventScroll:true});
+ }
+ function move(record,direction){const options=[...record.native.options];let index=record.active;for(let n=0;n<options.length;n++){index=(index+direction+options.length)%options.length;if(enabled(options[index])){record.active=index;activate(record);break}}}
+ function key(record,event){
+  const value=event.key;
+  if(value==='Tab'){if(opened===record)close(false);return}
+  if(value==='Escape'){if(opened===record){event.preventDefault();event.stopPropagation();close(true)}return}
+  if(['ArrowDown','ArrowUp','Home','End',' ','Enter','F4'].includes(value)){
+   event.preventDefault();
+   if(opened!==record){open(record,value==='Home'?'first':value==='End'?'last':undefined);return}
+   if(value==='Enter'||value===' '){commit(record,record.active);return}
+   if(value==='F4'||(event.altKey&&(value==='ArrowDown'||value==='ArrowUp'))){close(true);return}
+   if(value==='Home'||value==='End'){const options=[...record.native.options];record.active=value==='Home'?options.findIndex(enabled):options.map((option,index)=>enabled(option)?index:-1).filter(index=>index>=0).pop()??-1;activate(record);return}
+   move(record,value==='ArrowDown'?1:-1);return;
+  }
+  if(value.length===1&&!event.ctrlKey&&!event.metaKey&&!event.altKey){event.preventDefault();if(opened!==record)open(record);if(opened!==record)return;const now=Date.now();typing=now-typingAt<700?typing+value:value;typingAt=now;const target=typing.toLocaleLowerCase('ru');const options=[...record.native.options];for(let step=1;step<=options.length;step++){const index=(record.active+step+options.length)%options.length;if(enabled(options[index])&&(options[index].label||options[index].textContent).trim().toLocaleLowerCase('ru').startsWith(target)){record.active=index;activate(record);break}}}
+ }
+ document.addEventListener('pointerdown',event=>{if(opened&&!opened.wrapper.contains(event.target)&&!opened.panel?.contains(event.target))close(false)},true);
+ document.addEventListener('click',event=>{const label=event.target.closest('label');if(label&&!event.target.closest('button,a,input,textarea')){const native=label.control,record=native&&byNative.get(native);if(record){event.preventDefault();settleEntrance(record);if(visible(record.trigger))record.trigger.focus({preventScroll:true})}}schedule()},true);
+ document.addEventListener('input',schedule,true);document.addEventListener('change',schedule,true);document.addEventListener('focusin',schedule,true);
+ document.addEventListener('scroll',event=>{if(opened&&!opened.panel?.contains(event.target))close(false)},true);
+ window.addEventListener('resize',()=>{if(opened)place(opened)});window.addEventListener('blur',()=>close(false));
+ window.visualViewport?.addEventListener('resize',()=>{if(opened)place(opened)});window.visualViewport?.addEventListener('scroll',()=>{if(opened)place(opened)});
+ document.addEventListener('v107-picker-open',event=>{if((event.detail?.type||event.detail?.kind)!=='select')close(false)});
+ new MutationObserver(mutations=>{if(mutations.some(mutation=>{const target=mutation.target instanceof Element?mutation.target:mutation.target.parentElement;if(!target)return false;if(target.matches('select,option,optgroup')||target.closest('select'))return true;return !target.closest(own)}))schedule()}).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class','style','hidden','disabled','selected','value','label','aria-label','aria-labelledby','aria-invalid','required']});
+ window.v107RefreshSelects=refresh;window.v107CloseSelects=()=>close(false);
+ refresh();
+})();
+
+</script>
+<script id="v108UnifiedCalendarsScript">
+/* V108_CALENDAR_BEGIN — progressive enhancement of date/month inputs. */
+(()=>{
+ 'use strict';
+ if(window.v108RefreshCalendars)return;
+ const records=new WeakMap(),months=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+ const selector='input[type="date"],input[type="month"]';
+ let panel=null,current=null,scheduled=false,sequence=0;
+ const pad=n=>String(n).padStart(2,'0');
+ const iso=p=>String(p.y).padStart(4,'0')+'-'+pad(p.m)+'-'+pad(p.d);
+ const monthISO=p=>String(p.y).padStart(4,'0')+'-'+pad(p.m);
+ const dateObject=p=>{const d=new Date(2000,0,1,12,0,0,0);d.setFullYear(p.y,p.m-1,p.d);return d};
+ const fromDate=d=>({y:d.getFullYear(),m:d.getMonth()+1,d:d.getDate()});
+ const parse=value=>{
+  const match=/^(\d{4})-(\d{2})(?:-(\d{2}))?$/.exec(value||'');if(!match)return null;
+  const p={y:Number(match[1]),m:Number(match[2]),d:Number(match[3]||1)};
+  if(p.y<1||p.y>9999||p.m<1||p.m>12||p.d<1||p.d>31)return null;
+  const d=dateObject(p);return d.getFullYear()===p.y&&d.getMonth()+1===p.m&&d.getDate()===p.d?p:null;
+ };
+ const todayParts=()=>{
+  const p=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Moscow',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
+  const pick=type=>Number(p.find(x=>x.type===type).value);return{y:pick('year'),m:pick('month'),d:pick('day')};
+ };
+ const shiftDay=(p,count)=>{const d=dateObject(p);d.setDate(d.getDate()+count);return fromDate(d)};
+ const shiftMonth=(p,count)=>{
+  const d=dateObject({...p,d:1});d.setMonth(d.getMonth()+count);
+  const last=dateObject({y:d.getFullYear(),m:d.getMonth()+2,d:0}).getDate();
+  return{y:d.getFullYear(),m:d.getMonth()+1,d:Math.min(p.d,last)};
+ };
+ const owns=node=>!!(node?.nodeType===1&&node.closest('[data-v108-ui],[data-v107-ui]'));
+ const epoch=()=>typeof authEpoch==='undefined'?null:authEpoch;
+ const visible=input=>!!(input?.isConnected&&input.getClientRects().length&&getComputedStyle(input).visibility!=='hidden');
+ const allowed=input=>visible(input)&&/^(date|month)$/.test(input.type)&&!input.disabled&&!input.readOnly&&!input.matches(':disabled')&&!document.getElementById('appRoot')?.classList.contains('auth-locked')&&!input.closest('[hidden],[inert]');
+ const bounds=input=>({min:parse(input.min),max:parse(input.max)});
+ const inBounds=(input,p)=>{
+  if(!p||p.y<1||p.y>9999)return false;
+  const value=input.type==='month'?monthISO(p):iso(p),b=bounds(input);
+  if((b.min&&value<(input.type==='month'?monthISO(b.min):iso(b.min)))||(b.max&&value>(input.type==='month'?monthISO(b.max):iso(b.max))))return false;
+  if(input.step&&input.step!=='any'&&Number(input.step)>1){const probe=input.cloneNode(false);probe.value=value;return!probe.validity.stepMismatch}
+  return true;
+ };
+ const clamp=(input,p)=>{
+  const b=bounds(input),value=input.type==='month'?monthISO(p):iso(p);
+  if(b.min&&value<(input.type==='month'?monthISO(b.min):iso(b.min)))return{...b.min};
+  if(b.max&&value>(input.type==='month'?monthISO(b.max):iso(b.max)))return{...b.max};
+  return p.y<1?{y:1,m:1,d:1}:p.y>9999?{y:9999,m:12,d:31}:p;
+ };
+ const monthAllowed=(input,y,m)=>{
+  if(y<1||y>9999)return false;
+  if(input.type==='month')return inBounds(input,{y,m,d:1});
+  const b=bounds(input),first=monthISO({y,m}),last=iso(fromDate(dateObject({y,m:m+1,d:0})));
+  return(!b.min||last>=iso(b.min))&&(!b.max||first+'-01'<=iso(b.max));
+ };
+ function button(text,label,className,action){
+  const generation=current?.render;
+  const b=document.createElement('button');b.type='button';b.textContent=text;
+  if(label)b.setAttribute('aria-label',label);if(className)b.className=className;
+  b.addEventListener('click',event=>{if(current&&current.render===generation&&allowed(current.input)&&current.epoch===epoch())action(event)});return b;
+ }
+ function ensurePanel(){
+  if(panel)return panel;
+  panel=document.createElement('div');panel.id='v108CalendarPanel';panel.className='v108-calendar';panel.dataset.v108Ui='';panel.dataset.v107Ignore='';
+  panel.setAttribute('role','dialog');panel.setAttribute('aria-modal','false');panel.setAttribute('aria-labelledby','v108CalendarTitle');panel.tabIndex=-1;panel.hidden=true;
+  if(typeof panel.showPopover==='function')panel.setAttribute('popover','manual');
+  panel.addEventListener('keydown',handlePanelKey);
+  document.body.appendChild(panel);return panel;
+ }
+ function close(restore=false){
+  const old=current;if(!old)return;
+  current=null;old.input.setAttribute('aria-expanded','false');
+  if(panel){try{if(panel.matches(':popover-open'))panel.hidePopover()}catch{}panel.hidden=true;panel.replaceChildren()}
+  if(restore&&visible(old.input)&&!document.getElementById('appRoot')?.classList.contains('auth-locked'))old.input.focus({preventScroll:true});
+ }
+ function refresh(){
+  scheduled=false;
+  document.querySelectorAll(selector).forEach(install);
+  if(current&&(!allowed(current.input)||current.epoch!==epoch()||current.value!==current.input.value||current.constraints!==[current.input.min,current.input.max,current.input.required].join('|')))close(false);
+  else if(current)position();
+ }
+ function schedule(){if(!scheduled){scheduled=true;queueMicrotask(refresh)}}
+ function label(input){
+  return input.getAttribute('aria-label')||input.labels?.[0]?.textContent?.trim()||(input.type==='month'?'Месяц':'Дата');
+ }
+ function install(input){
+  if(records.has(input)||input.closest('[data-v108-ui],[data-v107-ui],[data-v107-ignore]'))return;
+  records.set(input,{});
+  input.dataset.v108Calendar='';input.setAttribute('aria-haspopup','dialog');input.setAttribute('aria-expanded','false');input.setAttribute('aria-controls','v108CalendarPanel');input.setAttribute('aria-keyshortcuts','Alt+ArrowDown');
+  input.addEventListener('pointerdown',event=>{
+   if(event.button!==0||!event.isPrimary||!allowed(input))return;
+   // Prevent the OS picker/focus on touch; wait for the completed click before
+   // placing a popup, so it cannot appear underneath the same pointer-up.
+   event.preventDefault();
+  });
+  input.addEventListener('click',event=>{
+   if(!allowed(input))return;event.preventDefault();
+   if(current?.input===input)close(!matchMedia('(pointer:coarse)').matches);else open(input,false);
+  });
+  input.addEventListener('keydown',event=>{
+   if(event.key==='F4'||event.key===' '||event.key==='Enter'||event.key==='ArrowDown'&&event.altKey){event.preventDefault();open(input,true)}
+   else if(event.key==='Escape'&&current?.input===input){event.preventDefault();close(true)}
+  });
+  input.addEventListener('input',()=>{if(current?.input===input)close(false)});
+  input.addEventListener('change',schedule);
+ }
+ function open(input,keyboard=false){
+  if(!allowed(input))return false;
+  if(current?.input===input)return true;
+  close(false);ensurePanel();
+  const chosen=parse(input.value),focus=clamp(input,chosen||todayParts());
+  current={input,epoch:epoch(),value:input.value,constraints:[input.min,input.max,input.required].join('|'),keyboard,focus,view:input.type==='month'?'months':'days',id:++sequence};
+  input.setAttribute('aria-expanded','true');
+  document.dispatchEvent(new CustomEvent('v107-picker-open',{detail:{type:'calendar',kind:'calendar',source:input,trigger:input}}));
+  render(true);
+  return true;
+ }
+ function commit(value){
+  const view=current;if(!view||!allowed(view.input)||view.epoch!==epoch())return close(false);
+  if(value===''?view.input.required:!inBounds(view.input,parse(value)))return;
+  const input=view.input,changed=input.value!==value,restore=!matchMedia('(pointer:coarse)').matches||view.keyboard;
+  close(false);input.value=value;
+  if(changed){input.dispatchEvent(new Event('input',{bubbles:true}));input.dispatchEvent(new Event('change',{bubbles:true}))}
+  if(restore&&visible(input)&&!document.getElementById('appRoot')?.classList.contains('auth-locked'))input.focus({preventScroll:true});
+ }
+ function position(){
+  if(!current||panel.hidden)return;
+  const v=window.visualViewport,margin=4,leftEdge=(v?.offsetLeft||0)+margin,topEdge=(v?.offsetTop||0)+margin,width=(v?.width||innerWidth)-margin*2,height=(v?.height||innerHeight)-margin*2;
+  const rect=current.input.getBoundingClientRect();
+  panel.style.width=Math.min(352,width)+'px';panel.style.maxHeight=Math.max(44,height)+'px';
+  const box=panel.getBoundingClientRect(),left=Math.max(leftEdge,Math.min(rect.left,leftEdge+width-box.width));
+  let top=rect.bottom+6;
+  if(top+box.height>topEdge+height)top=rect.top-6-box.height;
+  top=Math.max(topEdge,Math.min(top,topEdge+height-box.height));
+  panel.style.left=left+'px';panel.style.top=top+'px';
+ }
+ function showAndFocus(selectorToFocus){
+  panel.hidden=false;try{if(panel.showPopover&&!panel.matches(':popover-open'))panel.showPopover()}catch{}
+  position();
+  if(selectorToFocus){const node=panel.querySelector(selectorToFocus)||panel.querySelector('.v108-day:not(:disabled),.v108-month:not(:disabled),button:not(:disabled),input:not(:disabled)');node?.focus({preventScroll:true});if(node){const r=node.getBoundingClientRect(),box=panel.getBoundingClientRect();if(r.bottom>box.bottom-8)panel.scrollTop+=r.bottom-box.bottom+8;else if(r.top<box.top+8)panel.scrollTop+=r.top-box.top-8}}
+ }
+ function navigate(count){
+  if(!current)return;
+  const next=current.view==='months'?{...current.focus,y:current.focus.y+count}:shiftMonth(current.focus,count);
+  if(current.view==='months'){
+   const b=bounds(current.input),low=b.min?.y||1,high=b.max?.y||9999;next.y=Math.max(low,Math.min(high,next.y));
+  }
+  current.focus=clamp(current.input,next);render(true);
+ }
+ function render(focus=false){
+  if(!current||!allowed(current.input)||current.epoch!==epoch())return close(false);
+  const view=current,input=view.input,p=view.focus,chosen=parse(input.value),t=todayParts(),generation=++sequence;
+  view.render=generation;
+  panel.replaceChildren();
+  const caption=document.createElement('div');caption.className='v108-caption';caption.id='v108CalendarTitle';caption.textContent=label(input)+' · '+(input.type==='month'?'выбор месяца':'выбор даты');panel.appendChild(caption);
+  const header=document.createElement('div');header.className='v108-header';
+  const prev=button('',view.view==='months'?'Предыдущий год':'Предыдущий месяц','v108-nav',()=>navigate(-1));
+  prev.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m14 6-6 6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const next=button('',view.view==='months'?'Следующий год':'Следующий месяц','v108-nav',()=>navigate(1));
+  next.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m10 6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  header.appendChild(prev);
+  if(view.view==='months'){
+   const wrap=document.createElement('div');wrap.className='v108-year-wrap';
+   const year=document.createElement('input');year.type='number';year.className='v108-year';year.setAttribute('aria-label','Год');year.inputMode='numeric';const b=bounds(input);year.min=String(b.min?.y||1);year.max=String(b.max?.y||9999);year.value=String(p.y);
+   const chooseYear=(normalize=false)=>{
+    if(current!==view||view.render!==generation||!allowed(input)||view.epoch!==epoch())return;
+    const y=Number(year.value);
+    if(Number.isInteger(y)&&y>=Number(year.min)&&y<=Number(year.max)){
+     view.focus=clamp(input,{...view.focus,y});
+     if(normalize)year.value=String(view.focus.y);
+     // Keep month targets connected while a typed year blurs into a pointer
+     // click. Their actions read this live year rather than a render snapshot.
+     const active=view.focus,grid=panel.querySelector('.v108-months');
+     if(grid)grid.setAttribute('aria-label','Месяцы '+active.y);
+     panel.querySelectorAll('.v108-month').forEach(node=>{
+      const m=Number(node.dataset.month);node.disabled=!monthAllowed(input,active.y,m);
+      node.setAttribute('aria-label',months[m-1]+' '+active.y);
+      node.setAttribute('aria-selected',String(!!chosen&&chosen.y===active.y&&chosen.m===m));
+      node.tabIndex=m===active.m?0:-1;
+     });
+     prev.disabled=active.y<=Number(year.min);next.disabled=active.y>=Number(year.max);
+    }else if(normalize)year.value=String(view.focus.y);
+   };
+   year.addEventListener('input',()=>chooseYear());year.addEventListener('change',()=>chooseYear(true));
+   year.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();chooseYear(true);if(current===view&&view.render===generation)render(true)}});
+   const yearLabel=document.createElement('span');yearLabel.className='v108-year-label';yearLabel.textContent='год';wrap.append(year,yearLabel);header.appendChild(wrap);
+   prev.disabled=p.y<=Number(year.min);next.disabled=p.y>=Number(year.max);
+  }else{
+   const period=button(months[p.m-1]+' '+p.y,'Выбрать месяц и год','v108-period',()=>{view.view='months';render(true)});header.appendChild(period);
+   const before=shiftMonth(p,-1),after=shiftMonth(p,1);prev.disabled=!monthAllowed(input,before.y,before.m);next.disabled=!monthAllowed(input,after.y,after.m);
+  }
+  header.appendChild(next);panel.appendChild(header);
+  if(view.view==='months'){
+   const grid=document.createElement('div');grid.className='v108-months';grid.setAttribute('role','grid');grid.setAttribute('aria-label','Месяцы '+p.y);
+   const style=getComputedStyle(panel),contentWidth=Math.min(352,(window.visualViewport?.width||innerWidth)-8)-parseFloat(style.paddingLeft)-parseFloat(style.paddingRight)-2;
+   const columns=contentWidth<=22*parseFloat(style.fontSize)?2:3;let monthRow=null;
+   months.forEach((name,i)=>{
+    if(i%columns===0){monthRow=document.createElement('div');monthRow.className='v108-month-row';monthRow.setAttribute('role','row');grid.appendChild(monthRow)}
+    const m=i+1,b=button(name,name+' '+p.y,'v108-month',()=>{
+     const active=view.focus;
+     if(input.type==='month')commit(monthISO({y:active.y,m}));else{view.focus=clamp(input,{y:active.y,m,d:Math.min(active.d,dateObject({y:active.y,m:m+1,d:0}).getDate())});view.view='days';render(true)}
+    });
+    b.dataset.month=String(m);b.setAttribute('role','gridcell');b.setAttribute('aria-selected',String(!!chosen&&chosen.y===p.y&&chosen.m===m));b.disabled=!monthAllowed(input,p.y,m);b.tabIndex=m===p.m?0:-1;monthRow.appendChild(b);
+   });panel.appendChild(grid);
+   if(input.type==='date'){const hint=document.createElement('p');hint.className='v108-month-hint';hint.textContent='Год можно ввести с клавиатуры.';panel.appendChild(hint)}
+  }else{
+   const weekdays=document.createElement('div');weekdays.className='v108-weekdays';weekdays.setAttribute('aria-hidden','true');['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].forEach(text=>{const span=document.createElement('span');span.textContent=text;weekdays.appendChild(span)});panel.appendChild(weekdays);
+   const grid=document.createElement('div');grid.setAttribute('role','grid');grid.setAttribute('aria-label',months[p.m-1]+' '+p.y);
+   const first={y:p.y,m:p.m,d:1},offset=(dateObject(first).getDay()+6)%7,start=shiftDay(first,-offset);
+   for(let week=0;week<6;week++){
+    const row=document.createElement('div');row.className='v108-week';row.setAttribute('role','row');
+    for(let day=0;day<7;day++){
+     const value=shiftDay(start,week*7+day),valueISO=iso(value),b=button(String(value.d),new Intl.DateTimeFormat('ru-RU',{day:'numeric',month:'long',year:'numeric'}).format(dateObject(value)),'v108-day'+(value.m!==p.m?' v108-outside':''),()=>commit(valueISO));
+     b.dataset.date=valueISO;b.setAttribute('role','gridcell');b.setAttribute('aria-selected',String(!!chosen&&valueISO===iso(chosen)));if(valueISO===iso(t))b.setAttribute('aria-current','date');b.disabled=!inBounds(input,value);b.tabIndex=valueISO===iso(p)?0:-1;row.appendChild(b);
+    }grid.appendChild(row);
+   }panel.appendChild(grid);
+  }
+  const footer=document.createElement('div');footer.className='v108-footer';
+  const clear=button('Очистить','Очистить '+label(input),'v108-clear',()=>commit(''));clear.disabled=input.required||!input.value;
+  const today=button(input.type==='month'?'Этот месяц':'Сегодня',input.type==='month'?'Выбрать текущий месяц':'Выбрать сегодня','v108-today',()=>commit(input.type==='month'?monthISO(t):iso(t)));today.disabled=!inBounds(input,t);
+  const cancel=button('Закрыть','Закрыть календарь','v108-cancel',()=>close(true));footer.append(clear,today,cancel);panel.appendChild(footer);
+  showAndFocus(focus?(view.view==='months'?'.v108-month:not(:disabled)[tabindex="0"]':'.v108-day:not(:disabled)[tabindex="0"]'):null);
+ }
+ function focusNext(reverse){
+  const input=current?.input;if(!input)return;
+  const nodes=[...document.querySelectorAll('button,a[href],input,select,textarea,[tabindex]')].filter(n=>n.tabIndex>=0&&!n.disabled&&n.getClientRects().length&&!n.closest('[data-v108-ui],[hidden],[inert]'));
+  const index=nodes.indexOf(input),next=nodes[index+(reverse?-1:1)];close(false);if(next)next.focus({preventScroll:true});else input.focus({preventScroll:true});
+ }
+ function handlePanelKey(event){
+  if(!current)return;
+  if(event.key==='Escape'){event.preventDefault();close(true);return}
+  if(event.key==='Tab'){
+   const stops=[...panel.querySelectorAll('button,input,[tabindex]')].filter(n=>n.tabIndex>=0&&!n.disabled&&n.getClientRects().length);
+   const index=stops.indexOf(document.activeElement),next=stops[index+(event.shiftKey?-1:1)];
+   event.preventDefault();if(next){next.focus();return}focusNext(event.shiftKey);return;
+  }
+  if(event.target.matches('input'))return;
+  const view=current,p=view.focus;
+  let next=null;
+  if(view.view==='months'){
+   const index=Number(event.target.dataset.month||p.m),columns=getComputedStyle(panel.querySelector('.v108-months')).gridTemplateColumns.split(/\s+/).length;
+   if(event.key==='ArrowLeft')next={...p,m:index-1};if(event.key==='ArrowRight')next={...p,m:index+1};if(event.key==='ArrowUp')next={...p,m:index-columns};if(event.key==='ArrowDown')next={...p,m:index+columns};
+   if(event.key==='Home')next={...p,m:1};if(event.key==='End')next={...p,m:12};
+   if(event.key==='PageUp'||event.key==='PageDown'){event.preventDefault();navigate(event.key==='PageUp'?-1:1);return}
+   if(next){next.m=Math.max(1,Math.min(12,next.m));if(!monthAllowed(view.input,next.y,next.m))return;event.preventDefault();view.focus=next;render(true)}
+  }else{
+   const active=parse(event.target.dataset.date)||p;
+   if(event.key==='ArrowLeft')next=shiftDay(active,-1);if(event.key==='ArrowRight')next=shiftDay(active,1);if(event.key==='ArrowUp')next=shiftDay(active,-7);if(event.key==='ArrowDown')next=shiftDay(active,7);
+   if(event.key==='Home')next=shiftDay(active,-((dateObject(active).getDay()+6)%7));if(event.key==='End')next=shiftDay(active,6-((dateObject(active).getDay()+6)%7));
+   if(event.key==='PageUp'||event.key==='PageDown')next=shiftMonth(active,(event.key==='PageUp'?-1:1)*(event.shiftKey?12:1));
+   if(next){event.preventDefault();view.focus=clamp(view.input,next);render(true)}
+  }
+ }
+ document.addEventListener('pointerdown',event=>{if(current&&!panel.contains(event.target)&&event.target!==current.input)close(false)},true);
+ document.addEventListener('keydown',event=>{if(event.key==='Escape'&&current&&!panel.contains(event.target)){event.preventDefault();close(true)}},true);
+ document.addEventListener('v107-picker-open',event=>{const type=event.detail?.kind||event.detail?.type;if(current&&type!=='calendar')close(false)});
+ document.addEventListener('input',schedule,true);document.addEventListener('change',schedule,true);document.addEventListener('click',schedule,true);document.addEventListener('focusin',schedule,true);
+ function followAnchor(){
+  if(!current)return;
+  const v=window.visualViewport,r=current.input.getBoundingClientRect(),top=v?.offsetTop||0,left=v?.offsetLeft||0;
+  if(!allowed(current.input)||r.bottom<=top||r.top>=top+(v?.height||innerHeight)||r.right<=left||r.left>=left+(v?.width||innerWidth))close(false);
+  else position();
+ }
+ window.addEventListener('resize',followAnchor);window.addEventListener('scroll',event=>{if(current&&!panel.contains(event.target))followAnchor()},true);
+ window.visualViewport?.addEventListener('resize',()=>{if(current)position()});window.visualViewport?.addEventListener('scroll',()=>{if(current)position()});
+ window.v108RefreshCalendars=refresh;window.v108CloseCalendars=()=>close(false);
+ const start=()=>{
+  ensurePanel();refresh();
+  new MutationObserver(records=>{
+   if(records.some(record=>!owns(record.target)&&(record.type!=='childList'||[...record.addedNodes,...record.removedNodes].some(node=>!owns(node)))))schedule();
+  }).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class','style','hidden','disabled','readonly','type','min','max','required','value']});
+ };
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+})();
+/* V108_CALENDAR_END */
+
+</script>
+</body>
 
 </html>
 
