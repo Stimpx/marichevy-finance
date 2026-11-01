@@ -117,10 +117,13 @@ class AnalyticsDelete(unittest.TestCase):
         result=self.page.locator('#v84DrillEntries .v85-drill-entry').first.evaluate("""row=>{
           const bounds=document.querySelector('#v84DrillModal .v84-modal').getBoundingClientRect();
           return [...row.querySelectorAll('button')].map(b=>{
-            const r=b.getBoundingClientRect();return {label:b.textContent,height:r.height,inside:r.left>=bounds.left&&r.right<=bounds.right};
+            const r=b.getBoundingClientRect();return {label:b.getAttribute('aria-label'),title:b.title,text:b.textContent.trim(),svg:b.querySelectorAll('svg[aria-hidden=\"true\"]').length,height:r.height,inside:r.left>=bounds.left&&r.right<=bounds.right};
           });
         }""")
-        self.assertEqual([x['label'] for x in result],['Изменить','Повторить','Удалить'])
+        self.assertTrue(result[0]['label'].startswith('Изменить операцию:'))
+        self.assertEqual(result[1]['label'],'Повторить')
+        self.assertTrue(result[2]['label'].startswith('Удалить операцию:'))
+        self.assertTrue(all(item['title'] and not item['text'] and item['svg']==1 for item in result))
         self.assertTrue(all(x['height']>=44 and x['inside'] for x in result))
 
 if __name__=='__main__':unittest.main()
