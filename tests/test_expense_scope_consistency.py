@@ -115,7 +115,8 @@ class ExpenseScopeConsistency(unittest.TestCase):
             return {history,expected,budget,total:window.__scopeCarTotal,
                 drillHasGeneric:drill.includes('Неизвестное старое уточнение'),
                 drillHasTaxi:drill.includes('Такси'),
-                recipientsGeneral:recipients['Общее'],allExpenses:sum(expenses(month())),
+                recipientsGeneral:recipients['Общее'],recipientCar:recipients['Автомобиль'],
+                allExpenses:sum(expenses(month())),
                 sourceUntouched:window.__scopeOriginal===JSON.stringify(state.entries),
                 targetsUntouched:cars.every(e=>e.who==='Сергей'&&e.beneficiary==='Общее')};
         }""")
@@ -123,7 +124,8 @@ class ExpenseScopeConsistency(unittest.TestCase):
         self.assertEqual(result['budget'],result['total'])
         self.assertTrue(result['drillHasGeneric'])
         self.assertFalse(result['drillHasTaxi'])
-        self.assertEqual(result['recipientsGeneral'],result['allExpenses'])
+        self.assertEqual(result['recipientCar'],result['total'])
+        self.assertAlmostEqual(result['recipientsGeneral']+result['recipientCar'],result['allExpenses'])
         self.assertTrue(result['sourceUntouched'])
         self.assertTrue(result['targetsUntouched'])
 

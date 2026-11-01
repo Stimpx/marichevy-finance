@@ -1785,6 +1785,8 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 .v99-spending-head{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:clamp(20px,2.3vw,30px);border:1px solid #dfe7f4;border-radius:24px;background:linear-gradient(115deg,#f7faff,#eef3ff);margin-bottom:18px}
 .v99-spending-head>div{min-width:0}.v99-spending-head label{display:block;font-size:12px;color:#627691;margin-bottom:6px}.v99-spending-head .month-select{display:block;background:#fff;color:#263e62;border:1px solid #d7e2f4;max-width:100%;min-height:44px;margin:0 0 18px;padding:9px 36px 9px 12px;border-radius:12px;font-size:14px}
 .v99-spending-head h2{margin:0 0 5px;font-size:15px;font-weight:600;color:#5d718b}.v99-expense-total{font-size:clamp(29px,3.4vw,46px);line-height:1.15;color:#1d3558;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}.v99-spending-head p{margin:9px 0 0;font-size:12px;color:#6b7f98}
+.v111-expense-graphic{display:flex;flex-direction:column;align-items:center;gap:8px;max-width:115px}.v111-expense-graphic>span{font-size:11px;line-height:1.4;text-align:center;color:#7789a2;overflow-wrap:anywhere}.v111-balance-breakdown{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:18px;max-width:650px}.v111-balance-breakdown>div{min-width:0;padding:10px 12px;border:1px solid #dfe7f4;border-radius:12px;background:rgba(255,255,255,.65)}.v111-balance-breakdown span{display:block;font-size:12px;line-height:1.45;color:#627691;overflow-wrap:anywhere}.v111-balance-breakdown strong{display:block;margin-top:5px;font-size:17px;line-height:1.35;color:#29415f;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}.v99-spending-head .v111-balance-note{font-size:11px;color:#7789a2}.v99-spending-head .v111-balance-warning{color:#8f621f;max-width:620px;line-height:1.5}.v111-balance-warning[hidden]{display:none}
+@container v99home (max-width:650px){.v111-balance-breakdown{grid-template-columns:minmax(0,1fr);gap:7px}.v111-balance-breakdown>div{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:9px 10px}.v111-balance-breakdown strong{margin-top:0;font-size:15px;text-align:right;max-width:55%}.v111-balance-breakdown span{font-size:12px;max-width:50%}}
 .v99-spending-head-side{display:flex;align-items:center;gap:22px;flex-shrink:0}.v99-spending-head .donut-ring{width:100px;height:100px;min-width:100px;margin:0;border-radius:50%;position:relative}.v99-spending-head .donut-center{border-radius:50%;inset:24%;max-width:52%;font-size:0!important;background:#f2f6ff}.v99-spending-head .btn{min-height:46px;white-space:normal}
 .v99-spending-scales,.v99-home-slices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;min-width:0}.v99-spending-scales>.card,.v99-home-slices>.card{min-width:0}.v99-spending-scales .card h2{margin:0 0 7px;font-size:20px}.v99-spending-scales .hint{margin:0 0 17px;line-height:1.5}
 .v99-category-scales{display:grid;gap:4px}.v99-category-row,.v99-spending-scales .v84-drill-bar{width:100%;margin:0;padding:10px 0;text-align:left;color:var(--ink);background:transparent;min-width:0;min-height:44px;border-radius:8px}.v99-category-row:hover,.v99-spending-scales .v84-drill-bar:hover{background:#f5f8ff}.v99-category-row:focus-visible,.v99-spending-scales .v84-drill-bar:focus-visible{outline:3px solid #90a9e3;outline-offset:2px}.v99-spending-scales .bar-top{display:flex;justify-content:space-between;gap:12px;align-items:baseline;margin-bottom:8px;font-size:13px}.v99-spending-scales .bar-top span{min-width:0;overflow-wrap:anywhere}.v99-spending-scales .bar-top b{font-size:13px;white-space:nowrap;flex-shrink:0}.v99-spending-scales .bar{height:8px;margin:0}.v99-spending-scales .bar i{display:block;max-width:100%}
@@ -1801,6 +1803,7 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 
 /* V99_ENTRY_DIRECTIONS_STYLE_BEGIN */
 .v99-entry-directions{min-width:0;margin-top:4px}.v99-entry-directions-heading{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}.v99-entry-directions h3{margin:0;font-size:16px;line-height:1.4}.v99-entry-directions>.hint{margin:8px 0 12px;line-height:1.5}.v99-entry-direction-tiles{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}.v99-entry-direction{appearance:none;min-width:0;min-height:48px;border:1px solid #dce4f1;border-radius:14px;background:#f7f9fd;color:#385372;font:inherit;font-size:13px;font-weight:700;padding:10px 8px;line-height:1.35;overflow-wrap:anywhere;cursor:pointer}.v99-entry-direction:hover{background:#eef3ff;border-color:#9cadde}.v99-entry-direction.active{background:#eaf0ff;border-color:#4f66d8;color:#273fae;box-shadow:inset 0 0 0 1px #4f66d8}.v99-entry-direction:focus-visible{outline:3px solid #a9b9ef;outline-offset:2px}.v99-entry-direction:disabled{opacity:.6;cursor:default}.v99-direction-editor{margin-top:16px;padding:16px;border:1px solid #dce4f1;border-radius:16px;background:#f7f9fd;min-width:0}.v99-direction-editor label{display:block;font-size:13px;font-weight:700;margin-bottom:8px}.v99-direction-editor input{width:100%;min-width:0;max-width:100%;box-sizing:border-box}.v99-direction-editor .actions{flex-wrap:wrap}.v99-direction-editor [role=status]{font-size:13px;line-height:1.5;overflow-wrap:anywhere}.v99-direction-editor [role=status]:empty{display:none}
+.v111-destination-control{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px;min-width:0}.v111-destination-control>select,.v111-destination-control>.v107-select{flex:1 1 12em;width:auto;min-width:0}.v111-destination-control>.btn{flex:0 1 auto;max-width:100%;min-height:44px;white-space:normal;overflow-wrap:anywhere}.v111-destination-control+.v99-direction-editor{margin-top:12px}#v99DirectionEditorEntry .v99-direction-editor{margin-top:12px}
 @media(max-width:1100px){.v99-entry-direction-tiles{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-width:600px){.v99-entry-direction-tiles{grid-template-columns:repeat(3,minmax(0,1fr))}.v99-entry-direction{font-size:12px;padding:10px 6px}.v99-direction-editor{padding:12px}.v99-direction-editor .actions>.btn{min-width:0;white-space:normal}}
 /* V99_ENTRY_DIRECTIONS_STYLE_END */
@@ -2106,17 +2109,17 @@ input[data-v108-calendar]:disabled,input[data-v108-calendar][readonly]{cursor:de
 </header>
 <section class="section active" id="home">
 <section id="v99HomeSpending" class="v99-home-spending" aria-labelledby="v99SpendingTitle">
- <div class="v99-spending-head"><div><label for="homeMonth">Месяц обзора</label><select aria-label="Выбор месяца" class="month-select" id="homeMonth"><option value="">Текущий месяц</option></select><h2 id="v99SpendingTitle">Расходы семьи</h2><strong id="v99HomeExpenseTotal" class="v99-expense-total">0 ₽</strong><p id="v99HomeExpenseCount">Только внесённые расходы за выбранный месяц</p></div><div class="v99-spending-head-side"><div class="donut-ring" id="donut"><div class="donut-center" id="donutTotal">0 ₽</div></div><button type="button" class="btn primary" onclick="openEntry('expense')">Добавить расход</button></div></div>
+ <div class="v99-spending-head"><div><label for="homeMonth">Месяц обзора</label><select aria-label="Выбор месяца" class="month-select" id="homeMonth"><option value="">Текущий месяц</option></select><h2 id="v99SpendingTitle">Остаток с переносом</h2><strong id="v111HomeClosing" class="v99-expense-total">0 ₽</strong><div class="v111-balance-breakdown"><div><span>С прошлого месяца</span><strong id="v111HomeOpening">0 ₽</strong></div><div><span>Доходы месяца</span><strong id="v111HomeIncome">0 ₽</strong></div><div><span>Расходы месяца</span><strong id="v99HomeExpenseTotal">0 ₽</strong></div></div><p id="v99HomeExpenseCount">Только внесённые расходы за выбранный месяц</p><p class="v111-balance-note">Расчёт по внесённой истории.</p><p id="v111BalanceWarning" class="v111-balance-warning" role="status" hidden></p></div><div class="v99-spending-head-side"><div class="v111-expense-graphic"><div class="donut-ring" id="donut"><div class="donut-center" id="donutTotal">0 ₽</div></div><span>Расходы месяца</span></div><button type="button" class="btn primary" onclick="openEntry('expense')">Добавить расход</button></div></div>
  <div class="v99-spending-scales home-spending-overview">
   <section class="card" aria-labelledby="v99CategoryScaleTitle"><h2 id="v99CategoryScaleTitle">Куда уходят деньги</h2><p class="hint" id="chartMonthHint">Расходы по категориям</p><div id="categoryLegend" class="v99-category-scales"></div></section>
-  <section class="card" aria-labelledby="v99TargetScaleTitle"><h2 id="v99TargetScaleTitle">Для кого расходы</h2><p class="hint">Те же операции по получателям. Каждый расход учтён один раз.</p><div id="familyBars"></div></section>
+  <section class="card" aria-labelledby="v99TargetScaleTitle"><h2 id="v99TargetScaleTitle">На кого и на что</h2><p class="hint">Люди, общие расходы, автомобиль и кредиты. Каждый расход учтён один раз.</p><div id="familyBars"></div></section>
  </div>
 </section>
 <section class="card v99-home-directions" id="v99HomeDirections" aria-labelledby="v99DirectionTitle"><div class="v99-section-heading"><div><h2 id="v99DirectionTitle">Люди и направления</h2><p class="hint">Нажмите плитку, чтобы посмотреть покупки и исправить запись.</p></div><button type="button" class="btn small" onclick="v99OpenDirectionEditor('home')">Добавить своё</button></div><div id="v99DirectionEditorHome" hidden></div><div id="v99HomeDirectionTiles" class="v99-direction-tiles"></div><p class="hint v99-overlap-note">Личная подписка видна у человека и в подписках; подарок — у получателя и в подарках. Это разные срезы одних расходов: суммы плиток не складываются.</p></section>
 <section class="v99-home-slices" id="v99HomeSlices" aria-label="Подписки и подарки за месяц"><article class="card"><div class="v99-section-heading"><div><h2>Подписки и онлайн-сервисы</h2><p class="hint">Сервисы всей семьи за выбранный месяц</p></div><strong id="v99SubscriptionTotal">0 ₽</strong></div><div id="v99SubscriptionList"></div></article><article class="card"><div class="v99-section-heading"><div><h2>Подарки</h2><p class="hint">Отдельный итог с указанием получателей</p></div><strong id="v99GiftTotal">0 ₽</strong></div><div id="v99GiftList"></div></article></section>
 <div class="home-opening"><div><div class="home-opening-kicker">СЕМЬЯ МАРИЧЕВЫХ · ФИНАНСОВЫЙ ЦЕНТР</div><h2>Деньги под контролем.<br/> <em>Время — для семьи.</em></h2><p>Бюджет, общие планы и важные моменты — в одном месте.</p></div><div class="home-opening-mark" aria-hidden="true">М</div></div>
 <div class="hero">
-<div class="hero-row"><div><div class="hero-label">Результат месяца </div><div class="hero-value" id="heroBalance">0 ₽</div><div class="hero-sub" id="heroSub">Доходы и расходы ещё не внесены</div><div class="v75-metric-tip">Разница доходов и расходов за месяц, не баланс карт и наличных.</div></div><div class="pill" style="background:rgba(255,255,255,.12);color:#fff">МАРИЧЕВЫ · СЕМЕЙНЫЙ БЮДЖЕТ</div></div>
+<div class="hero-row"><div><div class="hero-label">Остаток с переносом </div><div class="hero-value" id="heroBalance">0 ₽</div><div class="hero-sub" id="heroSub">Доходы и расходы ещё не внесены</div><div class="v75-metric-tip">Перенос прошлого месяца плюс доходы минус расходы. По внесённой истории.</div></div><div class="pill" style="background:rgba(255,255,255,.12);color:#fff">МАРИЧЕВЫ · СЕМЕЙНЫЙ БЮДЖЕТ</div></div>
 <div class="quick">
 <button onclick="openEntry('expense')"> <b>Добавить расход</b><small>Покупка, кафе, аптека</small></button>
 <button onclick="openEntry('income')"> <b>Добавить доход</b><small>Зарплата, пособие</small></button>
@@ -2215,15 +2218,15 @@ input[data-v108-calendar]:disabled,input[data-v108-calendar][readonly]{cursor:de
 </div>
 <section class="v78-obligations" id="v78HomeObligations" aria-label="Обязательные платежи за выбранный месяц"></section>
 <div class="spendable-card" id="spendableCard">
-<div class="spendable-main"><div class="spendable-kicker">Ориентир на день</div><div class="spendable-value" id="spendableToday">0 ₽</div><div class="spendable-sub" id="spendableSub">Расчёт по разнице доходов и расходов, без учёта денег на счетах</div></div>
-<div class="spendable-meta"><div><small>Результат месяца</small><b id="spendableBalance">0 ₽</b></div><div><small>Дней осталось</small><b id="spendableDays">—</b></div><div><small>Ориентир в день</small><b id="spendableDaily">0 ₽</b></div></div>
+<div class="spendable-main"><div class="spendable-kicker">Ориентир на день</div><div class="spendable-value" id="spendableToday">0 ₽</div><div class="spendable-sub" id="spendableSub">Расчёт по остатку с переносом</div></div>
+<div class="spendable-meta"><div><small>Остаток с переносом</small><b id="spendableBalance">0 ₽</b></div><div><small>Дней осталось</small><b id="spendableDays">—</b></div><div><small>Ориентир в день</small><b id="spendableDaily">0 ₽</b></div></div>
 </div>
 <div class="card month-compare-card"><div class="section-head"><div><h2>По сравнению с прошлым месяцем</h2><div class="hint" id="monthCompareHint">Сравниваем расходы и остаток</div></div></div><div class="compare-grid" id="monthCompare"></div><div class="v86-compare-detail" id="v86CompareDetail"></div></div>
 <div class="card"><h2>Куда ушёл доход</h2><div class="hint" id="flowHint">Распределение денег за выбранный месяц</div><div class="flow-grid" id="moneyFlow"></div></div>
 <div class="kpis">
 <div class="kpi"><small>Доходы месяца</small><strong class="money-green" id="kIncome">0 ₽</strong></div>
 <div class="kpi"><small>Расходы месяца</small><strong class="money-red" id="kExpense">0 ₽</strong></div>
-<div class="kpi"><small>Результат</small><strong id="kBalance">0 ₽</strong></div>
+<div class="kpi"><small>Остаток с переносом</small><strong id="kBalance">0 ₽</strong></div>
 <div class="kpi"><small>Сегодня</small><strong id="kToday">0 ₽</strong></div>
 <div class="kpi"><small>Средняя трата</small><strong id="kAvg">0 ₽</strong></div>
 <div class="kpi"><small>Операций</small><strong id="kOps">0</strong></div>
@@ -2237,9 +2240,8 @@ input[data-v108-calendar]:disabled,input[data-v108-calendar][readonly]{cursor:de
 <div class="field full v95-operation"><label for="eType">Операция</label><select id="eType"><option value="expense">Расход</option><option value="income">Доход</option><option value="transfer">Перевод между своими счетами</option><option value="cash">Снятие наличных</option></select></div>
 <div class="field v95-amount"><label for="eAmount">Сколько, ₽</label><input id="eAmount" type="text" maxlength="24" inputmode="decimal" placeholder="0" /></div>
 <div class="field expense-field v91-category"><label for="v90Search">Что купили?</label><input id="v90Search" type="search" maxlength="200" placeholder="Молоко, обед, корм…" autocomplete="off" aria-describedby="v92SearchHint"><div id="v93CreditHelp" hidden class="hint"><b>Платёж по кредиту или рассрочке</b><p>Если обязательство уже есть в разделе кредитов, отметьте оплату в его графике — так платёж свяжется с ним.</p><button type="button" class="btn" onclick="go('loans')">Открыть кредиты и рассрочки</button><label for="v93CreditAccounting">Для отдельного платежа подтвердите учёт</label><select id="v93CreditAccounting"><option value="">Выберите вариант</option><option value="payment">Учитываю расходами только платежи; полная покупка не записана</option><option value="full">Полная стоимость покупки уже записана расходом</option></select></div><p id="v92Selected" role="status" hidden></p><select id="eCategory" aria-label="Выбранная категория" hidden></select><select id="eGroup" hidden></select></div>
-<div class="field expense-field" id="v81BeneficiaryField"><label for="eBeneficiary">Для кого?</label><select id="eBeneficiary" onchange="v99RenderEntryDirections()"></select></div>
+<div class="field expense-field" id="v81BeneficiaryField"><label for="eBeneficiary">Для кого или на что?</label><div class="v111-destination-control"><select id="eBeneficiary" onchange="v111BeneficiaryChanged('e')"></select><button type="button" id="v111AddDirection" class="btn small" onclick="v99OpenDirectionEditor('entry')">Добавить своё</button></div><div id="v99DirectionEditorEntry" hidden></div></div>
 <div class="field expense-field"><label for="eStore">Где? · необязательно</label><input id="eStore" placeholder="Магазин или место"></div>
-<section class="field expense-field full v99-entry-directions" aria-labelledby="v99EntryDirectionsTitle"><div class="v99-entry-directions-heading"><h3 id="v99EntryDirectionsTitle">Для кого и на что?</h3><button type="button" class="btn small" onclick="v99OpenDirectionEditor('entry')">Добавить своё</button></div><p class="hint">Человек и направление можно сочетать: личная подписка видна и у человека, и в подписках. Расход сохранится один раз.</p><div id="v99EntryDirectionTiles" class="v99-entry-direction-tiles"></div><div id="v99DirectionEditorEntry" hidden></div></section>
 <div class="field expense-field full v95-suggestions"><small id="v92SearchHint" role="status" aria-live="polite"></small><div id="v90Quick" class="v90-chips"></div><div id="v90Categories"><button type="button" class="v91-link" id="v91All" onclick="v91Toggle()" aria-expanded="false" aria-controls="v90Quick">Все категории</button><div id="v90Results" hidden></div></div></div>
 <div class="field full income-field" id="v86WhoField"><label id="eWhoLabel" for="eWho">Кто получил доход?</label><select id="eWho"></select></div>
 <div class="field full income-field"><label for="eIncomeSource">Источник дохода</label><input id="eIncomeSource" placeholder="Зарплата, премия…"></div>
@@ -2277,7 +2279,7 @@ input[data-v108-calendar]:disabled,input[data-v108-calendar][readonly]{cursor:de
 </div>
 </div>
 <div class="grid2">
-<div class="card"><h2>Для кого сделаны покупки</h2><div class="hint" id="peopleChartHint">Общие покупки, семья и питомцы · старые записи учтены</div><div id="aPeopleChart"></div></div>
+<div class="card"><h2>На кого и на что потратили</h2><div class="hint" id="peopleChartHint">Семья, питомцы, автомобиль и кредиты · старые записи учтены</div><div id="aPeopleChart"></div></div>
 <div class="card"><h2>Распределение расходов</h2><div class="hint">Люди и питомцы — отдельно; кредитные платежи и автомобиль — самостоятельные статьи</div><div class="people-donut-wrap"><div class="donut-ring people-donut" id="peopleDonut"><div class="donut-center" id="peopleDonutTotal">0 ₽</div></div></div><div class="legend" id="peopleLegend"></div></div>
 </div>
 <div class="card"><h2>Расходы по людям и статьям</h2><div class="hint">Каждая операция входит в одну строку. «Общее» — только общие покупки семьи.</div><div class="people-cards" id="peopleCards"></div></div>
@@ -2647,19 +2649,19 @@ input[data-v108-calendar]:disabled,input[data-v108-calendar][readonly]{cursor:de
   <dt>Что купили? → категория</dt><dd>Напишите предмет покупки или найдите категорию. Затем сами нажмите подходящий вариант. Подсказка не выбирает категорию и не меняет историю за вас. «Подписки и онлайн-сервисы» сохраняются под прежним ключом «Подписки», «Детские товары» — под ключом «Дети».</dd>
   <dt>Уточнение</dt><dd>Необязательная детализация внутри категории: например, автомобиль → бензин или питомцы → корм. Старые неизвестные уточнения сохраняются. Категория и её уточнение не являются магазином или получателем.</dd>
   <dt>Где купили?</dt><dd>Название продавца или площадки. Оно необязательно. Подсказки знакомых названий помогают ввести магазин; значок продавца не является категорией покупки и не доказывает назначение платежа. Подгузники из маркетплейса остаются детскими товарами, а не автоматически бытовой покупкой.</dd>
-  <dt>Для кого?</dt><dd>Кому или на чьи нужды предназначена покупка. Это не поле «кто заплатил». Для общего расхода выберите «Общее», для известного личного назначения — нужного человека или питомца из своего списка. Не угадывайте конкретного ребёнка по названию товара.</dd>
+  <dt>Для кого или на что?</dt><dd>Выберите человека, питомца, общие расходы, автомобиль или кредиты и рассрочки в одном списке. Можно добавить своё направление. Автомобильный расход и платёж по кредиту показываются отдельными строками отчёта; каждый расход учитывается один раз. Исходный получатель старой записи сохраняется.</dd>
   <dt>Комментарий</dt><dd>Ваше пояснение: назначение, состав покупки или важная деталь. Фрагмент «од» при поиске одежды не записывается комментарием. Содержательный запрос «молоко без лактозы» может сохраниться как описание. Ручная заметка сохраняется при смене категории и выборе быстрых вариантов.</dd>
   <dt>Дата и оплата</dt><dd>Дата определяет месяц фактического расхода. «Карта» или «Наличные» описывает способ оплаты. Проверьте дату при внесении старой покупки; плановая дата рассрочки не заменяет дату реального платежа.</dd>
  </dl>
  <p>Если в одном чеке товары разных назначений, можно внести отдельные части с проверенными суммами. Их сумма должна равняться чеку; не добавляйте затем ещё и весь чек целиком. Существующие общие записи не делятся автоматически.</p>
 </div></details>
 <details class="v96-help-topic" id="help-calculator"><summary><h3>Калькулятор суммы, копирование и вставка</h3></summary><div class="v96-help-body">
- <p>Кнопка «Калькулятор» в шапке рядом с профилем доступна в любом разделе. Посчитайте и скопируйте результат; для подстановки в сумму операции откройте калькулятор из самой формы.</p>
+ <p>Кнопка «Калькулятор» в шапке рядом с профилем доступна в любом разделе. Для новой операции посчитайте, скопируйте результат и вставьте его в сумму. В окне редактирования можно открыть калькулятор рядом с суммой и подставить результат.</p>
  <ol>
-  <li>Рядом с суммой новой или редактируемой операции откройте калькулятор.</li>
+  <li>Откройте калькулятор в шапке. При редактировании операции кнопка также доступна рядом с суммой.</li>
   <li>Введите вымышленный расчёт, например <code>(250 + 125,50) / 2</code>. Поддерживаются сложение, вычитание, умножение, деление, проценты и скобки. Например, <code>200 − 10% = 180</code>, <code>200 × 10% = 20</code>. После плюса или минуса процент берётся от уже вычисленной суммы слева: <code>45 + 100 + 10% = 159,50</code>. Формулы из таблиц и произвольные команды не поддерживаются.</li>
   <li>Проверьте результат и сообщение об округлении до копеек. Деление на ноль и неверный ввод не дают подставить результат; сумма операции должна быть больше нуля.</li>
-  <li>Нажмите «Подставить сумму». Изменится только поле суммы. Проверьте остальные поля и отдельно сохраните операцию.</li>
+  <li>Скопируйте результат и нажмите «Вставить» под суммой новой записи. В калькуляторе редактируемой операции можно нажать «Подставить сумму». Проверьте остальные поля и отдельно сохраните операцию.</li>
  </ol>
  <p>«Копировать сумму» или «Копировать результат» помещает число в буфер обмена. «Вставить» переносит число в поле; выражение вставляйте в поле расчёта калькулятора. Вставка и копирование не создают расходов.</p>
  <p>Если браузер не разрешил доступ к буферу, используйте обычное меню поля: выделить → копировать или вставить. На ПК работают <kbd>Ctrl+C</kbd>/<kbd>Ctrl+V</kbd>, на Mac — <kbd>⌘C</kbd>/<kbd>⌘V</kbd>; на телефоне нажмите и удерживайте поле. При изменении поля во время ожидания вставки приложение просит повторить действие, сохраняя ваш текущий ввод.</p>
@@ -2731,9 +2733,9 @@ input[data-v108-calendar]:disabled,input[data-v108-calendar][readonly]{cursor:de
  <p>При удалении подтвердите именно нужную операцию. Удаление меняет историю и суммы; это не способ скрыть неудобную категорию. Перед серией исправлений сохраните копию устройства. Ошибку одной строки исправляйте в ней, не добавляя рядом «правильный» дубль.</p>
 </div></details>
 <details class="v96-help-topic" id="help-analytics"><summary><h3>Аналитика: от суммы до конкретной покупки</h3></summary><div class="v96-help-body">
- <p>Сначала выберите месяц. Диаграмма по категориям показывает назначение покупок; диаграмма по людям и питомцам — кому они предназначены. Одна и та же операция участвует в обоих разрезах, поэтому складывать эти диаграммы между собой нельзя.</p>
+ <p>Сначала выберите месяц. Диаграмма по категориям показывает назначение покупок. В блоке «На кого и на что» кредиты и рассрочки, затем автомобиль выделены отдельно; остальные расходы распределены по получателям. Внутри каждого отчёта расход учитывается один раз. Складывать два отчёта между собой нельзя.</p>
  <ol><li>Нажмите нужную строку, столбец или сектор диаграммы.</li><li>В расшифровке проверьте период и точные операции. Дополнительный фильтр внутри окна сужает выбранную группу.</li><li>Нажмите «Изменить» у конкретной строки. После сохранения расшифровка и суммы пересчитываются; смена категории может убрать строку из текущего разреза.</li></ol>
- <p>Сравнивайте одинаковые месяцы, типы и границы статьи. «Автомобиль» как группа расходов и человек в «Для кого?» описывают разные вещи. При расхождении проверьте фильтры, затем состав операций, а не исправляйте итог вручную.</p>
+ <p>Сравнивайте одинаковые месяцы, типы и границы статьи. Платёж по автокредиту входит в кредиты и рассрочки; обычные расходы на машину — в автомобиль. Исходного получателя можно увидеть в истории. При расхождении проверьте фильтры и состав операций.</p>
  <p>Сравнение месяцев, прогноз и финансовые ориентиры основаны только на внесённых данных. Неполный месяц или пропущенный доход меняет смысл среднего; подсказка приложения не подтверждает наличие денег на банковском счёте.</p>
 </div></details>
 <details class="v96-help-topic" id="help-category-review"><summary><h3>Проверить категории без потери записи</h3></summary><div class="v96-help-body">
@@ -2765,7 +2767,7 @@ input[data-v108-calendar]:disabled,input[data-v108-calendar][readonly]{cursor:de
 <details class="v96-help-topic" id="help-goals"><summary><h3>Цели, ручные счета и прогноз денег</h3></summary><div class="v96-help-body">
  <h4>Цель</h4><p>Введите название, нужную сумму, уже накопленное и желаемое пополнение в месяц. Вымышленный пример — накопить на поездку. Показанный срок является ориентиром при таком темпе, а не гарантией.</p>
  <p>Кнопка пополнения увеличивает накопленное у цели и сохраняет запись в её истории. Она не является банковским переводом и не создаёт обычную покупку в расходах. Сверяйте цель с реальным местом хранения денег; одни деньги нельзя считать свободными несколько раз.</p>
- <h4>Счета и наличные</h4><p>Введите название и текущий остаток вручную, затем обновляйте его по факту. Баланс не загружается из банка и не пересчитывается автоматически из всех ваших операций. Разница доходов и расходов месяца — отдельный показатель, а не банковский остаток.</p>
+ <h4>Счета и наличные</h4><p>Введите название и текущий остаток вручную, затем обновляйте его по факту. Эти суммы не загружаются из банка и не пересчитываются автоматически. На главной остаток рассчитывается по внесённой истории: перенос с прошлых месяцев плюс доходы минус расходы выбранного месяца. Ручные суммы счетов к этому расчёту не прибавляются.</p>
  <h4>Прогноз и советник</h4><p>Показывают ориентир по внесённым остаткам, обязательствам и истории. Просроченные или частично подтверждённые планы могут уменьшать доступную оценку. Если данных о доходах или расходах мало, не считайте среднее и рекомендуемый доход полной картиной семьи.</p>
 </div></details>
 <details class="v96-help-topic" id="help-family"><summary><h3>Домашние дела, даты, семейная доска и уведомления</h3></summary><div class="v96-help-body">
@@ -2918,9 +2920,18 @@ function v86ExpenseTarget(e){
  if(['Общее','Семья','Семья / общее','Общие расходы'].includes(target))return 'Общее';
  return target||'Не указано';
 }
-function v94ExpenseBucket(e){return v86ExpenseTarget(e)}
+// Exclusive report destinations; saved recipients remain available through v86ExpenseTarget.
+function v111IsLoanExpense(e){
+ return v86ExpenseTarget(e)==='Кредиты и рассрочки'||String(v99PurposeCategory(e)).trim().toLowerCase()==='кредит'||Boolean(e?.installmentId)||(typeof e?.id==='string'&&e.id!==''&&v77EntryIsLinked(e.id))||e?.mortgagePayment===true||e?.obligationType==='mortgage';
+}
+function v94ExpenseBucket(e){
+ const target=v86ExpenseTarget(e);
+ if(v111IsLoanExpense(e))return 'Кредиты и рассрочки';
+ if(target==='Автомобиль'||carCategory(e))return 'Автомобиль';
+ return target;
+}
 function v86TargetTotals(entries){
- const totals={'Сергей':0,'Виктория':0,'Алиса':0,'Майя':0,'Макс':0,'Дени':0,'Общее':0};
+ const totals={'Сергей':0,'Виктория':0,'Алиса':0,'Майя':0,'Макс':0,'Дени':0,'Общее':0,'Кредиты и рассрочки':0,'Автомобиль':0};
  Object.setPrototypeOf(totals,null);
  const buckets=new Map();
  for(const e of entries){const key=v94ExpenseBucket(e);if(!buckets.has(key))buckets.set(key,[]);buckets.get(key).push(e)}
@@ -2933,7 +2944,7 @@ function v99CustomDirections(){
  return Array.isArray(raw)?raw.filter(value=>typeof value==='string'&&value.trim()===value&&value.length>0&&value.length<=40&&!/[\u0000-\u001f\u007f]/.test(value)):[];
 }
 function v99BeneficiaryChoices(){
- return [...new Set(['Не указано','Общее',...PEOPLE,...v99CustomDirections(),...(state.entries||[]).filter(e=>e?.type==='expense').map(v86ExpenseTarget),'Оба ребёнка','Все питомцы'])];
+ return [...new Set(['Не указано','Общее',...PEOPLE,'Автомобиль','Кредиты и рассрочки',...v99CustomDirections(),...(state.entries||[]).filter(e=>e?.type==='expense').map(v86ExpenseTarget),'Оба ребёнка','Все питомцы'])];
 }
 function v99DirectionDefinitions(){
  const people=[...new Set(PEOPLE.filter(name=>!['Общее','Не указано'].includes(name)))];
@@ -2973,10 +2984,17 @@ function v99CanWriteDirections(){
  return !localRecoveryBlocked&&!document.getElementById('appRoot')?.classList.contains('auth-locked')&&(!bridge||(bridge.active===true&&['owner','editor'].includes(bridge.role)));
 }
 function v99RenderEntryDirections(){
- const root=document.getElementById('v99EntryDirectionTiles');if(!root)return;
- const target=document.getElementById('eBeneficiary')?.value||'Не указано',category=document.getElementById('eCategory')?.value||'',disabled=!v99CanWriteDirections();
- root.innerHTML=v99DirectionDefinitions().map(item=>{const active=item.category?v99PurposeCategory(category)===v99PurposeCategory(item.category):target===item.target;return `<button type="button" class="v99-entry-direction${active?' active':''}" data-v99-entry-direction="${esc(item.id)}" aria-pressed="${active}"${disabled?' disabled':''}>${esc(item.label)}</button>`}).join('');
- root.querySelectorAll('[data-v99-entry-direction]').forEach(button=>button.onclick=()=>v99ChooseEntryDirection(button.dataset.v99EntryDirection));
+ const add=document.getElementById('v111AddDirection');if(add)add.disabled=!v99CanWriteDirections();
+}
+function v111BeneficiaryChanged(prefix='e'){
+ if(!['e','x'].includes(prefix)||!v99CanWriteDirections()||document.getElementById(prefix+'Type')?.value!=='expense')return false;
+ const selected=document.getElementById(prefix+'Beneficiary'),category=document.getElementById(prefix==='e'?'eCategory':'xCat');if(!selected||!category)return false;
+ const target=selected.value,detail=document.getElementById(prefix+'Subcategory')?.value||'';
+ const next=target==='Кредиты и рассрочки'?'Кредит':target==='Автомобиль'?'Авто и транспорт':'';
+ if(next&&!(target==='Автомобиль'?carCategory({category:category.value,subcategory:detail}):v99PurposeCategory(category.value)==='Кредит')){
+  category.value=next;v81FillDetails(prefix,next,'',target);if(prefix==='e')v90Paint();
+ }
+ v99RenderEntryDirections();v110RefreshPickers();return true;
 }
 function v99ChooseEntryDirection(id){
  if(!v99CanWriteDirections()||document.getElementById('eType')?.value!=='expense')return false;
@@ -2996,7 +3014,7 @@ function v99OpenDirectionEditor(source='entry'){
  const root=v99DirectionEditorNode(source);if(!root)return false;
  const previous=v99DirectionEditors.get(source);if(previous?.busy&&previous.epoch===authEpoch)return false;
  if(!previous||previous.epoch!==authEpoch)v99DirectionEditors.set(source,{pending:'',busy:false,epoch:authEpoch});
- root.hidden=false;root.innerHTML=`<form class="v99-direction-editor"><label for="v99DirectionName-${source}">Название своего направления</label><input id="v99DirectionName-${source}" maxlength="40" autocomplete="off" placeholder="Например: дача или ремонт"/><p class="hint">Появится отдельная плитка. История и текущий черновик не изменятся.</p><div class="actions"><button type="submit" class="btn primary">Создать направление</button><button type="button" class="btn" data-v99-direction-cancel>Отмена</button></div><p data-v99-direction-status role="status" aria-live="polite"></p></form>`;
+ root.hidden=false;root.innerHTML=`<form class="v99-direction-editor"><label for="v99DirectionName-${source}">Название своего направления</label><input id="v99DirectionName-${source}" maxlength="40" autocomplete="off" placeholder="Например: дача или ремонт"/><p class="hint">${source==='entry'?'Появится в списке «Для кого или на что».':'Появится отдельная плитка.'} История и текущий черновик не изменятся.</p><div class="actions"><button type="submit" class="btn primary">Создать направление</button><button type="button" class="btn" data-v99-direction-cancel>Отмена</button></div><p data-v99-direction-status role="status" aria-live="polite"></p></form>`;
  root.querySelector('form').onsubmit=event=>{event.preventDefault();v99SubmitDirectionEditor(source)};
  root.querySelector('[data-v99-direction-cancel]').onclick=()=>{if(!v99DirectionEditors.get(source)?.busy){root.hidden=true;v99DirectionEditors.delete(source)}};
  root.querySelector('input').focus();return true;
@@ -3675,6 +3693,15 @@ function sum(a){
  }
  // Preserve unusual legacy subcent values; never rewrite or silently round history.
  return exact?cents/100:total;
+}
+// Read-only carry from recorded operations. Manual account snapshots are independent.
+function v111MonthBalance(monthKey=homeMonth()){
+ if(typeof monthKey!=='string'||!/^\d{4}-\d{2}$/.test(monthKey)||!isValidCalendarDate(monthKey+'-01'))return null;
+ const financial=entry=>entry?.type==='income'||entry?.type==='expense';
+ const prior=(state.entries||[]).filter(entry=>financial(entry)&&isValidCalendarDate(entry.date)&&entry.date.slice(0,7)<monthKey);
+ // Keep the established monthly cut, including unusual legacy rows, without rewriting it.
+ const current=monthEntries(monthKey),net=rows=>sum(rows.filter(financial).map(entry=>({amount:entry.type==='income'?Number(entry.amount)||0:-(Number(entry.amount)||0)})));
+ return {month:monthKey,opening:net(prior),income:sum(current.filter(entry=>entry.type==='income')),expense:sum(current.filter(isExpense)),result:net(current),closing:net([...prior,...current]),invalidDateCount:(state.entries||[]).filter(entry=>financial(entry)&&!isValidCalendarDate(entry.date)).length};
 }
 function aggregate(arr,key){
  const groups=new Map(),out=Object.create(null);
@@ -4412,7 +4439,8 @@ function v96CalculateAmount(expression){
 }
 function v96AmountToolsHtml(targetId){
  if(!['eAmount','xAmount'].includes(targetId))return '';
- return `<div class="v96-amount-tools" aria-label="Действия с суммой"><button type="button" onclick="v96OpenCalculator('${targetId}')">Калькулятор</button><button type="button" aria-label="Копировать сумму" onclick="v96CopyAmount('${targetId}')">Копировать</button><button type="button" aria-label="Вставить сумму" onclick="v96PasteAmount('${targetId}')">Вставить</button></div><small id="${targetId}ClipboardStatus" class="v96-clipboard-status" role="status" aria-live="polite"></small>`;
+ const calculator=targetId==='xAmount'?`<button type="button" onclick="v96OpenCalculator('${targetId}')">Калькулятор</button>`:'';
+ return `<div class="v96-amount-tools" aria-label="Действия с суммой">${calculator}<button type="button" aria-label="Копировать сумму" onclick="v96CopyAmount('${targetId}')">Копировать</button><button type="button" aria-label="Вставить сумму" onclick="v96PasteAmount('${targetId}')">Вставить</button></div><small id="${targetId}ClipboardStatus" class="v96-clipboard-status" role="status" aria-live="polite"></small>`;
 }
 function v96PlainAmountText(value){
  const parts=String(value).trim().replace(/[ \u00a0\u202f]/g,'').replace(',','.').split('.');
@@ -4862,7 +4890,7 @@ function openEdit(id,returnDrill=null){
  <div class="field v100-edit-amount"><label>Сумма</label><input id="xAmount" type="text" inputmode="decimal" maxlength="24" value="${esc(e.amount)}">${v96AmountToolsHtml('xAmount')}</div>
  <div class="field"><label>Категория</label><select id="xCat">${categoryOptions(e.category)}</select></div>
  <div class="field v81-edit-detail"><label for="xSubcategory">Уточнение расхода</label><select id="xSubcategory"></select></div>
- <div class="field v81-edit-detail"><label for="xBeneficiary">Для кого или чего?</label><select id="xBeneficiary"></select></div>
+ <div class="field v81-edit-detail"><label for="xBeneficiary">Для кого или на что?</label><select id="xBeneficiary" onchange="v111BeneficiaryChanged('x')"></select></div>
  <div class="field" id="v86EditWhoField"><label>Кто получил доход?</label><select id="xWho">${editPeople.map(x=>`<option value="${esc(x)}"${x===recordedWho?' selected':''}>${esc(x||'Не указано')}</option>`).join('')}</select></div>
  <div class="field"><label for="xDate">Дата</label><input id="xDate" type="date" value="${esc(e.date)}" aria-describedby="xDateError"><p id="xDateError" class="error" role="alert" hidden></p></div>
  <div class="field v100-edit-store"><label>Место / источник</label><input id="xStore" value="${esc(e.store)}"></div>
@@ -4987,7 +5015,7 @@ function renderHealthDashboard(){
  if(metrics)metrics.innerHTML=[['Доходы',money(income)],['Расходы',money(expense)],['Результат',money(balance)],['По графикам',money(debtMonthly)]].map(([a,b])=>`<div><small>${a}</small><b>${b}</b></div>`).join('');
  const insight=document.getElementById('smartInsights');
  if(insight){const cats=Object.entries(aggregate(groupedExpenseEntries(ex),'category')).sort((a,b)=>b[1]-a[1]),top=cats[0], rows=[];if(top)rows.push(`<div class="insight"><b>Главная статья</b>${esc(top[0])} · ${money(top[1])} (${expense?Math.round(top[1]/expense*100):0}%)</div>`);if(balance>=0)rows.push(`<div class="insight"><b>Результат месяца</b>${money(balance)} после расходов</div>`);else rows.push(`<div class="insight"><b>Баланс месяца</b>${money(balance)} — расходы выше доходов</div>`);if(debtMonthly)rows.push(`<div class="insight"><b>По графикам месяца</b>${money2(debtMonthly)} · осталось подтвердить ${money2(obligations.remaining)}</div>`);insight.innerHTML=rows.join('')||'<div class="insight">Добавьте операции для анализа.</div>'}
- const flow=document.getElementById('moneyFlow');if(flow){const items=[['Доход семьи',income,'money-green'],['Расходы',expense,'money-red'],['Осталось',balance,balance>=0?'money-green':'money-red'],['Можно отложить',Math.max(0,balance),'money-green']];flow.innerHTML=items.map(x=>`<div class="flow-item"><small>${x[0]}</small><strong class="${x[2]}">${money(x[1])}</strong></div>`).join('')}
+ const flow=document.getElementById('moneyFlow');if(flow){const cash=v111MonthBalance(m),closing=cash?.closing??balance;const items=[['С прошлого месяца',cash?.opening||0,''],['Доход семьи',income,'money-green'],['Расходы',expense,'money-red'],['Осталось с переносом',closing,closing>=0?'money-green':'money-red'],['Можно отложить',Math.max(0,closing),'money-green']];flow.innerHTML=items.map(x=>`<div class="flow-item"><small>${x[0]}</small><strong class="${x[2]}">${money(x[1])}</strong></div>`).join('')}
 }
 function renderFamilySpark(){const el=document.getElementById('familySparkText');if(!el)return;const m=monthEntries(month());const exp=sum(m.filter(isExpense));const inc=sum(m.filter(e=>e.type==='income'));const bal=inc-exp;const goals=Array.isArray(state.goals)?state.goals:[];const active=goals.filter(g=>(Number(g.target)||0)>(Number(g.saved)||0));const bd=(state.birthdays||[]).map(b=>({b,d:birthdayDays(b)})).filter(x=>x.d>=0).sort((a,b)=>a.d-b.d)[0];const hour=Number(new Intl.DateTimeFormat('ru-RU',{timeZone:'Europe/Moscow',hour:'2-digit',hour12:false}).format(new Date()));let text='';if(bd&&bd.d<=14)text=` Через ${bd.d===0?'сегодня':bd.d+' дн.'} важная дата: ${esc(bd.b.name)}. Хороший повод заранее заложить подарок в бюджет.`;else if(active.length){const g=active[0],left=Math.max(0,(Number(g.target)||0)-(Number(g.saved)||0));text=` До мечты «${esc(g.name)}» осталось ${money(left)}. Даже небольшой регулярный взнос приближает вас к моменту «Поехали!»`; }else if(bal>0)text=` Сегодня у семьи положительный результат месяца: ${money(bal)}. Можно сохранить часть суммы, а не считать весь остаток свободным.`;else if(hour<12)text=' Утро — хороший момент посмотреть обязательные платежи и решить, сколько денег действительно можно тратить сегодня.';else text=' Вечер — хороший момент быстро проверить операции за день и оставить семье короткую заметку, если что-то важно не забыть.';el.innerHTML=text}
 function setBoardType(type){
@@ -5112,10 +5140,10 @@ function renderHome(){
  renderHealthDashboard();
  renderFamilyBoard();
  renderTodayHeader(); renderTodayAdvice(); if(!weatherCache.data||Date.now()-weatherCache.at>30*60*1000)loadWeather();
- const arr=monthEntries(homeMonth()),ex=arr.filter(isExpense),inc=arr.filter(e=>e.type==='income'),inSum=sum(inc),exSum=sum(ex),bal=inSum-exSum,todaySum=sum(state.entries.filter(e=>e.date===today()&&isExpense(e)));
- const currentMonth=month(), selectedMonth=homeMonth(), prev=previousMonthKey(selectedMonth), prevEx=sum(expenses(prev)), prevInc=sum(monthEntries(prev).filter(e=>e.type==='income')), compare=document.getElementById('monthCompare'), compareHint=document.getElementById('monthCompareHint');
+ const carry=v111MonthBalance(homeMonth())||v111MonthBalance(month()),selectedMonth=carry.month,arr=monthEntries(selectedMonth),ex=arr.filter(isExpense),inc=arr.filter(e=>e.type==='income'),inSum=carry.income,exSum=carry.expense,bal=carry.closing,todaySum=sum(state.entries.filter(e=>e.date===today()&&isExpense(e)));
+ const currentMonth=month(), prev=previousMonthKey(selectedMonth), prevBalance=v111MonthBalance(prev)?.closing||0, prevEx=sum(expenses(prev)), prevInc=sum(monthEntries(prev).filter(e=>e.type==='income')), compare=document.getElementById('monthCompare'), compareHint=document.getElementById('monthCompareHint');
  if(compare){
-   const expenseDelta=prevEx?((exSum-prevEx)/prevEx*100):null, balanceDelta=(prevInc-prevEx)!==0?((bal-(prevInc-prevEx))/Math.max(Math.abs(prevInc-prevEx),1)*100):null;
+   const expenseDelta=prevEx?((exSum-prevEx)/prevEx*100):null, balanceDelta=prevBalance!==0?((bal-prevBalance)/Math.max(Math.abs(prevBalance),1)*100):null;
    const fmtDelta=(v,goodWhenDown=false)=>v===null?'<span class="compare-delta neutral">Нет данных за прошлый месяц</span>':`<span class="compare-delta ${Math.abs(v)<1?'neutral':((goodWhenDown?(v<0):(v>0))?'good':'warn')}">${v>0?'↑':'↓'} ${Math.abs(v).toFixed(1)}% к прошлому месяцу</span>`;
    compare.innerHTML=`<div class="compare-item"><small>Расходы</small><div class="compare-value">${money(exSum)}</div>${fmtDelta(expenseDelta,true)}</div><div class="compare-item"><small>Остаток</small><div class="compare-value">${money(bal)}</div>${fmtDelta(balanceDelta,false)}</div><div class="compare-item"><small>Доходы</small><div class="compare-value">${money(inSum)}</div>${fmtDelta(prevInc?((inSum-prevInc)/prevInc*100):null,false)}</div>`;
    if(compareHint)compareHint.textContent=`${new Date(selectedMonth+'-01T12:00:00').toLocaleDateString('ru-RU',{month:'long',year:'numeric'})} против ${new Date(prev+'-01T12:00:00').toLocaleDateString('ru-RU',{month:'long',year:'numeric'})}`;
@@ -5133,10 +5161,14 @@ function renderHome(){
    document.getElementById('spendableSub').textContent=isCurrent?(pay?`До зарплаты ${pay.date.toLocaleDateString('ru-RU',{day:'numeric',month:'long'})}`:'До конца месяца · день зарплаты можно указать в настройках'):'Ориентир рассчитывается для текущего месяца';
  }
  document.getElementById('heroBalance').textContent=money(bal);
- const selectedLabel=new Date(homeMonth()+'-01T12:00:00').toLocaleDateString('ru-RU',{month:'long',year:'numeric'});
+ document.getElementById('v111HomeClosing').textContent=money2(bal);
+ document.getElementById('v111HomeOpening').textContent=money2(carry.opening);
+ document.getElementById('v111HomeIncome').textContent=money2(inSum);
+ const carryWarning=document.getElementById('v111BalanceWarning');carryWarning.hidden=!carry.invalidDateCount;carryWarning.textContent=carry.invalidDateCount?'Проверьте даты операций: '+carry.invalidDateCount+'. В перенос входят только записи с корректной датой.':'';
+ const selectedLabel=new Date(selectedMonth+'-01T12:00:00').toLocaleDateString('ru-RU',{month:'long',year:'numeric'});
  const chartHint=document.getElementById('chartMonthHint'); if(chartHint) chartHint.textContent='Расходы за '+selectedLabel;
- document.getElementById('heroSub').textContent=inSum?`Доходы ${money(inSum)} · расходы ${money(exSum)}`:'Доходы пока не внесены';
- document.querySelector('#home .hero-label').firstChild.textContent='Доходы − расходы · '+selectedLabel+' ';
+ document.getElementById('heroSub').textContent=`С прошлого месяца ${money(carry.opening)} · доходы ${money(inSum)} · расходы ${money(exSum)}`;
+ document.querySelector('#home .hero-label').firstChild.textContent='Остаток с переносом · '+selectedLabel+' ';
  document.getElementById('kIncome').textContent=money(inSum);document.getElementById('kExpense').textContent=money(exSum);document.getElementById('kBalance').textContent=money(bal);document.getElementById('kToday').textContent=money(todaySum);document.getElementById('kAvg').textContent=money(ex.length?exSum/ex.length:0);document.getElementById('kOps').textContent=arr.length;
  document.getElementById('v99HomeExpenseTotal').textContent=money2(exSum);
  document.getElementById('v99HomeExpenseCount').textContent=ex.length+' операций · '+selectedLabel;
@@ -7007,6 +7039,12 @@ window.addEventListener('resize',queueDonutFit);queueDonutFit();
   const list=record.panel;list.style.width=panelWidth+'px';list.style.maxHeight=room+'px';list.style.left=Math.min(Math.max(rect.left,leftEdge+margin),leftEdge+width-margin-panelWidth)+'px';
   const actual=Math.min(list.scrollHeight,room);list.style.top=(up?rect.top-gap-actual:rect.bottom+gap)+'px';
  }
+ function followSelectAnchor(){
+  if(!opened)return;
+  const viewport=window.visualViewport,rect=opened.trigger.getBoundingClientRect(),top=viewport?.offsetTop||0,left=viewport?.offsetLeft||0;
+  if(!interactable(opened)||rect.bottom<=top||rect.top>=top+(viewport?.height||innerHeight)||rect.right<=left||rect.left>=left+(viewport?.width||innerWidth))close(false);
+  else place(opened);
+ }
  function open(record,edge){
   refresh();if(!interactable(record)||record.trigger.disabled)return;
   settleEntrance(record);
@@ -7046,9 +7084,9 @@ window.addEventListener('resize',queueDonutFit);queueDonutFit();
  document.addEventListener('pointerdown',event=>{if(opened&&!opened.wrapper.contains(event.target)&&!opened.panel?.contains(event.target))close(false)},true);
  document.addEventListener('click',event=>{const label=event.target.closest('label');if(label&&!event.target.closest('button,a,input,textarea')){const native=label.control,record=native&&byNative.get(native);if(record){event.preventDefault();settleEntrance(record);if(visible(record.trigger))record.trigger.focus({preventScroll:true})}}schedule()},true);
  document.addEventListener('input',schedule,true);document.addEventListener('change',schedule,true);document.addEventListener('focusin',schedule,true);
- document.addEventListener('scroll',event=>{if(opened&&!opened.panel?.contains(event.target))close(false)},true);
- window.addEventListener('resize',()=>{if(opened)place(opened)});window.addEventListener('blur',()=>close(false));
- window.visualViewport?.addEventListener('resize',()=>{if(opened)place(opened)});window.visualViewport?.addEventListener('scroll',()=>{if(opened)place(opened)});
+ document.addEventListener('scroll',event=>{if(opened&&!opened.panel?.contains(event.target))followSelectAnchor()},true);
+ window.addEventListener('resize',followSelectAnchor);window.addEventListener('blur',()=>close(false));
+ window.visualViewport?.addEventListener('resize',followSelectAnchor);window.visualViewport?.addEventListener('scroll',followSelectAnchor);
  document.addEventListener('v107-picker-open',event=>{if((event.detail?.type||event.detail?.kind)!=='select')close(false)});
  new MutationObserver(mutations=>{if(mutations.some(mutation=>{const target=mutation.target instanceof Element?mutation.target:mutation.target.parentElement;if(!target)return false;if(target.matches('select,option,optgroup')||target.closest('select'))return true;return !target.closest(own)}))schedule()}).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class','style','hidden','disabled','selected','value','label','aria-label','aria-labelledby','aria-invalid','required']});
  window.v107RefreshSelects=refresh;window.v107CloseSelects=()=>close(false);

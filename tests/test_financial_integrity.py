@@ -19,8 +19,14 @@ class FinancialIntegrity(unittest.TestCase):
     tearDown = harness.LocalDataSafety.tearDown
     open = harness.LocalDataSafety.open
 
-    def evaluate(self, code):
+    def evaluate(self, code, *, isolated_forecast=False):
         self.open()
+        if isolated_forecast:
+            # These fixtures exercise only fictional installment/recurring plans.
+            # Keep a past day within one period and exclude the unrelated embedded
+            # bank schedule, so month rollover cannot change their expected scope.
+            code="""today=()=> '2026-10-21';month=()=> '2026-10';
+                loanScheduleData=()=>[];state.settings.preferences.payday=0;"""+code
         return self.page.evaluate('''async () => {
             session=null;state=blankState();localStorage.clear();
             window.confirm=()=>true;window.prompt=()=> '1';
@@ -75,15 +81,15 @@ class FinancialIntegrity(unittest.TestCase):
         self.assertEqual(result['before'],result['after'])
 
     def test_overdue_forecast_includes_pending_current_recurring_and_old_partial(self):
-        result=self.evaluate('''state.intelligence.accounts=[{id:'cash',amount:10000}];state.intelligence.recurring=[{id:'rent',name:'Fictional rent',amount:4000,day:1}];const p=makePlan(4608,previousMonthKey(month())+'-10');state.installments=[p];state.entries=[mk('partial',1)];p.links['fictional-part']='partial';const f=v86Forecast();return {regular:f.regular,mortgage:f.mortgage,overdue:f.overdue,estimate:f.estimate};''')
+        result=self.evaluate('''state.intelligence.accounts=[{id:'cash',amount:10000}];state.intelligence.recurring=[{id:'rent',name:'Fictional rent',amount:4000,day:1}];const p=makePlan(4608,previousMonthKey(month())+'-10');state.installments=[p];state.entries=[mk('partial',1)];p.links['fictional-part']='partial';const f=v86Forecast();return {regular:f.regular,mortgage:f.mortgage,overdue:f.overdue,estimate:f.estimate};''', isolated_forecast=True)
         self.assertEqual(result,{'regular':4000,'mortgage':4607,'overdue':8607,'estimate':1393})
 
     def test_explicit_installment_recurring_cross_link_deduplicates_same_part(self):
-        result=self.evaluate('''state.intelligence.accounts=[{id:'cash',amount:10000}];const p=makePlan(4608,today());state.installments=[p];state.intelligence.recurring=[{id:'same-plan',name:'Fictional payment',amount:4608,day:Number(today().slice(8)),installmentId:p.id,installmentPartId:p.parts[0].id}];return {sum:v86Forecast().obligations,events:v86Forecast().events.filter(x=>x.kind!=='mortgage').length};''')
+        result=self.evaluate('''state.intelligence.accounts=[{id:'cash',amount:10000}];const p=makePlan(4608,today());state.installments=[p];state.intelligence.recurring=[{id:'same-plan',name:'Fictional payment',amount:4608,day:Number(today().slice(8)),installmentId:p.id,installmentPartId:p.parts[0].id}];return {sum:v86Forecast().obligations,events:v86Forecast().events.filter(x=>x.kind!=='mortgage').length};''', isolated_forecast=True)
         self.assertEqual(result,{'sum':4608,'events':1})
 
     def test_equal_amounts_do_not_infer_duplicate(self):
-        result=self.evaluate('''state.intelligence.accounts=[{id:'cash',amount:20000}];const p=makePlan();state.installments=[p];state.intelligence.recurring=[{id:'unrelated',name:'Different payment',amount:4608,day:Number(today().slice(8))}];return v86Forecast().obligations;''')
+        result=self.evaluate('''state.intelligence.accounts=[{id:'cash',amount:20000}];const p=makePlan();state.installments=[p];state.intelligence.recurring=[{id:'unrelated',name:'Different payment',amount:4608,day:Number(today().slice(8))}];return v86Forecast().obligations;''', isolated_forecast=True)
         self.assertEqual(result,9216)
 
     def test_transfer_only_month_is_not_advisor_expense_basis(self):
@@ -99,16 +105,103 @@ class FinancialIntegrity(unittest.TestCase):
         self.assertEqual(result['metrics'],'')
         self.assertIn('Недостаточно данных',result['status'])
 
-    def test_beneficiary_people_totals_and_history_use_same_target(self):
-        result=self.evaluate('''state.entries=[mk('alice',100,{who:'Сергей',beneficiary:'Алиса',category:'Вкусняшки'}),mk('legacy',200,{who:'Виктория'}),mk('credit',4608,{beneficiary:'Сергей',category:'Кредит'}),mk('car',300,{beneficiary:'Сергей',category:'Бензин'})];document.getElementById('fWho').value='Алиса';renderHistory();const alice=document.getElementById('historyCount').textContent;document.getElementById('fWho').value='Сергей';renderHistory();return {totals:Object.fromEntries(v86TargetTotals(expenses(month()))),alice,sergey:document.getElementById('historyCount').textContent,total:sum(expenses(month())),legacy:state.entries[1].who};''')
-        self.assertEqual(result['totals']['Сергей'],4908)
+    def test_report_destinations_separate_loans_and_car_but_history_keeps_saved_recipient(self):
+        result=self.evaluate('''
+            state.entries=[mk('alice',100,{who:'Сергей',beneficiary:'Алиса',category:'Вкусняшки'}),
+                mk('legacy',200,{who:'Виктория'}),mk('credit',4608,{beneficiary:'Сергей',category:'Кредит'}),
+                mk('car',300,{beneficiary:'Сергей',category:'Бензин'})];
+            const before=JSON.stringify(state.entries);
+            document.getElementById('fWho').value='Алиса';renderHistory();
+            const alice=document.getElementById('historyCount').textContent;
+            document.getElementById('fWho').value='Сергей';renderHistory();
+            return {totals:Object.fromEntries(v86TargetTotals(expenses(month()))),alice,
+                sergey:document.getElementById('historyCount').textContent,total:sum(expenses(month())),
+                legacy:state.entries[1].who,unchanged:before===JSON.stringify(state.entries)};
+        ''')
+        self.assertEqual(result['totals']['Сергей'],0)
         self.assertEqual(result['totals']['Алиса'],100)
+        self.assertEqual(result['totals']['Виктория'],200)
+        self.assertEqual(result['totals']['Автомобиль'],300)
+        self.assertEqual(result['totals']['Кредиты и рассрочки'],4608)
         self.assertEqual(sum(result['totals'].values()),result['total'])
-        self.assertNotIn('Автомобиль',result['totals'])
-        self.assertNotIn('Кредиты и рассрочки',result['totals'])
         self.assertTrue(result['alice'].startswith('1 '), result)
         self.assertTrue(result['sergey'].startswith('2 '), result)
         self.assertEqual(result['legacy'],'Виктория')
+        self.assertTrue(result['unchanged'])
+
+    def test_exclusive_destinations_use_real_loan_links_and_keep_taxi_and_recurring_expenses_personal(self):
+        result=self.evaluate('''
+            const plan=makePlan();plan.links['fictional-part']='linked-car';state.installments=[plan];
+            state.entries=[
+                mk('food',10.01,{beneficiary:'Сергей',category:'Продукты'}),
+                mk('fuel',11.02,{beneficiary:'Виктория',category:'Бензин'}),
+                mk('credit',12.03,{beneficiary:'Сергей',category:'Кредит'}),
+                mk('linked-car',13.04,{beneficiary:'Сергей',category:'Бензин'}),
+                mk('installment',14.05,{beneficiary:'Алиса',category:'Продукты',installmentId:plan.id}),
+                mk('mortgage',15.06,{beneficiary:'Общее',mortgagePayment:true}),
+                mk('mortgage-type',16.07,{beneficiary:'Общее',obligationType:'mortgage'}),
+                mk('taxi',17.08,{beneficiary:'Сергей',category:'Авто и транспорт',subcategory:'Такси'}),
+                mk('transit',18.09,{beneficiary:'Сергей',category:'Авто и транспорт',subcategory:'Общественный транспорт'}),
+                mk('recurring',19.10,{beneficiary:'Сергей',category:'Продукты',paymentKey:'recurring:test',
+                    recurringId:'fictional-recurring',scheduledDate:today(),autoGenerated:true,accountingMode:'payments'}),
+                mk('explicit-car',20.11,{beneficiary:'Автомобиль',category:'Продукты'}),
+                mk('explicit-loan',21.12,{beneficiary:'Кредиты и рассрочки',category:'Бензин'}),
+                mk('custom',22.13,{beneficiary:'constructor',category:'Продукты'}),
+                mk('legacy-credit',23.14,{beneficiary:'Сергей',category:' кредит '}),
+                mk('bank-description',24.15,{beneficiary:'Сергей',category:'Продукты',comment:'Fictional bank mortgage text'}),
+                mk('transfer',900,{type:'transfer',category:'Кредит',debtRepayment:true,installmentId:plan.id}),
+                mk('income',800,{type:'income',category:'Бензин'}),
+                mk('old-credit',700,{category:'Кредит',date:previousMonthKey(month())+'-10'})
+            ];
+            const before=JSON.stringify(state),rows=expenses(month()),totals=v86TargetTotals(rows);
+            return {ids:rows.map(e=>e.id),buckets:Object.fromEntries(rows.map(e=>[e.id,v94ExpenseBucket(e)])),
+                targets:Object.fromEntries(rows.map(e=>[e.id,v86ExpenseTarget(e)])),
+                totals:Object.fromEntries(totals),total:sum(rows),
+                bucketTotal:sum(totals.map(([,amount])=>({amount}))),
+                unchanged:before===JSON.stringify(state)};
+        ''')
+        expected={
+            'food':'Сергей','fuel':'Автомобиль','credit':'Кредиты и рассрочки',
+            'linked-car':'Кредиты и рассрочки','installment':'Кредиты и рассрочки',
+            'mortgage':'Кредиты и рассрочки','mortgage-type':'Кредиты и рассрочки',
+            'taxi':'Сергей','transit':'Сергей','recurring':'Сергей',
+            'explicit-car':'Автомобиль','explicit-loan':'Кредиты и рассрочки',
+            'custom':'constructor','legacy-credit':'Кредиты и рассрочки','bank-description':'Сергей',
+        }
+        self.assertEqual(result['buckets'],expected)
+        self.assertEqual(set(result['ids']),set(expected))
+        self.assertEqual(result['totals']['Кредиты и рассрочки'],114.51)
+        self.assertEqual(result['totals']['Автомобиль'],31.13)
+        self.assertEqual(result['totals']['Сергей'],88.43)
+        self.assertEqual(result['totals']['constructor'],22.13)
+        self.assertEqual(result['total'],256.20)
+        self.assertEqual(result['bucketTotal'],result['total'])
+        self.assertEqual(result['targets']['fuel'],'Виктория')
+        self.assertEqual(result['targets']['linked-car'],'Сергей')
+        self.assertEqual(result['targets']['installment'],'Алиса')
+        self.assertTrue(result['unchanged'])
+
+    def test_empty_destination_breakdown_includes_loans_and_car_at_zero(self):
+        result=self.evaluate('''const before=JSON.stringify(state);return {
+            totals:Object.fromEntries(v86TargetTotals([])),unchanged:before===JSON.stringify(state)};''')
+        self.assertEqual(result['totals']['Кредиты и рассрочки'],0)
+        self.assertEqual(result['totals']['Автомобиль'],0)
+        self.assertEqual(sum(result['totals'].values()),0)
+        self.assertTrue(result['unchanged'])
+
+    def test_incomplete_installment_link_does_not_turn_missing_entry_id_into_a_loan(self):
+        result=self.evaluate('''
+            const plan=makePlan();plan.links['fictional-part']=undefined;state.installments=[plan];
+            state.entries=[mk(undefined,.1,{beneficiary:'Сергей',category:'Продукты'}),
+                mk('',.2,{beneficiary:'Сергей',category:'Продукты'})];
+            const before=JSON.stringify(state),rows=expenses(month());
+            return {buckets:rows.map(v94ExpenseBucket),totals:Object.fromEntries(v86TargetTotals(rows)),
+                unchanged:before===JSON.stringify(state)};
+        ''')
+        self.assertEqual(result['buckets'],['Сергей','Сергей'])
+        self.assertEqual(result['totals']['Сергей'],.3)
+        self.assertEqual(result['totals']['Кредиты и рассрочки'],0)
+        self.assertTrue(result['unchanged'])
 
     def test_partial_income_is_labeled_and_not_compared_to_required_plan(self):
         result=self.evaluate('''const previous=previousMonthKey(month()),older=previousMonthKey(previous);state.entries=[mk('expense-a',5000,{date:previous+'-10'}),mk('expense-b',7000,{date:older+'-10'}),mk('income-a',10000,{type:'income',date:previous+'-10'})];const d=v87AdvisorData();v87RenderAdvisor();return {spent:d.spent,income:d.income,required:d.required,hasIncome:d.hasIncome,partialIncome:d.partialIncome,status:document.getElementById('v87AdvisorStatus').textContent,guide:document.getElementById('v87AdvisorGuidance').textContent};''')

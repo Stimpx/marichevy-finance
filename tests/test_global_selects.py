@@ -104,12 +104,17 @@ class GlobalSelects(unittest.TestCase):
         trigger.press('Escape')
         self.assertEqual(self.snapshot(),self.before)
 
-    def test_outside_scroll_navigation_foreign_picker_and_logout_close_without_committing(self):
+    def test_visible_anchor_follows_scroll_and_offscreen_navigation_foreign_picker_and_logout_close(self):
         self.prepare();trigger=self.trigger('bdGroup')
         trigger.click();self.page.locator('#bdName').click()
         self.assertEqual(self.listbox().count(),0)
         trigger.click();self.page.evaluate("document.dispatchEvent(new Event('scroll'))")
-        self.assertEqual(self.listbox().count(),0)
+        self.assertEqual(self.listbox().count(),1)
+        self.assertEqual(self.snapshot(),self.before)
+        self.page.evaluate("document.documentElement.style.scrollBehavior='auto';document.body.style.minHeight='2400px';window.scrollTo(0,2000)")
+        self.page.wait_for_function("!document.querySelector('.v107-select-panel:not([hidden])')")
+        self.assertEqual(self.page.locator('#bdGroup').input_value(),'Близкие')
+        self.page.evaluate("window.scrollTo(0,0)")
         trigger.click();self.page.evaluate("document.dispatchEvent(new CustomEvent('v107-picker-open',{detail:{type:'calendar'}}))")
         self.assertEqual(self.listbox().count(),0)
         trigger.click();self.page.evaluate("go('history')")

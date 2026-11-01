@@ -1,4 +1,5 @@
 """Amount calculator/clipboard regressions on fictional browser data only."""
+import json
 import unittest
 
 import test_local_data_safety as harness
@@ -80,7 +81,7 @@ class AmountCalculator(unittest.TestCase):
         }""")
         self.page.get_by_role('button',name='Копировать сумму',exact=True).click()
         self.page.wait_for_function("window.__largeCopied==='90071992547409,90'")
-        self.page.get_by_role('button',name='Калькулятор',exact=True).click()
+        self.page.evaluate("v96OpenCalculator('eAmount')")
         self.page.get_by_role('button',name='Подставить сумму',exact=True).click()
         self.assertFalse(self.page.locator('#v96Calculator').is_visible())
         self.assertEqual(self.page.locator('#eAmount').input_value(),'90071992547409,90')
@@ -88,7 +89,7 @@ class AmountCalculator(unittest.TestCase):
     def test_apply_changes_only_input_and_explicit_save_keeps_exact_cents_once(self):
         self.prepare();before=self.snapshot()
         self.page.locator('#eAmount').fill('12,34')
-        self.page.get_by_role('button',name='Калькулятор',exact=True).click()
+        self.page.evaluate("v96OpenCalculator('eAmount')")
         self.page.locator('#v96CalcExpression').fill('0,10 + 0,20')
         self.page.locator('#v96CalcExpression').press('Enter')
         self.assertEqual(self.page.locator('#v96CalcResult').input_value(),'0,30')
@@ -106,10 +107,50 @@ class AmountCalculator(unittest.TestCase):
         }""")
         self.assertEqual(saved,{'count':2,'amount':0.3,'oldUnchanged':True})
 
+    def test_header_calculator_copy_then_new_entry_paste_saves_once_only_after_explicit_click(self):
+        self.prepare()
+        self.page.locator('#v90Quick').get_by_role('button',name='Продукты',exact=True).click()
+        self.page.locator('#eAmount').fill('12,34')
+        before=self.snapshot()
+        self.page.evaluate("""() => {
+          window.__clipboardText='';window.__clipboardReads=0;window.__clipboardWritten=[];
+          Object.defineProperty(navigator,'clipboard',{configurable:true,value:{
+            readText:async()=>{window.__clipboardReads++;return window.__clipboardText},
+            writeText:async text=>{window.__clipboardText=text;window.__clipboardWritten.push(text)}
+          }});
+        }""")
+        self.page.get_by_role('button',name='Открыть калькулятор',exact=True).click()
+        self.assertFalse(self.page.locator('#v96CalcApply').is_visible())
+        self.assertIsNone(self.page.evaluate('v96CalculatorTarget'))
+        self.page.locator('#v96CalcExpression').fill('0,10 + 0,20')
+        self.page.locator('#v96Calculator').get_by_role('button',name='Вычислить',exact=True).click()
+        self.assertEqual(self.page.locator('#v96CalcResult').input_value(),'0,30')
+        self.assertEqual(self.page.locator('#eAmount').input_value(),'12,34')
+        self.assertEqual(self.snapshot(),before)
+        self.page.get_by_role('button',name='Копировать результат',exact=True).click()
+        self.page.wait_for_function("window.__clipboardText==='0,30'")
+        self.page.get_by_role('button',name='Закрыть калькулятор',exact=True).click()
+        self.assertFalse(self.page.locator('#v96Calculator').is_visible())
+        self.assertEqual(self.page.evaluate('document.activeElement.id'),'v104GlobalCalculator')
+        self.assertEqual(self.snapshot(),before)
+        self.page.get_by_role('button',name='Вставить сумму',exact=True).click()
+        self.page.wait_for_function("eAmount.value==='0,30'")
+        self.assertEqual(self.page.evaluate('window.__clipboardReads'),1)
+        self.assertEqual(self.page.evaluate('window.__clipboardWritten'),['0,30'])
+        self.assertEqual(self.snapshot(),before)
+        self.page.get_by_role('button',name='Сохранить расход',exact=True).click()
+        self.page.wait_for_function("state.entries.length===2&&!v90Saving&&!!document.querySelector('#saveMsg .success')")
+        saved=self.page.evaluate("""() => ({count:state.entries.length,amount:state.entries.at(-1).amount,
+          category:state.entries.at(-1).category,old:state.entries[0]})""")
+        self.assertEqual(saved['count'],2)
+        self.assertEqual(saved['amount'],.3)
+        self.assertEqual(saved['category'],'Продукты')
+        self.assertEqual(saved['old'],json.loads(before['state'])['entries'][0])
+
     def test_rounding_is_visible_and_cancel_or_invalid_result_never_changes_amount(self):
         self.prepare();before=self.snapshot()
         self.page.locator('#eAmount').fill('44,50')
-        self.page.get_by_role('button',name='Калькулятор',exact=True).click()
+        self.page.evaluate("v96OpenCalculator('eAmount')")
         self.page.locator('#v96CalcExpression').fill('385 / 3')
         self.assertEqual(self.page.locator('#v96CalcResult').input_value(),'128,33')
         self.assertIn('округлён',self.page.locator('#v96CalcMessage').inner_text())
@@ -131,7 +172,7 @@ class AmountCalculator(unittest.TestCase):
             writeText:async value=>window.__clipboardWritten.push(value)
           }});
         }""")
-        self.page.get_by_role('button',name='Калькулятор',exact=True).click()
+        self.page.get_by_role('button',name='Открыть калькулятор',exact=True).click()
         self.assertEqual(self.page.evaluate('window.__clipboardReads'),0)
         self.page.get_by_role('button',name='Закрыть калькулятор',exact=True).click()
         self.page.get_by_role('button',name='Вставить сумму',exact=True).click()
@@ -217,7 +258,7 @@ class AmountCalculator(unittest.TestCase):
     def test_keypad_and_pasted_expression_compute_without_saving(self):
         self.prepare();before=self.snapshot()
         self.page.locator('#eAmount').fill('12,34')
-        self.page.get_by_role('button',name='Калькулятор',exact=True).click()
+        self.page.get_by_role('button',name='Открыть калькулятор',exact=True).click()
         for key in ['C','7','×','(','2','+','3',')','=']:
             self.page.locator('#v96Calculator').get_by_role('button',name={
                 'C':'Очистить расчёт','=':'Вычислить'}.get(key,key),exact=True).click()
@@ -270,7 +311,7 @@ class AmountCalculator(unittest.TestCase):
     def test_logout_closes_and_clears_calculator_and_refuses_reopening(self):
         self.prepare();self.page.locator('#eAmount').fill('17.25')
         before=self.page.evaluate('JSON.stringify(state)')
-        self.page.get_by_role('button',name='Калькулятор',exact=True).click()
+        self.page.evaluate("v96OpenCalculator('eAmount')")
         self.assertEqual(self.page.locator('#v96CalcExpression').input_value(),'17.25')
         self.assertEqual(self.page.locator('#v96CalcResult').input_value(),'17,25')
         self.page.evaluate('logout()')

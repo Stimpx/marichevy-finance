@@ -63,15 +63,14 @@ class ExpenseForm(unittest.TestCase):
             clearEntry();v90Choose('Продукты');eStore.value='Виктория супермаркет';
             v90Paint();v99RenderEntryDirections();eAmount.value='17,25';
             const selected=eBeneficiary.value;
-            const tiles=[...document.querySelectorAll('#v99EntryDirectionTiles button')]
-                .filter(button=>button.getAttribute('aria-pressed')==='true')
-                .map(button=>button.dataset.v99EntryDirection);
+            const controls=document.querySelectorAll('#v81BeneficiaryField [role="combobox"]').length;
+            const duplicateTiles=document.querySelectorAll('#v99EntryDirectionTiles').length;
             await addEntry();
             const entry=state.entries.at(-1);
-            return {selected,tiles,stored:entry.beneficiary,display:v86ExpenseTarget(entry),
+            return {selected,controls,duplicateTiles,stored:entry.beneficiary,display:v86ExpenseTarget(entry),
                 priorUnchanged:JSON.stringify(state.entries[0])===previous};
         }""")
-        self.assertEqual(result,{'selected':'Не указано','tiles':['unspecified'],
+        self.assertEqual(result,{'selected':'Не указано','controls':1,'duplicateTiles':0,
             'stored':'Не указано','display':'Не указано','priorUnchanged':True})
 
     def test_search_recognizes_every_control_case(self):
