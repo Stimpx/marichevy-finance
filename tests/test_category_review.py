@@ -374,7 +374,7 @@ class CategoryReview(unittest.TestCase):
         self.assertIn(groups['next'], self.page.locator('#aCats').inner_text())
         self.page.evaluate("go('history')")
         changed = self.page.locator('#historyBody tr').filter(has_text='ChatGPT')
-        self.assertEqual(changed.locator('.v76-cat').inner_text(), 'Подписки')
+        self.assertEqual(changed.locator('.v105-history-title').inner_text(), 'Подписки')
         self.assertEqual(self.page.evaluate('state.entries[1]'), before[1])
         self.assertEqual(self.page.evaluate('v97DraftFields()'), draft)
 
