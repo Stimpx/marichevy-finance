@@ -59,24 +59,28 @@ class HomeFocus(unittest.TestCase):
         self.assertTrue(self.page.locator('#home').evaluate("node=>node.classList.contains('v73-focus')"))
         visible=self.page.locator('#home').evaluate("""root=>[...root.children].filter(node=>
           node.getBoundingClientRect().height>0).map(node=>node.id||node.className)""")
-        self.assertCountEqual(visible,['v99HomeSpending','v99HomeDirections','v99HomeSlices','hero','v96MonthlyReview','v97HomePayments',
-                                      'v73-overview-toolbar','v97HomeRecent'])
+        self.assertCountEqual(visible,['v121HomeSummary','v97HomePayments','v97HomeRecent',
+                                      'v121HomeAnalysisCard','today-panel home-top-today','v121HomeFamilyCard'])
         self.assertEqual(self.page.locator('#recent .v96-recent-row').count(),3)
-        self.assertEqual(self.page.locator('#home .hero .quick button:visible').count(),2)
-        self.assertTrue(self.page.get_by_role('button',name='Открыть полный обзор',exact=True).is_visible())
+        self.assertEqual(self.page.locator('#v121HomeSummary .v121-home-actions button:visible').count(),2)
+        self.assertTrue(self.page.get_by_role('button',name='Разобрать расходы',exact=True).is_visible())
         self.assertEqual(self.page.locator('#v73OverviewToggle').get_attribute('aria-expanded'),'false')
         self.assertEqual(self.records(),before)
 
     def test_full_review_toggle_keeps_sections_ids_and_family_records_and_is_near_top(self):
         self.prepare();before=self.records()
-        self.page.get_by_role('button',name='Открыть полный обзор',exact=True).click()
-        for selector in ['#v86Calendar','#v84Pulse','#v84NoticesCard','.family-board','#moneyFlow']:
+        self.page.get_by_role('button',name='Разобрать расходы',exact=True).click()
+        for selector in ['#v99HomeSpending','#v99HomeDirections','#v99HomeSlices','#v96MonthlyReview','#v84NoticesCard']:
             self.assertTrue(self.page.locator(selector).is_visible(),selector)
-        self.assertEqual(self.page.locator('#recent .v96-recent-row').count(),8)
+        for selector in ['#v86Calendar','#v84Pulse','#moneyFlow']:
+            self.assertFalse(self.page.locator(selector).is_visible(),selector)
+        self.page.locator('#v121HomeFamilyCard > summary').click()
+        self.assertTrue(self.page.locator('.family-board').is_visible())
+        self.assertEqual(self.page.locator('#recent .v96-recent-row').count(),3)
         self.assertEqual(self.page.locator('#v73OverviewToggle').get_attribute('aria-expanded'),'true')
-        self.assertGreater(self.page.locator('#v73OverviewToggle').bounding_box()['y'],self.page.locator('#v99HomeSpending').bounding_box()['y'])
+        self.assertLess(self.page.locator('#v73OverviewToggle').bounding_box()['y'],self.page.locator('#v99HomeSpending').bounding_box()['y'])
         self.assertEqual(self.page.evaluate("localStorage.getItem('marichevy_v73_short_overview')"),'0')
-        self.page.get_by_role('button',name='Свернуть до главного',exact=True).click()
+        self.page.get_by_role('button',name='Свернуть аналитику',exact=True).click()
         self.assertFalse(self.page.locator('#v86Calendar').is_visible())
         self.assertEqual(self.page.locator('#recent .v96-recent-row').count(),3)
         self.assertEqual(self.records(),before)
@@ -86,8 +90,9 @@ class HomeFocus(unittest.TestCase):
         self.open()
         self.page.evaluate("session=null;loanScheduleData=()=>[{n:1,payDate:'2099-12-01',periodEnd:'2099-12-01',payment:1,interest:0,body:1,balance:0}];showApp();go('home')")
         self.assertFalse(self.page.locator('#home').evaluate("node=>node.classList.contains('v73-focus')"))
-        self.assertTrue(self.page.locator('#v86Calendar').is_visible())
-        self.assertEqual(self.page.locator('#v73OverviewToggle').inner_text(),'Свернуть до главного')
+        self.assertFalse(self.page.locator('#v86Calendar').is_visible())
+        self.assertTrue(self.page.locator('#v121HomeAnalyticsContent').is_visible())
+        self.assertEqual(self.page.locator('#v73OverviewToggle').inner_text(),'Свернуть аналитику')
 
     def test_no_payment_records_do_not_claim_account_balance_or_invent_obligations(self):
         self.prepare();before=self.records()

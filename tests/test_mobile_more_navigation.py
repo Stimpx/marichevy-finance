@@ -9,7 +9,7 @@ import test_local_data_safety as harness
 
 
 PRIMARY = ('home', 'today', 'history', 'analytics')
-MORE = ('income', 'car', 'loans', 'goals', 'chores', 'dates', 'settings', 'help', 'plans')
+MORE = ('accounts', 'planning', 'income', 'car', 'loans', 'goals', 'chores', 'dates', 'settings', 'help')
 
 
 class MobileMoreNavigation(unittest.TestCase):
@@ -93,7 +93,7 @@ class MobileMoreNavigation(unittest.TestCase):
                 expect(self.page.locator('#v74MoreToggle')).to_have_class('active')
         self.assertEqual(self.snapshot(), self.before, 'Navigation must not write financial data or storage')
 
-    def test_touch_reaches_all_thirteen_destinations_at_breakpoint_and_device_sizes(self):
+    def test_touch_reaches_all_daily_destinations_at_breakpoint_and_device_sizes(self):
         for width,height in ((320,740),(390,844),(760,1024),(761,1024),(820,1180),
                              (844,390),(1024,768),(1025,768)):
             with self.subTest(width=width,height=height):

@@ -31,6 +31,7 @@ class MonthlyBalanceCarry(unittest.TestCase):
             carryRow('future-income','2026-12-03',99999,'income')];
           state.intelligence.accounts=[{id:'manual',name:'Fictional manual account',amount:7654321,updated_at:'2026-01-01T00:00:00Z'}];
           showApp();renderAll();go('home');homeMonth.value='2026-11';renderHome();
+          v97SetHomeOverview(false,false);document.querySelector('.v121-history-detail').open=true;
         }""")
         self.before = self.snapshot()
 
@@ -50,7 +51,7 @@ class MonthlyBalanceCarry(unittest.TestCase):
         self.assertIn('25',self.value('#kExpense'))
         self.assertIn('0',self.value('#kIncome'))
         self.assertIn('С прошлого месяца',self.value('#moneyFlow'))
-        self.assertIn('Осталось с переносом',self.value('#moneyFlow'))
+        self.assertIn('Остаток по истории',self.value('#moneyFlow'))
         self.page.evaluate("go('analytics');analyticsMonth.value='2026-11';renderAnalytics()")
         self.assertEqual(self.page.evaluate("sum(expenses('2026-11'))"),25)
         self.assertIn('25',self.value('#peopleDonutTotal'))

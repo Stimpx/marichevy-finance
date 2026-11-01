@@ -48,7 +48,8 @@ class FinancialPresentation(unittest.TestCase):
           document.getElementById('fMonth').value='2026-10';document.getElementById('fDay').value='2026-10-20';
           document.getElementById('eAmount').value='42,50';document.getElementById('eStore').value='Учебный черновик';
           document.getElementById('eDate').value='2026-11-02';document.getElementById('eComment').value='Сохранить черновик';
-          renderHome();renderAnalytics();go('home');
+          renderHome();renderAnalytics();go('home');v97SetHomeOverview(false,false);
+          document.querySelector('.v121-history-detail').open=true;
           window.__financialWrites=0;const original=saveAll;
           saveAll=function(...args){window.__financialWrites++;return original(...args)};
         }""")

@@ -33,7 +33,7 @@ class MonthlyReview(unittest.TestCase):
             row('current-income',current+'-01','income',20000),
             row('transfer',chosen+'-06','transfer',5000),row('cash',chosen+'-06','cash',7000)];
           showApp();renderAll();document.getElementById('homeMonth').value=chosen;
-          document.getElementById('homeMonth').dispatchEvent(new Event('change',{bubbles:true}));go('home');
+          document.getElementById('homeMonth').dispatchEvent(new Event('change',{bubbles:true}));go('home');v97SetHomeOverview(false,false);
           return {chosen,current,previous,group:expenseEntryGroup(state.entries[0]),label:v84MonthLabel(chosen)};
         }""")
         self.info=info;self.before=self.snapshot()
@@ -128,12 +128,12 @@ class MonthlyReview(unittest.TestCase):
         self.assertNotIn('current-expense',rows)
         self.assertEqual(self.snapshot(),before)
 
-    def test_always_visible_in_short_and_full_overview_and_responsive_without_writes(self):
+    def test_optional_monthly_analysis_is_responsive_without_writes(self):
         self.prepare()
         self.assertEqual(self.page.locator('#home .smart-insights').count(),0)
         for focused in [True,False]:
-            self.page.evaluate('(on)=>document.getElementById("home").classList.toggle("v73-focus",on)',focused)
-            self.assertTrue(self.page.locator('#v96MonthlyReview').is_visible())
+            self.page.evaluate('(on)=>v97SetHomeOverview(on,false)',focused)
+            self.assertEqual(self.page.locator('#v96MonthlyReview').is_visible(),not focused)
         for width in [320,390,1280]:
             with self.subTest(width=width):
                 self.page.set_viewport_size({'width':width,'height':900})

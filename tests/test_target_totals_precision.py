@@ -57,7 +57,7 @@ class TargetTotalsPrecision(unittest.TestCase):
             category:'Продукты',beneficiary:'Сергей'},
             {id:'fictional-before-two',type:'expense',date:today(),amount:20,
             category:'Продукты',beneficiary:'Виктория'}];
-          showApp();renderAll();window.__oldDonut=document.getElementById('peopleDonut').style.background;
+          showApp();renderAll();v97SetHomeOverview(false,false);window.__oldDonut=document.getElementById('peopleDonut').style.background;
           window.__rowsBeforeCustom=JSON.stringify(state.entries);
           v99OpenDirectionEditor('home');
         }""")

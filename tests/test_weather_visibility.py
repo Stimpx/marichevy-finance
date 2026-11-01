@@ -65,8 +65,9 @@ class WeatherVisibility(unittest.TestCase):
         before = self.stable_snapshot()
         self.page.locator('#v73OverviewToggle').click()
         expect(self.page.locator('#home')).not_to_have_class(re.compile(r'\bv73-focus\b'))
-        expect(self.page.locator('.home-top-today .today-greeting')).to_be_visible()
-        expect(self.page.locator('#v86Calendar')).to_be_visible()
+        expect(self.page.locator('.home-top-today .today-greeting')).to_be_hidden()
+        expect(self.page.locator('#v86Calendar')).to_be_hidden()
+        expect(self.page.locator('#v121HomeAnalyticsContent')).to_be_visible()
         expect(self.page.locator('#weatherCard')).to_be_visible()
         self.assertEqual(self.stable_snapshot(), before)
         self.page.locator('#v73OverviewToggle').click()
@@ -76,10 +77,10 @@ class WeatherVisibility(unittest.TestCase):
 
     def test_saved_overview_preference_survives_reload_and_weather_stays_visible(self):
         self.prepare('0')
-        expect(self.page.locator('.home-top-today .today-greeting')).to_be_visible()
+        expect(self.page.locator('.home-top-today .today-greeting')).to_be_hidden()
         entries = self.page.evaluate('JSON.parse(JSON.stringify(state.entries))')
         self.show_after_reload()
-        expect(self.page.locator('.home-top-today .today-greeting')).to_be_visible()
+        expect(self.page.locator('.home-top-today .today-greeting')).to_be_hidden()
         self.assertEqual(self.page.evaluate('state.entries'), entries)
         self.page.locator('#v73OverviewToggle').click()
         self.assertEqual(self.page.evaluate('(key)=>localStorage.getItem(key)', OVERVIEW_KEY), '1')
@@ -159,10 +160,7 @@ class WeatherVisibility(unittest.TestCase):
                             self.assertLessEqual(fragment['right'],1,fragment)
                             self.assertGreaterEqual(fragment['top'],-1,fragment)
                             self.assertLessEqual(fragment['bottom'],1,fragment)
-                        if short:
-                            self.assertEqual(len(geometry['columns'].split()),1)
-                        elif width==1920:
-                            self.assertEqual(len(geometry['columns'].split()),2)
+                        self.assertEqual(len(geometry['columns'].split()),1)
                         self.assertEqual(self.stable_snapshot(),before)
 
 

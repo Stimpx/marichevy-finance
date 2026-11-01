@@ -29,6 +29,9 @@ class FinancialIntegrity(unittest.TestCase):
                 loanScheduleData=()=>[];state.settings.preferences.payday=0;"""+code
         return self.page.evaluate('''async () => {
             session=null;state=blankState();localStorage.clear();
+            // Mutating payment handlers require the real unlocked application.
+            // The fixture remains unauthenticated and all external I/O is blocked.
+            showApp();
             window.confirm=()=>true;window.prompt=()=> '1';
             const mk=(id,amount,fields={})=>({id,type:'expense',date:today(),amount,
                 category:'Прочее',who:'Общее',store:'Fictional shop',...fields});

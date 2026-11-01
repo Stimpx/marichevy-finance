@@ -49,6 +49,8 @@ class MoneyInputsConsistency(unittest.TestCase):
             return originalSet.call(this,key,value);
           };
         }""", tab)
+        if tab == 'goals':
+            self.page.get_by_role('button', name='Новая цель', exact=True).click()
         self.original = self.page.evaluate('JSON.parse(JSON.stringify(state))')
 
     def type_money(self, selector, text):
@@ -76,6 +78,8 @@ class MoneyInputsConsistency(unittest.TestCase):
         return self.page.locator('.goal-create').get_by_role('button', name='Создать цель', exact=True)
 
     def configure_goal(self):
+        if not self.page.locator('#v119GoalCreate').evaluate('(el)=>el.open'):
+            self.page.get_by_role('button', name='Новая цель', exact=True).click()
         self.page.locator('#goalName').fill('Вымышленная новая цель')
         self.page.locator('#goalTarget').fill('5000')
         self.page.locator('#goalSaved').fill('0')
@@ -88,6 +92,17 @@ class MoneyInputsConsistency(unittest.TestCase):
         self.page.locator('#v77Provider').fill('Учебный магазин')
         self.page.locator('#v77PartCount').fill('3')
         self.page.locator('#v77FirstDate').fill('2026-11-15')
+
+    def open_surface(self, tab, selector):
+        if selector == '#v84AccountAmount':
+            tab = 'accounts'
+        elif selector in ('#v84BudgetAmount', '#v84RecAmount'):
+            tab = 'planning'
+        self.page.evaluate('(tab)=>go(tab)', tab)
+        if selector == '#v84BudgetAmount':
+            details = self.page.locator('#v118LegacyLimits').locator('..')
+            if not details.evaluate('(el)=>el.open'):
+                details.locator('summary').click()
 
     def test_typed_goal_fields_save_once_in_exact_kopecks_and_keep_legacy_rows(self):
         self.prepare()
@@ -123,13 +138,14 @@ class MoneyInputsConsistency(unittest.TestCase):
         self.assertEqual((goal['saved'], goal['monthly']), (0.30, 0))
         self.assertEqual([item['amount'] for item in goal['deposits']], [0.20])
         self.assertEqual(saved['goals'][0], self.original['goals'][0])
+        self.page.get_by_role('button', name='Новая цель', exact=True).click()
         self.page.locator('#goalName').fill('Цель без начальных накоплений')
         self.type_money('#goalTarget', '10,01')
         self.goal_button().click()
         self.assertEqual([self.saved_state()['goals'][-1][key] for key in ('saved', 'monthly')], [0, 0])
 
     def test_manual_account_create_negative_update_and_zero_keep_other_rows_and_extensions(self):
-        self.prepare('settings')
+        self.prepare('accounts')
         self.page.locator('#v84AccountName').fill('Вымышленный кошелёк')
         self.type_money('#v84AccountAmount', '1 250,50')
         self.page.locator('#v84AccountSave').click()
@@ -139,9 +155,9 @@ class MoneyInputsConsistency(unittest.TestCase):
         self.assertEqual(saved['intelligence']['accounts'][1]['amount'], 1250.50)
         self.assertEqual(saved['intelligence']['accounts'][0], self.original['intelligence']['accounts'][0])
         # Edit through the existing row action; unknown fields on the edited record survive too.
-        self.page.locator('#v84AccountsList .v84-row').filter(
+        self.page.locator('#v84AccountsList .v117-account-card').filter(
             has=self.page.get_by_text('Старый вымышленный счёт', exact=True)
-        ).get_by_role('button', name='Изменить', exact=True).click()
+        ).get_by_role('button', name='Изменить снимок', exact=True).click()
         self.type_money('#v84AccountAmount', '-1\u202f250,50')
         self.page.locator('#v84AccountSave').click()
         saved = self.saved_state()
@@ -159,6 +175,7 @@ class MoneyInputsConsistency(unittest.TestCase):
 
     def test_budget_recurring_reserve_and_purchase_use_the_same_typed_amount(self):
         self.prepare('analytics')
+        self.open_surface('planning', '#v84BudgetAmount')
         self.type_money('#v84BudgetAmount', '1 250,50')
         self.page.locator('#v84BudgetsCard').get_by_role('button', name='Установить', exact=True).click()
         saved = self.saved_state()
@@ -170,6 +187,7 @@ class MoneyInputsConsistency(unittest.TestCase):
         saved = self.saved_state()
         self.assertEqual(saved['intelligence']['recurring'][-1]['amount'], 1250.50)
         self.assertEqual(saved['intelligence']['recurring'][0], self.original['intelligence']['recurring'][0])
+        self.open_surface('analytics', '#v87Reserve')
         self.type_money('#v87Reserve', '1\u202f250,50')
         self.page.locator('#v87AdvisorCard').get_by_role('button', name='Пересчитать', exact=True).click()
         saved = self.saved_state()
@@ -203,9 +221,9 @@ class MoneyInputsConsistency(unittest.TestCase):
         malformed = ('1,234', '1.2.3', '1e3', 'Infinity', 'NaN', '1 2',
                      '1 250,5.0', '90071992547409,91')
         surfaces = (
-            ('goals', '#goalTarget', '.goal-create button'),
-            ('goals', '#goalSaved', '.goal-create button'),
-            ('goals', '#goalMonthly', '.goal-create button'),
+            ('goals', '#goalTarget', '#v119GoalSubmit'),
+            ('goals', '#goalSaved', '#v119GoalSubmit'),
+            ('goals', '#goalMonthly', '#v119GoalSubmit'),
             ('settings', '#v84AccountAmount', '#v84AccountSave'),
             ('analytics', '#v84BudgetAmount', '[onclick="v84AddBudget()"]'),
             ('analytics', '#v84RecAmount', '[onclick="v84AddRecurring()"]'),
@@ -213,7 +231,7 @@ class MoneyInputsConsistency(unittest.TestCase):
             ('loans', '#v77PurchaseSum', '#v77SaveInstallmentBtn'),
         )
         for tab, selector, button in surfaces:
-            self.page.evaluate('(tab)=>go(tab)', tab)
+            self.open_surface(tab, selector)
             if tab == 'goals':
                 self.configure_goal()
             elif selector == '#v84AccountAmount':
@@ -234,9 +252,9 @@ class MoneyInputsConsistency(unittest.TestCase):
     def test_required_sign_and_range_validation_prevents_empty_zero_negative_or_excessive_save(self):
         self.prepare()
         cases = (
-            ('goals', '#goalTarget', '.goal-create button', ('', '0', '-1')),
-            ('goals', '#goalSaved', '.goal-create button', ('-1', '5000,01')),
-            ('goals', '#goalMonthly', '.goal-create button', ('-1',)),
+            ('goals', '#goalTarget', '#v119GoalSubmit', ('', '0', '-1')),
+            ('goals', '#goalSaved', '#v119GoalSubmit', ('-1', '5000,01')),
+            ('goals', '#goalMonthly', '#v119GoalSubmit', ('-1',)),
             ('settings', '#v84AccountAmount', '#v84AccountSave', ('', '1000000000000,01', '-1000000000000,01')),
             ('analytics', '#v84BudgetAmount', '[onclick="v84AddBudget()"]', ('', '0', '-1', '1000000000,01')),
             ('analytics', '#v84RecAmount', '[onclick="v84AddRecurring()"]', ('', '0', '-1', '1000000000,01')),
@@ -244,7 +262,7 @@ class MoneyInputsConsistency(unittest.TestCase):
             ('loans', '#v77PurchaseSum', '#v77SaveInstallmentBtn', ('', '0', '-1', '100000000,01')),
         )
         for tab, selector, button, values in cases:
-            self.page.evaluate('(tab)=>go(tab)', tab)
+            self.open_surface(tab, selector)
             if tab == 'goals':
                 self.configure_goal()
             elif selector == '#v84AccountAmount':

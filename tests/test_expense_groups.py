@@ -72,6 +72,7 @@ class ExpenseGroups(unittest.TestCase):
 
     def test_new_budget_uses_stable_id_version_and_never_updates_same_title_legacy(self):
         self.prepare();before=self.page.evaluate('JSON.parse(JSON.stringify(state))')
+        self.page.evaluate("go('planning');document.getElementById('v118LegacyLimits').closest('details').open=true")
         self.page.locator('#v84BudgetGroup').select_option('Досуг и привычки')
         self.page.locator('#v84BudgetAmount').fill('0.50')
         self.page.evaluate('v84AddBudget()')
@@ -90,12 +91,14 @@ class ExpenseGroups(unittest.TestCase):
         self.assertEqual(self.page.evaluate('state.intelligence.deleted.budgets'),before['intelligence']['deleted']['budgets'])
 
     def test_new_service_budget_updates_current_scope_and_survives_device_backup(self):
-        self.prepare();self.page.locator('#v84BudgetGroup').select_option('Подписки и сервисы')
+        self.prepare()
+        self.page.evaluate("go('planning');document.getElementById('v118LegacyLimits').closest('details').open=true")
+        self.page.locator('#v84BudgetGroup').select_option('Подписки и сервисы')
         self.page.locator('#v84BudgetAmount').fill('12.34');self.page.evaluate('v84AddBudget()')
         self.page.wait_for_function("!!localStorage.getItem(KEYS.pending)")
         saved=self.page.evaluate('state.intelligence.budgets.at(-1)')
         self.assertEqual((saved['groupId'],saved['groupVersion']),('subscriptions',2))
-        self.page.evaluate("go('settings')")
+        self.page.evaluate("v121OpenSettingsGroup('v121SyncSettings')")
         with self.page.expect_download() as result:
             self.page.get_by_role('button',name='↓ Полная копия устройства',exact=True).click()
         with tempfile.TemporaryDirectory() as directory:

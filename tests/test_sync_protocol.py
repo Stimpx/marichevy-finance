@@ -529,7 +529,8 @@ class SyncProtocol(unittest.TestCase):
         value = all_collections(); value['entries'] = []
         a, b = self.device(value), self.device(value)
         for page in (a, b):
-            page.evaluate("session=null")
+            # Exercise an authorized local action before the synthetic CAS race.
+            page.evaluate("session=null;showApp()")
             page.evaluate("v84ConfirmRecurring('recurring','2026-10')")
             page.evaluate("session={access_token:'synthetic-protocol-token',user:{id:'fictional-user'}}")
         self.concurrent_push(a, b)
@@ -542,7 +543,7 @@ class SyncProtocol(unittest.TestCase):
         value = all_collections(); value['entries'] = []
         a, b = self.device(value), self.device(value)
         for page in (a, b):
-            page.evaluate("session=null;v77PayPart('installment','part');session={access_token:'synthetic-protocol-token',user:{id:'fictional-user'}}")
+            page.evaluate("session=null;showApp();v77PayPart('installment','part');session={access_token:'synthetic-protocol-token',user:{id:'fictional-user'}}")
         self.concurrent_push(a, b)
         rows = [e for e in self.backend.data['entries'] if e.get('installmentId') == 'installment']
         self.assertEqual(len(rows), 1)
@@ -563,7 +564,7 @@ class SyncProtocol(unittest.TestCase):
         a, b = self.device(value), self.device(value)
         for page, plan_id, part_id in ((a, 'a:b', 'c'), (b, 'a', 'b:c')):
             page.evaluate('''ids => {
-                session=null;v77PayPart(ids[0],ids[1]);
+                session=null;showApp();v77PayPart(ids[0],ids[1]);
                 session={access_token:'synthetic-protocol-token',user:{id:'fictional-user'}};
             }''', [plan_id, part_id])
         self.concurrent_push(a, b)

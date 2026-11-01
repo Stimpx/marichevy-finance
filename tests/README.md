@@ -145,3 +145,23 @@ Auth UUID stand-ins не являются восстановлением Supabas
 Инструменты требуют явного разрешения на частные входы; действующий catalog-only
 доступ автоматически не расширяется до истории. Реальный резерв/restore остаётся
 незавершённым. Порядок: docs/PRIVATE_RESTORE_ACCEPTANCE.md.
+
+## v96: счета, план и повседневные действия
+
+```sh
+PYTHONPATH=tests python3 -m unittest test_v96_account_ledger test_v96_planning test_v96_operations test_v96_goals_chores test_human_navigation test_truthful_status test_human_budget_integration test_human_budget_protocol -v
+PYTHONPATH=tests python3 -m unittest test_local_data_safety test_sync_protocol test_sync_additional -v
+```
+
+Итоговый неизменный кандидат: **104/104** новых проверок и **63/63** проверок
+сохранности/синхронизации. `MARICHEVY_HTML=/absolute/path/index.html` выбирает
+другой исходник. Браузеры работают только с вымышленными данными и блокируют
+внешние запросы. `test_human_budget_protocol` использует установленный закреплённый
+образ PostgreSQL16 в Docker без сети и опубликованных портов; реальных реквизитов
+базы не требует. Новые тесты не применяют SQL к production.
+
+Отдельно повторены профильные старые проверки денег, действий, погоды, клавиатуры
+и адаптивности. В старых UI-тестах адаптированы только переходы к счетам/плану,
+раскрытие новых свёрнутых форм и разблокировка вымышленного приложения перед
+авторизованной записью. Денежные и CAS-утверждения сохранены. Отчёт выпуска:
+`docs/HUMAN_BUDGET_V96_RU.md`.
