@@ -1,0 +1,45 @@
+{
+  "pull_request": {
+    "number": 22,
+    "merged": true,
+    "head_sha": "9000b2d6c90d9f620f1e9c8fa8a2495ba6cbb9a8",
+    "actual_merge_sha": "b7bd606e8d86a95fd448badbef68cebf7e9c35aa"
+  },
+  "workflow": {
+    "id": 41354862058,
+    "workflow_id": 371287144,
+    "head_sha": "b7bd606e8d86a95fd448badbef68cebf7e9c35aa",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/Stimpx/marichevy-finance/actions/runs/41354862058",
+    "created_at": "2026-11-01T22:00:19Z",
+    "updated_at": "2026-11-01T22:01:12Z"
+  },
+  "canonical": {
+    "http_code": 200,
+    "url_effective": "https://finance.marichev.pro/",
+    "ssl_verify_result": 0,
+    "size_download": 3245567,
+    "checked_at_utc": "2026-11-01T22:01:41.585773+00:00",
+    "checked_at_moscow": "2026-11-02T01:01:41.585773+03:00",
+    "bytes": 3245567,
+    "sha256": "d7c167658ac456d2ee47e156baead6469c90e10129a8d8be7c688e4e14e93291"
+  },
+  "checks": {
+    "merged_pull_request": true,
+    "expected_head": true,
+    "expected_actual_merge": true,
+    "correct_workflow": true,
+    "actual_merge_sha": true,
+    "workflow_success": true,
+    "canonical_http200": true,
+    "canonical_exact_url": true,
+    "ordinary_tls_verified": true,
+    "exact_bytes": true,
+    "exact_sha256": true,
+    "csv_picker": true,
+    "tariffs_sidebar_direct": true,
+    "tariffs_mobile_direct": true,
+    "tariff_label": true
+  }
+}

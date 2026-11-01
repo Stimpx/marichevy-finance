@@ -9,7 +9,7 @@ import test_local_data_safety as harness
 
 
 PRIMARY = ('home', 'today', 'history', 'analytics')
-MORE = ('accounts', 'planning', 'income', 'car', 'loans', 'goals', 'chores', 'dates', 'settings', 'help')
+MORE = ('accounts', 'planning', 'income', 'car', 'loans', 'goals', 'chores', 'dates', 'settings', 'help', 'plans')
 
 
 class MobileMoreNavigation(unittest.TestCase):

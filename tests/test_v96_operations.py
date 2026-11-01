@@ -23,6 +23,8 @@ class HumanOperations(unittest.TestCase):
         self.open()
         self.page.evaluate("""() => {
           stopCloudSync();session=null;localStorage.clear();state=blankState();
+          // CSV fixtures and ledger opening use the same deterministic day.
+          today=()=> '2026-11-01';month=()=> '2026-11';
           localRecoveryBlocked=false;window.__FINANCE_BRIDGE__=undefined;
           const d=today(),stamp=new Date().toISOString();
           const account=(id,name,balance,kind='asset')=>({id,name,amount:balance,

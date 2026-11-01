@@ -100,8 +100,8 @@ class HumanNavigation(unittest.TestCase):
 
     def test_daily_navigation_and_help_about_preserve_single_canonical_cards(self):
         self.prepare()
-        self.assertEqual(self.page.locator('#nav [data-page="plans"]').count(),0)
-        self.assertEqual(self.page.locator('#v74MorePanel [data-page="plans"]').count(),0)
+        self.assertEqual(self.page.locator('#nav [data-page="plans"]').count(),1)
+        self.assertEqual(self.page.locator('#v74MorePanel [data-page="plans"]').count(),1)
         for page in ('accounts','planning'):
             self.page.locator(f'#v121HomeSummary button[onclick="go(\'{page}\')"]').click()
             expect(self.page.locator(f'#{page}')).to_be_visible()
@@ -113,9 +113,11 @@ class HumanNavigation(unittest.TestCase):
         expect(self.page.locator('#planning')).to_be_visible()
         expect(self.page.locator('#v86Calendar')).to_be_visible()
         self.page.evaluate("go('help')")
-        self.page.get_by_role('button',name='О приложении и обновления',exact=True).click()
+        self.page.locator('#help').get_by_role('button',name='Тарифы FREE / PRO',exact=True).click()
         expect(self.page.locator('#plans')).to_be_visible()
-        self.assertFalse(self.page.locator('#v121ProductPreview').evaluate('(node)=>node.open'))
+        self.assertEqual(self.page.locator('#v121ProductPreview').count(),0)
+        expect(self.page.locator('#plans [data-plan="free"]')).to_be_visible()
+        expect(self.page.locator('#plans [data-plan="pro"]')).to_be_visible()
         self.assert_readonly()
 
     def test_back_forward_restore_filters_and_scroll_without_saving_financial_data(self):

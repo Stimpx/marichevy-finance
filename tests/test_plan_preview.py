@@ -82,7 +82,7 @@ class PlanPreview(unittest.TestCase):
 
     def test_version_changes_and_future_pro_plus_have_no_unknown_price_checkout(self):
         self.prepare()
-        self.assertIn('Кандидат v95',self.page.locator('#v96PlanVersion').inner_text())
+        self.assertIn('Возможности приложения',self.page.locator('#v96PlanVersion').inner_text())
         changes=self.page.locator('.v96-plans-changes').inner_text()
         for phrase in ['Калькулятор','Редактирование','Полная копия устройства']:
             self.assertIn(phrase,changes)

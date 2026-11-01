@@ -180,3 +180,17 @@ PYTHONPATH=tests python3 -m unittest test_mobile_date_alignment test_mobile_mont
 **78/78 PASS**. Все внешние запросы блокируются; реальные данные не используются.
 Доступен Chromium, физический iPhone/Safari не заявляется как проверенный.
 Отчёт: `docs/MOBILE_CAPITAL_20261102_RU.md`.
+
+## Выбор CSV и тарифы · 2 ноября
+
+```sh
+PYTHONPATH=tests python3 -m unittest test_csv_file_picker_ui test_tariff_navigation test_v96_operations test_dialog_keyboard test_global_selects test_human_navigation test_mobile_more_navigation test_plan_preview -v
+```
+
+**77/77 PASS**: 10 новых и 67 профильных прежних проверок. Проверяются настоящий
+системный выбор файла, клавиатура, UTF-8, отмена/замена, безопасное имя, повтор
+после ошибки без дублей, прямой доступ к сразу видимым тарифам, активное меню,
+Back/Forward, цены и недоступность оплаты. Финансовые данные вымышленные,
+внешние запросы заблокированы. День старых CSV-фикстур закреплён согласованно
+с началом тестового учёта, чтобы полночь не меняла их смысл.
+Отчёт: `docs/CSV_TARIFFS_20261102_RU.md`.
