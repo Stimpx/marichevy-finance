@@ -1810,6 +1810,20 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 @container v99home (max-width:650px){.v99-spending-scales,.v99-home-slices{grid-template-columns:minmax(0,1fr)}.v99-spending-head-side{flex-direction:column;gap:12px}.v99-spending-head .donut-ring{width:64px;height:64px;min-width:64px}.v99-direction-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}.v99-spending-scales .bar-top b{white-space:normal;overflow-wrap:anywhere;text-align:right;max-width:50%}.v99-section-heading{flex-wrap:wrap}}
 @container v99home (max-width:360px){.v99-spending-head{padding:16px;gap:12px}.v99-spending-head-side{display:none}.v99-spending-head .month-select{font-size:12px;width:100%;max-width:100%;padding:8px 26px 8px 10px}.v99-expense-total{font-size:29px}.v99-spending-head>div:first-child{width:100%}.v99-section-heading>strong{white-space:normal;overflow-wrap:anywhere}}
 
+/* Both reports share header and row tracks when displayed side by side. */
+#familyBars{display:grid;gap:4px}
+@supports(grid-template-rows:subgrid){
+ @media(min-width:761px){
+  @container v99home (min-width:651px){
+   .v99-spending-scales{grid-template-rows:repeat(var(--v116-chart-row-count),auto);row-gap:0}
+   .v99-spending-scales>.card{display:grid;grid-template-rows:subgrid;grid-row:span var(--v116-chart-row-count)}
+   .v99-spending-scales>.card>h2{grid-row:1}
+   .v99-spending-scales>.card>.hint{grid-row:2}
+   #categoryLegend,#familyBars{display:grid;grid-template-rows:subgrid;grid-row:3/-1;gap:4px}
+   .v99-spending-scales :is(.v99-category-row,.v84-drill-bar){display:grid;grid-template-rows:minmax(0,1fr) 8px;align-self:stretch}
+  }
+ }
+}
 .v114-scope-note{line-height:1.55;overflow-wrap:anywhere}
 #v84DrillModal .v114-scope-note{margin:0 0 16px}
 #v84DrillModal .v84-modal-head{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start}
@@ -5543,6 +5557,7 @@ function renderHome(){
    const breakdownSum=people.reduce((v,[,amount])=>v+amount,0);
    const summary=`<div class="spending-special-note v862-total-note">Всего по назначениям: <strong>${money2(breakdownSum)}</strong> · ${Math.abs(breakdownSum-exSum)<0.01?'совпадает с расходами месяца':'проверьте записи'}</div>`;
    familyBars.innerHTML=(peopleHtml||'<div class="empty">Пока нет расходов по назначению.</div>')+summary;
+   document.querySelector('.v99-spending-scales')?.style.setProperty('--v116-chart-row-count',String(Math.max(document.getElementById('categoryLegend').children.length,familyBars.children.length)+2));
  }
  const recent=[...state.entries].sort((a,b)=>b.date.localeCompare(a.date)||String(b.created_at).localeCompare(String(a.created_at))).slice(0,document.getElementById('home').classList.contains('v73-focus')?3:8);
  document.getElementById('recent').innerHTML=recent.length?`<div class="v96-recent-list" role="list">${recent.map(e=>`<article class="v96-recent-row" role="listitem"><div class="v96-recent-main">${v96MerchantBadge(e.store)}<div class="v96-recent-copy"><b>${esc(v96MerchantDisplayName(e.store)||e.category)}</b><small>${esc(typeName(e.type))} · ${esc(e.category||'Без категории')}</small></div></div><strong class="v96-recent-amount ${e.type==='income'?'money-green':isExpense(e)?'money-red':''}">${amountText(e)}</strong><div class="v96-recent-details">${esc(String(e.date||'').split('-').reverse().join('.'))} · ${esc(e.type==='expense'?v86ExpenseTarget(e):e.who||'—')}${e.comment?' · '+esc(e.comment):''}</div><div class="v96-recent-actions">${v112EntryAction('entry-edit',e)}${v112EntryAction('entry-repeat',e)}${v112EntryAction('favorite-from-entry',e)}${v112EntryAction('entry-delete',e)}</div></article>`).join('')}</div>`:'<div class="empty">Операций пока нет.</div>'
