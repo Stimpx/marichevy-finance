@@ -25,7 +25,8 @@ class FinancialFollowup(unittest.TestCase):
             category:'Прочее',who:'Виктория',store:'Fictional shop'});
           const snapshot=()=>({memory:JSON.stringify(state),
             primary:localStorage.getItem(KEYS.state),pending:localStorage.getItem(KEYS.pending)});
-          const lastNotice=()=>[...document.body.children].findLast(el=>el.style.zIndex==='200')?.textContent||'';
+          const lastNotice=()=>document.querySelector('#v114ToastRegion .v114-toast')?.textContent||
+            [...document.body.children].findLast(el=>el.style.zIndex==='200')?.textContent||'';
           const editToIncome=async(id)=>{openEdit(id);xType.value='income';xWho.value='Виктория';await saveEdit()};
         ''' + code + '\n}')
 
