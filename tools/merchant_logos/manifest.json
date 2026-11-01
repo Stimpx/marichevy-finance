@@ -182,17 +182,37 @@
   },
   "avito": {
     "file": "avito.svg",
-    "sha256": "b39c184cc3c3d17b8f1c34ea8c0ef120721fb71e1199c19015baa911e2f380e3",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/avito.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "b39c184cc3c3d17b8f1c34ea8c0ef120721fb71e1199c19015baa911e2f380e3",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/avito.svg"
+  },
+  "avoska": {
+    "bytes": 681,
+    "copied_without_modification": false,
+    "file": "avoska.png",
+    "height": 16,
+    "mode": "RGBA",
+    "not_official_repository": true,
+    "origin_status": "merchant domain identified by third-party archive; asset not requested directly from official site",
+    "origin_url": "https://avoska.ru/",
+    "processing": "ICO bitmap decoded losslessly to PNG; no crop, recolouring or resizing",
+    "repository": "https://github.com/zenmoney/brands",
+    "sha256": "8341a5fdec49673fceb55b94a7e0791b2ee0c863c58ab76e02c2ca38bc32e083",
+    "source_commit": "8eb377b231cb3691e645f1da15a727fddef5d443",
+    "source_kind": "Zenmoney archived merchant-domain brand icon (third-party copy)",
+    "source_path": "brands/av/avoska.ru/icon.ico",
+    "source_sha256": "20d9bdadb2b09651c2f4694d9f9132c674d5010c170d08dfb709de9033eb986b",
+    "source_url": "https://raw.githubusercontent.com/zenmoney/brands/8eb377b231cb3691e645f1da15a727fddef5d443/brands/av/avoska.ru/icon.ico",
+    "visual_verified": true,
+    "width": 16
   },
   "azbuka-vkusa": {
     "file": "azbuka-vkusa.svg",
-    "sha256": "afd0edf0201263f02e38a4bb0503884a873cfc873d512d9cb44a33f36499dcf1",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/azbukavkusa.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "afd0edf0201263f02e38a4bb0503884a873cfc873d512d9cb44a33f36499dcf1",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/azbukavkusa.svg"
   },
   "bashneft": {
     "brand_mapping_note": null,
@@ -220,10 +240,10 @@
   },
   "beeline": {
     "file": "beeline.svg",
-    "sha256": "90214c1e46bd80a4d38ba7272e8f4a08b7a88504264543a38a571849c0b0cf9c",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/telecom/beeline.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "90214c1e46bd80a4d38ba7272e8f4a08b7a88504264543a38a571849c0b0cf9c",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/telecom/beeline.svg"
   },
   "befree": {
     "brand_mapping_note": null,
@@ -392,17 +412,17 @@
   },
   "chizhik": {
     "file": "chizhik.svg",
-    "sha256": "895e22cfe10664d1974aec77f6e3350170bef351519569b7b1cc6332d4aa2ef4",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/chizhik.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "895e22cfe10664d1974aec77f6e3350170bef351519569b7b1cc6332d4aa2ef4",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/chizhik.svg"
   },
   "citilink": {
     "file": "citilink.svg",
-    "sha256": "dc66924468ec5799142d0ea222fd665021299a3849b48af9fc0d1901af13e094",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/citilink.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "dc66924468ec5799142d0ea222fd665021299a3849b48af9fc0d1901af13e094",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/citilink.svg"
   },
   "coffee-house": {
     "brand_mapping_note": null,
@@ -490,6 +510,27 @@
     "upstream_sources_url": "https://raw.githubusercontent.com/su23/kazna-catalog/d520b49563f8d35a51d30218bfe4f0978d982ec6/packs/ru-kids-pets/sources.json",
     "width": 128
   },
+  "dialog": {
+    "brand_mapping_note": "Pinned template associates seller4.png with Аптека «Диалог» and dialog.ru; verified red/green heart and ДИАЛОГ аптечная сеть wordmark.",
+    "bytes": 8364,
+    "copied_without_modification": true,
+    "file": "dialog.png",
+    "height": 58,
+    "licence": "Trademark; artwork belongs to the merchant",
+    "mapping_proof_url": "https://raw.githubusercontent.com/nikondi/evers/8db10de897a0850d116bfa681b7c85bf29fbd6f2/resources/views/pages/about/sellers.php",
+    "mode": "RGBA",
+    "not_official_repository": true,
+    "origin_status": "merchant name and domain verified in pinned partner template; original brand asset URL not recorded",
+    "origin_url": "https://dialog.ru/",
+    "repository": "https://github.com/nikondi/evers",
+    "sha256": "7a79894d0f568b30de60a9b911d4ebbd86354e32bdeb497c892ff3860dbb4607",
+    "source_commit": "8db10de897a0850d116bfa681b7c85bf29fbd6f2",
+    "source_kind": "Third-party archived pharmacy partner logo; exact merchant name/domain documented in pinned PHP template",
+    "source_path": "public/assets/img/about/sellers/seller4.png",
+    "source_url": "https://raw.githubusercontent.com/nikondi/evers/8db10de897a0850d116bfa681b7c85bf29fbd6f2/public/assets/img/about/sellers/seller4.png",
+    "visual_verified": true,
+    "width": 184
+  },
   "dixy": {
     "brand_mapping_note": null,
     "bytes": 9927,
@@ -516,10 +557,10 @@
   },
   "dns": {
     "file": "dns.svg",
-    "sha256": "bf4d8c0059ae61bf6ac6dc3e3cc0035a82e0557628746898cb1691fe71023525",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/dns.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "bf4d8c0059ae61bf6ac6dc3e3cc0035a82e0557628746898cb1691fe71023525",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/dns.svg"
   },
   "doctor-stoletov": {
     "brand_mapping_note": "Exact project brand matched to recognizable logo; no placeholder initials",
@@ -544,10 +585,55 @@
   },
   "dodo": {
     "file": "dodo.svg",
-    "sha256": "efc020231c7b4a64d2976db9726747ca8016be8c70cafbf0ff9964a90af18b21",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/food/dodopizza.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "efc020231c7b4a64d2976db9726747ca8016be8c70cafbf0ff9964a90af18b21",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/food/dodopizza.svg"
+  },
+  "domovoy": {
+    "bytes": 203,
+    "copied_without_modification": false,
+    "file": "domovoy.svg",
+    "height": 48,
+    "identity_status": "Corroborated by full Domovoy home-goods wordmark in independent pinned bookmarks snapshot, explicitly linked to tddomovoy.ru.",
+    "licence": "Trademark",
+    "mapping_proof_html_url": "https://raw.githubusercontent.com/PolBanky/PolBanky.github.io/e8746dd123aa4eb7c5ae2538eed1c4def6f18a3a/inet/index.html",
+    "mapping_proof_note": "Pinned HTML labels ТД Домовой and links tddomovoy.ru beside logoDomovoy1.png. Full image spells Домовой / Товары для дома and shows the matching roof-shaped first letter.",
+    "mapping_proof_url": "https://raw.githubusercontent.com/PolBanky/PolBanky.github.io/e8746dd123aa4eb7c5ae2538eed1c4def6f18a3a/img/logoDomovoy1.png",
+    "mode": "SVG",
+    "not_official_repository": true,
+    "origin_status": "archived-copy; official-domain identity hint, no claim of direct official fetch",
+    "origin_url": "https://tddomovoy.ru/",
+    "original_sha256": "9cdc384246eacd3da88df37c79d911f4f69185da208b8d32cfebe092dc4b440b",
+    "processing": "Extracted original innermost static SVG from duplicate wrappers and removed no-op media filter styles. Original path d and fill preserved; source omits runtime accessibility attributes, which the builder adds after validation.",
+    "repository": "https://github.com/zenmoney/brands",
+    "sha256": "e48c3f3741d477cf80f29d5a346a30efc61c90d4e5cf6246ab2139445df0de2c",
+    "source_commit": "8eb377b231cb3691e645f1da15a727fddef5d443",
+    "source_kind": "Third-party archived Domovoy home-goods brand SVG from merchant-domain catalogue",
+    "source_path": "brands/td/tddomovoy.ru/icon.svg",
+    "source_url": "https://raw.githubusercontent.com/zenmoney/brands/8eb377b231cb3691e645f1da15a727fddef5d443/brands/td/tddomovoy.ru/icon.svg",
+    "visual_verified": true,
+    "width": 46
+  },
+  "double-b": {
+    "bytes": 10516,
+    "copied_without_modification": false,
+    "file": "double-b.png",
+    "height": 149,
+    "mode": "RGBA",
+    "not_official_repository": true,
+    "origin_status": "merchant domain identified by third-party archive; asset not requested directly from official site",
+    "origin_url": "https://double-b.ru/",
+    "processing": "Static source SVG rasterized by Chromium at 128px width with original aspect ratio; no crop or recolouring",
+    "repository": "https://github.com/zenmoney/brands",
+    "sha256": "045553e46f68d673141d0977d9ddf37ee810b6070e7a62c164fd1707a77cf2ee",
+    "source_commit": "8eb377b231cb3691e645f1da15a727fddef5d443",
+    "source_kind": "Zenmoney archived merchant-domain brand icon (third-party copy)",
+    "source_path": "brands/do/double-b.ru/icon.svg",
+    "source_sha256": "a8f181fc6c24a7d1b9e5e2e5a7dbeaba8112232dba53c909a2056f38632d8c38",
+    "source_url": "https://raw.githubusercontent.com/zenmoney/brands/8eb377b231cb3691e645f1da15a727fddef5d443/brands/do/double-b.ru/icon.svg",
+    "visual_verified": true,
+    "width": 128
   },
   "eapteka": {
     "brand_mapping_note": null,
@@ -621,6 +707,27 @@
     "upstream_sources_url": "https://raw.githubusercontent.com/su23/kazna-catalog/d520b49563f8d35a51d30218bfe4f0978d982ec6/packs/ru-fashion/sources.json",
     "width": 128
   },
+  "farmlend": {
+    "brand_mapping_note": "The pinned purchase-partner HTML links this exact image to the merchant domain; logo visually checked.",
+    "bytes": 5505,
+    "copied_without_modification": true,
+    "file": "farmlend.png",
+    "height": 62,
+    "licence": "Trademark; artwork belongs to the merchant",
+    "mapping_proof_url": "https://raw.githubusercontent.com/htmltest/project228/6e65859a6a7d9b375338187007b777efcac8ebb1/windows/buy.html",
+    "mode": "RGBA",
+    "not_official_repository": true,
+    "origin_status": "merchant-domain link verified in pinned partner page; original brand asset URL not recorded",
+    "origin_url": "https://farmlend.ru/",
+    "repository": "https://github.com/htmltest/project228",
+    "sha256": "ac7835f0f448c81d706c8a5ae7c48a3c141040e2a2295d37532f7c5628a1629e",
+    "source_commit": "6e65859a6a7d9b375338187007b777efcac8ebb1",
+    "source_kind": "Third-party archived pharmacy partner logo; merchant link documented in pinned HTML",
+    "source_path": "files/buy-logo-farmlend.png",
+    "source_url": "https://raw.githubusercontent.com/htmltest/project228/6e65859a6a7d9b375338187007b777efcac8ebb1/files/buy-logo-farmlend.png",
+    "visual_verified": true,
+    "width": 227
+  },
   "fasol": {
     "bytes": 3933,
     "copied_without_modification": true,
@@ -642,10 +749,10 @@
   },
   "fix-price": {
     "file": "fix-price.svg",
-    "sha256": "157100cfeb77c4181e31abb03bc6c9578eef225d9e7cc22929f6620ced2524e1",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/fixprice.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "157100cfeb77c4181e31abb03bc6c9578eef225d9e7cc22929f6620ced2524e1",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/fixprice.svg"
   },
   "flowwow": {
     "bytes": 5424,
@@ -692,10 +799,10 @@
   },
   "gazprom-azs": {
     "file": "gazprom-azs.svg",
-    "sha256": "b42bda6243ce567089c7389d87373f6987ffc38f5f8c1386d6b0b2ff187ece6a",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/gas-stations/gazprom.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "b42bda6243ce567089c7389d87373f6987ffc38f5f8c1386d6b0b2ff187ece6a",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/gas-stations/gazprom.svg"
   },
   "gazpromneft": {
     "brand_mapping_note": null,
@@ -747,10 +854,10 @@
   },
   "gold-apple": {
     "file": "gold-apple.svg",
-    "sha256": "ee29dcaee92e841c520c0c39b022bcdaee7bbd6b9bbc5ab08c6546496131729f",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/goldenapple.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "ee29dcaee92e841c520c0c39b022bcdaee7bbd6b9bbc5ab08c6546496131729f",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/goldenapple.svg"
   },
   "gorzdrav": {
     "brand_mapping_note": null,
@@ -776,12 +883,32 @@
     "upstream_sources_url": "https://raw.githubusercontent.com/su23/kazna-catalog/d520b49563f8d35a51d30218bfe4f0978d982ec6/packs/ru-pharmacies/sources.json",
     "width": 128
   },
+  "gulliver": {
+    "brand_mapping_note": "Gulliver Market childrens-clothing wordmark; original geometry unchanged, not a grocery logo.",
+    "bytes": 8080,
+    "copied_without_modification": true,
+    "file": "gulliver.svg",
+    "height": 47,
+    "mode": "SVG",
+    "not_official_repository": true,
+    "origin_description": "Same pinned repository offer identifies brandSlug gulliver as productName Гулливер для детей, category kids/kids-clothing; SVG reads Gulliver Market, an existing catalogue alias. Not the same-named grocery chain.",
+    "origin_status": "third-party listing identity verified; original official asset URL not recorded",
+    "repository": "https://github.com/advertum-tech/advertum-cashback",
+    "sha256": "abac909913beaf662810950441633d111aa99de4e6aa151efd4c93ff2bb215c4",
+    "source_commit": "c63da2539b0786f14c653b752710d49e82b7eb36",
+    "source_kind": "Third-party childrens-retailer cashback listing SVG",
+    "source_path": "public/brands/logos/gulliver.svg",
+    "source_url": "https://raw.githubusercontent.com/advertum-tech/advertum-cashback/c63da2539b0786f14c653b752710d49e82b7eb36/public/brands/logos/gulliver.svg",
+    "upstream_sources_url": "https://raw.githubusercontent.com/advertum-tech/advertum-cashback/c63da2539b0786f14c653b752710d49e82b7eb36/page-props/cashback/detskaya-odezhda-i-obuv-premium-segmenta.json",
+    "visual_verified": true,
+    "width": 112
+  },
   "hoff": {
     "file": "hoff.svg",
-    "sha256": "14b5f06d965b082ab088603cb8ede49aa6c0149e8747fe0e7dbd0c5c0359ee7d",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/hoff.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "14b5f06d965b082ab088603cb8ede49aa6c0149e8747fe0e7dbd0c5c0359ee7d",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/hoff.svg"
   },
   "holodilnik": {
     "bytes": 1031,
@@ -843,10 +970,10 @@
   },
   "invitro": {
     "file": "invitro.svg",
-    "sha256": "fe4ba20c98e1a129fe1a2a79a07ddb5d4d2dd33c6a9b6d764ac00505412f5037",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/health/invitro.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "fe4ba20c98e1a129fe1a2a79a07ddb5d4d2dd33c6a9b6d764ac00505412f5037",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/health/invitro.svg"
   },
   "irbis": {
     "bytes": 1820,
@@ -913,10 +1040,10 @@
   },
   "kari": {
     "file": "kari.svg",
-    "sha256": "964b12f755fd0dd4a18d6358cb9bf5d5c7df38ae6b1023256e5c01e54d99b60a",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/kari.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "964b12f755fd0dd4a18d6358cb9bf5d5c7df38ae6b1023256e5c01e54d99b60a",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/kari.svg"
   },
   "kfc": {
     "brand_mapping_note": null,
@@ -963,17 +1090,58 @@
   },
   "kinopoisk": {
     "file": "kinopoisk.svg",
-    "sha256": "3bd236068195c6fa49cebc7ee4554ab16feb20b92107c663a672b6fa9676ecd7",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/video/kinopoisk.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "3bd236068195c6fa49cebc7ee4554ab16feb20b92107c663a672b6fa9676ecd7",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/video/kinopoisk.svg"
+  },
+  "korablik": {
+    "brand_mapping_note": "Actual blue/orange Кораблик childrens-store wordmark with boat; unrelated generic boat application mark was rejected. Original whitespace/artwork preserved.",
+    "bytes": 13228,
+    "copied_without_modification": true,
+    "file": "korablik.png",
+    "height": 200,
+    "mode": "RGBA",
+    "not_official_repository": true,
+    "origin_description": "Provider manifest names Кораблик (Бонусы), describes bonus-card balance for store network korablik.ru, and references the same icon.png",
+    "origin_status": "merchant domain documented by provider; original image URL not recorded",
+    "origin_url": "http://www.korablik.ru/",
+    "repository": "https://github.com/dukei/any-balance-providers",
+    "sha256": "05d81fbd38e6045a1ab755b59c45dead750291a348ee207bceef42be56543720",
+    "source_commit": "5541c8cfffba17b5421d803f23ea692429e4f56c",
+    "source_kind": "AnyBalance merchant bonus-provider icon (third-party copy)",
+    "source_path": "providers/ab-bonus-korablik/icon.png",
+    "source_url": "https://raw.githubusercontent.com/dukei/any-balance-providers/5541c8cfffba17b5421d803f23ea692429e4f56c/providers/ab-bonus-korablik/icon.png",
+    "upstream_sources_url": "https://raw.githubusercontent.com/dukei/any-balance-providers/5541c8cfffba17b5421d803f23ea692429e4f56c/providers/ab-bonus-korablik/anybalance-manifest.xml",
+    "visual_verified": true,
+    "width": 220
   },
   "krasnoe-beloe": {
     "file": "krasnoe-beloe.svg",
-    "sha256": "327d120ffc12d2ea57178d38ea089124a31a6bf0c76eea56c003b3cb9b7fe5fd",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/krasnoeibeloe.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "327d120ffc12d2ea57178d38ea089124a31a6bf0c76eea56c003b3cb9b7fe5fd",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/krasnoeibeloe.svg"
+  },
+  "krasny-yar": {
+    "bytes": 7652,
+    "copied_without_modification": false,
+    "file": "krasny-yar.png",
+    "height": 256,
+    "mode": "RGB",
+    "not_official_repository": true,
+    "origin_status": "merchant domain identified by third-party archive; asset not requested directly from official site",
+    "origin_url": "https://krasyar.ru/",
+    "processing": "ICO bitmap decoded losslessly to PNG; no crop, recolouring or resizing",
+    "repository": "https://github.com/zenmoney/brands",
+    "sha256": "a742ad6b5e0ac03c1af3f33e621465bf126fcf517ebfa9a8e566c3e953b509b8",
+    "source_commit": "8eb377b231cb3691e645f1da15a727fddef5d443",
+    "source_kind": "Zenmoney archived merchant-domain brand icon (third-party copy)",
+    "source_path": "brands/kr/krasyar.ru/icon.ico",
+    "source_sha256": "e827d3f3cd103890206a9aeed32a2d362787777a62db62c8ecc61457edeed1e1",
+    "source_url": "https://raw.githubusercontent.com/zenmoney/brands/8eb377b231cb3691e645f1da15a727fddef5d443/brands/kr/krasyar.ru/icon.ico",
+    "visual_verified": true,
+    "width": 256
   },
   "kroshka-kartoshka": {
     "bytes": 81373,
@@ -1018,6 +1186,25 @@
     "upstream_sources_url": "https://raw.githubusercontent.com/su23/kazna-catalog/d520b49563f8d35a51d30218bfe4f0978d982ec6/packs/ru-food-delivery/sources.json",
     "width": 128
   },
+  "kuulklever": {
+    "brand_mapping_note": "Separate KuulKlever umbrella entry; not asserted to be the distinct Myasnov logo.",
+    "bytes": 229998,
+    "copied_without_modification": true,
+    "file": "kuulklever.png",
+    "height": 512,
+    "mode": "RGBA",
+    "not_official_repository": true,
+    "origin_status": "archive-domain-hint; official asset URL not independently requested",
+    "origin_url": "https://coolclever.ru/",
+    "repository": "https://github.com/zenmoney/brands",
+    "sha256": "ee229193769fc8f80494c52cc09401e77482aebd4dd3cf16f2888d65c3e8a852",
+    "source_commit": "8eb377b231cb3691e645f1da15a727fddef5d443",
+    "source_kind": "Zenmoney merchant-domain PNG icon (third-party archived copy)",
+    "source_path": "brands/co/coolclever.ru/icon.png",
+    "source_url": "https://raw.githubusercontent.com/zenmoney/brands/8eb377b231cb3691e645f1da15a727fddef5d443/brands/co/coolclever.ru/icon.png",
+    "visual_verified": true,
+    "width": 512
+  },
   "lamoda": {
     "brand_mapping_note": null,
     "bytes": 2710,
@@ -1041,6 +1228,28 @@
     "upstream_processing": "unchanged",
     "upstream_sources_url": "https://raw.githubusercontent.com/su23/kazna-catalog/d520b49563f8d35a51d30218bfe4f0978d982ec6/packs/ru-fashion/sources.json",
     "width": 128
+  },
+  "le-murrr": {
+    "bytes": 5577,
+    "copied_without_modification": false,
+    "file": "le-murrr.png",
+    "height": 120,
+    "licence": "Trademark",
+    "mode": "RGBA",
+    "not_official_repository": true,
+    "origin_status": "Archive domain verified; official asset not requested directly",
+    "origin_url": "https://lemurrr.ru/",
+    "original_sha256": "278a95eb73fb24fe20c63c67c68073e0d3eef0808212bee25a3fe19a7068ed73",
+    "processing": "Lossless ICO DIB decoding to PNG via Pillow; no recoloring, resampling or redrawing.",
+    "repository": "https://github.com/zenmoney/brands",
+    "sha256": "0dc5772f1ba0c05bd00cafbda842c0a6358c0d321ad7eea1639071921da68953",
+    "source_commit": "8eb377b231cb3691e645f1da15a727fddef5d443",
+    "source_kind": "Third-party archived merchant-domain favicon (ICO)",
+    "source_path": "brands/le/lemurrr.ru/icon.ico",
+    "source_url": "https://raw.githubusercontent.com/zenmoney/brands/8eb377b231cb3691e645f1da15a727fddef5d443/brands/le/lemurrr.ru/icon.ico",
+    "visual_note": "Yellow curled lemur tail mark, transparent background.",
+    "visual_verified": true,
+    "width": 120
   },
   "lemana-pro": {
     "brand_mapping_note": null,
@@ -1092,10 +1301,10 @@
   },
   "letoile": {
     "file": "letoile.svg",
-    "sha256": "dd20ce7b52cc3c8502cea2ee2315ba8d9de36df0cc079a9716b1248c8ff31d3e",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/letual.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "dd20ce7b52cc3c8502cea2ee2315ba8d9de36df0cc079a9716b1248c8ff31d3e",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/letual.svg"
   },
   "litres": {
     "brand_mapping_note": null,
@@ -1123,17 +1332,41 @@
   },
   "lukoil": {
     "file": "lukoil.svg",
-    "sha256": "8a9f6c96be01141ed6c22a4c325708c5f613b90d62b035f3bdee795b35960af4",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/gas-stations/lukoil.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "8a9f6c96be01141ed6c22a4c325708c5f613b90d62b035f3bdee795b35960af4",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/gas-stations/lukoil.svg"
+  },
+  "magizoo": {
+    "background_source_url": "https://raw.githubusercontent.com/Denis-Gluhov/simple/b0523f9628b69162a2b18bed1f4549ccbf8aaf29/core-resources/src/main/res/values/colors.xml",
+    "bytes": 5117,
+    "copied_without_modification": false,
+    "file": "magizoo.svg",
+    "height": 41,
+    "layout_source_url": "https://raw.githubusercontent.com/Denis-Gluhov/simple/b0523f9628b69162a2b18bed1f4549ccbf8aaf29/feature-splash/src/main/res/layout/fragment_splash.xml",
+    "licence": "Trademark",
+    "mode": "SVG",
+    "not_official_repository": true,
+    "origin_status": "Not directly requested; app package ru.magizoo.magizoo and app_name Magizoo identify exact merchant",
+    "origin_url": "https://magizoo.ru/",
+    "original_sha256": "a0fae99d9e9d83aed6d8bd62fb3424101695f763c2e502d269c973b6b860a370",
+    "processing": "Lossless Android vector path/fill attributes converted to SVG. Original app background colorPrimary #0E5542 added behind original white/gold wordmark for contrast; no path editing.",
+    "repository": "https://github.com/Denis-Gluhov/simple",
+    "sha256": "9f55219b61f05959b06ec7079285847bce21054f752258bbce8cccb9d5b2f892",
+    "source_commit": "b0523f9628b69162a2b18bed1f4549ccbf8aaf29",
+    "source_kind": "Third-party developer archive of Magizoo Android app wordmark vector",
+    "source_path": "app/src/main/res/drawable/ic_logo.xml",
+    "source_url": "https://raw.githubusercontent.com/Denis-Gluhov/simple/b0523f9628b69162a2b18bed1f4549ccbf8aaf29/app/src/main/res/drawable/ic_logo.xml",
+    "visual_note": "Visually inspected rendered original MAGIZOO.RU white/gold wordmark on the original app green (#0E5542) background. Wide lockup; parent should review tiny-badge legibility.",
+    "visual_verified": true,
+    "width": 221
   },
   "magnit": {
     "file": "magnit.svg",
-    "sha256": "c24753b649a79b4e7f820306503af7aafd9ef3b7c92250085179366dcf358d16",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/magnit.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "c24753b649a79b4e7f820306503af7aafd9ef3b7c92250085179366dcf358d16",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/magnit.svg"
   },
   "magnit-cosmetic": {
     "brand_mapping_note": "Upstream key m-kosmetik",
@@ -1157,6 +1390,30 @@
     "upstream_note": "formerly Magnit Kosmetik; the app-style favicon",
     "upstream_processing": "rendered/cropped to the mark, fitted to 128x128 RGBA with a 6 px margin",
     "upstream_sources_url": "https://raw.githubusercontent.com/su23/kazna-catalog/d520b49563f8d35a51d30218bfe4f0978d982ec6/packs/ru-beauty/sources.json",
+    "width": 128
+  },
+  "magnit-market": {
+    "brand_mapping_note": "Pinned filename kazanexpress.png contains current Magnit Market red mark; source explicitly states 2024 rebrand. Catalogue brand remains magnit-market.",
+    "bytes": 7360,
+    "copied_without_modification": true,
+    "file": "magnit-market.png",
+    "height": 128,
+    "licence": "trademark",
+    "mode": "RGBA",
+    "not_official_repository": true,
+    "origin_description": "Current Magnit Market mark; upstream documents former KazanExpress key retained after 2024 rebrand",
+    "origin_status": "documented-by-upstream; official URL not directly requested",
+    "origin_url": "https://mm.ru/favicon.svg",
+    "repository": "https://github.com/su23/kazna-catalog",
+    "sha256": "808991d025edf3543708c3658a38313d69d41aeab671c6e3915743e9bba93c17",
+    "source_commit": "d520b49563f8d35a51d30218bfe4f0978d982ec6",
+    "source_kind": "Brand site SVG rendered by third-party Kazna archive",
+    "source_path": "packs/ru-marketplaces/logos/kazanexpress.png",
+    "source_url": "https://raw.githubusercontent.com/su23/kazna-catalog/d520b49563f8d35a51d30218bfe4f0978d982ec6/packs/ru-marketplaces/logos/kazanexpress.png",
+    "upstream_fetched": "2026-10-08",
+    "upstream_processing": "rendered/cropped to the mark, fitted to 128x128 RGBA with a 6 px margin",
+    "upstream_sources_url": "https://raw.githubusercontent.com/su23/kazna-catalog/d520b49563f8d35a51d30218bfe4f0978d982ec6/packs/ru-marketplaces/sources.json",
+    "visual_verified": true,
     "width": 128
   },
   "magnolia": {
@@ -1204,17 +1461,17 @@
   },
   "megafon": {
     "file": "megafon.svg",
-    "sha256": "85036439c2f3603a5cb8ac26e8e692d27b245d0a0f110531387bed937ca6258b",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/telecom/megafon.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "85036439c2f3603a5cb8ac26e8e692d27b245d0a0f110531387bed937ca6258b",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/telecom/megafon.svg"
   },
   "megamarket": {
     "file": "megamarket.svg",
-    "sha256": "3995be3db70759c3e2f2fc9a0dd7bbeadddbfb49cf5be433eabfca9a1be46b83",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/megamarket.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "3995be3db70759c3e2f2fc9a0dd7bbeadddbfb49cf5be433eabfca9a1be46b83",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/megamarket.svg"
   },
   "metro": {
     "brand_mapping_note": null,
@@ -1239,6 +1496,27 @@
     "upstream_processing": null,
     "upstream_sources_url": "https://raw.githubusercontent.com/su23/kazna-catalog/d520b49563f8d35a51d30218bfe4f0978d982ec6/packs/ru-supermarkets/sources.json",
     "width": 128
+  },
+  "mixit": {
+    "brand_mapping_note": "Archived page title MIXIT, logo alt logo MIXIT, adjacent laboratory-of-natural-cosmetics text and copyright ООО ЭкоКосметик; independent NSI brand cosmetics identity Mixit/Q110291123",
+    "bytes": 1931,
+    "copied_without_modification": true,
+    "file": "mixit.png",
+    "height": 29,
+    "mode": "RGBA",
+    "not_official_repository": true,
+    "origin_status": "brand identity matched by archived page; official original asset URL unrecorded and not directly requested",
+    "origin_url": "https://mixit.ru/",
+    "proof_url": "https://raw.githubusercontent.com/MaliugaSergiy/MIXIT_cosmetics/37d58ef26ccf6f47edb27ccdba4275f18aedd16d/build/index.html",
+    "repository": "https://github.com/MaliugaSergiy/MIXIT_cosmetics",
+    "sha256": "d6f330dff84eacf5ed76967c7c0c847c1be942c9ff0dfe2a85d29e05b4826755",
+    "source_commit": "37d58ef26ccf6f47edb27ccdba4275f18aedd16d",
+    "source_kind": "Third-party archived cosmetics web-layout logo; not an official brand repository",
+    "source_path": "build/img/icons/icons_origin/logo.png",
+    "source_url": "https://raw.githubusercontent.com/MaliugaSergiy/MIXIT_cosmetics/37d58ef26ccf6f47edb27ccdba4275f18aedd16d/build/img/icons/icons_origin/logo.png",
+    "visual_note": "Original wide wordmark; at28px badge it is small but the coloured X is visible. Not a generated replacement mark.",
+    "visual_verified": true,
+    "width": 174
   },
   "monetka": {
     "brand_mapping_note": null,
@@ -1324,10 +1602,51 @@
   },
   "mvideo": {
     "file": "mvideo.svg",
-    "sha256": "78d742e9b820d298e8273093892e79e18a75a2cb105a324ae25662740f8053bd",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/mvideo.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "78d742e9b820d298e8273093892e79e18a75a2cb105a324ae25662740f8053bd",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/mvideo.svg"
+  },
+  "neopharm": {
+    "brand_mapping_note": "The pinned purchase-partner HTML links this exact image to the merchant domain; logo visually checked.",
+    "bytes": 9657,
+    "copied_without_modification": true,
+    "file": "neopharm.png",
+    "height": 73,
+    "licence": "Trademark; artwork belongs to the merchant",
+    "mapping_proof_url": "https://raw.githubusercontent.com/htmltest/project228/6e65859a6a7d9b375338187007b777efcac8ebb1/windows/buy.html",
+    "mode": "RGBA",
+    "not_official_repository": true,
+    "origin_status": "merchant-domain link verified in pinned partner page; original brand asset URL not recorded",
+    "origin_url": "https://neopharm.ru/",
+    "repository": "https://github.com/htmltest/project228",
+    "sha256": "5c2172fd486ce49dfd405013b7c77223b7f08e8a7788e5c768262a6cb90c1923",
+    "source_commit": "6e65859a6a7d9b375338187007b777efcac8ebb1",
+    "source_kind": "Third-party archived pharmacy partner logo; merchant link documented in pinned HTML",
+    "source_path": "files/buy-logo-neofarm.png",
+    "source_url": "https://raw.githubusercontent.com/htmltest/project228/6e65859a6a7d9b375338187007b777efcac8ebb1/files/buy-logo-neofarm.png",
+    "visual_verified": true,
+    "width": 227
+  },
+  "obi": {
+    "brand_mapping_note": "OBI international orange/white wordmark verified visually; wrong DOM.RU image at upstream obi.ru path rejected. Russian historical retail catalogue uses the same OBI brand mark.",
+    "bytes": 26425,
+    "copied_without_modification": true,
+    "file": "obi.png",
+    "height": 1024,
+    "licence": "Trademark",
+    "mode": "RGBA",
+    "not_official_repository": true,
+    "origin_status": "archived-copy; official-domain identity hint, no claim of direct official fetch",
+    "origin_url": "https://www.obi.de/",
+    "repository": "https://github.com/zenmoney/brands",
+    "sha256": "70bea0dbf13c943f95f4708d356ac4736460f166ababb2b083e7db2d080c841d",
+    "source_commit": "8eb377b231cb3691e645f1da15a727fddef5d443",
+    "source_kind": "Third-party archived OBI brand icon from merchant-domain catalogue",
+    "source_path": "brands/ob/obi.de/icon.png",
+    "source_url": "https://raw.githubusercontent.com/zenmoney/brands/8eb377b231cb3691e645f1da15a727fddef5d443/brands/ob/obi.de/icon.png",
+    "visual_verified": true,
+    "width": 1024
   },
   "okey": {
     "brand_mapping_note": null,
@@ -1355,10 +1674,10 @@
   },
   "okko": {
     "file": "okko.svg",
-    "sha256": "af131c5f98b1fb1669f08d64fd049f6a784b5defa61c681525ba9f08ca2382e7",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/video/okko.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "af131c5f98b1fb1669f08d64fd049f6a784b5defa61c681525ba9f08ca2382e7",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/video/okko.svg"
   },
   "one-price-coffee": {
     "bytes": 2898,
@@ -1378,6 +1697,26 @@
     "valid_size": true,
     "visual_verified": true,
     "width": 180
+  },
+  "onlinetrade": {
+    "bytes": 21037,
+    "copied_without_modification": true,
+    "file": "onlinetrade.png",
+    "height": 152,
+    "licence": "Trademark",
+    "mode": "RGB",
+    "not_official_repository": true,
+    "origin_note": "Brand identity confirmed by full Cyrillic Online Trade RU wordmark in original asset and explicit onlinetrade.png reference in pinned landing HTML; original official download URL not recorded.",
+    "origin_status": "archived-copy; official-domain identity hint, no claim of direct official fetch",
+    "origin_url": "https://www.onlinetrade.ru/",
+    "repository": "https://github.com/E96/landings",
+    "sha256": "d2b248fa7eb471c8a3dfbb76f6fa1f624bd68543810f6d0f54adec7398a4021c",
+    "source_commit": "be6c0ac84ba1fa53b32b63f414df04d5c073be66",
+    "source_kind": "Third-party archived Online Trade partner logo in E96 sale landing assets",
+    "source_path": "landings/onedaysale/frontend/static/onlinetrade-2x.png",
+    "source_url": "https://raw.githubusercontent.com/E96/landings/be6c0ac84ba1fa53b32b63f414df04d5c073be66/landings/onedaysale/frontend/static/onlinetrade-2x.png",
+    "visual_verified": true,
+    "width": 246
   },
   "ostin": {
     "brand_mapping_note": null,
@@ -1405,24 +1744,24 @@
   },
   "ozon": {
     "file": "ozon.svg",
-    "sha256": "47d39dd8ed931a94af9a3477b08478a9ecddffd61f09e414fec93bc9e8fa5946",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/ozon.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "47d39dd8ed931a94af9a3477b08478a9ecddffd61f09e414fec93bc9e8fa5946",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/ozon.svg"
   },
   "perekrestok": {
     "file": "perekrestok.svg",
-    "sha256": "66be38d86b78191f1a9c3523d045345b142938a6438a4de8dca114ca5b6fe717",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/perekrestok.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "66be38d86b78191f1a9c3523d045345b142938a6438a4de8dca114ca5b6fe717",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/perekrestok.svg"
   },
   "petrovich": {
     "file": "petrovich.svg",
-    "sha256": "477c97982db0fcb9a178718459bbeab0dfb00067270c7d252c208af2e470e64c",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/petrovich.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "477c97982db0fcb9a178718459bbeab0dfb00067270c7d252c208af2e470e64c",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/petrovich.svg"
   },
   "petshop": {
     "brand_mapping_note": null,
@@ -1472,6 +1811,26 @@
     "upstream_sources_url": "https://raw.githubusercontent.com/su23/kazna-catalog/d520b49563f8d35a51d30218bfe4f0978d982ec6/packs/ru-pharmacies/sources.json",
     "width": 128
   },
+  "pobeda": {
+    "bytes": 1900,
+    "copied_without_modification": false,
+    "file": "pobeda.png",
+    "height": 128,
+    "mode": "RGB",
+    "not_official_repository": true,
+    "origin_status": "merchant domain identified by third-party archive; asset not requested directly from official site",
+    "origin_url": "https://vpobede.ru/",
+    "processing": "Static source SVG rasterized by Chromium at 128px width with original aspect ratio; no crop or recolouring",
+    "repository": "https://github.com/zenmoney/brands",
+    "sha256": "f2c6b87066ea3ce86373e2b74aa5fedbbdaa8093f7e1c4f037c59278fcfff131",
+    "source_commit": "8eb377b231cb3691e645f1da15a727fddef5d443",
+    "source_kind": "Zenmoney archived merchant-domain brand icon (third-party copy)",
+    "source_path": "brands/vp/vpobede.ru/icon.svg",
+    "source_sha256": "a818e6321a339ec3d68d91af86a39d66fae80f2ac7f35a5477d1c4748f5730a7",
+    "source_url": "https://raw.githubusercontent.com/zenmoney/brands/8eb377b231cb3691e645f1da15a727fddef5d443/brands/vp/vpobede.ru/icon.svg",
+    "visual_verified": true,
+    "width": 128
+  },
   "podruzhka": {
     "brand_mapping_note": null,
     "bytes": 11256,
@@ -1498,10 +1857,10 @@
   },
   "pyaterochka": {
     "file": "pyaterochka.svg",
-    "sha256": "80eff4650cacfcb740dd982def42c942bfb8dd2188ae05abc160dd0668254851",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/pyaterochka.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "80eff4650cacfcb740dd982def42c942bfb8dd2188ae05abc160dd0668254851",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/pyaterochka.svg"
   },
   "randewoo": {
     "bytes": 7456,
@@ -1596,10 +1955,10 @@
   },
   "rosneft": {
     "file": "rosneft.svg",
-    "sha256": "4aa6ef5450496830f7aa3a937012350d9bfcda8ccfe33850697c5de6d975f152",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/gas-stations/rosneft.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "4aa6ef5450496830f7aa3a937012350d9bfcda8ccfe33850697c5de6d975f152",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/gas-stations/rosneft.svg"
   },
   "rostelecom": {
     "brand_mapping_note": null,
@@ -1627,10 +1986,10 @@
   },
   "rostics": {
     "file": "rostics.svg",
-    "sha256": "e77b5aa0eaa37f3a88ed37fcd32ce3754b12150fc7bfc0fdb9672a8d8927ef33",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/food/rostics.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "e77b5aa0eaa37f3a88ed37fcd32ce3754b12150fc7bfc0fdb9672a8d8927ef33",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/food/rostics.svg"
   },
   "samokat": {
     "brand_mapping_note": null,
@@ -1703,10 +2062,10 @@
   },
   "sportmaster": {
     "file": "sportmaster.svg",
-    "sha256": "408619d44e1ba45770c153f837b11eb46cd993efdbac587bf755d995f6d6bd0a",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/sportmaster.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "408619d44e1ba45770c153f837b11eb46cd993efdbac587bf755d995f6d6bd0a",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/sportmaster.svg"
   },
   "stars-coffee": {
     "brand_mapping_note": null,
@@ -1839,10 +2198,10 @@
   },
   "tatneft": {
     "file": "tatneft.svg",
-    "sha256": "a6d544c26493b9ab3b0e157d37185806c0de0c52bb567d33759493c7a15563f8",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/gas-stations/tatneft.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "a6d544c26493b9ab3b0e157d37185806c0de0c52bb567d33759493c7a15563f8",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/gas-stations/tatneft.svg"
   },
   "teboil": {
     "brand_mapping_note": null,
@@ -2021,17 +2380,17 @@
   },
   "vkusno-i-tochka": {
     "file": "vkusno-i-tochka.svg",
-    "sha256": "e2d60d89b1f0f30cc77d7aaa4786a1beb77c161cb6db86177d20c93153c3a977",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/food/vkusnoitocka.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "e2d60d89b1f0f30cc77d7aaa4786a1beb77c161cb6db86177d20c93153c3a977",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/food/vkusnoitocka.svg"
   },
   "vkusvill": {
     "file": "vkusvill.svg",
-    "sha256": "14e4514ace901dc1b2002b0bc1f006385c51031cc3d52f3ac991c439ad1d5fad",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/vkusvill.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "14e4514ace901dc1b2002b0bc1f006385c51031cc3d52f3ac991c439ad1d5fad",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/vkusvill.svg"
   },
   "vot-on-ya": {
     "bytes": 88368,
@@ -2053,24 +2412,24 @@
   },
   "vseinstrumenti": {
     "file": "vseinstrumenti.svg",
-    "sha256": "f678b422f54383e40918fa248c13f7bfc03c66f23269bc1f8b30599f5fce0844",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/vseinstrumenti.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "f678b422f54383e40918fa248c13f7bfc03c66f23269bc1f8b30599f5fce0844",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/vseinstrumenti.svg"
   },
   "wildberries": {
     "file": "wildberries.svg",
-    "sha256": "8333a1e944d4debb3513a1be565406271938c887051ae48ce9a30f722c24dab9",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/wildberries.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "8333a1e944d4debb3513a1be565406271938c887051ae48ce9a30f722c24dab9",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/wildberries.svg"
   },
   "wink": {
     "file": "wink.svg",
-    "sha256": "d38a4372ae22662a8c6a1f1510d75700797d173e07121512e456093eae5aac66",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/video/wink.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "d38a4372ae22662a8c6a1f1510d75700797d173e07121512e456093eae5aac66",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/video/wink.svg"
   },
   "yakitoria": {
     "bytes": 3471,
@@ -2094,24 +2453,24 @@
   },
   "yandex-food": {
     "file": "yandex-food.svg",
-    "sha256": "9e6f845acea488f6b1f565c77449c9c32e816668e528f258b78674c4b9900a20",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/food/yandexfood.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "9e6f845acea488f6b1f565c77449c9c32e816668e528f258b78674c4b9900a20",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/food/yandexfood.svg"
   },
   "yandex-lavka": {
     "file": "yandex-lavka.svg",
-    "sha256": "63e34ef179a8bd3aa9b0c2f3db8b586fed00b36b234eeeace4bf755848315824",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/food/yandexlavka.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "63e34ef179a8bd3aa9b0c2f3db8b586fed00b36b234eeeace4bf755848315824",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/food/yandexlavka.svg"
   },
   "yandex-market": {
     "file": "yandex-market.svg",
-    "sha256": "60f7cee2d434ac1edf95c2653b1d03b850db0b6890dbde96163c540772619d11",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/yandexmarket.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "60f7cee2d434ac1edf95c2653b1d03b850db0b6890dbde96163c540772619d11",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/yandexmarket.svg"
   },
   "yandex-plus": {
     "brand_mapping_note": null,
@@ -2157,17 +2516,17 @@
   },
   "yobidoyobi": {
     "file": "yobidoyobi.svg",
-    "sha256": "d386ceb2019f24cd26e81c9df40f146b6eedb51d242a45fb4eacf45632ec061c",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/food/yobidoyobi.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "d386ceb2019f24cd26e81c9df40f146b6eedb51d242a45fb4eacf45632ec061c",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/food/yobidoyobi.svg"
   },
   "yota": {
     "file": "yota.svg",
-    "sha256": "4644485112a2754db7c2d8dfb227015e67e0b37e97fb8d03ea83ad115db64521",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/telecom/yota.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "4644485112a2754db7c2d8dfb227015e67e0b37e97fb8d03ea83ad115db64521",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/telecom/yota.svg"
   },
   "yves-rocher": {
     "brand_mapping_note": null,
@@ -2261,9 +2620,9 @@
   },
   "zoozavr": {
     "file": "zoozavr.svg",
-    "sha256": "bd3cbed52260c3072eaac4dc14539dc42ba7db273d4ca6833024cbb732a40568",
-    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/zoozavr.svg",
+    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks.",
     "provider": "Russian Brand Logos / Trace Logos",
-    "notice": "Logos and trademarks belong to their respective owners; identification only. Upstream code license does not license trademarks."
+    "sha256": "bd3cbed52260c3072eaac4dc14539dc42ba7db273d4ca6833024cbb732a40568",
+    "source_url": "https://github.com/arturablyazov5-glitch/russian-brand-logos/blob/4ab0d4c0bcacb3be4dabb097709a7c75d64279ad/logos/market/zoozavr.svg"
   }
 }

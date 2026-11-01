@@ -268,13 +268,34 @@
     "sector": "groceries"
   },
   {
+    "brand": "kuulklever",
+    "value": "КуулКлевер",
+    "aliases": [
+      "куул клевер",
+      "кулклевер",
+      "кул клевер",
+      "куулклевера",
+      "кулклевера",
+      "coolclever",
+      "cool clever",
+      "kuulklever",
+      "kuul klever"
+    ],
+    "sector": "groceries"
+  },
+  {
     "brand": "myasnov",
     "value": "Мясновъ",
     "aliases": [
       "мяснов",
       "myasnov",
       "myasnov ru",
-      "мясновъ магазин"
+      "мясновъ магазин",
+      "куулклевер мясновъ",
+      "куулклевер мяснов",
+      "кулклевер мяснов",
+      "мясновъ куулклевер",
+      "myasnov coolclever"
     ],
     "sector": "groceries"
   },

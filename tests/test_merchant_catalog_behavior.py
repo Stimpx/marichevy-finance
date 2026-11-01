@@ -94,6 +94,21 @@ class MerchantCatalogBehavior(unittest.TestCase):
             self.assertEqual(identity['brand'], 'generic')
         self.assertEqual(self.snapshot(), self.before)
 
+    def test_kuulklever_and_myasnov_names_keep_distinct_brands_and_preserve_the_draft(self):
+        self.prepare()
+        values = ['КУлклевера', 'Куул Клевер', 'coolclever', 'Мясновъ',
+                  'myasnov', 'КуулКлевер Мясновъ', 'Клевер', 'Кулклевербанк']
+        result = self.page.evaluate('rows=>rows.map(v96MerchantIdentity)', values)
+        expected = ['kuulklever', 'kuulklever', 'kuulklever', 'myasnov',
+                    'myasnov', 'myasnov', 'generic', 'generic']
+        self.assertEqual([row['brand'] for row in result], expected)
+        self.assertEqual([row['original'] for row in result], values)
+        self.assertEqual(self.snapshot(), self.before)
+        before = self.draft()
+        self.settled_field('eStore').fill('кулклевер')
+        self.page.locator('#eStoreSuggestions').get_by_role('option', name='КуулКлевер', exact=True).click()
+        self.assert_only_store_changed(before, 'КуулКлевер')
+
     def test_duplicate_alias_cannot_silently_pick_the_first_catalog_brand(self):
         self.prepare()
         values = ['общая учебная марка','Общая учебная марка №17',
