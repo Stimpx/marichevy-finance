@@ -8,7 +8,7 @@ class ImportantDateLayout(unittest.TestCase):
     tearDownClass = classmethod(layouts.ResponsiveEditorLayout.tearDownClass.__func__)
     page = layouts.ResponsiveEditorLayout.page
 
-    def test_family_action_columns_are_independent_of_badge_text(self):
+    def test_all_date_actions_share_frames_and_edit_column_with_labels_beside_names(self):
         for width, height in layouts.PROFILES:
             with self.subTest(width=width, height=height):
                 page, context = self.page(width, height)
@@ -16,20 +16,38 @@ class ImportantDateLayout(unittest.TestCase):
                 page.evaluate("go('dates')")
                 geometry = page.evaluate('''() => {
                   const rect=e=>{const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,right:r.right,bottom:r.bottom}};
-                  return [...document.querySelectorAll('#birthdayList .birthday-row-family')].map(row=>({
-                    row:rect(row),edit:rect(row.querySelector('button')),badge:rect(row.querySelector('.birthday-family-badge'))}));
+                  return [...document.querySelectorAll('#birthdayList .birthday-row')].map(row=>{
+                    const badge=row.querySelector('.birthday-family-badge');
+                    const actions=row.querySelector('.birthday-row-actions');
+                    return {row:rect(row),edit:rect(row.querySelector('[data-record-action="birthday-edit"]')),
+                      singleRow:getComputedStyle(row).gridTemplateRows.trim().split(/\\s+/).length===1,
+                      badge:badge?{...rect(badge),besideName:!!badge.closest('.birthday-main'),insideActions:!!badge.closest('.birthday-row-actions')}:null,
+                      buttons:[...actions.querySelectorAll('a.btn,button.btn')].map(button=>{
+                        const style=getComputedStyle(button);
+                        return {...rect(button),radius:style.borderRadius,border:style.borderTopWidth};
+                      })};
+                  });
                 }''')
                 self.assertGreaterEqual(len(geometry), 2)
-                for kind in ('edit', 'badge'):
-                    self.assertLessEqual(max(row[kind]['x'] for row in geometry) -
-                        min(row[kind]['x'] for row in geometry), 1, 'label length must not shift action columns')
+                self.assertLessEqual(max(row['edit']['x'] for row in geometry) -
+                    min(row['edit']['x'] for row in geometry), 1,
+                    'family and contact edit actions must occupy the same column')
                 for row in geometry:
-                    self.assertLessEqual(abs((row['edit']['y'] + row['edit']['h']/2) -
-                        (row['badge']['y'] + row['badge']['h']/2)), 1)
-                    self.assertGreaterEqual(row['edit']['h'], 44)
-                    for item in (row['edit'], row['badge']):
+                    if row['singleRow']:
+                        self.assertLessEqual(abs((row['edit']['y'] + row['edit']['h']/2) -
+                            (row['row']['y'] + row['row']['h']/2)), 1,
+                            'desktop actions must sit in the vertical centre of the row')
+                    if row['badge']:
+                        self.assertTrue(row['badge']['besideName'])
+                        self.assertFalse(row['badge']['insideActions'])
+                    for item in row['buttons']:
+                        self.assertGreaterEqual(item['h'], 44)
+                        self.assertEqual(item['radius'], '10px')
+                        self.assertEqual(item['border'], '1px')
                         self.assertGreaterEqual(item['x'], row['row']['x'])
                         self.assertLessEqual(item['right'], row['row']['right'])
+                    self.assertLessEqual(max(item['h'] for item in row['buttons']) -
+                        min(item['h'] for item in row['buttons']), 1)
                 self.assertEqual(before, page.evaluate('JSON.stringify(state)'))
                 context.close()
 
