@@ -2067,6 +2067,122 @@ input[data-v108-calendar]:disabled,input[data-v108-calendar][readonly]{cursor:de
 @media(prefers-reduced-motion:reduce){.v108-calendar button{transition:none}}
 
 </style>
+<style id="v112UnifiedTypography">
+/* One native sans serif family and a small, shared hierarchy across every screen. */
+:root{
+ --v112-font:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+ --v112-weight-text:400;
+ --v112-weight-label:500;
+ --v112-weight-value:600;
+ --v112-weight-heading:700;
+}
+html,body{font-family:var(--v112-font)!important;font-weight:var(--v112-weight-text);letter-spacing:0}
+/* Legacy cards gave ordinary div/span text ad-hoc 750–950 weights. Role rules below own emphasis. */
+body :where(div,p,span,small,a,li,dt,dd,time,summary,td,section,article):where(:not(.brand,.brand-heading,.brand-heading *,.brand-emblem,.home-opening-mark,.login-brand,.auth-gate-brand,.v96-merchant-badge)){
+ font-weight:inherit!important;
+}
+body :is(button,input,select,textarea,code,kbd,pre),
+.v107-select-panel,.v108-calendar,.v96-merchant-badge{
+ font-family:var(--v112-font)!important;
+}
+body :is(button,input,select,textarea){font-weight:var(--v112-weight-text)!important}
+body :is(b,strong){font-weight:var(--v112-weight-value)!important}
+body :is(h1,h2,h3,h4,h5,h6),
+body :is(.today-title,.health-title,.home-moment-title,.smart-status-title,.family-spark-title,
+ .smart-insight-title,.goal-hero-title,.home-chores-title,.chores-title,.chores-note-title,
+ .spending-special-title,.v96-plan-name){
+ font-weight:var(--v112-weight-heading)!important;letter-spacing:-.025em!important;
+}
+body :is(.hero-value,.donut-center,.goal-ring span,.person-sum,.early-plan-num,.early-plan-total,
+ .compare-value,.spendable-value,.live-clock,.smart-insight-value,.money-red,.money-green,
+ .v76-amount,.v84-row-amount,.v84-drill-sum,.v86-calendar-sum,.v96-month-review-value,
+ .v99-expense-total,.board-avatar,.board-avatar-modern,.family-avatar,
+ .telegram-person-avatar){
+ font-weight:var(--v112-weight-value)!important;font-variant-numeric:tabular-nums;
+}
+body :is(#eAmount,#xAmount,#v96CalcResult,.early-plan-amount,.v77-money-entry input){font-weight:var(--v112-weight-value)!important}
+body :is(label,summary,dt,.v77-fields .field>span,.v84-input-wrap,.v87-advisor-input,.v88-control,
+ .side-edition,.v73-sidebar-foot,.chore-stat small,[role="status"],[role="alert"]),
+body :is(.page-eyebrow,.home-opening-kicker,.today-kicker,.advice-label,.spendable-kicker,
+ .home-moment-kicker,.smart-status-kicker,.board-kicker,.smart-insights-kicker,.smart-insight-label,
+ .telegram-kicker,.v77-kicker,.v77-credit-intro>span,.v81-section-eyebrow,.v84-panel-head>div>small,
+ .v86-kicker,.v87-kicker,.v88-eyebrow,.v89-kicker,.v91-kicker,.v96-help-eyebrow,
+ .v96-plans-eyebrow,.v73-nav-kicker,.early-plan-head-row){font-weight:var(--v112-weight-label)!important}
+body :is(.pill,.animal-badge,.contract-badge,.birthday-family-badge,.birthday-editing,
+ .birthday-phone,.birthday-list-summary span,.zodiac-pill,.zodiac-badge,.telegram-status-pill,
+ .telegram-connected,.v77-kind,.v77-installment-status,.v78-obligation-state,.v79-wedding-badge,
+ .v84-status-pill,.v86-state,.v87-flag,.v89-audit-symbol,.compare-delta,.settings-save-ok,
+ .smart-status-badge,.family-spark-pill,.board-live,.board-item-type,.v86-movement,
+ .chores-hero-status,.chore-assignee,.chore-date,.home-chores-ok,.chores-note-footer,
+ .home-moment-pill,.smart-insights-badge,.home-chores-kicker,.chores-kicker){
+ font-weight:var(--v112-weight-label)!important;
+}
+body :is(th,.person-name,.category-name,.v84-drill-sub,.telegram-recipient-title,
+ .v105-history-title,.v76-cat,.birthday-alert-item>span,
+ .v86-month-label,.home-priority-strip>span){font-weight:var(--v112-weight-value)!important}
+body :is(.family-spark-action,.smart-insight-action,.home-chores-link){font-weight:var(--v112-weight-label)!important}
+body button{font-weight:var(--v112-weight-label)!important;letter-spacing:0}
+body button :is(b,strong,span){font-family:inherit!important;font-weight:inherit!important;letter-spacing:inherit}
+body :is(.nav button.active,.mobile-nav button.active,button[aria-pressed="true"],
+ .v107-select-option[aria-selected="true"],.v108-day[aria-selected="true"],
+ .v108-month[aria-selected="true"]){font-weight:var(--v112-weight-value)!important}
+.v107-select-panel,.v108-calendar{font-weight:var(--v112-weight-text)!important}
+.v107-select-option,.v108-calendar .v108-weekdays{font-weight:var(--v112-weight-text)!important}
+.v108-calendar :is(.v108-period,.v108-year){font-weight:var(--v112-weight-value)!important}
+
+</style>
+<style id="v112UnifiedButtons">
+/* One command surface, based on the history date-filter button. */
+:root{--v112-button-bg:#f0f4ff;--v112-button-border:#d9e4fb;--v112-button-ink:#365dc2;--v112-button-hover:#e7eefc;--v112-danger-bg:#fff7f8;--v112-danger-border:#efdce1;--v112-danger-ink:#ad5a6b}
+:is(.btn,.v73-overview-toggle,.v76-reset-btn,.v96-amount-tools button,.v96-calc-clipboard button,.v88-upload-button,.v88-remove-file,.v81-alert-done,.home-chores-link,.family-spark-action,.weather-refresh,.v84-drill-filter button,.board-type-btn,.chore-filter,.v81-life-tab,.loan-range button,.v90-chips button,.v86-filters button){
+ display:inline-flex;align-items:center;justify-content:center;gap:7px;
+ min-height:44px!important;min-width:44px!important;max-width:100%;box-sizing:border-box;
+ padding:9px 13px!important;border:1px solid var(--v112-button-border)!important;border-radius:10px!important;
+ background:var(--v112-button-bg)!important;color:var(--v112-button-ink)!important;
+ font-size:12px!important;line-height:1.4!important;text-decoration:none;letter-spacing:0!important;
+ white-space:normal!important;overflow-wrap:anywhere!important;box-shadow:none!important;transform:none!important;
+ cursor:pointer;transition:background .15s ease,border-color .15s ease,color .15s ease;
+}
+:is(.btn,.v73-overview-toggle,.v76-reset-btn,.v96-amount-tools button,.v96-calc-clipboard button,.v88-upload-button,.v88-remove-file,.v81-alert-done,.home-chores-link,.family-spark-action,.weather-refresh,.v84-drill-filter button,.board-type-btn,.chore-filter,.v81-life-tab,.loan-range button,.v90-chips button,.v86-filters button):hover:not(:disabled){background:var(--v112-button-hover)!important;border-color:#bfcef0!important}
+:is(.btn,.v73-overview-toggle,.v76-reset-btn,.v96-amount-tools button,.v96-calc-clipboard button,.v88-upload-button,.v88-remove-file,.v81-alert-done,.home-chores-link,.family-spark-action,.weather-refresh,.v84-drill-filter button,.board-type-btn,.chore-filter,.v81-life-tab,.loan-range button,.v90-chips button,.v86-filters button):focus-visible{outline:2px solid #88a6df!important;outline-offset:2px;box-shadow:none!important}
+.btn.primary{background:#e8efff!important;border-color:#b5c8ef!important;color:#2f53ac!important}
+.btn.primary:hover:not(:disabled){background:#dde8fc!important;border-color:#9bb5e8!important}
+:is(.board-type-btn,.chore-filter,.v81-life-tab,.loan-range button,.v86-filters button).active,.v90-chips button.primary,.v84-drill-filter button[aria-pressed="true"],.btn[aria-pressed="true"]{background:#e2ebfd!important;border-color:#91ace2!important;color:#274f9f!important}
+.btn.danger{background:var(--v112-danger-bg)!important;border-color:var(--v112-danger-border)!important;color:var(--v112-danger-ink)!important}
+.btn.danger:hover:not(:disabled){background:#fbecef!important;border-color:#e5bcc7!important;color:#99475a!important}
+:is(.btn,.v73-overview-toggle,.v76-reset-btn,.v96-amount-tools button,.v96-calc-clipboard button,.v88-upload-button,.v88-remove-file,.v81-alert-done,.home-chores-link,.family-spark-action,.weather-refresh,.v84-drill-filter button,.board-type-btn,.chore-filter,.v81-life-tab,.loan-range button,.v90-chips button,.v86-filters button):disabled{background:#f5f7fb!important;border-color:#e2e8f1!important;color:#8391a6!important;opacity:.65;cursor:default;box-shadow:none!important}
+/* Close and entity-delete commands use the same border/radius and a full touch target. */
+:is(.v84-close,.board-delete,.chore-delete,.v88-remove-file,.v96-calc-head>button){min-width:44px!important;min-height:44px!important;border:1px solid var(--v112-button-border)!important;border-radius:10px!important;box-shadow:none!important;background:var(--v112-button-bg)!important;color:var(--v112-button-ink)!important;transform:none!important}
+:is(.board-delete,.chore-delete){border-color:var(--v112-danger-border)!important;background:var(--v112-danger-bg)!important;color:var(--v112-danger-ink)!important}
+@media(max-width:600px){:is(.btn,.v73-overview-toggle,.v76-reset-btn,.v96-amount-tools button,.v96-calc-clipboard button,.v88-upload-button,.v88-remove-file,.v81-alert-done,.home-chores-link,.family-spark-action,.weather-refresh,.v84-drill-filter button,.board-type-btn,.chore-filter,.v81-life-tab,.loan-range button,.v90-chips button,.v86-filters button){font-size:13px!important}}
+@media(prefers-reduced-motion:reduce){:is(.btn,.v73-overview-toggle,.v96-amount-tools button,.v84-drill-filter button){transition:none}}
+
+/* Text and commands keep their own track when the interface text is enlarged. */
+#v88FeedbackCard{grid-template-columns:minmax(0,1fr)}
+#v88FeedbackCard>*{min-width:0}
+#v88FeedbackCard :is(p,strong,a,span){overflow-wrap:anywhere}
+:is(#aCats,#aPeopleChart,#familyBars,#categoryLegend) .bar-top{min-width:0;align-items:baseline}
+:is(#aCats,#aPeopleChart,#familyBars,#categoryLegend) .bar-top>span{flex:1 1 0;min-width:0;overflow-wrap:anywhere}
+:is(#aCats,#aPeopleChart,#familyBars,#categoryLegend) .bar-top>b{flex:0 1 auto;min-width:0;max-width:50%;white-space:normal;overflow-wrap:anywhere;text-align:right}
+#v84DrillEntries .v85-drill-date{min-width:0;overflow-wrap:anywhere}
+.v84-modal:focus-visible{outline:2px solid #88a6df;outline-offset:2px}
+
+</style>
+<style id="v112RecordActions">
+/* One line-icon language for transaction controls on every record surface. */
+body :is(#history .v76-action-group,#recent .v96-recent-actions,#today .v91-row-actions,#incomeList .actions,#v84DrillEntries .v96-drill-entry-actions) .v112-record-action{
+ display:inline-flex;align-items:center;justify-content:center;flex:0 0 44px;width:44px;height:44px;min-width:44px;max-width:44px;min-height:44px;margin:0;padding:0!important;border:1px solid var(--v112-button-border,#d9e4fb);border-radius:10px;background:var(--v112-button-bg,#f0f4ff);color:var(--v112-button-ink,#365dc2);box-shadow:none;line-height:1;vertical-align:middle;transform:none;overflow:visible;
+}
+body :is(#history .v76-action-group,#recent .v96-recent-actions,#today .v91-row-actions,#incomeList .actions,#v84DrillEntries .v96-drill-entry-actions) .v112-record-action:hover{background:var(--v112-button-hover,#e7eefc);border-color:#bdcdee;color:#294da8;box-shadow:none;transform:none}
+body :is(#history .v76-action-group,#recent .v96-recent-actions,#today .v91-row-actions,#incomeList .actions,#v84DrillEntries .v96-drill-entry-actions) .v112-record-action:focus-visible{outline:2px solid #819bd1;outline-offset:2px;background:var(--v112-button-hover,#e7eefc)}
+body :is(#history .v76-action-group,#recent .v96-recent-actions,#today .v91-row-actions,#incomeList .actions,#v84DrillEntries .v96-drill-entry-actions) .v112-record-action.danger{background:#fbf4f5;border-color:#f0dfe4;color:#ad6475}
+body :is(#history .v76-action-group,#recent .v96-recent-actions,#today .v91-row-actions,#incomeList .actions,#v84DrillEntries .v96-drill-entry-actions) .v112-record-action.danger:hover,body :is(#history .v76-action-group,#recent .v96-recent-actions,#today .v91-row-actions,#incomeList .actions,#v84DrillEntries .v96-drill-entry-actions) .v112-record-action.danger:focus-visible{background:#f8e9ed;border-color:#e5bdc8;color:#a4435c}
+body .v112-record-action .v112-record-icon{display:block;width:18px;height:18px;flex:0 0 18px;margin:0;pointer-events:none}
+#history .v100-history-icon-actions{gap:6px}
+#recent .v96-recent-actions,#today .v91-row-actions,#incomeList .actions,#v84DrillEntries .v96-drill-entry-actions{gap:6px}
+@media(prefers-reduced-motion:reduce){body .v112-record-action{transition:none}}
+
+</style>
 </head>
 <body>
 <noscript><div style="padding:14px;background:#fff3cd;color:#664d03;text-align:center;font:600 14px/1.4 system-ui">Для работы «Маричевы · Траты.Банк» необходимо включить JavaScript.</div></noscript>
@@ -3641,6 +3757,21 @@ function homeMonth(){const v=document.getElementById('homeMonth')?.value;return 
 function esc(x){return String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
 // Data remains JSON in an HTML attribute, never JavaScript source in onclick.
 function recordAction(action,...args){return 'data-record-action="'+action+'" data-record-args="'+esc(JSON.stringify(args))+'"'}
+// Shared transaction controls preserve existing handlers and accessible action names.
+function v112EntryAction(action,entry,mode=''){
+ const kind=action==='entry-edit'||action==='drill-entry-edit'?'edit':action==='entry-repeat'?'repeat':action==='favorite-from-entry'?'favorite':action==='entry-delete'||action==='drill-entry-delete'?'delete':'';
+ if(!kind)return '';
+ const labels={edit:'Изменить',repeat:'Повторить',favorite:'В избранное',delete:'Удалить'};
+ const paths={edit:'<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L9 17l-4 1 1-4z"/>',repeat:'<rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/>',favorite:'<path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9z"/>',delete:'<path d="M4 7h16M10 11v6M14 11v6M6 7l1 14h10l1-14M9 7V4h6v3"/>'};
+ const rawDate=String(entry?.date||''),date=/^\d{4}-\d{2}-\d{2}$/.test(rawDate)?rawDate.slice(8,10)+'.'+rawDate.slice(5,7)+'.'+rawDate.slice(0,4):rawDate;
+ const name=String(v96MerchantDisplayName(entry?.store)||entry?.category||typeName(entry?.type));
+ const description=[name,date].filter(Boolean).join(', '),label=labels[kind];
+ const accessible=mode==='drill'&&(kind==='edit'||kind==='delete')?label+' операцию: '+description:mode==='history'&&kind==='edit'?'Редактировать операцию':mode==='history'&&kind==='delete'?'Удалить операцию':label;
+ const tooltip=(kind==='favorite'?'Добавить операцию в избранное':kind==='repeat'?'Повторить операцию':label+' операцию')+(description?': '+description:'');
+ const attrs=mode==='history'&&(kind==='edit'||kind==='delete')?'data-action="'+kind+'" data-id="'+esc(entry.id)+'"':recordAction(action,entry.id);
+ return '<button type="button" class="btn small v112-record-action'+(kind==='delete'?' danger':'')+'" aria-label="'+esc(accessible)+'" aria-description="'+esc(description)+'" title="'+esc(tooltip)+'" '+attrs+'><svg class="v83-line-icon v112-record-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">'+paths[kind]+'</svg></button>';
+}
+
 document.addEventListener('click',event=>{
  const button=event.target.closest('[data-record-action]');if(!button||button.disabled)return;
  let args;try{args=JSON.parse(button.dataset.recordArgs);if(!Array.isArray(args))return}catch{return}
@@ -5196,9 +5327,9 @@ function renderHome(){
    familyBars.innerHTML=(peopleHtml||'<div class="empty">Пока нет расходов по назначению.</div>')+summary;
  }
  const recent=[...state.entries].sort((a,b)=>b.date.localeCompare(a.date)||String(b.created_at).localeCompare(String(a.created_at))).slice(0,document.getElementById('home').classList.contains('v73-focus')?3:8);
- document.getElementById('recent').innerHTML=recent.length?`<div class="v96-recent-list" role="list">${recent.map(e=>`<article class="v96-recent-row" role="listitem"><div class="v96-recent-main">${v96MerchantBadge(e.store)}<div class="v96-recent-copy"><b>${esc(v96MerchantDisplayName(e.store)||e.category)}</b><small>${esc(typeName(e.type))} · ${esc(e.category||'Без категории')}</small></div></div><strong class="v96-recent-amount ${e.type==='income'?'money-green':isExpense(e)?'money-red':''}">${amountText(e)}</strong><div class="v96-recent-details">${esc(String(e.date||'').split('-').reverse().join('.'))} · ${esc(e.type==='expense'?v86ExpenseTarget(e):e.who||'—')}${e.comment?' · '+esc(e.comment):''}</div><div class="v96-recent-actions"><button type="button" class="btn small" ${recordAction('entry-edit',e.id)}>Изменить</button><button type="button" class="btn small" ${recordAction('entry-repeat',e.id)}>Повторить</button><button type="button" class="btn small" ${recordAction('favorite-from-entry',e.id)}>В избранное</button><button type="button" class="btn small danger" ${recordAction('entry-delete',e.id)}>Удалить</button></div></article>`).join('')}</div>`:'<div class="empty">Операций пока нет.</div>'
+ document.getElementById('recent').innerHTML=recent.length?`<div class="v96-recent-list" role="list">${recent.map(e=>`<article class="v96-recent-row" role="listitem"><div class="v96-recent-main">${v96MerchantBadge(e.store)}<div class="v96-recent-copy"><b>${esc(v96MerchantDisplayName(e.store)||e.category)}</b><small>${esc(typeName(e.type))} · ${esc(e.category||'Без категории')}</small></div></div><strong class="v96-recent-amount ${e.type==='income'?'money-green':isExpense(e)?'money-red':''}">${amountText(e)}</strong><div class="v96-recent-details">${esc(String(e.date||'').split('-').reverse().join('.'))} · ${esc(e.type==='expense'?v86ExpenseTarget(e):e.who||'—')}${e.comment?' · '+esc(e.comment):''}</div><div class="v96-recent-actions">${v112EntryAction('entry-edit',e)}${v112EntryAction('entry-repeat',e)}${v112EntryAction('favorite-from-entry',e)}${v112EntryAction('entry-delete',e)}</div></article>`).join('')}</div>`:'<div class="empty">Операций пока нет.</div>'
 }
-function renderToday(){const arr=state.entries.filter(e=>e.date===today()).sort((a,b)=>String(b.created_at).localeCompare(String(a.created_at)));document.getElementById('todayList').innerHTML=arr.length?arr.map(e=>{const label=V90_CATEGORIES.find(x=>x[0]===e.category)?.[1]||e.category;return `<article class="v91-transaction"><div class="v91-transaction-main"><b>${v96MerchantBadge(e.store)}${esc(v96MerchantDisplayName(e.store)||label||typeName(e.type))}</b><small>${esc([label,e.subcategory,e.type==='expense'?'Для: '+v86ExpenseTarget(e):e.who].filter(Boolean).join(' · '))}</small>${e.comment?`<p>${esc(e.comment)}</p>`:''}</div><strong class="${e.type==='income'?'money-green':e.type==='expense'?'money-red':''}">${amountText(e)}</strong><div class="v91-row-actions"><button class="btn small" ${recordAction('entry-edit',e.id)}>Изменить</button><button type="button" class="btn small" ${recordAction('entry-repeat',e.id)}>Повторить</button><button type="button" class="btn small" ${recordAction('favorite-from-entry',e.id)}>В избранное</button><button class="btn small" ${recordAction('entry-delete',e.id)}>Удалить</button></div></article>`}).join(''):'<div class="empty">За сегодня операций нет.</div>'}
+function renderToday(){const arr=state.entries.filter(e=>e.date===today()).sort((a,b)=>String(b.created_at).localeCompare(String(a.created_at)));document.getElementById('todayList').innerHTML=arr.length?arr.map(e=>{const label=V90_CATEGORIES.find(x=>x[0]===e.category)?.[1]||e.category;return `<article class="v91-transaction"><div class="v91-transaction-main"><b>${v96MerchantBadge(e.store)}${esc(v96MerchantDisplayName(e.store)||label||typeName(e.type))}</b><small>${esc([label,e.subcategory,e.type==='expense'?'Для: '+v86ExpenseTarget(e):e.who].filter(Boolean).join(' · '))}</small>${e.comment?`<p>${esc(e.comment)}</p>`:''}</div><strong class="${e.type==='income'?'money-green':e.type==='expense'?'money-red':''}">${amountText(e)}</strong><div class="v91-row-actions">${v112EntryAction('entry-edit',e)}${v112EntryAction('entry-repeat',e)}${v112EntryAction('favorite-from-entry',e)}${v112EntryAction('entry-delete',e)}</div></article>`}).join(''):'<div class="empty">За сегодня операций нет.</div>'}
 
 function renderHistory(){
  const q=document.getElementById('fSearch').value.trim().toLowerCase(),who=document.getElementById('fWho').value,cat=document.getElementById('fCat').value,group=document.getElementById('fGroup')?.value||'',type=document.getElementById('fType').value,m=document.getElementById('fMonth').value,day=document.getElementById('fDay')?.value||'';
@@ -5212,7 +5343,7 @@ function renderHistory(){
    <td data-label="Дата" class="v76-date">${safeFull(dateLabel)}<span class="v105-history-type ${e.type==='income'?'v76-income-pill':''}">${typeName(e.type)}</span></td>
    <td data-label="Операция" class="v76-cat"><div class="v105-history-title">${safeFull(e.category||'—')}${e.subcategory?`<span class="v105-history-subcategory">${safeFull(e.subcategory)}</span>`:''}</div><div class="v105-history-meta">${shop?`<span class="v105-history-store">${v96MerchantBadge(shop)}<span>${safeFull(v96MerchantDisplayName(shop))}</span></span>`:''}<span class="v105-history-person">${e.type==='expense'?'Для: ':''}${safeFull(e.type==='expense'?v86ExpenseTarget(e):e.who||'—')}</span></div>${comment?`<p class="v105-history-note">${safeFull(comment)}</p>`:''}</td>
    <td data-label="Сумма" class="v76-amount ${e.type==='income'?'money-green':e.type==='expense'?'money-red':''}">${amountText(e)}</td>
-   <td data-label="Действия" class="v76-actions"><div class="v76-action-group"><button type="button" class="btn small" ${recordAction('entry-repeat',e.id)}>Повторить</button><button type="button" class="btn small" ${recordAction('favorite-from-entry',e.id)}>В избранное</button><span class="v100-history-icon-actions"><button class="btn small" aria-label="Редактировать операцию" title="Редактировать" data-action="edit" data-id="${esc(e.id)}"><svg class="v83-line-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L9 17l-4 1 1-4z"/></svg></button><button class="btn small danger" aria-label="Удалить операцию" title="Удалить" data-action="delete" data-id="${esc(e.id)}"><svg class="v83-line-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 14h10l1-14M9 7V4h6v3"/></svg></button></span></div></td>
+   <td data-label="Действия" class="v76-actions"><div class="v76-action-group">${v112EntryAction('entry-repeat',e)}${v112EntryAction('favorite-from-entry',e)}<span class="v100-history-icon-actions">${v112EntryAction('entry-edit',e,'history')}${v112EntryAction('entry-delete',e,'history')}</span></div></td>
   </tr>`
  }).join('')||'<tr class="v76-empty-row"><td colspan="4" class="empty">Операций не найдено. Попробуйте изменить фильтры или выберите «Все даты».</td></tr>';
 }
@@ -5274,7 +5405,7 @@ function renderAnalytics(){
  document.getElementById('aCatsDetails').innerHTML=Object.entries(aggregate(ex,'category')).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="v74-detail-row"><span>${esc(k)}</span><b>${money(v)}</b></div>`).join('')||'<div class="empty">Пока нет расходов</div>';document.getElementById('aCats').innerHTML=cats.map(([k,v])=>`<button type="button" class="bar-row v84-drill-bar" ${recordAction('drill','group',k,'analytics')}><div class="bar-top"><span>${esc(k)}</span><b>${money(v)}</b></div><div class="bar"><i style="width:${v/catTotal*100}%;background:${v84GroupColor(k)}"></i></div></button>`).join('')||'<div class="empty">Нет данных</div>';
  document.getElementById('aStats').innerHTML=`<div class="kpi"><small>Всего расходов</small><strong>${money(total)}</strong></div><div class="kpi"><small>Операций</small><strong>${ex.length}</strong></div><div class="kpi"><small>Средняя покупка</small><strong>${money(ex.length?total/ex.length:0)}</strong></div><div class="kpi"><small>Дней с расходами</small><strong>${days}</strong></div>`;
 }
-function renderIncome(){const all=state.entries.filter(e=>e.type==='income');const sel=document.getElementById('incomeMonth');const m=sel?.value||month();const arr=all.filter(e=>e.date?.startsWith(m)).sort((a,b)=>b.date.localeCompare(a.date));const ordered=[...new Set([...INCOME_PEOPLE,...arr.map(e=>e.who||'Не указано')])].map(p=>[p,sum(arr.filter(e=>(e.who||'Не указано')===p))]);const total=sum(arr);const label=new Date(m+'-01T12:00:00').toLocaleDateString('ru-RU',{month:'long',year:'numeric'});const hint=document.getElementById('incomePeopleChartHint');if(hint)hint.textContent='Доходы за '+label;const max=Math.max(...ordered.map(x=>x[1]),1);const chart=document.getElementById('incomePeopleChart');if(chart)chart.innerHTML=ordered.map(([p,v])=>`<div class="bar-row"><div class="bar-top"><b>${esc(p)}</b><span class="money-green">${money(v)}</span></div><div class="bar"><i style="width:${Math.max(0,Math.min(100,v/max*100))}%"></i></div></div>`).join('');const donut=document.getElementById('incomePeopleDonut');if(donut)donut.style.background=total?'conic-gradient('+ordered.map((x,i)=>{const a=ordered.slice(0,i).reduce((n,y)=>n+y[1],0)/total*360;const b=a+x[1]/total*360;const cols=['#496a9d','#76938b','#b1a18a','#9199aa','#aa90a5','#7296a0','#87909c'];return cols[i%cols.length]+' '+a+'deg '+b+'deg'}).join(',')+')':'conic-gradient(#e8edf5 0 360deg)';const dt=document.getElementById('incomePeopleDonutTotal');if(dt)dt.textContent=money(total);const legend=document.getElementById('incomePeopleLegend');if(legend)legend.innerHTML=ordered.filter(x=>x[1]>0).map(([p,v],i)=>`<div class="legend-row"><span class="legend-dot" style="background:${['#496a9d','#76938b','#b1a18a','#9199aa','#aa90a5','#7296a0','#87909c'][i%7]}"></span><span>${esc(p)}</span><b>${total?Math.round(v/total*100):0}% · ${money(v)}</b></div>`).join('')||'<div class="empty">Нет доходов за выбранный месяц.</div>';const cards=document.getElementById('incomePeopleCards');if(cards)cards.innerHTML=ordered.map(([p,v])=>`<div class="bar-row"><div class="bar-top"><b>${esc(p)}</b><span class="money-green">${money(v)} · ${total?Math.round(v/total*100):0}%</span></div><div class="bar"><i style="width:${total?Math.min(100,v/total*100):0}%"></i></div></div>`).join('');const list=document.getElementById('incomeList');list.innerHTML=arr.length?arr.map(e=>`<div class="bar-row"><div class="bar-top"><span>${esc(e.date)} · ${esc(e.store||e.category)} · ${esc(e.who||'Не указано')}</span><b class="money-green">+${money(e.amount)}</b></div><div>${esc(e.comment||'')}</div><div class="actions"><button class="btn small" ${recordAction('entry-edit',e.id)}>Изменить</button><button type="button" class="btn small" ${recordAction('entry-repeat',e.id)}>Повторить</button><button type="button" class="btn small" ${recordAction('favorite-from-entry',e.id)}>В избранное</button><button class="btn small danger" ${recordAction('entry-delete',e.id)}>Удалить</button></div></div>`).join(''):'<div class="empty">Нет доходов за выбранный месяц.</div>';}
+function renderIncome(){const all=state.entries.filter(e=>e.type==='income');const sel=document.getElementById('incomeMonth');const m=sel?.value||month();const arr=all.filter(e=>e.date?.startsWith(m)).sort((a,b)=>b.date.localeCompare(a.date));const ordered=[...new Set([...INCOME_PEOPLE,...arr.map(e=>e.who||'Не указано')])].map(p=>[p,sum(arr.filter(e=>(e.who||'Не указано')===p))]);const total=sum(arr);const label=new Date(m+'-01T12:00:00').toLocaleDateString('ru-RU',{month:'long',year:'numeric'});const hint=document.getElementById('incomePeopleChartHint');if(hint)hint.textContent='Доходы за '+label;const max=Math.max(...ordered.map(x=>x[1]),1);const chart=document.getElementById('incomePeopleChart');if(chart)chart.innerHTML=ordered.map(([p,v])=>`<div class="bar-row"><div class="bar-top"><b>${esc(p)}</b><span class="money-green">${money(v)}</span></div><div class="bar"><i style="width:${Math.max(0,Math.min(100,v/max*100))}%"></i></div></div>`).join('');const donut=document.getElementById('incomePeopleDonut');if(donut)donut.style.background=total?'conic-gradient('+ordered.map((x,i)=>{const a=ordered.slice(0,i).reduce((n,y)=>n+y[1],0)/total*360;const b=a+x[1]/total*360;const cols=['#496a9d','#76938b','#b1a18a','#9199aa','#aa90a5','#7296a0','#87909c'];return cols[i%cols.length]+' '+a+'deg '+b+'deg'}).join(',')+')':'conic-gradient(#e8edf5 0 360deg)';const dt=document.getElementById('incomePeopleDonutTotal');if(dt)dt.textContent=money(total);const legend=document.getElementById('incomePeopleLegend');if(legend)legend.innerHTML=ordered.filter(x=>x[1]>0).map(([p,v],i)=>`<div class="legend-row"><span class="legend-dot" style="background:${['#496a9d','#76938b','#b1a18a','#9199aa','#aa90a5','#7296a0','#87909c'][i%7]}"></span><span>${esc(p)}</span><b>${total?Math.round(v/total*100):0}% · ${money(v)}</b></div>`).join('')||'<div class="empty">Нет доходов за выбранный месяц.</div>';const cards=document.getElementById('incomePeopleCards');if(cards)cards.innerHTML=ordered.map(([p,v])=>`<div class="bar-row"><div class="bar-top"><b>${esc(p)}</b><span class="money-green">${money(v)} · ${total?Math.round(v/total*100):0}%</span></div><div class="bar"><i style="width:${total?Math.min(100,v/total*100):0}%"></i></div></div>`).join('');const list=document.getElementById('incomeList');list.innerHTML=arr.length?arr.map(e=>`<div class="bar-row"><div class="bar-top"><span>${esc(e.date)} · ${esc(e.store||e.category)} · ${esc(e.who||'Не указано')}</span><b class="money-green">+${money(e.amount)}</b></div><div>${esc(e.comment||'')}</div><div class="actions">${v112EntryAction('entry-edit',e)}${v112EntryAction('entry-repeat',e)}${v112EntryAction('favorite-from-entry',e)}${v112EntryAction('entry-delete',e)}</div></div>`).join(''):'<div class="empty">Нет доходов за выбранный месяц.</div>';}
 function carMonthKey(){return document.getElementById('carMonth')?.value||month()}
 function carCategory(entry){
  const c=String(entry.category||'').trim().toLowerCase();
@@ -6256,7 +6387,7 @@ function v84Drill(mode,key,source='analytics',returnContext=null){
      const name=store||category;
      const details=[store&&category!==store?v99CategoryLabel(category):'',e.subcategory||'',e.beneficiary?`Для: ${e.beneficiary}`:'',e.comment||''].filter(Boolean);
      const date=/^\d{4}-\d{2}-\d{2}$/.test(String(e.date||''))?String(e.date).slice(8,10)+'.'+String(e.date).slice(5,7)+'.'+String(e.date).slice(0,4):String(e.date||'');
-     return `<div class="v84-drill-entry v85-drill-entry"><time class="v85-drill-date">${esc(date)}</time><div class="v85-drill-content"><b class="v85-drill-name">${v96MerchantBadge(e.store)}${esc(v96MerchantDisplayName(e.store)||name)}</b>${details.length?`<div class="v85-drill-details">${details.map(d=>`<span>${esc(d)}</span>`).join('')}</div>`:''}</div><span class="v84-drill-sum">${money2(e.amount)}</span><div class="v96-drill-entry-actions"><button type="button" class="btn small" aria-label="Изменить операцию: ${esc(name)}, ${esc(date)}" ${recordAction('drill-entry-edit',e.id)}>Изменить</button><button type="button" class="btn small" ${recordAction('entry-repeat',e.id)}>Повторить</button><button type="button" class="btn small danger" aria-label="Удалить операцию: ${esc(name)}, ${esc(date)}" ${recordAction('drill-entry-delete',e.id)}>Удалить</button></div></div>`;
+     return `<div class="v84-drill-entry v85-drill-entry"><time class="v85-drill-date">${esc(date)}</time><div class="v85-drill-content"><b class="v85-drill-name">${v96MerchantBadge(e.store)}${esc(v96MerchantDisplayName(e.store)||name)}</b>${details.length?`<div class="v85-drill-details">${details.map(d=>`<span>${esc(d)}</span>`).join('')}</div>`:''}</div><span class="v84-drill-sum">${money2(e.amount)}</span><div class="v96-drill-entry-actions">${v112EntryAction('drill-entry-edit',e,'drill')}${v112EntryAction('entry-repeat',e)}${v112EntryAction('drill-entry-delete',e,'drill')}</div></div>`;
    }).join(''):'<div class="v84-empty">Записей пока нет</div>';
  }
  root.querySelectorAll('button[data-v84-sub]').forEach(b=>b.addEventListener('click',()=>show(b.dataset.v84Sub)));show(v96DrillContext.sub);
