@@ -165,3 +165,18 @@ PYTHONPATH=tests python3 -m unittest test_local_data_safety test_sync_protocol t
 раскрытие новых свёрнутых форм и разблокировка вымышленного приложения перед
 авторизованной записью. Денежные и CAS-утверждения сохранены. Отчёт выпуска:
 `docs/HUMAN_BUDGET_V96_RU.md`.
+
+## Мобильные поля и «Семейный капитал» · 2 ноября
+
+```sh
+PYTHONPATH=tests python3 -m unittest test_mobile_date_alignment test_mobile_month_picker test_mobile_calendar_focus test_family_capital_brand -v
+```
+
+12 новых сценариев: нативный текст даты и сенсорный выбор високосного дня,
+ширина месяца и длинных пунктов, переход из календаря над нижним меню,
+прямой/обратный Tab и уменьшенная видимая область, выбранное владельцем название,
+крупные целые слова, сохранность пользовательского оформления и данных.
+Итоговый совместный прогон с прежними select/calendar/dialog/account/planning:
+**78/78 PASS**. Все внешние запросы блокируются; реальные данные не используются.
+Доступен Chromium, физический iPhone/Safari не заявляется как проверенный.
+Отчёт: `docs/MOBILE_CAPITAL_20261102_RU.md`.

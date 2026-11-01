@@ -225,7 +225,7 @@ class DialogKeyboard(unittest.TestCase):
         self.prepare()
         self.page.locator('#v104GlobalCalculator').focus()
         self.page.evaluate('openAuth()')
-        self.assertTrue(self.page.get_by_role('dialog', name='Вход в семейный банк').is_visible())
+        self.assertTrue(self.page.get_by_role('dialog', name='Вход в семейный бюджет').is_visible())
         self.assertEqual(self.page.evaluate('document.activeElement.id'), 'loginEmail')
         self.page.keyboard.press('Shift+Tab')
         self.assertEqual(self.page.locator('#authModal').get_by_role('button', name='Закрыть', exact=True).evaluate('(node)=>node===document.activeElement'), True)

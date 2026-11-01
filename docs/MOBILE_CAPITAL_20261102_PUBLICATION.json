@@ -1,0 +1,44 @@
+{
+  "pull_request": {
+    "number": 21,
+    "merged": true,
+    "merged_at": "2026-11-01T21:34:48Z",
+    "merge_commit_sha": "132fdb68931cf5aaff4e7185ec99eba90ec0aba2",
+    "changed_files": 1,
+    "head": "c16e16508de49fc17faf5f05741a9c98f16117ba"
+  },
+  "workflow": {
+    "id": 41352734740,
+    "workflow_id": 371287144,
+    "head_sha": "132fdb68931cf5aaff4e7185ec99eba90ec0aba2",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/Stimpx/marichevy-finance/actions/runs/41352734740",
+    "created_at": "2026-11-01T21:34:50Z",
+    "updated_at": "2026-11-01T21:35:27Z"
+  },
+  "canonical": {
+    "http_code": 200,
+    "url_effective": "https://finance.marichev.pro/",
+    "ssl_verify_result": 0,
+    "size_download": 3242951,
+    "checked_at_utc": "2026-11-01T21:35:35.346058+00:00",
+    "checked_at_moscow": "2026-11-02T00:35:35.346058+03:00",
+    "bytes": 3242951,
+    "sha256": "f80b90ae6d7e83c552d4e1cf5b774b63b6478904e6584ca56e6367bacb9c988b",
+    "title": "Семейный капитал"
+  },
+  "checks": {
+    "correct_pr_merge": true,
+    "index_only_file_count": true,
+    "correct_workflow": true,
+    "actual_merge_sha": true,
+    "workflow_success": true,
+    "canonical_http200": true,
+    "canonical_exact_url": true,
+    "ordinary_tls_verified": true,
+    "exact_bytes": true,
+    "exact_sha256": true,
+    "document_title": true
+  }
+}
