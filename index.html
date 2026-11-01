@@ -3871,9 +3871,11 @@ function v96RenderBrandingChoices(){
   const choose=document.getElementById('v109'+title+'Choose');if(choose)choose.disabled=v96BrandingBusy||document.getElementById('appRoot').classList.contains('auth-locked');
  }
  const all=document.getElementById('v96BrandingSave');if(all)all.disabled=v96BrandingBusy||!Object.keys(v96BrandingDraft).length;
+ for(const reset of document.querySelectorAll('#v96BrandingCard button[onclick^="v96ResetBranding("]'))reset.disabled=v96BrandingBusy||document.getElementById('appRoot').classList.contains('auth-locked');
 }
 async function v96SaveBranding(kind){
  if(v96BrandingBusy||document.getElementById('appRoot').classList.contains('auth-locked'))return false;
+ const epoch=authEpoch;
  const kinds=kind==='all'?Object.keys(v96BrandingDraft):[kind];
  if(!kinds.length||kinds.some(key=>!['logo','favicon'].includes(key)||!Object.prototype.hasOwnProperty.call(v96BrandingDraft,key)))return false;
  const selected=Object.fromEntries(kinds.map(key=>[key,v96BrandingDraft[key]]));
@@ -3881,16 +3883,22 @@ async function v96SaveBranding(kind){
  v96BrandingBusy=true;v96RenderBrandingChoices();
  try{
   const preferences=state.settings.preferences||{},branding={...(preferences.branding||{})};
-  for(const key of kinds){if(selected[key]===null)delete branding[key+'DataUrl'];else branding[key+'DataUrl']=selected[key]}
+  // An explicit default choice must survive merging with a stale custom image.
+  for(const key of kinds)branding[key+'DataUrl']=selected[key];
   state.settings.preferences={...preferences,branding};
-  const ok=await saveAll();if(!v89StorageFailed)for(const key of kinds)if(v96BrandingDraft[key]===selected[key])delete v96BrandingDraft[key];
+  const previous=Date.parse(state.settings.updated_at||'');
+  state.settings.updated_at=new Date(Math.max(Date.now(),Number.isFinite(previous)&&previous<8640000000000000?previous+1:0)).toISOString();
+  const ok=await saveAll();
+  if(epoch!==authEpoch||document.getElementById('appRoot').classList.contains('auth-locked'))return false;
+  if(!v89StorageFailed)for(const key of kinds)if(v96BrandingDraft[key]===selected[key])delete v96BrandingDraft[key];
   v96ApplyBranding();v96BrandingMessage(localSaveMessage(ok,'Оформление сохранено.'));return ok||!v89StorageFailed;
  }finally{v96BrandingBusy=false;v96RenderBrandingChoices()}
 }
 function v96ResetBranding(kind){
  if(document.getElementById('appRoot').classList.contains('auth-locked'))return Promise.resolve(false);
+ if(v96BrandingBusy){v96BrandingMessage('Дождитесь завершения сохранения и повторите сброс.');return Promise.resolve(false)}
  const kinds=kind==='all'?['logo','favicon']:[kind];if(kinds.some(key=>!['logo','favicon'].includes(key)))return Promise.resolve(false);
- for(const key of kinds){v96BrandingGeneration[key]++;v96BrandingDraft[key]=null}
+ for(const key of kinds){v96BrandingGeneration[key]++;v96BrandingDraft[key]=null;const input=document.getElementById(key==='logo'?'v96LogoFile':'v96FaviconFile');if(input)input.value=''}
  return v96SaveBranding(kind);
 }
 
