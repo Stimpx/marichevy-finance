@@ -2323,6 +2323,21 @@ input:is([type="date"],[type="month"])::-webkit-date-and-time-value{min-height:1
 <style id="v123FamilyCapitalBrand">
 .side .brand{white-space:normal;flex-wrap:wrap;padding-inline:0}.side .brand-heading{flex:1 1 8em;min-width:0;line-height:1.2;overflow-wrap:anywhere}.brand-heading small{font-size:12px;font-weight:500;letter-spacing:0;line-height:1.4}
 </style>
+<style id="v124CSVPickerStyle">
+.v124-csv-picker{position:relative;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin:14px 0 18px;padding:16px;border:1px dashed #cdd9ed;border-radius:14px;background:#f8faff;min-width:0}
+.v124-csv-file{display:flex;align-items:flex-start;gap:12px;flex:1 1 15em;min-width:0}
+.v124-csv-file-mark{display:grid;place-items:center;flex:0 0 40px;width:40px;height:44px;border:1px solid #dfe7f4;border-radius:11px;background:#fff;color:#627da9}
+.v124-csv-file-mark svg{width:21px;height:21px}
+.v124-csv-file-copy{min-width:0;display:grid;gap:4px}
+#v124CSVFileName{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;font-size:14px;font-weight:600;line-height:1.5;overflow-wrap:anywhere;word-break:normal;color:#33465f}
+#v124CSVFormat{font-size:12px;line-height:1.5;overflow-wrap:anywhere;color:#728196}
+#v124CSVChoose{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-width:0;max-width:100%;min-height:44px;padding:11px 16px;border-radius:12px;font-size:13px;font-weight:500;line-height:1.45;white-space:normal;text-align:center;box-shadow:none}
+#v124CSVChoose svg{flex:0 0 18px;width:18px;height:18px}
+#v124CSVChoose:focus-visible{outline:3px solid #98b2ff;outline-offset:2px}
+#v124CSVChoose:disabled{opacity:.5;cursor:default}
+#v119CSVFile.v124-csv-native{position:absolute!important;left:0;top:0;width:1px!important;height:1px!important;min-height:0!important;max-height:1px!important;padding:0!important;margin:0!important;border:0!important;opacity:0;overflow:hidden;pointer-events:none}
+@media(max-width:600px){.v124-csv-picker{padding:14px;gap:14px}.v124-csv-file{flex-basis:100%}#v124CSVChoose{width:100%}}
+</style>
 </head>
 <body>
 <noscript><div style="padding:14px;background:#fff3cd;color:#664d03;text-align:center;font:600 14px/1.4 system-ui">Для работы «Семейный капитал» необходимо включить JavaScript.</div></noscript>
@@ -2541,7 +2556,7 @@ input:is([type="date"],[type="month"])::-webkit-date-and-time-value{min-height:1
 </div></details></div>
 <div class="actions v91-actions"><button class="btn primary" id="v90Save" onclick="addEntry()">Сохранить расход</button><button class="btn" onclick="clearEntry()">Очистить</button><button class="btn" type="button" id="v119EntryRetry" hidden onclick="v119RetryEntry()">Повторить сохранение</button></div><div id="saveMsg" role="status" aria-live="polite"></div>
 <div id="v90Templates" hidden></div><p id="v97DraftStatus" role="status" aria-live="polite"></p>
-<details id="v119OperationTools" class="v119-tools"><summary>Чек и импорт выписки</summary><div id="v119ReceiptMount"></div><h3>Разделить один чек</h3><p class="hint">Укажите общую сумму, магазин и дату в форме выше. Части сохранятся отдельными расходами; весь чек ещё раз не добавляется.</p><button class="btn" type="button" onclick="v119StartSplit()">Разделить чек</button><div id="v119SplitPanel" hidden><p id="v119SplitTotal" role="status"></p><div id="v119SplitRows"></div><div class="actions"><button class="btn" type="button" onclick="v119AddSplitRow()">Ещё часть</button><button class="btn primary" type="button" onclick="v119SaveSplit()">Сохранить части чека</button><button class="btn" type="button" onclick="v119CancelSplit()">Отмена разделения</button></div></div><h3>Импорт банковской выписки CSV</h3><p class="hint">UTF-8, до 2 МБ и 5000 строк. Выберите столбцы и проверьте записи: до отдельного подтверждения история не меняется. Положительная сумма без типа — доход, отрицательная — расход. Возможные дубли требуют вашего решения.</p><label for="v119CSVFile">Выбрать CSV</label><input id="v119CSVFile" type="file" accept=".csv,text/csv,text/plain" onchange="v119ReadCSV(this.files[0])"><div id="v119CSVPanel" hidden><div id="v119CSVMapping"></div><label for="v119CSVDefaultAccount">Счёт по умолчанию для этой выписки<select id="v119CSVDefaultAccount"></select></label><div class="actions"><button type="button" class="btn" onclick="v119CSVPreview()">Подготовить просмотр</button><button type="button" class="btn" onclick="v119CancelCSV()">Отменить импорт</button></div><div id="v119CSVRows"></div><label class="v119-csv-choose"><input id="v119CSVDuplicates" type="checkbox">Я проверил и хочу импортировать также выбранные возможные дубли</label><button id="v119CSVConfirm" class="btn primary" type="button" disabled onclick="v119SaveCSV()">Импортировать выбранные записи</button></div><p id="v119ToolsStatus" role="status" aria-live="polite"></p></details>
+<details id="v119OperationTools" class="v119-tools"><summary>Чек и импорт выписки</summary><div id="v119ReceiptMount"></div><h3>Разделить один чек</h3><p class="hint">Укажите общую сумму, магазин и дату в форме выше. Части сохранятся отдельными расходами; весь чек ещё раз не добавляется.</p><button class="btn" type="button" onclick="v119StartSplit()">Разделить чек</button><div id="v119SplitPanel" hidden><p id="v119SplitTotal" role="status"></p><div id="v119SplitRows"></div><div class="actions"><button class="btn" type="button" onclick="v119AddSplitRow()">Ещё часть</button><button class="btn primary" type="button" onclick="v119SaveSplit()">Сохранить части чека</button><button class="btn" type="button" onclick="v119CancelSplit()">Отмена разделения</button></div></div><h3>Импорт банковской выписки</h3><p class="hint">Выберите выписку из банка и проверьте операции перед добавлением. История изменится только после подтверждения импорта.</p><div id="v124CSVPicker" class="v124-csv-picker"><div class="v124-csv-file"><span class="v124-csv-file-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M8 13h8M8 17h5"/></svg></span><div class="v124-csv-file-copy"><strong id="v124CSVFileName" role="status" aria-live="polite">Выписка не выбрана</strong><span id="v124CSVFormat">CSV UTF-8 · до 2 МБ · до 5 000 строк</span></div></div><button id="v124CSVChoose" type="button" class="btn" onclick="v124ChooseCSV()" aria-describedby="v124CSVFileName v124CSVFormat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V3m-4 4 4-4 4 4M4 16v5h16v-5"/></svg><span>Выбрать CSV</span></button><input id="v119CSVFile" class="v124-csv-native" type="file" accept=".csv,text/csv,text/plain" tabindex="-1" aria-hidden="true" onchange="v119ReadCSV(this.files[0])"></div><div id="v119CSVPanel" hidden><div id="v119CSVMapping"></div><label for="v119CSVDefaultAccount">Счёт по умолчанию для этой выписки<select id="v119CSVDefaultAccount"></select></label><div class="actions"><button type="button" class="btn" onclick="v119CSVPreview()">Подготовить просмотр</button><button type="button" class="btn" onclick="v119CancelCSV()">Отменить импорт</button></div><div id="v119CSVRows"></div><label class="v119-csv-choose"><input id="v119CSVDuplicates" type="checkbox">Я проверил и хочу импортировать также выбранные возможные дубли</label><button id="v119CSVConfirm" class="btn primary" type="button" disabled onclick="v119SaveCSV()">Импортировать выбранные записи</button></div><p id="v119ToolsStatus" role="status" aria-live="polite"></p></details>
 <section id="v97Favorites" aria-labelledby="v97FavoritesTitle"><div class="v97-favorites-home-head"><h3 id="v97FavoritesTitle">Избранное семьи</h3><button type="button" class="btn small" onclick="v97SaveFavoriteFromForm()">В избранное</button></div><p class="hint">Общие варианты для членов семьи. Они заполняют черновик — операция сохраняется отдельно.</p><form id="v97FavoriteEditor" hidden onsubmit="event.preventDefault();v97SubmitFavoriteEditor()"><h4 id="v97FavoriteEditorTitle">Сохранить вариант в избранное семьи</h4><label for="v97FavoriteName">Короткое название</label><input id="v97FavoriteName" maxlength="40" autocomplete="off" placeholder="Назовите свой вариант"/><div class="actions"><button type="submit" class="btn primary">Сохранить избранное</button><button type="button" class="btn" onclick="v97CloseFavoriteEditor()">Отмена</button></div><p id="v97FavoriteEditorStatus" role="status" aria-live="polite"></p></form><div id="v97FavoriteList"></div><p id="v97FavoritesStatus" role="status" aria-live="polite"></p></section>
 </div>
 <div class="card">
@@ -3734,7 +3749,7 @@ const NAV={
  data:['Данные','Облако, экспорт и импорт.'],
  settings:['Настройки и данные','Безопасность, Telegram и семейная синхронизация.'],
  help:['Как пользоваться','Понятная инструкция по разделам и категориям.'],
- plans:['О приложении','Возможности семейного бюджета и обновления.']
+ plans:['Тарифы FREE / PRO','Сравните возможности FREE и PRO для семейного бюджета.']
 };
 
 const CHORE_REPEAT_LABELS={once:'Не повторять',daily:'Каждый день',weekly:'Раз в неделю',biweekly:'Раз в 2 недели',monthly:'Раз в месяц',yearly:'Раз в год'};
@@ -4892,8 +4907,9 @@ function v121InitNavigationLayout(){
  const nav=document.getElementById('nav'),buttons=new Map([...nav.querySelectorAll('button[data-page]')].map(button=>[button.dataset.page,button]));
  buttons.set('accounts',v121NavButton('accounts','Счета и сверка','M3 6h18v14H3z M3 10h18 M15 14h3 M6 3h12v3'));
  buttons.set('planning',v121NavButton('planning','План месяца','M4 5h16v16H4z M8 3v4 M16 3v4 M4 10h16 M8 14h3 M8 17h7'));
+ const tariffButton=buttons.get('plans');if(tariffButton)tariffButton.querySelector('.v81-nav-label').textContent='Тарифы FREE / PRO';
  nav.replaceChildren();
- for(const [title,pages] of [['Каждый день',['home','today','history','accounts']],['Планирование',['planning','goals','loans']],['Аналитика',['analytics','income','car']],['Семья',['chores','dates']],['Сервис',['settings','help']]]){
+ for(const [title,pages] of [['Каждый день',['home','today','history','accounts']],['Планирование',['planning','goals','loans']],['Аналитика',['analytics','income','car']],['Семья',['chores','dates']],['Сервис',['settings','help','plans']]]){
   const heading=document.createElement('div');heading.className='v121-nav-group';heading.textContent=title;nav.appendChild(heading);
   for(const page of pages){const button=buttons.get(page);if(button)nav.appendChild(button)}
  }
@@ -4901,18 +4917,17 @@ function v121InitNavigationLayout(){
  document.querySelector('.side-edition b')?.remove();
  const more=document.querySelector('#v74MorePanel .v74-more-grid'),moreButtons=new Map([...more.querySelectorAll('button[data-page]')].map(button=>[button.dataset.page,button]));
  for(const [page,label] of [['accounts','Счета и сверка'],['planning','План месяца']]){const button=document.createElement('button');button.type='button';button.dataset.page=page;const span=document.createElement('span');span.textContent=label;button.appendChild(span);button.addEventListener('click',()=>v74Go(page));moreButtons.set(page,button)}
- more.replaceChildren();for(const page of ['accounts','planning','income','car','loans','goals','chores','dates','settings','help']){const button=moreButtons.get(page);if(button)more.appendChild(button)}
+ const moreTariffButton=moreButtons.get('plans');if(moreTariffButton)moreTariffButton.querySelector('span').textContent='Тарифы FREE / PRO';
+ more.replaceChildren();for(const page of ['accounts','planning','income','car','loans','goals','chores','dates','settings','help','plans']){const button=moreButtons.get(page);if(button)more.appendChild(button)}
  for(const button of document.querySelectorAll('#nav button,#mobileNav button,#v74MorePanel [data-page]')){const label=button.textContent.trim();button.setAttribute('aria-label',label);button.setAttribute('title',label)}
  v121WrapSettings('v96BrandingCard','Оформление семьи');v121WrapSettings('v89AuditCard','Проверка данных и восстановление');v121WrapSettings('v88FeedbackCard','Обратная связь');
  const telegram=document.querySelector('#settings .telegram-settings-card');if(telegram&&!telegram.id)telegram.id='v121TelegramSettings';if(telegram)v121WrapSettings(telegram.id,'Уведомления');
  const sync=document.getElementById('syncStatus')?.closest('.card');if(sync&&!sync.id)sync.id='v121SyncSettings';if(sync)v121WrapSettings(sync.id,'Данные, синхронизация и резервные копии',true);
  const help=document.getElementById('help'),actions=document.createElement('div');actions.className='v121-help-actions';
- for(const [label,callback] of [['Обратная связь',()=>v121OpenSettingsGroup('v88FeedbackCard')],['О приложении и обновления',()=>go('plans')]]){const button=document.createElement('button');button.type='button';button.className='btn';button.textContent=label;button.addEventListener('click',callback);actions.appendChild(button)}
+ for(const [label,callback] of [['Обратная связь',()=>v121OpenSettingsGroup('v88FeedbackCard')],['Тарифы FREE / PRO',()=>go('plans')]]){const button=document.createElement('button');button.type='button';button.className='btn';button.textContent=label;button.addEventListener('click',callback);actions.appendChild(button)}
  (help.querySelector('.v96-help-hero')||help.firstElementChild||help).appendChild(actions);
  const plans=document.getElementById('plans'),shell=plans.querySelector('.v96-plans-shell');
  if(shell){
-  const about=document.createElement('section');about.className='card v121-about-card';about.innerHTML='<h2>Семейный бюджет</h2><p class="hint">Каждодневные записи, понятный план и общий доступ для семьи.</p><ul><li>Операции и история с исправлением записей.</li><li>Счета, сверка и расчёт доступной суммы.</li><li>План месяца, обязательные платежи и цели.</li><li>Экспорт и восстановление данных.</li></ul><div class="actions"><button type="button" class="btn" onclick="go(\'help\')">Как пользоваться</button><button type="button" class="btn" onclick="v121OpenSettingsGroup(\'v121SyncSettings\')">Данные и резервные копии</button></div>';
-  const preview=document.createElement('details'),summary=document.createElement('summary');preview.className='v121-product-preview';preview.id='v121ProductPreview';summary.textContent='Предварительный макет тарифов';plans.prepend(about,preview);preview.append(summary,shell);
   for(const paragraph of shell.querySelectorAll('p'))if(paragraph.textContent.includes('рабочий банк ещё не обновлён'))paragraph.textContent='Последние опубликованные возможности семейного бюджета.';
   const version=document.getElementById('v96PlanVersion');if(version)version.textContent='Возможности приложения';
  }
@@ -4977,9 +4992,9 @@ function go(page,options={}){
  v110ClosePickers();const closedDialog=v113CloseDialogsForNavigation();if(document.getElementById('v74MorePanel')?.classList.contains('open'))toggleV74Menu(false);
  document.querySelectorAll('.section').forEach(section=>{section.classList.remove('active');section.style.display='none'});target.classList.add('active');target.style.display=page==='home'?'flex':'block';
  const saved=options.restore;if(saved){v121RestoreFilters(saved.filters);if(typeof saved.short==='boolean')document.getElementById('home').classList.toggle('v73-focus',saved.short)}
- const selected=page==='categoryReview'?'analytics':page==='plans'?'help':page;
+ const selected=page==='categoryReview'?'analytics':page;
  document.querySelectorAll('#nav button[data-page],#mobileNav button[data-page],#v74MorePanel button[data-page]').forEach(button=>{const active=button.dataset.page===selected;button.classList.toggle('active',active);if(active)button.setAttribute('aria-current','page');else button.removeAttribute('aria-current')});
- const more=document.getElementById('v74MoreToggle');if(more)more.classList.toggle('active',['accounts','planning','income','car','loans','goals','chores','dates','settings','help'].includes(selected));
+ const more=document.getElementById('v74MoreToggle');if(more)more.classList.toggle('active',['accounts','planning','income','car','loans','goals','chores','dates','settings','help','plans'].includes(selected));
  document.getElementById('pageTitle').textContent=NAV[page][0];document.getElementById('pageSub').textContent=NAV[page][1];document.title=NAV[page][0]+' · '+v121BaseTitle;
  if(page==='history')renderHistory();if(page==='today')renderToday();if(page==='home')renderHome();if(page==='analytics')renderAnalytics();if(page==='income')renderIncome();if(page==='car')renderCar();if(page==='goals')renderGoals();if(page==='chores')renderChores();if(page==='dates')renderDates();if(page==='loans')renderLoans();if(page==='settings')settingsFields();if(page==='accounts'&&typeof v117RenderAccounts==='function')v117RenderAccounts();if(page==='planning'&&typeof v118RenderPlanning==='function')v118RenderPlanning();
  v84RenderAll();v110RefreshPickers();
@@ -5613,7 +5628,7 @@ let v119Busy=false,v119Split=null,v119CSV=null,v119Generation=0,v119Undo=null,v1
 function v119OpsCanWrite(){return typeof v117CanWrite==='function'?v117CanWrite():v99CanWriteDirections()}
 function v119OpsContext(){return {epoch:authEpoch,household:CONFIG.household}}
 function v119OpsAllowed(stage){return v119OpsCanWrite()&&(!stage||stage.epoch===authEpoch&&stage.household===CONFIG.household)}
-function v119ResetOperations(){v119Editor=null;v119Split=null;v119CSV=null;v119Undo=null;v119EntryAttempt=null;v119Generation++;document.getElementById('v119UndoNotice')?.remove();for(const id of ['v119SplitPanel','v119CSVPanel','v119EntryRetry']){const el=document.getElementById(id);if(el)el.hidden=true}document.getElementById('v119CSVRows')?.replaceChildren();document.getElementById('v119SplitRows')?.replaceChildren();v119ToolsStatus('')}
+function v119ResetOperations(){v119Editor=null;v119Split=null;v119CSV=null;v119Undo=null;v119EntryAttempt=null;v119Generation++;document.getElementById('v119UndoNotice')?.remove();for(const id of ['v119SplitPanel','v119CSVPanel','v119EntryRetry']){const el=document.getElementById(id);if(el)el.hidden=true}document.getElementById('v119CSVRows')?.replaceChildren();document.getElementById('v119SplitRows')?.replaceChildren();v119ToolsStatus('');v124RenderCSVPicker()}
 function v119Accounts(){return typeof v117SelectableAccounts==='function'?v117SelectableAccounts():[]}
 function v119AccountOptions(selected=''){
  const rows=v119Accounts(),known=rows.some(a=>a.id===selected);
@@ -5679,8 +5694,19 @@ async function v119UndoDelete(){
 }
 function v119ToolsStatus(text,error=false){const el=document.getElementById('v119ToolsStatus');if(el){el.textContent=text;el.classList.toggle('error',error)}}
 function v119Cents(value){const n=parseMoneyInput(String(value));if(!Number.isFinite(n))throw new Error('Некорректная денежная сумма');const [whole,fraction='']=String(n).split('.');return BigInt(whole)*100n+BigInt(fraction.padEnd(2,'0'))}
+function v124RenderCSVPicker(){
+ const label=document.getElementById('v124CSVFileName'),input=document.getElementById('v119CSVFile'),choose=document.getElementById('v124CSVChoose');
+ if(label){const text=v119CSV?.name||'Выписка не выбрана';if(label.textContent!==text)label.textContent=text;label.title=v119CSV?.name||''}
+ if(!v119CSV&&input)input.value='';
+ if(choose)choose.disabled=!v119OpsAllowed()||!!v119CSV?.committed||!!v119Split?.committed;
+}
+function v124ChooseCSV(){
+ if(v119Busy||!v119OpsAllowed())return false;
+ if(v119CSV?.committed||v119Split?.committed){v119ToolsStatus('Сначала повторите сохранение предыдущих записей.',true);return false}
+ const input=document.getElementById('v119CSVFile');if(!input)return false;input.value='';input.click();return true;
+}
 function v119InitOperations(){
- v119RefreshEntryAccounts();const mount=document.getElementById('v119ReceiptMount'),receipt=document.getElementById('v84ReceiptCard');if(mount&&receipt&&!mount.contains(receipt))mount.appendChild(receipt);v119RefreshPaymentAccounts();
+ v119RefreshEntryAccounts();const mount=document.getElementById('v119ReceiptMount'),receipt=document.getElementById('v84ReceiptCard');if(mount&&receipt&&!mount.contains(receipt))mount.appendChild(receipt);v119RefreshPaymentAccounts();v124RenderCSVPicker();
 }
 function v119RefreshPaymentAccounts(){
  for(const [kind,selector]of [['loan','#v77InstallmentList'],['recurring','#v84RecurringList']]){const mount=document.querySelector(selector);if(!mount)continue;let wrapper=document.getElementById('v119Payment_'+kind);if(!wrapper){wrapper=document.createElement('label');wrapper.id='v119Payment_'+kind;wrapper.className='field v119-payment-account';wrapper.textContent='Счёт для новой оплаты';const select=document.createElement('select');select.id='v119'+(kind==='loan'?'Loan':'Recurring')+'Account';wrapper.append(select);const note=document.createElement('small');note.className='hint';note.textContent='Проверьте источник перед оплатой. Без привязки потребуется сверка.';wrapper.append(note);mount.before(wrapper)}const select=wrapper.querySelector('select'),old=select.value||v119DefaultAccount();const html=v119AccountOptions(old);if(select.innerHTML!==html){select.innerHTML=html;select.value=old}}
@@ -5712,7 +5738,7 @@ async function v119CommitBatch(stage,rows,success){
  else{stage.committed=rows.map(e=>JSON.parse(JSON.stringify(e)));state.entries.push(...rows)}
  const stageHost=stage===v119Split?document.getElementById('v119SplitPanel'):document.getElementById('v119CSVPanel');stageHost?.querySelectorAll('input,select').forEach(el=>el.disabled=true);
  v119Busy=true;const controls=[...document.querySelectorAll('#v119OperationTools button')];controls.forEach(b=>b.disabled=true);renderAll();let ok=false;
- try{ok=await saveAll()}finally{v119Busy=false;controls.forEach(b=>b.disabled=false)}
+ try{ok=await saveAll()}finally{v119Busy=false;controls.forEach(b=>b.disabled=false);v124RenderCSVPicker()}
  const durable=ok||!v89StorageFailed;if(!v119OpsAllowed(stage))return false;v119ToolsStatus(localSaveMessage(ok,durable?success:'Записи остались в памяти. Повторите сохранение; новые дубли созданы не будут.'),!durable);return durable;
 }
 async function v119SaveSplit(){
@@ -5748,7 +5774,7 @@ function v119SetCSV(text,name='Выписка CSV'){
  const parsed=v119ParseCSV(text);v119CSV={...v119OpsContext(),generation:++v119Generation,name:String(name).slice(0,180),fingerprint:v119Hash(text)+'-'+text.length,raw:parsed.rows,preview:[],committed:null};
  const map=document.getElementById('v119CSVMapping');map.replaceChildren();
  for(const [key,label,pattern]of [['date','Дата',/дат|date/i],['amount','Сумма',/сумм|amount/i],['description','Описание / магазин',/опис|назнач|магаз|description|merchant/i],['type','Тип (необязательно)',/тип|вид|type/i],['account','Счёт (необязательно)',/сч[её]т|account/i]]){const wrapper=document.createElement('label');wrapper.textContent=label;const select=document.createElement('select');select.id='v119CSVMap_'+key;select.innerHTML='<option value="">Не выбран</option>'+parsed.rows[0].map((name,i)=>'<option value="'+i+'">'+esc(name||'Столбец '+(i+1))+'</option>').join('');const found=parsed.rows[0].findIndex(x=>pattern.test(x));if(found>=0)select.value=String(found);wrapper.append(select);map.append(wrapper)}
- document.getElementById('v119CSVDefaultAccount').innerHTML=v119AccountOptions();document.getElementById('v119CSVPanel').hidden=false;document.getElementById('v119CSVRows').replaceChildren();document.getElementById('v119CSVConfirm').disabled=true;document.getElementById('v119CSVDuplicates').checked=false;v119ToolsStatus('Файл прочитан: '+v119CSV.name+'. Выберите столбцы и подготовьте просмотр. История не менялась.');v110RefreshPickers();
+ document.getElementById('v119CSVDefaultAccount').innerHTML=v119AccountOptions();document.getElementById('v119CSVPanel').hidden=false;document.getElementById('v119CSVRows').replaceChildren();document.getElementById('v119CSVConfirm').disabled=true;document.getElementById('v119CSVDuplicates').checked=false;v119ToolsStatus('Файл прочитан: '+v119CSV.name+'. Выберите столбцы и подготовьте просмотр. История не менялась.');v110RefreshPickers();v124RenderCSVPicker();
 }
 function v119CSVPreview(){
  const stage=v119CSV;if(!stage||stage.committed||v119Busy||!v119OpsAllowed(stage))return;const map={};for(const k of ['date','amount','description','type','account']){const v=document.getElementById('v119CSVMap_'+k).value;map[k]=v===''?null:Number(v)}
@@ -5784,9 +5810,9 @@ async function v119SaveCSV(){
   if(!stage.committed&&duplicate&&!allowDuplicates){item.duplicate=true;item.selected=false;v119RenderCSVRows();v119ToolsStatus('Совпадения требуют повторного выбора и подтверждения импорта возможных дублей.',true);return}
  }
  const now=new Date().toISOString(),rows=chosen.map(item=>{const d=item.draft,e={id:uid(),...d,category:d.type==='income'?'Доход':d.type==='expense'?(d.category||'Прочее'):'Движение денег',who:d.type==='income'?currentProfile().name:'Не указано',beneficiary:d.type==='expense'?'Не указано':'',created_at:now,updated_at:now,importSource:{kind:'csv',fingerprint:stage.fingerprint,row:item.row}};for(const k of ['accountId','fromAccountId','toAccountId'])if(!e[k]||(['expense','income'].includes(e.type)?k!=='accountId':k==='accountId'))delete e[k];return e});
- if(await v119CommitBatch(stage,rows,'Выбранные строки выписки сохранены')){if(v119CSV===stage){v119OfferBatchUndo(stage.committed,'Выбранные строки выписки добавлены. Можно отменить этот импорт.');v119CSV=null;document.getElementById('v119CSVPanel').hidden=true;document.getElementById('v119CSVRows').replaceChildren()}}
+ if(await v119CommitBatch(stage,rows,'Выбранные строки выписки сохранены')){if(v119CSV===stage){v119OfferBatchUndo(stage.committed,'Выбранные строки выписки добавлены. Можно отменить этот импорт.');v119CSV=null;document.getElementById('v119CSVPanel').hidden=true;document.getElementById('v119CSVRows').replaceChildren();v124RenderCSVPicker()}}
 }
-function v119CancelCSV(){if(v119Busy)return;if(v119CSV?.committed){v119ToolsStatus('Записи уже добавлены в память. Повторите сохранение, чтобы не потерять их.',true);return}v119CSV=null;v119Generation++;document.getElementById('v119CSVPanel').hidden=true;document.getElementById('v119CSVRows').replaceChildren();v119ToolsStatus('Импорт отменён, история не менялась.')}
+function v119CancelCSV(){if(v119Busy)return;if(v119CSV?.committed){v119ToolsStatus('Записи уже добавлены в память. Повторите сохранение, чтобы не потерять их.',true);return}v119CSV=null;v119Generation++;document.getElementById('v119CSVPanel').hidden=true;document.getElementById('v119CSVRows').replaceChildren();v119ToolsStatus('Импорт отменён, история не менялась.');v124RenderCSVPicker()}
 async function v119RetryEntry(){
  const attempt=v119EntryAttempt;if(!attempt||v90Saving||v119Busy||v119EditBusy||!v119OpsAllowed(attempt))return;v90Saving=true;let ok=false;try{ok=await saveAll()}finally{v90Saving=false}
  const durable=ok||!v89StorageFailed;if(!v119OpsAllowed(attempt))return;if(durable&&v119EntryAttempt===attempt){v119EntryAttempt=null;document.getElementById('v119EntryRetry').hidden=true;if(JSON.stringify(v97DraftFields())===attempt.key)clearEntry(true)}document.getElementById('saveMsg').textContent=localSaveMessage(ok,'Операция сохранена');v114RevealEntryStatus(!durable);
