@@ -24,7 +24,9 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
 <meta content="#0b1220" name="theme-color"/>
-<title>Маричевы · Траты.Банк · v95-rc2</title>
+<title>Семейный капитал</title>
+<meta name="application-name" content="Семейный капитал"/>
+<meta name="apple-mobile-web-app-title" content="Семейный капитал"/>
 
 
 
@@ -2313,25 +2315,33 @@ body .v112-record-action .v112-record-icon{display:block;width:18px;height:18px;
 .v121-settings-group{margin:0 0 16px;border:1px solid #dfe7f4;border-radius:20px;background:#fff;min-width:0;overflow:visible}.v121-settings-group>summary{display:flex;align-items:center;min-height:64px;padding:16px 22px;cursor:pointer;font-size:17px;font-weight:600;line-height:1.4;overflow-wrap:anywhere}.v121-settings-group>.card{border:0;box-shadow:none;margin:0;padding-top:0}.v121-help-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}.v121-about-card ul{padding-left:20px;line-height:1.75}.v121-about-card li{overflow-wrap:anywhere}.v121-product-preview{margin-top:18px}.v121-product-preview>summary{min-height:44px;cursor:pointer;display:flex;align-items:center;font-weight:600;color:#6d7e98}
 @media(max-width:760px){.v121-home-summary-top{flex-direction:column;gap:8px}.v121-home-summary-top>.hint{max-width:100%;text-align:left}.v121-home-actions>.btn{flex:1 1 130px}#v121HomeAnalysisCard>.v73-overview-toolbar{flex-direction:column;align-items:stretch;padding:16px}#v121HomeAnalysisCard .v73-overview-toggle{width:100%}#v121HomeAnalyticsContent{padding:0 12px 12px}.v121-settings-group>summary{padding:15px 18px;font-size:16px}.v121-calculation dl>div{flex-wrap:wrap;gap:4px}.v121-calculation dd{flex:1 1 auto;max-width:100%}}
 </style>
+<style id="v122MobileDateAlignment">
+/* Native iOS date values need real vertical space, including enlarged text. */
+:is(.v84-form-inline,.v84-recurring-form) .v84-input-wrap input:is([type="date"],[type="month"]){height:auto;min-height:var(--v88-field-height);padding-top:14px;padding-bottom:14px;line-height:1.5}
+input:is([type="date"],[type="month"])::-webkit-date-and-time-value{min-height:1.5em;margin:0;padding:0;line-height:inherit;text-align:left}
+</style>
+<style id="v123FamilyCapitalBrand">
+.side .brand{white-space:normal;flex-wrap:wrap;padding-inline:0}.side .brand-heading{flex:1 1 8em;min-width:0;line-height:1.2;overflow-wrap:anywhere}.brand-heading small{font-size:12px;font-weight:500;letter-spacing:0;line-height:1.4}
+</style>
 </head>
 <body>
-<noscript><div style="padding:14px;background:#fff3cd;color:#664d03;text-align:center;font:600 14px/1.4 system-ui">Для работы «Маричевы · Траты.Банк» необходимо включить JavaScript.</div></noscript>
+<noscript><div style="padding:14px;background:#fff3cd;color:#664d03;text-align:center;font:600 14px/1.4 system-ui">Для работы «Семейный капитал» необходимо включить JavaScript.</div></noscript>
 <div class="auth-gate" id="authGate">
 <div class="auth-gate-card">
-<div class="auth-gate-brand">Маричевы<br/><span>Траты.Банк</span></div>
-<h1>Вход в семейный банк</h1>
+<div class="auth-gate-brand">Семейный капитал<br/><span>Финансы семьи</span></div>
+<h1>Вход в семейный бюджет</h1>
 <p>Финансовые данные семьи доступны только после авторизации.</p>
 <div class="field"><label>Email</label><input autocomplete="username" id="gateEmail" inputmode="email" placeholder="Ваш email" type="email"/></div>
 <div class="field"><label>Пароль</label><input autocomplete="current-password" id="gatePassword" placeholder="Ваш пароль" type="password"/></div>
-<div class="v75-auth-note" id="v75AuthNote">Ваш семейный банк защищён входом.</div><div id="gateError"></div>
+<div class="v75-auth-note" id="v75AuthNote">Ваш семейный бюджет защищён входом.</div><div id="gateError"></div>
 <button class="btn primary" id="gateLoginBtn" onclick="gateLogin()">Войти</button>
 <p class="auth-gate-note">Сергей и Виктория используют свои отдельные аккаунты.</p>
 </div>
 </div>
 <div class="app auth-locked" id="appRoot">
 <aside class="side">
-<div class="brand"><span class="brand-emblem" aria-hidden="true">М</span><span class="brand-heading">Маричевы<small>Траты.Банк</small></span></div><div class="side-edition"><span class="edition-led"></span>FAMILY EDITION <b>PRO</b></div>
-<div class="v73-nav-kicker">РАЗДЕЛЫ БАНКА</div><div class="nav" id="nav">
+<div class="brand"><span class="brand-emblem" aria-hidden="true">С</span><span class="brand-heading">Семейный капитал<small>Финансы семьи</small></span></div><div class="side-edition"><span class="edition-led"></span>ДЛЯ СЕМЬИ <b>PRO</b></div>
+<div class="v73-nav-kicker">РАЗДЕЛЫ</div><div class="nav" id="nav">
 <button data-page="home"><svg class="v81-nav-svg" aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg><span class="v81-nav-label">Главная</span></button><button data-page="today"><svg class="v81-nav-svg" aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg><span class="v81-nav-label">Добавить операцию</span></button><button data-page="history"><svg class="v81-nav-svg" aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><span class="v81-nav-label">История операций</span></button>
 <button data-page="analytics"><svg class="v81-nav-svg" aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M4 20V11M10 20V4M16 20v-8M22 20v-5"/></svg><span class="v81-nav-label">Анализ расходов</span></button><button data-page="income"><svg class="v81-nav-svg" aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M3 17l6-6 4 4 8-9M15 6h6v6"/></svg><span class="v81-nav-label">Доходы семьи</span></button>
 <button data-page="car"><svg class="v81-nav-svg" aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M5 17H3v-6l2-5h14l2 5v6h-2M5 17v2h3v-2M16 17v2h3v-2M3 13h18M6 6l-2 5h16l-2-5"/></svg><span class="v81-nav-label">Автомобиль</span></button><button data-page="loans"><svg class="v81-nav-svg" aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4"/></svg><span class="v81-nav-label">Кредиты и рассрочки</span></button><button data-page="goals"><svg class="v81-nav-svg" aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg><span class="v81-nav-label">Цели и накопления</span></button><button data-page="chores"><svg class="v81-nav-svg" aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="m4 12 6 6L20 7"/><path d="M20 13v7H4V4h12"/></svg><span class="v81-nav-label">Домашние дела</span></button><button data-page="dates"><svg class="v81-nav-svg" aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18"/><path d="M12 15c-2-3-6 0 0 4 6-4 2-7 0-4"/></svg><span class="v81-nav-label">Важные даты</span></button>
@@ -2350,7 +2360,7 @@ body .v112-record-action .v112-record-icon{display:block;width:18px;height:18px;
 </style>
 <main class="main">
 <header class="top">
-<div class="title"><div class="page-eyebrow">МАРИЧЕВЫ · СЕМЕЙНЫЙ БАНК</div><h1 id="pageTitle">Финансовый центр семьи</h1><p id="pageSub">Все деньги семьи — в одном понятном месте.</p></div>
+<div class="title"><div class="page-eyebrow">СЕМЕЙНЫЙ КАПИТАЛ · ФИНАНСЫ СЕМЬИ</div><h1 id="pageTitle">Финансовый центр семьи</h1><p id="pageSub">Все деньги семьи — в одном понятном месте.</p></div>
 <div class="v104-header-tools"><button type="button" id="v104GlobalCalculator" class="btn v104-global-calculator" aria-label="Открыть калькулятор" aria-haspopup="dialog" onclick="v96OpenCalculator()"><svg aria-hidden="true" width="18" height="20" viewBox="0 0 20 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="2" y="1" width="16" height="22" rx="3"/><path d="M6 5h8v4H6zM6 13h1M13 13h1M6 17h1M13 17h1"/></svg><span>Калькулятор</span></button><div class="userbar"><span class="dot off" id="statusDot"></span><span id="userLabel">Вход не выполнен</span><button class="btn small" id="authBtn">Войти</button></div></div>
 </header>
 <section class="section active" id="home">
@@ -2375,9 +2385,9 @@ body .v112-record-action .v112-record-icon{display:block;width:18px;height:18px;
 </section>
 <section class="card v99-home-directions" id="v99HomeDirections" aria-labelledby="v99DirectionTitle"><div class="v99-section-heading"><div><h2 id="v99DirectionTitle">Все покупки получателей и направления</h2><p class="hint v114-scope-note" id="v114InclusiveScope">В итогах получателей включены все их покупки, в том числе автомобиль и кредиты. Нажмите плитку, чтобы открыть записи.</p></div><button type="button" class="btn small" onclick="v99OpenDirectionEditor('home')">Добавить своё</button></div><div id="v99DirectionEditorHome" hidden></div><div id="v99HomeDirectionTiles" class="v99-direction-tiles"></div><p class="hint v99-overlap-note">Личная подписка видна у человека и в подписках; подарок — у получателя и в подарках. Это разные срезы одних расходов: суммы плиток не складываются.</p></section>
 <section class="v99-home-slices" id="v99HomeSlices" aria-label="Подписки и подарки за месяц"><article class="card"><div class="v99-section-heading"><div><h2>Подписки и онлайн-сервисы</h2><p class="hint">Сервисы всей семьи за выбранный месяц</p></div><strong id="v99SubscriptionTotal">0 ₽</strong></div><div id="v99SubscriptionList"></div></article><article class="card"><div class="v99-section-heading"><div><h2>Подарки</h2><p class="hint">Отдельный итог с указанием получателей</p></div><strong id="v99GiftTotal">0 ₽</strong></div><div id="v99GiftList"></div></article></section>
-<div class="home-opening"><div><div class="home-opening-kicker">СЕМЬЯ МАРИЧЕВЫХ · ФИНАНСОВЫЙ ЦЕНТР</div><h2>Деньги под контролем.<br/> <em>Время — для семьи.</em></h2><p>Бюджет, общие планы и важные моменты — в одном месте.</p></div><div class="home-opening-mark" aria-hidden="true">М</div></div>
+<div class="home-opening"><div><div class="home-opening-kicker">СЕМЕЙНЫЙ КАПИТАЛ · ФИНАНСЫ СЕМЬИ</div><h2>Деньги под контролем.<br/> <em>Время — для семьи.</em></h2><p>Бюджет, общие планы и важные моменты — в одном месте.</p></div><div class="home-opening-mark" aria-hidden="true">С</div></div>
 <div class="hero">
-<div class="hero-row"><div><div class="hero-label">Остаток с переносом </div><div class="hero-value" id="heroBalance">0 ₽</div><div class="hero-sub" id="heroSub">Доходы и расходы ещё не внесены</div><div class="v75-metric-tip">Перенос прошлого месяца плюс доходы минус расходы. По внесённой истории.</div></div><div class="pill" style="background:rgba(255,255,255,.12);color:#fff">МАРИЧЕВЫ · СЕМЕЙНЫЙ БЮДЖЕТ</div></div>
+<div class="hero-row"><div><div class="hero-label">Остаток с переносом </div><div class="hero-value" id="heroBalance">0 ₽</div><div class="hero-sub" id="heroSub">Доходы и расходы ещё не внесены</div><div class="v75-metric-tip">Перенос прошлого месяца плюс доходы минус расходы. По внесённой истории.</div></div><div class="pill" style="background:rgba(255,255,255,.12);color:#fff">СЕМЕЙНЫЙ КАПИТАЛ</div></div>
 <div class="quick">
 <button onclick="openEntry('expense')"> <b>Добавить расход</b><small>Покупка, кафе, аптека</small></button>
 <button onclick="openEntry('income')"> <b>Добавить доход</b><small>Зарплата, пособие</small></button>
@@ -2797,7 +2807,7 @@ body .v112-record-action .v112-record-icon{display:block;width:18px;height:18px;
 <section class="card v89-audit" id="v89AuditCard" aria-labelledby="v89AuditTitle">
   <div class="v89-audit-head">
     <div><div class="v89-kicker">КОНТРОЛЬ ПЕРЕД FREE</div>
-      <h2 id="v89AuditTitle">Проверка данных семейного банка</h2>
+      <h2 id="v89AuditTitle">Проверка данных семейного бюджета</h2>
       <p class="hint">Проверяем суммы и полноту истории, доступность локального хранения и наличие несинхронизированных изменений. Ничего не меняем в финансовых записях.</p>
     </div><span class="v89-audit-tag">v89 · Проверка</span>
   </div>
@@ -2869,7 +2879,7 @@ body .v112-record-action .v112-record-icon{display:block;width:18px;height:18px;
   </div>
 
   <div class="telegram-master">
-    <div><strong>Telegram-уведомления</strong><span>Включить отправку уведомлений из семейного банка</span></div>
+    <div><strong>Telegram-уведомления</strong><span>Включить отправку семейных уведомлений</span></div>
     <label class="switch"><input id="telegramEnabled" type="checkbox" onchange="updateTelegramSetting('enabled',this.checked)"><span></span></label>
   </div>
 
@@ -3189,12 +3199,12 @@ body .v112-record-action .v112-record-icon{display:block;width:18px;height:18px;
 </nav>
 <div id="v74MoreShade" class="v74-more-shade" onclick="toggleV74Menu(false)" hidden></div>
 <section id="v74MorePanel" class="v74-more-panel" role="dialog" aria-modal="true" aria-label="Все разделы" aria-hidden="true" tabindex="-1">
- <div class="v74-more-head"><div><b>Все разделы банка</b><small>Выберите, что хотите открыть</small></div><button aria-label="Закрыть меню" type="button" onclick="toggleV74Menu(false)">✕</button></div>
+ <div class="v74-more-head"><div><b>Все разделы приложения</b><small>Выберите, что хотите открыть</small></div><button aria-label="Закрыть меню" type="button" onclick="toggleV74Menu(false)">✕</button></div>
  <div class="v74-more-grid"><button data-page="income" onclick="v74Go('income')"> <span>Доходы семьи</span></button><button data-page="car" onclick="v74Go('car')"> <span>Автомобиль</span></button><button data-page="loans" onclick="v74Go('loans')"> <span>Кредиты и рассрочки</span></button><button data-page="goals" onclick="v74Go('goals')"> <span>Цели и накопления</span></button><button data-page="chores" onclick="v74Go('chores')"> <span>Домашние дела</span></button><button data-page="dates" onclick="v74Go('dates')"> <span>Важные даты</span></button><button data-page="settings" onclick="v74Go('settings')"> <span>Настройки и Telegram</span></button><button data-page="help" onclick="v74Go('help')"><span>Как пользоваться</span></button><button data-page="plans" onclick="v74Go('plans')"><span>FREE / PRO</span></button></div>
 </section>
 </div>
 <div class="v84-modal-back" id="v84DrillModal" aria-hidden="true" onclick="if(event.target===this)v84CloseDrill()"><div class="v84-modal" role="dialog" aria-modal="true" aria-labelledby="v84DrillTitle" tabindex="-1"><div class="v84-modal-head"><div><small id="v84DrillPeriod"></small><h2 id="v84DrillTitle">Расшифровка расходов</h2></div><button type="button" class="v84-close" aria-label="Закрыть расшифровку" onclick="v84CloseDrill()">×</button></div><div id="v84DrillBody"></div></div></div>
-<div class="modal-back" id="authModal" aria-hidden="true"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="authModalTitle" tabindex="-1"><div class="login-brand">МАРИЧЕВЫ · ТРАТЫ.БАНК</div><h2 id="authModalTitle">Вход в семейный банк</h2><p class="login-copy">Сергей и Виктория используют разные аккаунты, а финансовые данные семьи общие.</p><div class="field"><label for="loginEmail">Email</label><input autocomplete="username" id="loginEmail" type="email"/></div><div class="field" style="margin-top:10px"><label for="loginPassword">Пароль</label><input autocomplete="current-password" id="loginPassword" type="password"/></div><div id="loginError"></div><div class="actions"><button class="btn primary" id="loginBtn" onclick="login()">Войти</button><button class="btn" onclick="closeAuth()">Закрыть</button></div></div></div>
+<div class="modal-back" id="authModal" aria-hidden="true"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="authModalTitle" tabindex="-1"><div class="login-brand">СЕМЕЙНЫЙ КАПИТАЛ</div><h2 id="authModalTitle">Вход в семейный бюджет</h2><p class="login-copy">Сергей и Виктория используют разные аккаунты, а финансовые данные семьи общие.</p><div class="field"><label for="loginEmail">Email</label><input autocomplete="username" id="loginEmail" type="email"/></div><div class="field" style="margin-top:10px"><label for="loginPassword">Пароль</label><input autocomplete="current-password" id="loginPassword" type="password"/></div><div id="loginError"></div><div class="actions"><button class="btn primary" id="loginBtn" onclick="login()">Войти</button><button class="btn" onclick="closeAuth()">Закрыть</button></div></div></div>
 <div class="modal-back" id="editModal" aria-hidden="true"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="editModalTitle" tabindex="-1"><h2 id="editModalTitle">Изменить операцию</h2><div id="editForm"></div><div class="actions"><button class="btn primary" onclick="saveEdit()">Сохранить</button><button class="btn" onclick="closeEdit()">Отмена</button></div></div></div>
 <script>
 /* Маричевы · Траты.Банк · v75 STABILITY & EXPERIENCE / v74 storage keys and historical records preserved. */
@@ -6469,7 +6479,7 @@ async function testTelegram(person){
  const chatId=TELEGRAM_CHAT_IDS[person],name=person==='victoria'?'Виктория':'Сергей';
  const btns=[...document.querySelectorAll('[onclick^="testTelegram"]')];btns.forEach(b=>b.disabled=true);
  v120TelegramChecks[person]={kind:'checking',at:Date.now(),epoch};renderTelegramSettings();
- try{await sendTelegramMessage(chatId,` Маричевы Семейный Банк\n\n ${name}, проверка отправки из семейного банка.\n\nПроверка связи Telegram · Family Edition.`);if(epoch!==authEpoch)return false;v120TelegramChecks[person]={kind:'sent',at:Date.now(),epoch};toast(`✓ Сервис подтвердил отправку теста: ${name}`);return true}
+ try{await sendTelegramMessage(chatId,` Семейный капитал\n\n ${name}, проверка отправки из «Семейного капитала».\n\nПроверка связи Telegram · Family Edition.`);if(epoch!==authEpoch)return false;v120TelegramChecks[person]={kind:'sent',at:Date.now(),epoch};toast(`✓ Сервис подтвердил отправку теста: ${name}`);return true}
  catch(err){if(epoch!==authEpoch)return false;v120TelegramChecks[person]={kind:'failed',at:Date.now(),epoch};console.error('telegram test',err);toast(' Telegram: '+err.message);return false}
  finally{btns.forEach(b=>b.disabled=false);renderTelegramSettings()}
 }
@@ -7791,7 +7801,7 @@ function v84RenderNotices(){const root=document.getElementById('v84Notices');if(
  root.innerHTML=notices.length?`<div class="v84-notice-list">${notices.slice(0,5).map(x=>`<div class="v84-notice ${x.level}"><span class="v84-notice-dot"></span><div class="v84-notice-body"><b>${esc(x.title)}</b><small>${esc(x.detail)}</small></div><button type="button" class="btn small" ${recordAction('navigate',x.page)}>Открыть</button></div>`).join('')}</div>${notices.length>5?`<p class="v84-mini-note">Ещё ${notices.length-5} событий — в соответствующих разделах.</p>`:''}`:'<div class="v84-empty">В ближайшие 30 дней нет записанных событий, требующих внимания.</div>';
 }
 function v84ReportText(){const m=v84ThisMonth(),ex=expenses(m),inc=monthEntries(m).filter(e=>e.type==='income'),total=sum(ex),income=sum(inc),cats=Object.entries(aggregate(groupedExpenseEntries(ex),'category')).sort((a,b)=>b[1]-a[1]),ob=v78Obligations(m),budgets=v84Data().budgets.filter(r=>![V118_MONTH_KIND,V118_RESERVE_KIND].includes(r.kind));
- let lines=[`СЕМЕЙНЫЙ БАНК · ИТОГИ ${v84MonthLabel(m).toUpperCase()}`,'',`Доходы: ${money(income)}`,`Расходы: ${money(total)}`,`Результат месяца: ${money(income-total)}`,`Операций расходов: ${ex.length}`,'',`Три основные группы расходов:`];
+ let lines=[`СЕМЕЙНЫЙ КАПИТАЛ · ИТОГИ ${v84MonthLabel(m).toUpperCase()}`,'',`Доходы: ${money(income)}`,`Расходы: ${money(total)}`,`Результат месяца: ${money(income-total)}`,`Операций расходов: ${ex.length}`,'',`Три основные группы расходов:`];
  lines.push(...(cats.length?cats.slice(0,3).map(([k,v])=>`• ${k}: ${money(v)} (${total?Math.round(v/total*100):0}%)`):['• Нет данных']));
  lines.push('',`Обязательные платежи по графикам: ${money(ob.planned)}`,`Учтено в расходах: ${money(ob.paid)}`,`Не подтверждено: ${money(ob.remaining)}`);
  if(budgets.length){lines.push('','Лимиты:');for(const b of budgets){const scope=v98BudgetScope(b),spent=v84BudgetSpent(m,b);lines.push(scope.supported?`• ${scope.title}: ${money(spent)} из ${money(b.amount)} · ${scope.note}${Number(b.amount)>0&&v77Cents(spent)>v77Cents(b.amount)?' · превышено':''}`:`• ${scope.title}: ${scope.note}`)}}
@@ -8638,9 +8648,11 @@ window.addEventListener('resize',queueDonutFit);queueDonutFit();
   if(!interactable(record)){close(false);return}
   const viewport=window.visualViewport,leftEdge=viewport?.offsetLeft||0,topEdge=viewport?.offsetTop||0,width=viewport?.width||innerWidth,height=viewport?.height||innerHeight;
   const rect=record.trigger.getBoundingClientRect(),gap=6,margin=8,below=topEdge+height-rect.bottom-gap-margin,above=rect.top-topEdge-gap-margin;
-  const up=below<180&&above>below,room=Math.min(320,Math.max(0,up?above:below)),panelWidth=Math.min(Math.max(rect.width,180),width-margin*2);
+  const list=record.panel;list.style.width='max-content';list.style.maxWidth=Math.max(0,width-margin*2)+'px';
+  const naturalWidth=Math.ceil(list.getBoundingClientRect().width);
+  const up=below<180&&above>below,room=Math.min(320,Math.max(0,up?above:below)),panelWidth=Math.min(Math.max(rect.width,180,naturalWidth),width-margin*2);
   if(room<44||panelWidth<44){close(false);return}
-  const list=record.panel;list.style.width=panelWidth+'px';list.style.maxHeight=room+'px';list.style.left=Math.min(Math.max(rect.left,leftEdge+margin),leftEdge+width-margin-panelWidth)+'px';
+  list.style.width=panelWidth+'px';list.style.maxHeight=room+'px';list.style.left=Math.min(Math.max(rect.left,leftEdge+margin),leftEdge+width-margin-panelWidth)+'px';
   const actual=Math.min(list.scrollHeight,room);list.style.top=(up?rect.top-gap-actual:rect.bottom+gap)+'px';
  }
  function followSelectAnchor(){
@@ -8922,7 +8934,7 @@ window.addEventListener('resize',queueDonutFit);queueDonutFit();
  function focusNext(reverse){
   const input=current?.input;if(!input)return;
   const nodes=[...document.querySelectorAll('button,a[href],input,select,textarea,[tabindex]')].filter(n=>n.tabIndex>=0&&!n.disabled&&n.getClientRects().length&&!n.closest('[data-v108-ui],[hidden],[inert]'));
-  const index=nodes.indexOf(input),next=nodes[index+(reverse?-1:1)];close(false);if(next)next.focus({preventScroll:true});else input.focus({preventScroll:true});
+  const index=nodes.indexOf(input),next=nodes[index+(reverse?-1:1)],target=next||input;close(false);target.focus({preventScroll:true});if(typeof v114RevealBounds==='function')v114RevealBounds(target);
  }
  function handlePanelKey(event){
   if(!current)return;
