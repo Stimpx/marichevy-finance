@@ -1520,7 +1520,7 @@ button:focus-visible,.btn:focus-visible,a:focus-visible,[role="button"]:focus-vi
 <style>
 /* v91: final scoped layout, after legacy rules. */
 
-#today>.card:not(.v91-entry){max-width:820px;margin:0 auto!important}
+#today>.card:not(.v91-entry){width:100%;max-width:none;margin:0!important}
 @media(max-width:760px){.top{flex-wrap:wrap}.top .userbar{max-width:100%;overflow-wrap:anywhere}.main{padding-bottom:110px!important}}
 
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
@@ -1561,7 +1561,7 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 @media(max-width:600px){#chores .chores-form,#history .filters{grid-template-columns:minmax(0,1fr)}.field input,.field select,.field textarea,.filters input,.filters select{font-size:16px}}
 </style>
 <style id="v95ExpenseStyle">
-#today .v91-entry{max-width:1120px;margin:0 auto 24px;border:1px solid #e3e7ec;border-radius:24px;padding:28px;background:#fff;box-shadow:0 8px 30px #162c4610}
+#today .v91-entry{width:100%;max-width:none;margin:0 0 24px;border:1px solid #e3e7ec;border-radius:24px;padding:28px;background:#fff;box-shadow:0 8px 30px #162c4610}
 #today .v91-head h2{font-size:26px;font-weight:700;letter-spacing:-.6px;margin:5px 0 6px}
 #today .v91-head p{color:#718096;font-size:14px;margin:0}
 #today .v91-kicker{font-size:10px;letter-spacing:1.5px;color:#6a778b;font-weight:650}
@@ -1652,7 +1652,7 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 @media(max-width:700px){.v96-help{--v96-help-inset:16px;--v96-help-marker:14px;--v96-help-gap:10px}.v96-help .v96-help-category-grid,.v96-help .v96-help-toc ul{grid-template-columns:minmax(0,1fr)}.v96-help .v96-help-hero,.v96-help .v96-help-toc{padding:17px}.v96-help h2{font-size:25px}.v96-help .v96-help-topic>summary h3{font-size:16px}.v96-help summary{padding-block:14px}.v96-help .v96-help-body{padding-bottom:14px}.v96-help .v96-help-topic{scroll-margin-top:90px}}
 @media(prefers-reduced-motion:reduce){.v96-help *{scroll-behavior:auto}}
 
-#plans .v96-plans-shell{max-width:1120px;margin:0 auto;display:grid;gap:18px}
+#plans .v96-plans-shell{width:100%;max-width:none;margin:0;display:grid;gap:18px}
 #plans .v96-plans-intro{max-width:780px;margin:2px 0 0}
 #plans .v96-plans-eyebrow{font-size:10px;letter-spacing:1.5px;font-weight:700;color:#65768e}
 #plans .v96-plans-intro h2{font-size:clamp(26px,4vw,38px);line-height:1.15;letter-spacing:-.7px;margin:8px 0 12px;color:#1c2c45}
@@ -1739,7 +1739,14 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
 /* Short home keeps the full dashboard available without changing family records. */
 #home>.v73-overview-toolbar{order:-1;gap:12px;padding:0;align-items:center}
 #home .v73-overview-toggle{min-height:44px;white-space:normal;flex-shrink:0}
-#home.v73-focus>:not(#v99HomeSpending):not(#v99HomeDirections):not(#v99HomeSlices):not(.hero):not(#v96MonthlyReview):not(#v97HomeFavorites):not(#v97HomePayments):not(#v97HomeRecent):not(.v73-overview-toolbar){display:none!important}
+#home.v73-focus>:not(#v99HomeSpending):not(#v99HomeDirections):not(#v99HomeSlices):not(.hero):not(#v96MonthlyReview):not(#v97HomeFavorites):not(#v97HomePayments):not(#v97HomeRecent):not(.v73-overview-toolbar):not(.home-top-today){display:none!important}
+#home.v73-focus>.home-top-today{grid-template-columns:minmax(0,1fr)}
+#home.v73-focus>.home-top-today>.today-greeting{display:none}
+/* Keep weather visible in either overview, including long offline status and enlarged text. */
+#weatherCard{flex-wrap:wrap;align-items:flex-start}
+#weatherCard .today-weather-main{flex:1 1 220px;min-width:0;max-width:100%;align-items:flex-start}
+#weatherCard .today-weather-copy,#weatherCard .today-weather-copy>*{min-width:0;max-width:100%;white-space:normal;overflow-wrap:anywhere}
+#weatherCard .weather-refresh{flex:0 0 44px;width:44px;height:44px}
 #home.v73-focus>.hero{order:0;padding:clamp(18px,2.5vw,28px)}
 #home.v73-focus>.v73-overview-toolbar{order:1}
 #home.v73-focus>#v97HomeFavorites{order:2}
@@ -5489,7 +5496,7 @@ function renderHome(){
  renderHomeMoments();
  renderHealthDashboard();
  renderFamilyBoard();
- renderTodayHeader(); renderTodayAdvice(); if(!weatherCache.data||Date.now()-weatherCache.at>30*60*1000)loadWeather();
+ renderTodayHeader(); renderTodayAdvice(); v115MaybeRefreshWeather();
  const carry=v111MonthBalance(homeMonth())||v111MonthBalance(month()),selectedMonth=carry.month,arr=monthEntries(selectedMonth),ex=arr.filter(isExpense),inc=arr.filter(e=>e.type==='income'),inSum=carry.income,exSum=carry.expense,bal=carry.closing,todaySum=sum(state.entries.filter(e=>e.date===today()&&isExpense(e)));
  const currentMonth=month(), prev=previousMonthKey(selectedMonth), prevBalance=v111MonthBalance(prev)?.closing||0, prevEx=sum(expenses(prev)), prevInc=sum(monthEntries(prev).filter(e=>e.type==='income')), compare=document.getElementById('monthCompare'), compareHint=document.getElementById('monthCompareHint');
  if(compare){
@@ -5831,61 +5838,90 @@ function renderWeddingFeature(){
 
 const MOSCOW={lat:55.7558,lon:37.6173};
 const WEATHER_STORAGE_KEY='marichevy_weather_last_good_v74';
-function readLastWeather(){try{const v=JSON.parse(localStorage.getItem(WEATHER_STORAGE_KEY)||'null');if(v&&v.data&&Number.isFinite(v.data.temperature_2m)&&Date.now()-v.at<48*3600000)return v}catch{}return null}
+const WEATHER_FRESH_MS=30*60*1000,WEATHER_MAX_AGE_MS=48*3600000,WEATHER_RETRY_MS=3*60*1000,WEATHER_TIMEOUT_MS=10000;
+function v115WeatherData(value){
+ if(!value||!Number.isFinite(value.temperature_2m)||value.temperature_2m<-100||value.temperature_2m>70)return null;
+ return {temperature_2m:value.temperature_2m,
+  apparent_temperature:Number.isFinite(value.apparent_temperature)&&value.apparent_temperature>=-150&&value.apparent_temperature<=100?value.apparent_temperature:null,
+  weather_code:Number.isInteger(value.weather_code)&&value.weather_code>=0&&value.weather_code<=99?value.weather_code:null,
+  wind_speed_10m:Number.isFinite(value.wind_speed_10m)&&value.wind_speed_10m>=0&&value.wind_speed_10m<=200?value.wind_speed_10m:null};
+}
+function v115ValidWeather(value,now=Date.now()){
+ return !!value&&typeof value.at==='number'&&Number.isFinite(value.at)&&value.at>0&&value.at<=now&&now-value.at<WEATHER_MAX_AGE_MS&&!!v115WeatherData(value.data);
+}
+function readLastWeather(){try{const value=JSON.parse(localStorage.getItem(WEATHER_STORAGE_KEY)||'null');if(v115ValidWeather(value))return {at:value.at,data:v115WeatherData(value.data),source:value.source==='Open-Meteo · ICON'?value.source:'Open-Meteo'}}catch{}return null}
 let weatherCache=readLastWeather()||{at:0,data:null,source:null};
-let weatherRequest=null,weatherLastFailure=0;
+let weatherRequest=null,weatherLastFailure=0,weatherLoading=false,weatherLastRecoveryAttempt=0;
 function greetingForHour(h){if(h<5)return 'Доброй ночи';if(h<12)return 'Доброе утро';if(h<18)return 'Добрый день';return 'Добрый вечер'}
 function todayRu(){return new Intl.DateTimeFormat('ru-RU',{timeZone:'Europe/Moscow',weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(new Date())}
-function weatherText(code){const m={0:['','Ясно'],1:['','Преимущественно ясно'],2:['','Переменная облачность'],3:['','Пасмурно'],45:['','Туман'],48:['','Изморозь'],51:['','Морось'],53:['','Морось'],55:['','Морось'],61:['','Небольшой дождь'],63:['','Дождь'],65:['','Сильный дождь'],71:['','Снег'],73:['','Снег'],75:['','Сильный снег'],80:['','Ливни'],81:['','Ливни'],82:['','Сильные ливни'],95:['','Гроза'],96:['','Гроза с градом'],99:['','Сильная гроза с градом']};return m[code]||['','Переменная погода']}
-async function loadWeather(force=false){
- // Reuse in-flight request; do not erase a good forecast when offline.
- if(weatherRequest)return weatherRequest;
- if(!force&&weatherCache.data&&Date.now()-weatherCache.at<30*60*1000)return weatherCache.data;
- if(!force&&weatherLastFailure&&Date.now()-weatherLastFailure<3*60*1000)return weatherCache.data||null;
- const card=document.getElementById('weatherCard'),refresh=document.getElementById('weatherRefresh'),meta=document.getElementById('weatherMeta'),desc=document.getElementById('weatherText');
- if(card)card.classList.add('weather-loading');if(refresh)refresh.disabled=true;
- if(meta)meta.textContent=weatherCache.data?'Обновляем · сохранённые данные доступны':'Подключаемся к погодному сервису…';
- if(desc&&!weatherCache.data)desc.textContent='Москва · получаем данные о погоде…';
- const common=`latitude=${MOSCOW.lat}&longitude=${MOSCOW.lon}&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&wind_speed_unit=ms&timezone=Europe%2FMoscow&forecast_days=1`;
- const sources=[
-  {name:'Open-Meteo',url:`https://api.open-meteo.com/v1/forecast?${common}`},
-  {name:'Open-Meteo · ICON',url:`https://api.open-meteo.com/v1/dwd-icon?${common}`}
- ];
- weatherRequest=(async()=>{
-  let lastError='';
-  try{
-   for(const source of sources){
-    const controller=new AbortController(), timer=setTimeout(()=>controller.abort(),20000);
-    try{
-     const response=await fetch(source.url,{signal:controller.signal,cache:'no-store',credentials:'omit',headers:{Accept:'application/json'}});
-     if(!response.ok)throw new Error(`HTTP ${response.status}`);
-     const payload=await response.json(),current=payload?.current;
-     if(!current||!Number.isFinite(current.temperature_2m))throw new Error('Нет текущих измерений');
-     weatherCache={at:Date.now(),data:current,source:source.name};
-     try{localStorage.setItem(WEATHER_STORAGE_KEY,JSON.stringify(weatherCache))}catch{}
-     weatherLastFailure=0;renderTodayHeader();
-     if(meta)meta.textContent=`${source.name} · обновлено сейчас`;
-     if(card){card.classList.remove('weather-offline');card.title='';}
-     return current;
-    }catch(e){lastError=e?.name==='AbortError'?'Превышено время ответа':String(e?.message||'Сеть недоступна');console.warn('weather:',source.name,lastError)}
-    finally{clearTimeout(timer)}
-   }
-   weatherLastFailure=Date.now();
-   if(card){card.classList.add('weather-offline');card.title=`Данные не удалось обновить: ${lastError}. Оба источника используют Open-Meteo.`}
-   if(weatherCache.data){renderTodayHeader();if(meta)meta.textContent=`Последние полученные данные · ${new Intl.DateTimeFormat('ru-RU',{timeZone:'Europe/Moscow',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}).format(new Date(weatherCache.at))} · ↻ обновить`;
-     return weatherCache.data;
-   }
-   if(desc)desc.textContent='Москва · прогноз временно недоступен';
-   if(meta)meta.textContent=`Нет соединения с погодой · ${lastError} · ↻ повторить`;
-   return null;
-  }finally{if(card)card.classList.remove('weather-loading');if(refresh)refresh.disabled=false;weatherRequest=null}
- })();
- return weatherRequest;
+function weatherText(code){const m={0:['','Ясно'],1:['','Преимущественно ясно'],2:['','Переменная облачность'],3:['','Пасмурно'],45:['','Туман'],48:['','Изморозь'],51:['','Морось'],53:['','Морось'],55:['','Морось'],61:['','Небольшой дождь'],63:['','Дождь'],65:['','Сильный дождь'],71:['','Снег'],73:['','Снег'],75:['','Сильный снег'],80:['','Ливни'],81:['','Ливни'],82:['','Сильные ливни'],95:['','Гроза'],96:['','Гроза с градом'],99:['','Сильная гроза с градом']};return m[code]||['','Погодные условия не уточнены']}
+function v115WeatherSnapshot(){
+ if(!v115ValidWeather(weatherCache))weatherCache={at:0,data:null,source:null};
+ return weatherCache.data?weatherCache:null;
 }
+function v115RenderWeather(){
+ const cached=v115WeatherSnapshot(),w=cached&&v115WeatherData(cached.data),card=document.getElementById('weatherCard'),refresh=document.getElementById('weatherRefresh'),meta=document.getElementById('weatherMeta'),desc=document.getElementById('weatherText'),temp=document.getElementById('weatherTemp'),icon=document.getElementById('weatherIcon');
+ const saved=!!cached&&(!!weatherLastFailure||Date.now()-cached.at>=WEATHER_FRESH_MS);
+ if(card){card.classList.toggle('weather-loading',weatherLoading);card.classList.toggle('weather-offline',!weatherLoading&&(!!weatherLastFailure||saved));card.setAttribute('aria-busy',String(weatherLoading));card.title=weatherLastFailure?'Не удалось обновить погоду. Нажмите ↻, чтобы повторить.':''}
+ if(refresh)refresh.disabled=weatherLoading;
+ if(temp)temp.textContent=w?`${Math.round(w.temperature_2m)}°`:'—';
+ if(icon)icon.textContent=weatherText(w?.weather_code)[0];
+ if(w){
+  const details=['Москва',weatherText(w.weather_code)[1]];
+  if(Number.isFinite(w.apparent_temperature))details.push(`ощущается ${Math.round(w.apparent_temperature)}°`);
+  if(Number.isFinite(w.wind_speed_10m))details.push(`ветер ${Math.round(w.wind_speed_10m)} м/с`);
+  if(desc)desc.textContent=details.join(' · ');
+  const at=new Intl.DateTimeFormat('ru-RU',{timeZone:'Europe/Moscow',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}).format(new Date(cached.at));
+  if(meta)meta.textContent=weatherLoading?`Обновляем · последние данные получены ${at}`:saved?`${weatherLastFailure?'Не удалось обновить · ':''}Сохранённые данные от ${at} · ↻ обновить`:`${cached.source||'Open-Meteo'} · получено ${at}`;
+ }else{
+  if(desc)desc.textContent=weatherLoading?'Москва · загружаем погоду…':weatherLastFailure?'Москва · погода временно недоступна':'Москва · погода ещё не получена';
+  if(meta)meta.textContent=weatherLoading?'Подключаемся к погодному сервису…':weatherLastFailure?'Не удалось получить погоду · ↻ повторить':'Нажмите ↻, чтобы загрузить погоду';
+ }
+}
+async function loadWeather(force=false){
+ const cached=v115WeatherSnapshot();v115RenderWeather();
+ if(weatherRequest)return weatherRequest;
+ if(!force&&cached&&!weatherLastFailure&&Date.now()-cached.at<WEATHER_FRESH_MS)return cached.data;
+ if(!force&&weatherLastFailure&&Date.now()-weatherLastFailure<WEATHER_RETRY_MS)return cached?.data||null;
+ if(navigator.onLine===false){weatherLastFailure=Date.now();v115RenderWeather();return cached?.data||null}
+ weatherLoading=true;v115RenderWeather();
+ const common=`latitude=${MOSCOW.lat}&longitude=${MOSCOW.lon}&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&wind_speed_unit=ms&timezone=Europe%2FMoscow&forecast_days=1`;
+ const sources=[{name:'Open-Meteo',url:`https://api.open-meteo.com/v1/forecast?${common}`},{name:'Open-Meteo · ICON',url:`https://api.open-meteo.com/v1/dwd-icon?${common}`}];
+ // Defer the worker so its shared promise exists even if fetch throws immediately.
+ const request=Promise.resolve().then(async()=>{
+  for(const source of sources){
+   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),WEATHER_TIMEOUT_MS);
+   try{
+    const response=await fetch(source.url,{signal:controller.signal,cache:'no-store',credentials:'omit',headers:{Accept:'application/json'}});
+    if(!response.ok)throw new Error(`HTTP ${response.status}`);
+    const payload=await response.json(),current=v115WeatherData(payload?.current);
+    if(!current)throw new Error('Нет корректных текущих данных');
+    weatherCache={at:Date.now(),data:current,source:source.name};
+    try{localStorage.setItem(WEATHER_STORAGE_KEY,JSON.stringify(weatherCache))}catch{}
+    weatherLastFailure=0;return current;
+   }catch(e){console.warn('weather:',source.name,e?.name==='AbortError'?'Превышено время ответа':String(e?.message||'Сеть недоступна'))}
+   finally{clearTimeout(timer)}
+  }
+  weatherLastFailure=Date.now();return v115WeatherSnapshot()?.data||null;
+ });
+ weatherRequest=request;
+ try{return await request}finally{if(weatherRequest===request)weatherRequest=null;weatherLoading=false;v115RenderWeather()}
+}
+function v115MaybeRefreshWeather(reconnect=false){
+ if(document.visibilityState!=='visible'||document.getElementById('appRoot')?.classList.contains('auth-locked')||!document.getElementById('home')?.classList.contains('active'))return;
+ v115RenderWeather();if(weatherRequest)return weatherRequest;
+ const now=Date.now();
+ if(reconnect&&navigator.onLine!==false&&weatherLastFailure&&(!weatherLastRecoveryAttempt||now-weatherLastRecoveryAttempt>=30000)){weatherLastRecoveryAttempt=now;return loadWeather(true)}
+ return loadWeather();
+}
+window.addEventListener('online',()=>v115MaybeRefreshWeather(true));
+window.addEventListener('focus',()=>v115MaybeRefreshWeather(true));
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')v115MaybeRefreshWeather(true)});
+setInterval(()=>v115MaybeRefreshWeather(),60000);
 
 function dayOfYearMoscow(){const now=new Date();const parts=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Moscow',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(now);const y=Number(parts.find(x=>x.type==='year').value),m=Number(parts.find(x=>x.type==='month').value)-1,d=Number(parts.find(x=>x.type==='day').value);return Math.floor((Date.UTC(y,m,d)-Date.UTC(y,0,0))/86400000)}
 function renderLiveClock(){const el=document.getElementById('liveClock');if(!el)return;el.textContent=new Intl.DateTimeFormat('ru-RU',{timeZone:'Europe/Moscow',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).format(new Date())}
-function renderTodayHeader(){renderLiveClock();const hour=Number(new Intl.DateTimeFormat('ru-RU',{timeZone:'Europe/Moscow',hour:'2-digit',hourCycle:'h23'}).format(new Date()));const profile=currentProfile();const name=profile.name==='семья'?'':profile.name;const greet=document.getElementById('todayGreeting');if(greet)greet.textContent=(name?greetingForHour(hour)+', '+name+'!':greetingForHour(hour)+'!')+' ';const d=document.getElementById('todayDate');if(d)d.textContent=todayRu()+' · Москва';const w=weatherCache.data;const wi=weatherText(w?.weather_code);if(document.getElementById('weatherIcon'))document.getElementById('weatherIcon').textContent=wi[0];if(document.getElementById('weatherTemp'))document.getElementById('weatherTemp').textContent=w?`${Math.round(w.temperature_2m)}°`:'—';if(document.getElementById('weatherText'))document.getElementById('weatherText').textContent=w?`Москва · ${wi[1]} · ощущается ${Math.round(Number.isFinite(w.apparent_temperature)?w.apparent_temperature:w.temperature_2m)}° · ветер ${Number.isFinite(w.wind_speed_10m)?Math.round(w.wind_speed_10m)+' м/с':'—'}`: 'Москва · погода ещё не получена';if(document.getElementById('weatherMeta')&&w)document.getElementById('weatherMeta').textContent=`${weatherCache.source||'Open-Meteo'} · данные за ${new Intl.DateTimeFormat('ru-RU',{timeZone:'Europe/Moscow',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}).format(new Date(weatherCache.at))}`;if(document.getElementById('weatherCard'))document.getElementById('weatherCard').classList.remove('weather-loading');if(document.getElementById('weatherRefresh'))document.getElementById('weatherRefresh').disabled=false}
+function renderTodayHeader(){renderLiveClock();const hour=Number(new Intl.DateTimeFormat('ru-RU',{timeZone:'Europe/Moscow',hour:'2-digit',hourCycle:'h23'}).format(new Date()));const profile=currentProfile();const name=profile.name==='семья'?'':profile.name;const greet=document.getElementById('todayGreeting');if(greet)greet.textContent=(name?greetingForHour(hour)+', '+name+'!':greetingForHour(hour)+'!')+' ';const d=document.getElementById('todayDate');if(d)d.textContent=todayRu()+' · Москва';v115RenderWeather()}
 function nextLoanPaymentForAdvice(){
  const row=loanScheduleData().find(r=>new Date(r.payDate+'T23:59:59')>new Date());
  return row||null;
