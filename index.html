@@ -72,6 +72,11 @@
 
 @media(max-width:600px){.v125-journal-table{display:block;min-width:0!important;width:100%}.v125-journal-table thead{display:none}.v125-journal-table tbody{display:grid;gap:12px}.v125-journal-table tr{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);padding:10px;border:1px solid var(--line);border-radius:14px;background:#fbfcff}.v125-journal-table td{display:block;min-width:0;white-space:normal!important;border:0;padding:8px;word-break:normal;overflow-wrap:anywhere}.v125-journal-table td:before{content:attr(data-label);display:block;color:#718096;font-size:11px;line-height:1.5;margin-bottom:4px}.v125-journal-table td:first-child,.v125-journal-table .v125-journal-actions{grid-column:1/-1}.v125-journal-table td[data-label="Остаток"]{font-weight:700;color:#17345e}.v125-journal-table .v125-journal-actions:empty{display:none}}
 
+/* A filled control stays visible while focus and validation retain their own indicators. */
+:is(#today .v91-form,#editForm) :is(input,select,textarea,.v107-select-trigger).v132-filled:not([aria-invalid="true"]):not(:disabled){background-color:#edf8f1!important;border-color:#8fbea4!important}
+:is(#today .v91-form,#editForm) :is(input,select,textarea,.v107-select-trigger).v132-pending:not([aria-invalid="true"]):not(:disabled){background-color:#fff8e7!important;border-color:#d6bc78!important}
+:is(#today .v91-form,#editForm) :is(input,select,textarea,.v107-select-trigger)[aria-invalid="true"]{background-color:#fff4f4!important;border-color:#c15163!important}
+#today #v92Selected:not([hidden]){color:#246747;background:#edf8f1;border:1px solid #b8d7c5;border-radius:10px;padding:8px 10px}
 /* Selected analytics period never changes planning-month values. */
 .v130-period-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap;max-width:100%}.v130-period-controls .month-select{max-width:100%}.v130-period-controls>span{min-width:0;max-width:100%}
 .v130-analytics-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:18px}.v130-analytics-summary.v130-all-time{grid-template-columns:minmax(0,1fr)}.v130-analytics-summary>.kpi{min-width:0}.v130-analytics-summary .hint{display:block;margin-top:6px;font-size:12px}.v130-analytics-summary strong{overflow-wrap:anywhere}
@@ -3845,7 +3850,7 @@ function v90Paint(){
  status.textContent=selected?'Выбрано: '+(V90_CATEGORIES.find(x=>x[0]===selected)?.[1]||selected)+(currentDetail?' · '+currentDetail:''):'';
  document.getElementById('v93CreditHelp').hidden=selected!=='Кредит';
  const all=document.getElementById('v91All');all.textContent=v91Expanded?'Быстрые варианты':'Все категории';all.setAttribute('aria-expanded',String(v91Expanded));
- document.querySelectorAll('#v90Quick [data-choice]').forEach(b=>b.onclick=()=>{const item=items[Number(b.dataset.choice)];v90Choose(item.key,item.detail||'',item.description||'')});
+ document.querySelectorAll('#v90Quick [data-choice]').forEach(b=>b.onclick=()=>{const item=items[Number(b.dataset.choice)];v90Choose(item.key,item.detail||'',item.description||'')});v132RefreshFieldStates();
 }
 function v90Template(id){return v97OpenFavorite(String(id))}
 const INCOME_PEOPLE=['Сергей','Виктория','Майя','Алиса'];
@@ -4913,11 +4918,30 @@ function v114FeedbackViewportChanged(){
 window.addEventListener('resize',v114FeedbackViewportChanged);window.visualViewport?.addEventListener('resize',v114FeedbackViewportChanged);window.visualViewport?.addEventListener('scroll',v114PositionToasts);
 document.addEventListener('input',event=>{const key={eAmount:'amount',v90Search:'category',v93CreditAccounting:'credit'}[event.target.id];if(key)v114ClearEntryError(key)});
 document.addEventListener('change',event=>{if(event.target.id==='v93CreditAccounting')v114ClearEntryError('credit')});
+/* Presentation only: read current values; never mark an operation saved or change it. */
+function v132ControlState(control){
+ if(control.disabled||['hidden','checkbox','radio','button','submit','file'].includes(control.type))return '';
+ const value=String(control.value||'').trim();
+ if(control.id==='v90Search')return document.getElementById('eCategory')?.value?'filled':value?'pending':'';
+ if(['eAmount','xAmount'].includes(control.id)){const amount=parseMoneyInput(value);return Number.isFinite(amount)&&amount>0?'filled':value?'pending':''}
+ if(control instanceof HTMLSelectElement){const label=String(control.selectedOptions[0]?.label||'').trim().toLowerCase();return !value||['не указано','не указан','без уточнения','выберите категорию','выберите вариант'].includes(value.toLowerCase())||['не указано','не указан','без уточнения'].includes(label)?'':'filled'}
+ return value?'filled':'';
+}
+function v132SetControlState(node,state){
+ if(!node||node.dataset.v132State===state)return;node.dataset.v132State=state;node.classList.toggle('v132-filled',state==='filled');node.classList.toggle('v132-pending',state==='pending');
+}
+function v132RefreshFieldStates(){
+ document.querySelectorAll('#today .v91-form input,#today .v91-form select,#today .v91-form textarea,#editForm input,#editForm select,#editForm textarea').forEach(control=>{const state=v132ControlState(control);v132SetControlState(control,state);if(control instanceof HTMLSelectElement)v132SetControlState(control.closest('.v107-select')?.querySelector('.v107-select-trigger'),state)});
+}
+function v132FieldEvent(event){if(event.target instanceof Element&&event.target.closest('#today .v91-form,#editForm'))v132RefreshFieldStates()}
+// Bubble after the form's handlers so search/category and type changes have settled.
+document.addEventListener('input',v132FieldEvent);document.addEventListener('change',v132FieldEvent);
+document.addEventListener('DOMContentLoaded',v132RefreshFieldStates);
 let v110PickerRefreshQueued=false;
 function v110RefreshPickers(){
  if(v110PickerRefreshQueued)return;
  v110PickerRefreshQueued=true;
- queueMicrotask(()=>{v110PickerRefreshQueued=false;window.v107RefreshSelects?.();window.v108RefreshCalendars?.();if(v113DialogTop())v113SyncDialogBackground()});
+ queueMicrotask(()=>{v110PickerRefreshQueued=false;window.v107RefreshSelects?.();window.v108RefreshCalendars?.();v132RefreshFieldStates();if(v113DialogTop())v113SyncDialogBackground()});
 }
 function v110ClosePickers(){window.v107CloseSelects?.();window.v108CloseCalendars?.()}
 /* V113_DIALOG_KEYBOARD_BEGIN — keep existing overlays and their record/context handlers. */
