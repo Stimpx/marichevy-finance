@@ -41,6 +41,9 @@ class FieldCompletion(unittest.TestCase):
     def state_of(self,identifier):
         return self.page.locator('#'+identifier).evaluate("node=>({filled:node.classList.contains('v132-filled'),pending:node.classList.contains('v132-pending'),value:node.value})")
     def trigger(self,identifier):return self.page.locator('#'+identifier).locator('..').locator('.v107-select-trigger')
+    def recipient(self,value,target='eBeneficiary'):return self.page.locator(f'button[data-v133-target="{target}"][data-v133-recipient="{value}"]')
+    def open_details(self):
+        if not self.page.locator('#v90Extra').evaluate('node=>node.open'):self.page.locator('#v90Extra > summary').click()
     def test_amount_and_text_follow_meaningful_input_and_clearing(self):
         self.assertFalse(self.state_of('eAmount')['filled'])
         for text in ['0','не сумма']:
@@ -48,20 +51,29 @@ class FieldCompletion(unittest.TestCase):
             self.assertEqual((self.state_of('eAmount')['filled'],self.state_of('eAmount')['pending']),(False,True))
         self.page.locator('#eAmount').fill('1 250,50');self.assertTrue(self.state_of('eAmount')['filled'])
         self.page.locator('#eAmount').fill('');self.assertEqual((self.state_of('eAmount')['filled'],self.state_of('eAmount')['pending']),(False,False))
+        self.open_details()
         self.page.locator('#eStore').fill('Тестовая парковка');self.assertTrue(self.state_of('eStore')['filled'])
         self.page.locator('#eStore').fill('   ');self.assertFalse(self.state_of('eStore')['filled'])
     def test_select_placeholders_real_choices_and_dynamic_account_proxy(self):
-        self.assertFalse(self.state_of('eBeneficiary')['filled']);self.assertNotIn('v132-filled',self.trigger('eBeneficiary').get_attribute('class'))
-        self.trigger('eBeneficiary').click();self.page.get_by_role('option',name='Автомобиль',exact=True).click()
-        self.assertTrue(self.state_of('eBeneficiary')['filled']);self.assertIn('v132-filled',self.trigger('eBeneficiary').get_attribute('class'))
-        self.trigger('eBeneficiary').click();self.page.get_by_role('option',name='Не указано',exact=True).click()
-        self.assertFalse(self.state_of('eBeneficiary')['filled']);self.assertNotIn('v132-filled',self.trigger('eBeneficiary').get_attribute('class'))
+        self.assertFalse(self.state_of('eBeneficiary')['filled'])
+        self.assertEqual(self.page.locator('#v133ExpenseRecipients [aria-pressed="true"]').count(),0)
+        self.recipient('Автомобиль').focus();self.page.keyboard.press('Space')
+        self.assertEqual(self.page.evaluate("document.activeElement?.dataset.v133Recipient"),'Автомобиль')
+        self.assertTrue(self.state_of('eBeneficiary')['filled']);self.assertEqual(self.recipient('Автомобиль').get_attribute('aria-pressed'),'true')
+        self.page.wait_for_function("getComputedStyle(document.querySelector('button[data-v133-recipient=\"Автомобиль\"]')).backgroundColor==='rgb(223, 243, 231)'")
+        self.page.evaluate('clearEntry()')
+        self.assertFalse(self.state_of('eBeneficiary')['filled']);self.assertEqual(self.page.locator('#v133ExpenseRecipients [aria-pressed="true"]').count(),0)
+        self.open_details()
         self.assertFalse(self.state_of('eAccountId')['filled'])
         self.trigger('eAccountId').click();self.page.get_by_role('option',name='Тестовый счёт',exact=True).click()
         self.assertTrue(self.state_of('eAccountId')['filled']);self.assertIn('v132-filled',self.trigger('eAccountId').get_attribute('class'))
         self.page.evaluate("document.getElementById('eAccounts').remove();v119RefreshEntryAccounts(true)")
         self.page.wait_for_function("!document.getElementById('eAccountId').classList.contains('v132-filled')")
         self.assertNotIn('v132-filled',self.trigger('eAccountId').get_attribute('class'))
+        self.page.locator('#eType').select_option('income',force=True)
+        self.recipient('Виктория','eWho').click()
+        self.assertEqual(self.page.locator('#eWho').input_value(),'Виктория')
+        self.assertTrue(self.state_of('eWho')['filled']);self.assertEqual(self.recipient('Виктория','eWho').get_attribute('aria-pressed'),'true')
     def test_category_search_is_pending_until_actual_choice(self):
         self.page.locator('#v90Search').fill('парковка');self.assertEqual((self.state_of('v90Search')['filled'],self.state_of('v90Search')['pending']),(False,True))
         self.page.locator('#v90Quick [data-cat="Авто и транспорт"]').first.click()
@@ -74,7 +86,9 @@ class FieldCompletion(unittest.TestCase):
         self.assertTrue(self.evaluate("return v97RepeatEntry('synthetic-existing');"))
         for identifier in ['eAmount','eStore','eComment','v90Search','eBeneficiary']:
             self.assertTrue(self.state_of(identifier)['filled'],identifier)
+        self.assertEqual(self.recipient('Общее').get_attribute('aria-pressed'),'true')
         self.page.evaluate('clearEntry()')
+        self.assertEqual(self.page.locator('#v133ExpenseRecipients [aria-pressed="true"]').count(),0)
         for identifier in ['eAmount','eStore','eComment','v90Search','eBeneficiary']:
             self.assertFalse(self.state_of(identifier)['filled'],identifier)
         self.assertTrue(self.evaluate("return v97OpenFavorite('synthetic-favorite');"))
