@@ -619,6 +619,9 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover,input[type="month"]:
 .v77-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.v77-fields .field{display:block;min-width:0}.v77-fields .field span{font-weight:750;font-size:12px;color:#697992;display:block;margin-bottom:7px}.v77-fields .field input,.v77-fields .field select{width:100%;max-width:100%;min-height:48px;border:1px solid #dfe5f0;border-radius:13px;background-color:#fff;padding:11px 13px;box-sizing:border-box;font:inherit}.v77-fields input:focus,.v77-fields select:focus{border-color:#7091f3;outline:3px solid #edf2ff}.v77-form-disclaimer{font-size:12px;color:#748197;margin:14px 0;line-height:1.5}.v77-form-error{font-size:12px;color:#b83242;font-weight:750;margin-top:9px}
 .v77-installment-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.v77-empty{grid-column:1/-1;text-align:center;border:1px dashed #dbe4f1;background:#fafcff;padding:23px;border-radius:16px}.v77-empty p{color:#75839a;font-size:12px;margin-bottom:0}.v77-installment-card{border:1px solid #e1e8f3;border-radius:18px;padding:18px;min-width:0;background:#fff}.v77-installment-top{display:flex;justify-content:space-between;gap:12px}.v77-installment-top h3{font-size:19px;line-height:1.25;margin:7px 0 2px;overflow-wrap:anywhere}.v77-installment-top small{color:#78879d}.v77-kind{font-size:10px;font-weight:850;color:#4a6cc0;background:#edf3ff;border-radius:999px;padding:6px 9px}.v77-installment-status{font-size:10px;font-weight:900;white-space:nowrap;background:#eef8f4;color:#2c9369;border-radius:999px;padding:6px 9px;height:fit-content}.v77-installment-status.late{background:#fff0ef;color:#bb4949}.v77-installment-status.done{background:#f0f2f8;color:#687893}
 .v77-installment-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:16px 0}.v77-installment-metrics>div{padding:11px;background:#f7f9fd;border:1px solid #edf0f6;border-radius:12px;min-width:0}.v77-installment-metrics b{display:block;margin-top:5px;font-size:14px;overflow-wrap:anywhere}.v77-installment-details{margin-top:5px}.v77-installment-details>summary{font-size:12px;color:#3f62b5;font-weight:800;cursor:pointer;list-style:none;padding:10px 0}.v77-installment-details>summary::-webkit-details-marker{display:none}.v77-part-list{display:grid;gap:8px;padding-top:6px}.v77-part{display:flex;flex-wrap:wrap;min-width:0;gap:8px 10px;align-items:center;padding:10px;border-radius:12px;border:1px solid #ebeff5;background:#fcfdff}.v77-part>div:first-child{flex:1 1 240px;min-width:0}.v77-part.paid{background:#f3fbf6}.v77-part strong,.v77-part small{display:block}.v77-part strong{font-size:12px}.v77-part small{font-size:10px;color:#78889f;margin-top:4px}.v77-part-actions{display:flex;justify-content:flex-start;flex:0 1 auto;min-width:0;max-width:100%}.v77-part-actions .btn{min-height:36px;font-size:11px}.v77-part-actions{gap:5px;flex-wrap:wrap}.v77-change-date{flex:1 0 100%;min-width:0;display:flex;gap:10px;align-items:end;justify-content:space-between;flex-wrap:wrap}.v77-change-date label{color:#72809b;font-size:10px;font-weight:800;min-width:0;max-width:100%}.v77-change-date input{display:block;margin-top:5px;border:1px solid #dbe5f2;background:#fff;border-radius:10px;padding:8px;font:inherit;font-size:12px;min-height:38px;min-width:0;max-width:100%}.v77-matches{flex:1 0 100%;min-width:0}.v77-matches[hidden]{display:none}.v77-match-note{padding:9px 10px;color:#687990;font-size:11px}.v77-match-item{display:block;width:100%;text-align:left;background:#fff;border:1px solid #dae4f4;border-radius:10px;padding:10px;color:#3357a5;font-size:11px;margin:4px 0}.v77-plan-foot{margin-top:12px;font-size:11px;color:#7b8798;line-height:1.5;display:flex;align-items:center;justify-content:space-between;gap:10px}.v77-plan-foot>.btn{flex:none}
+/* Bank confirmation does not create an expense in the family ledger. */
+.v128-bank-notice{padding:14px 16px;border:1px solid #e5c785;background:#fff8e8;border-radius:14px;margin:0 0 18px;line-height:1.55;overflow-wrap:anywhere}.v128-bank-notice[hidden]{display:none}.v128-bank-notice p{margin:0 0 10px}.v128-bank-notice .btn{max-width:100%;white-space:normal}
+#home #v86CalendarTotals{grid-template-columns:repeat(auto-fit,minmax(min(100%,160px),1fr))}
 /* Link past expenses without rewriting future installment dates or amounts. */
 #v127PastPaymentForm .v77-fields{grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
 .v127-past-open{margin-top:14px;max-width:100%;white-space:normal}
@@ -2508,6 +2511,7 @@ input:is([type="date"],[type="month"])::-webkit-date-and-time-value{min-height:1
  <div class="v121-home-summary-top"><div><span class="v121-eyebrow">ДЕНЬГИ НА СЕГОДНЯ</span><h2 id="v121HomeAvailableTitle">Доступно до следующего дохода</h2></div><span id="v121HomeBoundary" class="hint"></span></div>
  <strong id="v121HomeAvailable" class="v121-home-amount">Нужна настройка</strong>
  <p id="v121HomeAvailableNote" class="hint">Добавьте счета и план, чтобы рассчитать доступную сумму.</p>
+ <div id="v128HomeBankWarning" class="v128-bank-notice" hidden role="status"><p id="v128HomeBankWarningText"></p><button type="button" class="btn small" onclick="v128OpenBankHistory()">Учесть списания ипотеки</button></div>
  <div class="v121-home-actions"><button type="button" class="btn primary" onclick="openEntry('expense')">Добавить расход</button><button type="button" class="btn" onclick="openEntry('income')">Добавить доход</button></div>
  <div class="v121-home-links"><button type="button" class="v91-link" onclick="go('accounts')">Счета и сверка</button><button type="button" class="v91-link" onclick="go('planning')">План месяца</button></div>
  <details class="v121-calculation"><summary>Что входит в расчёт</summary><dl id="v121HomeComponents"></dl><ul id="v121HomeReasons"></ul></details>
@@ -2539,7 +2543,7 @@ input:is([type="date"],[type="month"])::-webkit-date-and-time-value{min-height:1
 
 <section class="card" id="v97HomeFavorites" hidden aria-label="Избранные операции"></section>
 <section class="v96-month-review" id="v96MonthlyReview" aria-labelledby="v96MonthlyTitle"><div class="v96-month-review-head"><div><h2 id="v96MonthlyTitle">Разбор месяца</h2><p><span id="v96MonthlyPeriod"></span> · только по внесённым операциям</p></div></div><div class="v96-month-review-grid" id="v96MonthlyCards" aria-live="polite"></div></section>
-<section class="card v97-home-payments" id="v97HomePayments" aria-labelledby="v97HomePaymentsTitle"><div class="v97-home-card-head"><div><h2 id="v97HomePaymentsTitle">Ближайшие платежи</h2><p id="v97HomePaymentsBasis"></p></div><button type="button" class="btn" onclick="v97OpenHomeDetails('v86Calendar')">Весь календарь платежей</button></div><div id="v97HomePaymentsContent" aria-live="polite"></div><p class="v97-home-payment-note">Показываем оставшиеся суммы по сохранённым графикам. «Не подтверждено» означает, что оплата ещё не полностью учтена в семейной истории.</p></section>
+<section class="card v97-home-payments" id="v97HomePayments" aria-labelledby="v97HomePaymentsTitle"><div class="v97-home-card-head"><div><h2 id="v97HomePaymentsTitle">Ближайшие платежи</h2><p id="v97HomePaymentsBasis"></p></div><button type="button" class="btn" onclick="v97OpenHomeDetails('v86Calendar')">Весь календарь платежей</button></div><div id="v97HomePaymentsContent" aria-live="polite"></div><p class="v97-home-payment-note">Показываем оставшиеся суммы по сохранённым графикам после подтверждения банком или связанными расходами. Отсутствующие записи расходов сверяются отдельно.</p></section>
 <section class="v84-pulse" id="v84Pulse" aria-label="Семейный пульс">
  <div class="v84-panel-head"><div><small>СЕМЕЙНЫЙ ПУЛЬС</small><h2>Всё важное — одним взглядом</h2><p>Реальные расходы, ожидаемые платежи и дела. Без двойного учёта.</p></div><span class="v84-status-pill">Ваш финансовый обзор</span></div>
  <div class="v84-pulse-grid" id="v84PulseNumbers"></div>
@@ -2548,8 +2552,8 @@ input:is([type="date"],[type="month"])::-webkit-date-and-time-value{min-height:1
 </section>
 <section class="v86-calendar card" id="v86Calendar"><div class="v86-heading"><div><div class="v86-kicker">ПЛАТЁЖНЫЙ КАЛЕНДАРЬ</div><h2>Что предстоит оплатить</h2><p>Ипотека, рассрочки и ваши регулярные платежи — в одном календаре. Оплату можно подтвердить прямо в календаре или связать с существующим расходом.</p></div><div class="v86-calendar-controls"><label class="v86-month-label" for="v86CalendarMonth">Месяц</label><select id="v86CalendarMonth" onchange="v86RenderCalendar()" aria-label="Месяц платежей"></select></div></div>
 <div class="v86-calendar-totals" id="v86CalendarTotals"></div>
-<div class="v86-filters" role="group" aria-label="Фильтр платежей"><button type="button" class="active" data-v86-filter="all" onclick="v86SetFilter('all')" aria-pressed="true">Все</button><button type="button" data-v86-filter="pending" onclick="v86SetFilter('pending')" aria-pressed="false">Ожидаются</button><button type="button" data-v86-filter="paid" onclick="v86SetFilter('paid')" aria-pressed="false">Учтены</button></div>
-<div id="v86CalendarList" class="v86-calendar-list"></div><p class="v86-disclaimer">«Учтено» означает запись в семейной истории, а не банковское подтверждение. Для регулярных платежей доступны кнопки «Отметить оплату» и «Связать расход». Известные регулярные платежи не создают расходы автоматически.</p></section>
+<div class="v86-filters" role="group" aria-label="Фильтр платежей"><button type="button" class="active" data-v86-filter="all" onclick="v86SetFilter('all')" aria-pressed="true">Все</button><button type="button" data-v86-filter="pending" onclick="v86SetFilter('pending')" aria-pressed="false">Ожидаются</button><button type="button" data-v86-filter="paid" onclick="v86SetFilter('paid')" aria-pressed="false">Оплачены / сверены</button></div>
+<div id="v86CalendarList" class="v86-calendar-list"></div><p class="v86-disclaimer">«Учтено в истории» означает привязку к внесённой операции. «По сверке банка» показано отдельно: платёж не требуется повторно, но его расход ещё нужно сверить с историей. Для регулярных платежей доступны кнопки «Отметить оплату» и «Связать расход». Известные регулярные платежи не создают расходы автоматически.</p></section>
 <section class="v84-notices card" id="v84NoticesCard"><div class="v84-panel-head"><div><small>СЕМЕЙНЫЕ НАПОМИНАНИЯ</small><h2>Что требует внимания</h2><p>Просроченные и ближайшие дела, даты и платежи. Обновляется при открытии приложения.</p></div></div><div id="v84Notices"></div></section>
 <div class="today-panel home-top-today">
 <div class="today-greeting"><div class="today-kicker" id="todayKicker">Сегодня</div><div class="today-title" id="todayGreeting">Добро пожаловать </div><div class="today-date" id="todayDate">Москва</div><div class="live-clock" id="liveClock">00:00:00</div><div class="live-clock-sub">Москва · точное время обновляется каждую секунду</div></div>
@@ -2844,6 +2848,18 @@ input:is([type="date"],[type="month"])::-webkit-date-and-time-value{min-height:1
   <h3>Актуальные данные банка</h3><p class="hint">Укажите остаток основного долга после всех списаний за выбранную дату и последний платёж из обновлённого графика. Сверка не создаёт расход. Для расчёта будущих процентов удобнее сверять в день обычного платежа.</p>
   <div class="v125-form-grid"><label>Дата сверки<input id="v125BankDate" type="date"></label><label>Остаток основного долга, ₽<input id="v125BankBalance" type="text" inputmode="decimal"></label><label>Последний платёж по графику банка<input id="v125BankEnd" type="date"></label></div><label class="v125-check"><input id="v125BankChecked" type="checkbox">Остаток и срок взяты из банка; остаток включает все оплаты за эту дату</label><div class="v125-actions"><button type="submit" class="btn primary">Сохранить данные банка</button><button type="button" class="btn" onclick="document.getElementById('v125MortgageBankForm').hidden=true">Отмена</button></div>
  </form>
+ <div id="v128BankHistoryNotice" class="v125-status" hidden></div>
+ <div id="v128BankHistoryForm" class="v125-form" hidden>
+  <h3>Записать списания ипотеки в историю</h3><p id="v128BankHistoryIntro" class="hint"></p>
+  <div class="v125-form-grid">
+   <label>Обычный платёж<select id="v128BankRegular" onchange="v128BankHistoryPreview()"></select></label>
+   <label>Досрочное погашение<select id="v128BankEarly" onchange="v128BankHistoryPreview()"></select></label>
+   <label class="v125-wide" id="v128BankCombinedField">Если обе суммы записаны одним расходом<select id="v128BankCombined" onchange="v128BankHistoryPreview()"></select></label>
+   <label class="v125-wide">Счёт для новых расходов · необязательно<select id="v128BankAccount" onchange="v128BankHistoryPreview()"></select><small class="hint">Для существующих операций сохраняется их счёт. Сверенные остатки счетов вручную не меняются.</small></label>
+  </div>
+  <p id="v128BankHistoryPreview" class="hint" role="status"></p><p id="v128BankHistoryError" class="error" role="alert" hidden></p>
+  <div class="v125-actions"><button id="v128BankHistoryApply" type="button" class="btn primary" onclick="v128ApplyBankHistory()">Учесть в истории</button><button type="button" class="btn" onclick="v128ClearBankHistory()">Отмена</button></div>
+ </div>
  <p id="v125MortgageMessage" class="error" role="alert" hidden></p><div id="v125MortgageJournal"></div>
 </section>
 <div class="v125-mortgage-grid">
@@ -4443,7 +4459,7 @@ function showApp(){
  renderAll();v121ActivateRoute();
 }
 function showGate(){
- for(const clear of [typeof v127ClearPastPayment==='function'?v127ClearPastPayment:null,typeof v125ClearMortgageDrafts==='function'?v125ClearMortgageDrafts:null,typeof v119ResetOperations==='function'?v119ResetOperations:null,typeof v119ClearEditors==='function'?v119ClearEditors:null,typeof v117ClearAccountDrafts==='function'?v117ClearAccountDrafts:null,typeof v118ClearPlanningDrafts==='function'?v118ClearPlanningDrafts:null])if(clear)clear();
+ for(const clear of [typeof v128ClearBankHistory==='function'?v128ClearBankHistory:null,typeof v127ClearPastPayment==='function'?v127ClearPastPayment:null,typeof v125ClearMortgageDrafts==='function'?v125ClearMortgageDrafts:null,typeof v119ResetOperations==='function'?v119ResetOperations:null,typeof v119ClearEditors==='function'?v119ClearEditors:null,typeof v117ClearAccountDrafts==='function'?v117ClearAccountDrafts:null,typeof v118ClearPlanningDrafts==='function'?v118ClearPlanningDrafts:null])if(clear)clear();
  v110ClosePickers();const closedDialog=v113CloseDialogsForNavigation();v98ClearCategoryReview();
  document.getElementById('appRoot').classList.add('auth-locked');
  v99RenderEntryDirections();
@@ -5027,11 +5043,13 @@ function v121RenderHomeOverview(){
  const complete=data.complete===true&&Number.isFinite(data.amount),carry=v111MonthBalance(homeMonth()),value=complete?data.amount:cash!==null?cash:carry?.closing;
  const title=document.getElementById('v121HomeAvailableTitle'),amount=document.getElementById('v121HomeAvailable'),note=document.getElementById('v121HomeAvailableNote'),boundary=document.getElementById('v121HomeBoundary');
  const reasons=[...(Array.isArray(data.reasons)?data.reasons:[]),...(Array.isArray(data.warnings)?data.warnings:[])].map(v121ReadableReason).filter(Boolean);
- title.textContent=complete?'Доступно до следующего дохода':cash!==null?'На доступных счетах':'Остаток по истории';
+ const bankHistory=typeof v128BankHistoryState==='function'?v128BankHistoryState():null,bankMissing=Number(bankHistory?.missingAmount)||0;
+ title.textContent=complete?'Доступно до следующего дохода':cash!==null?'На доступных счетах':bankMissing>0?'Остаток по истории · не сверен':'Остаток по истории';
  v121HomeMoney(amount,value);amount.classList.toggle('money-red',Number.isFinite(value)&&value<0);
  if(complete)note.textContent=data.amount<0?'План больше доступных денег. Откройте план и выберите, что изменить.':'После оставшихся платежей, бытового плана и зарезервированных денег.';
  else if(cash!==null)note.textContent=reasons[0]||'Для расчёта доступной суммы проверьте счета и заполните план будущих трат.';
- else note.textContent='Расчёт по внесённым операциям. Добавьте счета и план, чтобы видеть доступную сумму.';
+ else note.textContent=bankMissing>0?'В истории пока не учтены списания ипотеки на '+money2(bankMissing)+'. Запишите или свяжите их, чтобы получить верный остаток.':'Расчёт по внесённым операциям. Добавьте счета и план, чтобы видеть доступную сумму.';
+ const bankNotice=document.getElementById('v128HomeBankWarning');if(bankNotice){bankNotice.hidden=bankMissing<=0;document.getElementById('v128HomeBankWarningText').textContent=bankMissing>0?'Списания ипотеки на '+money2(bankMissing)+' подтверждены банком, но не связаны с расходами в истории. Сверьте операции; повторная оплата не нужна.':'';}
  boundary.textContent=cash===null?('За '+v84MonthLabel(homeMonth())):isValidCalendarDate(data.boundary)?'До '+fmtDate(data.boundary):'На сегодня';
  const components=document.getElementById('v121HomeComponents');components.replaceChildren();
  const rows=cash===null?[['С прошлого месяца',carry?.opening],['Доходы месяца',carry?.income],['Расходы месяца',carry?.expense],['Остаток по истории',carry?.closing]]:[['На доступных счетах',cash],['Неоплаченные платежи',data.obligations],['Будущие бытовые траты',data.everydayRemaining??data.futurePlan],['Зарезервировано',data.reserves]];
@@ -5137,7 +5155,7 @@ document.addEventListener('input',event=>{if(V121_FILTER_IDS.includes(event.targ
 document.addEventListener('change',event=>{if(V121_FILTER_IDS.includes(event.target.id))v121QueueRouteSnapshot()});
 window.addEventListener('pagehide',()=>{if(v121RouteReady&&!document.getElementById('appRoot').classList.contains('auth-locked'))v121WriteRoute(v121RouteSnapshot(),true)},{capture:true});
 function go(page,options={}){
- const target=document.getElementById(page);if(!v121RoutePage(page)||!target)return;v127ClearPastPayment();
+ const target=document.getElementById(page);if(!v121RoutePage(page)||!target)return;v127ClearPastPayment();v128ClearBankHistory();
  const previous=document.querySelector('.section.active')?.id||'home',generation=++v121RouteGeneration;
  if(v121RouteReady&&options.history!=='pop')v121WriteRoute(v121RouteSnapshot(previous),true);
  v110ClosePickers();const closedDialog=v113CloseDialogsForNavigation();if(document.getElementById('v74MorePanel')?.classList.contains('open'))toggleV74Menu(false);
@@ -6080,8 +6098,9 @@ function v78Obligations(m){
  const valid=/^\d{4}-\d{2}$/.test(m)?m:month();
  const loanRows=loanScheduleData().filter(r=>r.payDate.slice(0,7)===valid);
  const mortgagePlanned=Math.round(loanRows.reduce((n,r)=>n+v77Cents(r.payment),0))/100;
- const mortgageActual=(state.entries||[]).filter(e=>v125ScheduledMonth(e)===valid).reduce((n,e)=>n+v77Cents(v125ScheduledCash(e)),0)/100;
- const mortgagePaid=loanRows.reduce((n,row)=>n+v125ScheduledAllocated(row.payDate,loanRows),0);
+ const mortgageActual=(state.entries||[]).filter(e=>e.date<=today()&&v125ScheduledMonth(e)===valid).reduce((n,e)=>n+v77Cents(v125ScheduledCash(e)),0)/100;
+ const mortgagePaid=loanRows.reduce((n,row)=>n+v77Cents(v125ScheduledExpenseAllocated(row.payDate,loanRows)),0)/100;
+ const mortgageSettled=loanRows.reduce((n,row)=>n+v77Cents(v125ScheduledAllocated(row.payDate,loanRows)),0)/100,bankConfirmed=Math.max(0,v77Cents(mortgageSettled)-v77Cents(mortgagePaid))/100;
  const groups=(state.installments||[]).map(i=>{
   const parts=(i.parts||[]).filter(p=>String(p.date||'').startsWith(valid));
   const planned=parts.reduce((n,p)=>n+v77Cents(p.amount),0)/100;
@@ -6090,23 +6109,24 @@ function v78Obligations(m){
  }).filter(x=>x.parts.length);
  const planned=Math.round((mortgagePlanned+groups.reduce((n,g)=>n+g.planned,0))*100)/100;
  const paid=Math.round((mortgagePaid+groups.reduce((n,g)=>n+g.paid,0))*100)/100;
- return {month:valid,planned,paid,remaining:Math.max(0,Math.round((planned-paid)*100)/100),mortgagePlanned,mortgagePaid,mortgageActual,loanRows,groups};
+ return {month:valid,planned,paid,bankConfirmed,remaining:Math.max(0,v77Cents(planned)-v77Cents(paid)-v77Cents(bankConfirmed))/100,mortgagePlanned,mortgagePaid,mortgageSettled,mortgageActual,loanRows,groups};
 }
 function v78MonthTitle(m){return new Intl.DateTimeFormat('ru-RU',{month:'long',year:'numeric'}).format(new Date(m+'-01T12:00:00'))}
 function v78ObligationRows(o){
  const todayKey=today();
  const items=[];
  for(const r of o.loanRows){
-  const allocated=v125ScheduledAllocated(r.payDate,o.loanRows);
-  const fullyPaid=allocated>=r.payment-.001;
-  items.push({kind:'mortgage',date:r.payDate,title:'Ипотека · УралСиб',subtitle:v77DateLabel(r.payDate)+' · по графику банка',amount:r.payment,allocated,partial:allocated>.001&&!fullyPaid,paid:fullyPaid,late:r.payDate<todayKey&&!fullyPaid});
+  const allocated=v125ScheduledAllocated(r.payDate,o.loanRows),expenseAllocated=v125ScheduledExpenseAllocated(r.payDate,o.loanRows),bankAllocated=Math.max(0,v77Cents(allocated)-v77Cents(expenseAllocated))/100;
+  const fullyPaid=allocated>=r.payment-.001,expenseDates=[...new Set((state.entries||[]).filter(e=>e.date<=today()&&v125MortgageRecord(e)?.kind==='regular'&&v125MortgageRecord(e).dueDate===r.payDate).map(e=>e.date))].sort();
+  items.push({kind:'mortgage',date:r.payDate,title:'Ипотека · УралСиб',subtitle:v77DateLabel(r.payDate)+' · по графику банка'+(bankAllocated>0?' · '+(expenseAllocated>0?'Расход в истории учтён частично':'Нет привязки к расходу в истории'):'')+(expenseDates.length?' · Расход в истории: '+expenseDates.map(v77DateLabel).join(', '):''),amount:r.payment,allocated,expenseAllocated,bankAllocated,partial:allocated>.001&&!fullyPaid,paid:fullyPaid,late:r.payDate<todayKey&&!fullyPaid});
  }
  for(const group of o.groups)for(const p of group.parts){
   const plan=(state.installments||[]).find(i=>(i.parts||[]).some(part=>part===p)),allocated=installmentAllocated(plan,p),paid=installmentPaid(plan,p);
-  items.push({kind:'installment',date:p.date,title:group.title,subtitle:v77DateLabel(p.date)+' · '+(V77_KINDS[group.kind]||'Оплата частями'),installmentId:plan?.id,installmentPartId:p.id,amount:p.amount,allocated,partial:allocated>0&&!paid,paid,late:p.date<todayKey&&!paid});
+  items.push({kind:'installment',date:p.date,title:group.title,subtitle:v77DateLabel(p.date)+' · '+(V77_KINDS[group.kind]||'Оплата частями'),installmentId:plan?.id,installmentPartId:p.id,amount:p.amount,allocated,expenseAllocated:allocated,bankAllocated:0,partial:allocated>0&&!paid,paid,late:p.date<todayKey&&!paid});
  }
  return items.sort((a,b)=>a.date.localeCompare(b.date));
 }
+function v128ObligationStatus(item){return item.bankAllocated>0?'По сверке банка':item.paid?'Учтено в расходах':item.partial||item.part?'Частично подтверждено':item.late||item.date<today()?'Нет подтверждения оплаты':'По графику'}
 function v881MortgageCandidate(e){const descr=[e.store,e.comment,e.subcategory].filter(Boolean).join(' ').toLowerCase();if(/яндекс|сплит|split|рассроч|долями|частями|paylater|озон\s*рассроч/.test(descr))return false;return /урал[ -]?сиб|ипотек|uralsib|плат[её]ж\s*по\s*кредиту/.test(descr)}
 function v78RenderPanel(id,o,options={}){
  const root=document.getElementById(id);if(!root)return;
@@ -6114,8 +6134,8 @@ function v78RenderPanel(id,o,options={}){
  const ratio=income>0?Math.round(o.planned/income*100):null;
  const select=options.chooseMonth?`<select class="v78-obligations-month" id="v78LoanMonth" aria-label="Месяц обязательств"></select>`:`<span class="v78-obligation-state">${esc(v78MonthTitle(o.month))}</span>`;
  const rows=v78ObligationRows(o);
- const breakdown=rows.length?rows.map(item=>`<div class="v78-obligation-line"><div class="v78-main"><b>${esc(item.title)}</b><small>${esc(item.subtitle)}</small></div><strong>${money2(item.amount)}</strong><span class="v78-obligation-state ${item.paid?'paid':item.partial?'partial':item.late?'late':''}">${item.paid?'Учтено в расходах':item.partial?'Частично подтверждено':item.late?'Нет подтверждения оплаты':'По графику'}</span></div>`).join(''):'<div class="v78-obligation-line"><div class="v78-main"><b>На этот месяц платежей по графикам нет</b><small>Добавленные рассрочки отобразятся по датам своих частей.</small></div></div>';
- root.innerHTML=`<div class="v78-obligations-head"><div><h2>Обязательные платежи · ${esc(v78MonthTitle(o.month))}</h2><p>Ипотека — по датам УралСиба; Сплит и рассрочки — по сохранённым графикам. Никаких фиксированных 90 000 ₽.</p></div>${select}</div><div class="v78-obligations-stats"><div><small>По графикам</small><b>${money2(o.planned)}</b></div><div><small>Подтверждено расходами</small><b>${money2(o.paid)}</b></div><div class="v78-due"><small>Осталось подтвердить / оплатить</small><b>${money2(o.remaining)}</b></div></div><div class="v78-obligation-items">${breakdown}</div><p class="v78-obligation-note">${ratio===null?'Нет доходов за выбранный месяц — доля платежей от дохода не рассчитывается.':'Платежи по графикам: '+ratio+'% от внесённых доходов месяца.'} Оплаты берём только из существующих расходов. Другие расходы, даже в категории «Кредит», не приписываются ипотеке без подтверждения. Досрочные платежи не включаются в плановый график автоматически.</p>${options.mortgageTools?'<div class="v78-mortgage-check"><details id="v78MortgageDetails"><summary>Сверить ипотечные платежи с историей расходов</summary><p class="v78-mortgage-help">Здесь показываются платежи, похожие на ипотечные, и вручную отмеченные записи. Яндекс Сплит и рассрочки не предлагаются как ипотека. Если нужной оплаты нет — уточните её название в истории (например, «Ипотека УралСиб»). Отметка не создаёт новый расход.</p><div class="v78-credit-candidates" id="v78MortgageCandidates"></div></details></div>':''}`;
+ const breakdown=rows.length?rows.map(item=>`<div class="v78-obligation-line"><div class="v78-main"><b>${esc(item.title)}</b><small>${esc(item.subtitle)}</small></div><strong>${money2(item.amount)}</strong><span class="v78-obligation-state ${item.paid?'paid':item.partial?'partial':item.late?'late':''}">${esc(v128ObligationStatus(item))}</span></div>`).join(''):'<div class="v78-obligation-line"><div class="v78-main"><b>На этот месяц платежей по графикам нет</b><small>Добавленные рассрочки отобразятся по датам своих частей.</small></div></div>';
+ root.innerHTML=`<div class="v78-obligations-head"><div><h2>Обязательные платежи · ${esc(v78MonthTitle(o.month))}</h2><p>Ипотека — по датам УралСиба; Сплит и рассрочки — по сохранённым графикам. Никаких фиксированных 90 000 ₽.</p></div>${select}</div><div class="v78-obligations-stats"><div><small>По графикам</small><b>${money2(o.planned)}</b></div><div><small>Подтверждено расходами</small><b>${money2(o.paid)}</b></div>${o.bankConfirmed>0?`<div><small>По сверке банка · без привязки</small><b>${money2(o.bankConfirmed)}</b></div>`:''}<div class="v78-due"><small>Осталось подтвердить / оплатить</small><b>${money2(o.remaining)}</b></div></div><div class="v78-obligation-items">${breakdown}</div><p class="v78-obligation-note">${ratio===null?'Нет доходов за выбранный месяц — доля платежей от дохода не рассчитывается.':'Платежи по графикам: '+ratio+'% от внесённых доходов месяца.'} Подтверждение расходами берём только из истории операций. Оплаты, включённые в сверку банка, показаны отдельно и не требуют повторной оплаты; отсутствующий расход нужно учесть в истории. Если расход внесён раньше месяца платежа, рядом показана его исходная дата. Другие расходы, даже в категории «Кредит», не приписываются ипотеке без подтверждения. Досрочные платежи не включаются в плановый график автоматически.</p>${options.mortgageTools?'<div class="v78-mortgage-check"><details id="v78MortgageDetails"><summary>Сверить ипотечные платежи с историей расходов</summary><p class="v78-mortgage-help">Здесь показываются платежи, похожие на ипотечные, и вручную отмеченные записи. Яндекс Сплит и рассрочки не предлагаются как ипотека. Если нужной оплаты нет — уточните её название в истории (например, «Ипотека УралСиб»). Отметка не создаёт новый расход.</p><div class="v78-credit-candidates" id="v78MortgageCandidates"></div></details></div>':''}`;
  if(options.chooseMonth){
   const selectEl=document.getElementById('v78LoanMonth');const dates=[month(),...loanScheduleData().map(r=>r.payDate.slice(0,7)),...(state.installments||[]).flatMap(i=>(i.parts||[]).map(p=>String(p.date).slice(0,7))),...(state.entries||[]).map(e=>String(e.date||'').slice(0,7))];
   const months=[...new Set(dates.filter(x=>/^\d{4}-\d{2}$/.test(x)))].sort().reverse();
@@ -7118,6 +7138,78 @@ function renderEarlyRepayment(){
 }
 
 function toggleLoanSchedule(){const x=document.getElementById('loanScheduleWrap');if(x)x.style.display=x.style.display==='none'?'block':'none'}
+/* Bank debt reconciliation and cash expenses have separate sources of truth. */
+let v128BankHistoryDraft=null,v128BankBusy=false;
+function v128BankPaymentId(kind){return 'bank-mortgage:'+BANK_LOAN_RECONCILIATION.source+':'+kind}
+function v128BankHistoryState(){
+ const source=v125BuiltinMortgageSnapshot();if(!source||source.date>today())return {source:null,bits:[],missingAmount:0};
+ const key=v125SnapshotKey(source),records=v125MortgageRecords().filter(({entry:e,record:r})=>r.afterCheckpoint!==true&&(r.checkpointKey===key||e.date===source.date||(r.kind==='regular'&&r.dueDate===source.date)));
+ const regular=records.filter(x=>x.record.kind==='regular'&&x.record.dueDate===source.date).reduce((n,x)=>n+v125Cents(x.entry.amount-x.record.extraPrincipal),0);
+ const early=records.reduce((n,x)=>n+v125Cents(x.record.kind==='early'?x.entry.amount:x.record.extraPrincipal),0);
+ const bits=[{kind:'regular',label:'Обычный платёж',amount:source.regularPayment,covered:regular},{kind:'early',label:'Досрочное погашение',amount:source.earlyPrincipal,covered:early}].map(bit=>{const recordedAmount=Math.min(v125Cents(bit.amount),bit.covered)/100;return {...bit,recordedAmount,recorded:recordedAmount===bit.amount,partial:recordedAmount>0&&recordedAmount<bit.amount}});
+ return {source,bits,matchedIds:records.map(x=>x.entry.id),missingAmount:bits.reduce((n,b)=>n+v125Cents(b.amount-b.recordedAmount),0)/100};
+}
+function v128BankCandidates(amount){
+ const source=v128BankHistoryState().source,contract=String(BANK_LOAN_INFO.contractDate||'').split('.').reverse().join('-');if(!source)return [];
+ return state.entries.filter(e=>e.type==='expense'&&isValidCalendarDate(e.date)&&e.date>=contract&&e.date<=source.date&&v125Cents(e.amount)===v125Cents(amount)&&!e.installmentId&&!e.mortgageAllocation&&!v77EntryIsLinked(e.id)).sort((a,b)=>b.date.localeCompare(a.date)||String(a.id).localeCompare(String(b.id)));
+}
+function v128ClearBankHistory(){v128BankHistoryDraft=null;const form=document.getElementById('v128BankHistoryForm');if(form)form.hidden=true}
+function v128BankHistoryError(message){const el=document.getElementById('v128BankHistoryError');el.textContent=message;el.hidden=!message}
+function v128OpenBankHistory(){
+ if(v128BankBusy||!v119OpsAllowed())return false;go('loans');const info=v128BankHistoryState();if(!info.source||!info.missingAmount)return false;
+ v128BankHistoryDraft={...v119OpsContext(),entries:JSON.parse(JSON.stringify(state.entries)),deleted:JSON.parse(JSON.stringify(state.deletedEntries||{})),source:JSON.parse(JSON.stringify(info.source))};
+ const total=info.bits.reduce((n,b)=>n+v125Cents(b.amount),0)/100,combined=info.bits.every(b=>!b.recordedAmount)?v128BankCandidates(total):[];
+ const option=e=>`<option value="${esc(e.id)}">${esc(v77DateLabel(e.date))} · ${esc(money2(e.amount))} · ${esc(e.store||e.comment||'Расход')}</option>`;
+ const suspicious=state.entries.some(e=>e.type==='expense'&&!e.installmentId&&!v77EntryIsLinked(e.id)&&e.date<=info.source.date&&!info.matchedIds.includes(e.id)&&(e.mortgageAllocation||e.bankStatementSource===info.source.source||v78BankExpense(e)));
+ for(const bit of info.bits){const select=document.getElementById(bit.kind==='regular'?'v128BankRegular':'v128BankEarly'),candidates=v128BankCandidates(bit.amount),reserved=v128BankPaymentId(bit.kind),blocked=Object.hasOwn(state.deletedEntries||{},reserved)||state.entries.some(e=>e.id===reserved||e.paymentKey===reserved);
+  select.innerHTML=bit.recorded?'<option value="recorded">Уже учтено в истории</option>':bit.partial?'<option value="partial">Есть частичная привязка — проверьте её в оплатах</option>':'<option value="">Выберите существующий расход или создание нового</option>'+candidates.map(option).join('')+(blocked?'':'<option value="new">Создать отсутствующий расход · '+esc(money2(bit.amount))+'</option>');
+  select.disabled=bit.recorded||bit.partial;select.value=bit.recorded?'recorded':bit.partial?'partial':!blocked&&!candidates.length&&!combined.length&&!suspicious?'new':'';
+ }
+ const combinedSelect=document.getElementById('v128BankCombined');combinedSelect.innerHTML='<option value="">Списания отдельные</option>'+combined.map(option).join('');document.getElementById('v128BankCombinedField').hidden=!combined.length;
+ document.getElementById('v128BankAccount').innerHTML=v119AccountOptions('');
+ document.getElementById('v128BankHistoryIntro').textContent='По сверке банка от '+v77DateLabel(info.source.date)+': '+money2(info.bits[0].amount)+' обычный платёж и '+money2(info.bits[1].amount)+' досрочно. Если расход уже есть, выберите его: дата, сумма и счёт сохранятся.';
+ document.getElementById('v128BankHistoryForm').hidden=false;v128BankHistoryPreview();v110RefreshPickers();document.getElementById('v128BankHistoryForm').scrollIntoView({block:'center',behavior:'smooth'});return true;
+}
+function v128BankHistoryPreview(){
+ if(!v128BankHistoryDraft)return;
+ const info=v128BankHistoryState(),combined=document.getElementById('v128BankCombined').value;
+ const choices=info.bits.map(b=>({bit:b,value:document.getElementById(b.kind==='regular'?'v128BankRegular':'v128BankEarly').value}));
+ const valid=!!combined||choices.every(x=>x.bit.recorded||(!x.bit.partial&&x.value&&x.value!=='partial'));
+ const added=combined?0:choices.filter(x=>x.value==='new').reduce((n,x)=>n+v125Cents(x.bit.amount),0)/100;
+ v128BankHistoryError('');document.getElementById('v128BankHistoryApply').disabled=!valid||v128BankBusy;
+ document.getElementById('v128BankHistoryPreview').textContent=valid?(added?'В историю добавится '+money2(added)+' расходов. Если их нигде ещё нет, остаток по истории уменьшится на эту сумму.':'Будут привязаны выбранные расходы. Их суммы, даты и остаток денег не изменятся.')+' Ипотечный долг повторно не уменьшится: списания уже включены в сверку банка.':'Выберите, какие расходы уже есть в истории и какие нужно создать. Частичные привязки сначала проверьте в разделе оплат.';
+}
+function v128BankAllocation(kind,e,source){
+ const combined=kind==='combined',early=kind==='early';return {version:1,kind:early?'early':'regular',date:e.date,amount:e.amount,principal:early?source.earlyPrincipal:(source.regularPrincipal+(combined?source.earlyPrincipal:0)),interest:early?0:source.paidInterest,charges:0,extraPrincipal:early||combined?source.earlyPrincipal:0,...(!early?{dueDate:source.date}:{}),checkpointKey:v125SnapshotKey(source),afterCheckpoint:false};
+}
+async function v128ApplyBankHistory(){
+ const draft=v128BankHistoryDraft;if(!draft||v128BankBusy||!v119OpsAllowed(draft))return false;
+ const info=v128BankHistoryState(),fail=message=>{v128BankHistoryError(message);return false};
+ if(!info.source||!cloudJSONEqual(info.source,draft.source)||!cloudJSONEqual(state.entries,draft.entries)||!cloudJSONEqual(state.deletedEntries||{},draft.deleted))return fail('История или сверка изменилась. Откройте сверку списаний заново и проверьте выбор.');
+ const combined=document.getElementById('v128BankCombined').value,accountId=document.getElementById('v128BankAccount').value,updates=[],created=[];
+ const requests=combined?[{kind:'combined',value:combined,amount:info.bits.reduce((n,b)=>n+v125Cents(b.amount),0)/100}]:info.bits.filter(b=>!b.recorded).map(b=>({...b,value:document.getElementById(b.kind==='regular'?'v128BankRegular':'v128BankEarly').value}));
+ if(!requests.length)return fail('Списания уже учтены в истории.');
+ const selected=new Set();
+ for(const request of requests){
+  if(request.partial||!request.value||request.value==='partial'||request.value==='recorded')return fail('Проверьте выбор операций. Частичную привязку нужно сверить отдельно.');
+  let entry;
+  if(request.value==='new'){
+   const id=v128BankPaymentId(request.kind);if(Object.hasOwn(state.deletedEntries||{},id)||state.entries.some(e=>e.id===id||e.paymentKey===id))return fail('Эта запись уже создавалась или удалена. Проверьте историю; повторная запись не добавлена.');
+   const fields=accountId?{accountId}:{},check=v119CheckFields({type:'expense',date:info.source.date,...fields});if(!check.ok)return fail(check.error);
+   const stamp=v119MonotonicStamp();entry={id,paymentKey:id,type:'expense',date:info.source.date,amount:request.amount,category:'Кредит',who:'Общее',store:'УралСиб',pay:'Не указан',comment:request.kind==='early'?'Досрочное погашение ипотеки · по сверке банка':'Обычный платёж ипотеки · по сверке банка',...fields,created_at:stamp,updated_at:stamp};created.push(entry);
+  }else{
+   entry=state.entries.find(e=>e.id===request.value);if(!entry||!v128BankCandidates(request.amount).some(e=>e.id===entry.id)||selected.has(entry.id))return fail('Выбранный расход изменился или уже связан. Проверьте историю.');selected.add(entry.id);entry=JSON.parse(JSON.stringify(entry));updates.push(entry);
+  }
+  entry.mortgageAllocation=v128BankAllocation(request.kind,entry,info.source);if(!v125MortgageRecord(entry))return fail('Распределение списания не совпало с данными банка. Проверьте сверку.');entry.mortgagePayment=true;entry.bankStatementSource=info.source.source;entry.updated_at=v119MonotonicStamp(entry.updated_at);
+ }
+ const ids=new Set(updates.map(e=>e.id));state.entries=state.entries.map(e=>ids.has(e.id)?updates.find(x=>x.id===e.id):e).concat(created);
+ v128BankBusy=true;v128ClearBankHistory();renderAll();let ok=false;try{ok=await saveAll()}finally{v128BankBusy=false}
+ if(!v119OpsAllowed(draft))return false;renderAll();toast(localSaveMessage(ok,'Ипотечные списания учтены в истории один раз'));return ok||!v89StorageFailed;
+}
+function v128RenderBankHistory(){
+ const root=document.getElementById('v128BankHistoryNotice');if(!root)return;const info=v128BankHistoryState();root.hidden=!info.source||info.missingAmount<=0;
+ if(!root.hidden)root.innerHTML='<p>По сверке банка списания на <b>'+money2(info.missingAmount)+'</b> ещё не связаны с расходами. Они не уменьшают остаток денег по истории.</p><button class="btn" type="button" onclick="v128OpenBankHistory()" '+(!v119OpsAllowed()||v128BankBusy?'disabled':'')+'>Учесть списания в истории</button>';
+}
 /* v125 · Confirmed mortgage allocations and bank checkpoints, independent of drafts. */
 function v125Cents(n){return Math.round(Number(n)*100)}
 function v125Money(n){return typeof n==='number'&&Number.isFinite(n)&&n>=0&&n<=1e12&&Math.abs(n*100-Math.round(n*100))<.001}
@@ -7141,10 +7233,13 @@ function v125MortgageRecords(){return (state.entries||[]).map(e=>({entry:e,recor
 function v125ScheduledCash(e){const r=v125MortgageRecord(e);if(e?.mortgageAllocation&&!r)return 0;return r?(r.kind==='early'?0:Math.max(0,e.amount-r.extraPrincipal)):(!v125BuiltinMortgageSnapshot()&&v78BankExpense(e)?Number(e.amount):0)}
 function v125ScheduledMonth(e){const r=v125MortgageRecord(e);return String(r?.dueDate||e.date||'').slice(0,7)}
 function v125ScheduledAllocated(date,rows){
- const checkpoint=v125MortgageSnapshot();const covered=checkpoint&&date<=checkpoint.date?rows.find(r=>r.payDate===date):null;if(covered)return covered.payment;
- const explicit=(state.entries||[]).filter(e=>{const r=v125MortgageRecord(e);return r?.kind==='regular'&&r.dueDate===date}).reduce((n,e)=>n+v125Cents(v125ScheduledCash(e)),0);
- const legacy=(state.entries||[]).filter(e=>!e.mortgageAllocation&&!v125BuiltinMortgageSnapshot()&&v78BankExpense(e)&&(!checkpoint||e.date>checkpoint.date)&&String(e.date||'').slice(0,7)===date.slice(0,7)).reduce((n,e)=>n+v125Cents(e.amount),0);
- const prior=rows.filter(r=>r.payDate<date&&r.payDate.slice(0,7)===date.slice(0,7)).reduce((n,r)=>{const linked=(state.entries||[]).filter(e=>v125MortgageRecord(e)?.dueDate===r.payDate).reduce((s,e)=>s+v125Cents(v125ScheduledCash(e)),0);return n+Math.max(0,v125Cents(r.payment)-linked)},0);
+ const checkpoint=v125MortgageSnapshot(),covered=checkpoint&&date<=checkpoint.date?rows.find(r=>r.payDate===date):null;return covered?covered.payment:v125ScheduledExpenseAllocated(date,rows);
+}
+function v125ScheduledExpenseAllocated(date,rows){
+ const checkpoint=v125MortgageSnapshot();
+ const explicit=(state.entries||[]).filter(e=>{const r=v125MortgageRecord(e);return e.date<=today()&&r?.kind==='regular'&&r.dueDate===date}).reduce((n,e)=>n+v125Cents(v125ScheduledCash(e)),0);
+ const legacy=(state.entries||[]).filter(e=>e.date<=today()&&!e.mortgageAllocation&&!v125BuiltinMortgageSnapshot()&&v78BankExpense(e)&&(!checkpoint||e.date>checkpoint.date)&&String(e.date||'').slice(0,7)===date.slice(0,7)).reduce((n,e)=>n+v125Cents(e.amount),0);
+ const prior=rows.filter(r=>r.payDate<date&&r.payDate.slice(0,7)===date.slice(0,7)).reduce((n,r)=>{const linked=(state.entries||[]).filter(e=>e.date<=today()&&v125MortgageRecord(e)?.dueDate===r.payDate).reduce((s,e)=>s+v125Cents(v125ScheduledCash(e)),0);return n+Math.max(0,v125Cents(r.payment)-linked)},0);
  const row=rows.find(r=>r.payDate===date);return Math.min(row?.payment||0,(explicit+Math.max(0,legacy-prior))/100);
 }
 function v125MortgageCharges(){return v125BuiltinMortgageSnapshot()?BANK_LOAN_CURRENT_CHARGES.map(r=>({...r,n:'—',periodEnd:r.payDate,body:0,interest:0,charges:r.payment,balance:null,kind:'insurance',bankVersion:'2026-11-02'})):[]}
@@ -8408,7 +8503,7 @@ for(const [id,kind] of [['donut','group'],['peopleDonut','person']]){
 }
 for(const id of ['analyticsMonth','homeMonth'])document.getElementById(id)?.addEventListener('change',v84RenderAll);
 
-function renderAll(){v126ApplyDocumentPlans();v97RenderFavorites();refreshHistoryPeriods();renderHome();renderToday();renderHistory();renderAnalytics();renderIncome();renderCar();renderGoals();renderLoans();renderChores();renderDates();renderFamilyBoard();renderFamilySpark();renderTodayHeader();renderTodayAdvice();settingsFields();try{renderEarlyRepayment()}catch(err){console.warn('early repayment render',err)}v84RenderAll();v96ApplyBranding();v96RenderBrandingChoices();v99RenderEntryDirections();if(typeof v118RenderPlanning==='function')v118RenderPlanning();if(typeof v119InitOperations==='function')v119InitOperations();if(typeof v120RenderTruthStatus==='function')v120RenderTruthStatus();if(typeof v121RenderHomeOverview==='function')v121RenderHomeOverview();v110RefreshPickers()}
+function renderAll(){v126ApplyDocumentPlans();v97RenderFavorites();refreshHistoryPeriods();renderHome();renderToday();renderHistory();renderAnalytics();renderIncome();renderCar();renderGoals();renderLoans();renderChores();renderDates();renderFamilyBoard();renderFamilySpark();renderTodayHeader();renderTodayAdvice();settingsFields();try{renderEarlyRepayment()}catch(err){console.warn('early repayment render',err)}v84RenderAll();v96ApplyBranding();v96RenderBrandingChoices();v99RenderEntryDirections();if(typeof v118RenderPlanning==='function')v118RenderPlanning();if(typeof v119InitOperations==='function')v119InitOperations();if(typeof v120RenderTruthStatus==='function')v120RenderTruthStatus();if(typeof v121RenderHomeOverview==='function')v121RenderHomeOverview();v128RenderBankHistory();v110RefreshPickers()}
 function exportCsv(){
  const columns=['Дата','Тип','Категория','Участник','Сумма ₽','Где / источник','Оплата','Комментарий','Откуда','Куда','Уточнение расхода','Для кого'];
  const safe=(v)=>'"'+String(v??'').replace(/^[=+@\-\t\r]/,x=>"'"+x).replace(/"/g,'""')+'"';
@@ -8725,7 +8820,7 @@ function v86CalendarEvents(m){
  const ob=v78Obligations(m);
  for(const row of v78ObligationRows(ob)){
   const allocated=Number(row.allocated)||0;
-  items.push({key:row.kind==='installment'?'installment:'+row.installmentId+':'+row.installmentPartId:'loan:'+row.kind+':'+row.date+':'+row.title,kind:row.kind,date:row.date,title:row.title,subtitle:row.subtitle,amount:Number(row.amount)||0,paid:!!row.paid,part:!!row.partial,allocated:allocated,link:'loans',installmentId:row.installmentId,installmentPartId:row.installmentPartId});
+  items.push({key:row.kind==='installment'?'installment:'+row.installmentId+':'+row.installmentPartId:'loan:'+row.kind+':'+row.date+':'+row.title,kind:row.kind,date:row.date,title:row.title,subtitle:row.subtitle,amount:Number(row.amount)||0,paid:!!row.paid,part:!!row.partial,allocated:allocated,expenseAllocated:Number(row.expenseAllocated)||0,bankAllocated:Number(row.bankAllocated)||0,link:'loans',installmentId:row.installmentId,installmentPartId:row.installmentPartId});
  }
  for(const r of v84Data().recurring){
   const linkedPlan=(state.installments||[]).find(i=>i.id===r.installmentId),linkedPart=(linkedPlan?.parts||[]).find(p=>p.id===r.installmentPartId&&String(p.date).startsWith(m));
@@ -8741,11 +8836,11 @@ function v86RenderCalendar(){
  const el=document.getElementById('v86CalendarMonth'),list=document.getElementById('v86CalendarList'),total=document.getElementById('v86CalendarTotals');if(!el||!list||!total)return;
  const selected=el.value||month();if(!el.options.length){el.innerHTML=v86MonthsAround(month(),0,5).map(m=>`<option value="${m}">${esc(v84MonthLabel(m))}</option>`).join('');el.value=month()}
  if(![...el.options].some(o=>o.value===selected)){el.add(new Option(v84MonthLabel(selected),selected));el.value=selected}
- const data=v86CalendarEvents(el.value||month());const planned=data.reduce((a,e)=>a+e.amount,0),paid=data.reduce((a,e)=>a+(e.paid?e.amount:Math.min(e.allocated,e.amount)),0),remaining=Math.max(0,planned-paid);
- total.innerHTML=`<div class="v86-total"><small>По графикам</small><b>${money(planned)}</b></div><div class="v86-total"><small>Учтено в истории</small><b>${money(paid)}</b></div><div class="v86-total due"><small>Не подтверждено</small><b>${money(remaining)}</b></div>`;
+ const data=v86CalendarEvents(el.value||month());const planned=data.reduce((a,e)=>a+e.amount,0),paid=data.reduce((a,e)=>a+Math.min(e.amount,Number.isFinite(e.expenseAllocated)?e.expenseAllocated:e.paid?e.amount:Number(e.allocated)||0),0),bankConfirmed=data.reduce((a,e)=>a+(Number(e.bankAllocated)||0),0),remaining=Math.max(0,v77Cents(planned)-v77Cents(paid)-v77Cents(bankConfirmed))/100;
+ total.innerHTML=`<div class="v86-total"><small>По графикам</small><b>${money(planned)}</b></div><div class="v86-total"><small>Учтено в истории</small><b>${money(paid)}</b></div>${bankConfirmed>0?`<div class="v86-total"><small>По сверке банка · без привязки</small><b>${money(bankConfirmed)}</b></div>`:''}<div class="v86-total due"><small>Не подтверждено</small><b>${money(remaining)}</b></div>`;
  document.querySelectorAll('[data-v86-filter]').forEach(b=>{const active=b.dataset.v86Filter===v86CalendarFilter;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))});
  const subset=data.filter(x=>v86CalendarFilter==='all'||(v86CalendarFilter==='paid'?x.paid:!x.paid));
- list.innerHTML=subset.length?subset.map(x=>{const [,year,mo,day]=x.date.match(/^(\d{4})-(\d{2})-(\d{2})$/)||[];const label=x.paid?'Учтено':x.part?'Частично':x.date<today()?'Срок прошёл':'Ожидается';const cls=x.paid?'paid':x.part?'part':x.date<today()?'late':'';
+ list.innerHTML=subset.length?subset.map(x=>{const [,year,mo,day]=x.date.match(/^(\d{4})-(\d{2})-(\d{2})$/)||[];const label=x.bankAllocated>0?'По сверке банка':x.paid?'Учтено в истории':x.part?'Частично':x.date<today()?'Срок прошёл':'Ожидается';const cls=x.paid?'paid':x.part?'part':x.date<today()?'late':'';
   return `<div class="v86-calendar-row"><div class="v86-calendar-date"><strong>${esc(String(Number(day)||'—'))}</strong><span>${esc(new Date(x.date+'T12:00:00').toLocaleDateString('ru-RU',{month:'short'}))}</span></div><div class="v86-calendar-description"><b>${esc(x.title)}</b><small>${esc(x.subtitle)}</small></div><strong class="v86-calendar-sum">${money(x.amount)}</strong><span class="v86-state ${cls}">${label}</span>${x.kind==='regular'&&!x.paid?`<div class="v881-cal-actions"><button class="btn small" type="button" ${recordAction('recurring-link',x.recurringId,x.period)}>Связать расход</button><button class="btn primary small" type="button" ${recordAction('recurring-confirm',x.recurringId,x.period)}>Отметить оплату</button></div>`:''}</div>`}).join(''):'<div class="v84-empty">Для этого фильтра платежей нет.</div>';
 }
 function v86CurrentAccounts(){const summary=typeof v117AccountSummary==='function'?v117AccountSummary(today()):null,list=summary?.items?.map(item=>item.account)||v84Data().accounts;return {items:list,total:summary?summary.spendableTotal:list.length?sum(list.map(a=>({amount:Number(a.amount)||0}))):null,complete:summary?.complete===true,warnings:summary?.warnings||[],latest:list.reduce((s,a)=>String(a.updated_at||'')>s?String(a.updated_at||''):s,'')}}
