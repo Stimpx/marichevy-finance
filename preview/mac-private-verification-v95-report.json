@@ -1,0 +1,20 @@
+{
+  "format": "marichevy-private-verification-macos-report-v1",
+  "outcome": "built-code-only",
+  "contains_private_data": false,
+  "bytes": 4503151,
+  "sha256": "66b64c46056f183d52be9b1e7c0258195cbc72387ed516245143543bd2ab9c58",
+  "file_count": 16,
+  "manifest_sha256": "b5098147365c7a2d6fc7611a813970911d209a73136ccffdb37b34195f2a644f",
+  "bootstrap_sha256": "2049e3f83533db233fee84caa54e1f15c9ea897d645b07d8a99ec9d80ee5da2a",
+  "existing_helper_manifest_sha256": "5136a4d4a3c864f6643b00322bab2405b6a4efd904f169a46a9394f442f422b4",
+  "native_owner_mac_acceptance": "pending",
+  "native_owner_mac_passed": false,
+  "production_changed": false,
+  "release_authorized": false,
+  "restore_scope": "offline-four-app-tables-auth-id-stubs",
+  "supabase_auth_or_platform_restored": false,
+  "server_concurrency_tested_by_this_addon": false,
+  "synthetic_bundle_checks_passed": 13,
+  "synthetic_bundle_validation": "code-only; actual old closure and new trust chain; not native Mac acceptance"
+}

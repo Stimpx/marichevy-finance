@@ -1,0 +1,46 @@
+{
+  "format": "marichevy-layout-and-demo-copy-v1",
+  "status": "passed",
+  "source_html_sha256": "8f90a6abd6f3ab96be4002f2d4707b42744b346250f07e0b59297f8fa5756322",
+  "demo_generator_sha256": "51c6cb4f46319d83da19b852e1a56e9db7019d60a96ad54d24520ea4eea6da58",
+  "fictional_only": true,
+  "focused_test_methods": 33,
+  "focused_suites": {
+    "demo_bundle": 7,
+    "public_ledger": 15,
+    "drill_help_geometry": 3,
+    "important_dates": 2,
+    "help_guide": 5,
+    "all_sections_sweep": 1
+  },
+  "negative_regressions": {
+    "previous_demo_generator_rejected": true,
+    "previous_date_layout_rejected_profiles": 12
+  },
+  "all_sections_sweep": {
+    "sections": 13,
+    "widths": [
+      320,
+      360,
+      390,
+      430,
+      768,
+      1024,
+      1280,
+      1512,
+      1920
+    ],
+    "views": 189,
+    "passed": true
+  },
+  "visual_reviews": [
+    "v95-layout-r4-review.json",
+    "v95-layout-r4-dates-review.json"
+  ],
+  "personal_loan_data_unchanged": true,
+  "demo_archive_sha256": "d360fb43021a0ffbbe7b286b95fa08d02fe3aa605867fa8355f48a7e76a23f5e",
+  "demo_archive_bytes": 1343516,
+  "native_devices_tested": false,
+  "full_suite_repeated": false,
+  "production_changed": false
+}

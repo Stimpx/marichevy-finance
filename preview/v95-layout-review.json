@@ -1,0 +1,111 @@
+{
+  "format": "marichevy-responsive-layout-review-v1",
+  "status": "passed",
+  "source_html_sha256": "909816ac5be208fcd700778b408dc952ff54068ab406f153c192dcf5f853d7ea",
+  "demo_html_sha256": "532df1c7673c53079f4d432581b128158afb53a9c92e1e30075d3a3305efc1d8",
+  "data": "fictional-safe-demo-only",
+  "browser": {
+    "engine": "Chromium",
+    "version": "154.0.8037.57",
+    "host_platform": "Linux"
+  },
+  "view_checks": 133,
+  "matrix_profiles": 19,
+  "routes": [
+    "home",
+    "history",
+    "today",
+    "settings",
+    "help",
+    "edit",
+    "calculator"
+  ],
+  "widths_css_px": [
+    320,
+    375,
+    390,
+    430,
+    768,
+    820,
+    844,
+    960,
+    1024,
+    1280,
+    1366,
+    1440,
+    1920
+  ],
+  "text_scale_approximations": [
+    1.25,
+    1.5,
+    2
+  ],
+  "document_horizontal_overflows": 0,
+  "page_js_errors": 0,
+  "scrollable_modal_primary_actions_verified": 38,
+  "screenshots": [
+    {
+      "file": "v95-layout-editor-desktop.png",
+      "view": "edit",
+      "width": 1366,
+      "height": 900,
+      "touch_emulated": false,
+      "sha256": "c10129aad6d7b32d159595777e3d32b8b375f1f44426cd2dfb7760ae4db31b23"
+    },
+    {
+      "file": "v95-layout-editor-mobile.png",
+      "view": "edit",
+      "width": 390,
+      "height": 1000,
+      "touch_emulated": true,
+      "sha256": "2156e050c0df287acba14fef51c305059e7d4f7fd912966403702ae147e56ab8"
+    },
+    {
+      "file": "v95-layout-history-desktop.png",
+      "view": "history",
+      "width": 1920,
+      "height": 1080,
+      "touch_emulated": false,
+      "sha256": "86b9b2fa070cb0ed91a5cb83cc9dd8a1eb31449cba5814f57a8131ad34645026"
+    },
+    {
+      "file": "v95-layout-history-mobile.png",
+      "view": "history-card",
+      "width": 390,
+      "height": 844,
+      "touch_emulated": true,
+      "sha256": "6588cf5aeaf1be2f81ad53521514f2588db68e50eec061a3d04b68bc2fb011e6"
+    },
+    {
+      "file": "v95-layout-newentry-tablet.png",
+      "view": "today",
+      "width": 820,
+      "height": 1180,
+      "touch_emulated": true,
+      "sha256": "783bd51c1066d9a4bf261d45d616d66373caa4772cab19a8d049a550ac03ee27"
+    }
+  ],
+  "examples": {
+    "laptop_edit_field_widths_css_px": {
+      "xAmount": 384.5,
+      "xCat": 384.5,
+      "xDate": 384.5
+    },
+    "laptop_edit_amount_tool_rows": 1,
+    "desktop_history_row_height_css_px": 71,
+    "desktop_history_action_widths_css_px": [
+      85.1,
+      95.6,
+      44,
+      44
+    ]
+  },
+  "native_gadgets_tested": false,
+  "production_changed": false,
+  "limitations": [
+    "Chromium viewport/touch emulation on Linux is not native Windows/Mac/iPhone/Android or Safari acceptance.",
+    "Text scaling is a CSS font-size stress approximation; 960px viewport approximates desktop200percent reflow, not browser/OS zoom automation.",
+    "No authenticated backend, production bank history, cloud sync, device queue reconciliation or native on-screen keyboard was tested.",
+    "Selected native month-control width estimator is conservative about native arrow area; no clipped date text was observed in the reviewed screenshots."
+  ]
+}

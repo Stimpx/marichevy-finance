@@ -1,0 +1,14 @@
+{
+  "name": "marichevy-private-queue-helper",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Offline read-only financial storage backup for Windows x64",
+  "dependencies": {
+    "classic-level": "3.0.0",
+    "koffi": "3.3.4",
+    "snappyjs": "0.7.0"
+  },
+  "engines": {
+    "node": "22.23.4"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "activation_executed": false,
+  "activation_receipt_created": false,
+  "activation_sql_sha256": "7fc72248cd65e790dfec12abc4da1811ae2146f414b8be46cd5cd7ae5244e248",
+  "bytes": 7809,
+  "contains_private_data": false,
+  "file_count": 1,
+  "format": "marichevy-activation-checkpoint-build-v1",
+  "html_bytes": 21269,
+  "html_sha256": "3fb3c54e6716976169b246259c206422a69ee517e01aa9c4349cf7e0eb247292",
+  "native_owner_windows_acceptance": "pending",
+  "network_used": false,
+  "outcome": "built-code-only-offline-preparation",
+  "production_changed": false,
+  "sha256": "a4bf9e052c25d1dc5c11f5e06f27245778c4dcae6ab5a6b27965626d0b0d1bf3"
+}

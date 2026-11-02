@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ru">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-__SCRIPT_SHA256__'; style-src 'sha256-__STYLE_SHA256__'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'none'">
+<title>Проверка заголовков очередей</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3f5fa;color:#19283f;font:16px/1.5 system-ui,sans-serif}main{max-width:780px;margin:32px auto;padding:24px;background:#fff;border:1px solid #dbe1ed;border-radius:18px}h1{font-size:26px;line-height:1.2;margin:0 0 16px}p{margin:12px 0}ul{padding-left:24px}button{min-height:46px;padding:10px 18px;border:0;border-radius:10px;background:#345bd7;color:#fff;font:600 16px system-ui;cursor:pointer}button:disabled{opacity:.5;cursor:default}button:focus-visible,textarea:focus-visible{outline:3px solid #ffae38;outline-offset:3px}#notice{min-height:28px;color:#405878}#results{display:grid;gap:10px;margin:18px 0}.card{padding:14px 16px;border:1px solid #dbe1ed;border-radius:12px;white-space:pre-line}textarea{width:100%;min-height:150px;padding:12px;border:1px solid #c3ccdf;border-radius:10px;font:14px/1.5 ui-monospace,monospace;resize:vertical}small{display:block;margin-top:16px;color:#52627c}code{overflow-wrap:anywhere}#results[hidden],textarea[hidden]{display:none}@media(max-width:600px){main{margin:12px;padding:18px}h1{font-size:23px}button{width:100%}}
+</style>
+<main>
+<h1>Проверка заголовков очередей</h1>
+<p>Выбери три сохранённые копии из последней папки <code>PRIVATE-verification-…</code>:</p>
+<ul><li><code>mac-capture.json</code></li><li><code>iphone-capture.json</code></li><li><code>windows-capture.json</code></li></ul>
+<p>Страница проверит формат и адрес источника. Содержимое записей на экран не выводится; сетевые соединения запрещены.</p>
+<button type="button" id="choose">Выбрать три файла очереди</button>
+<input id="files" type="file" multiple accept=".json" hidden>
+<p id="notice" role="status" aria-live="polite">После проверки скопируй служебные коды в чат.</p>
+<section id="results" aria-label="Результаты" hidden><div class="card" id="mac-result"></div><div class="card" id="iphone-result"></div><div class="card" id="windows-result"></div></section>
+<textarea id="codes" readonly aria-label="Служебные коды" spellcheck="false" hidden></textarea>
+<p><button type="button" id="copy" disabled>Скопировать коды</button></p>
+<small>Это проверка заголовков для продолжения сверки. Она не устанавливает обновление банка. Файлы остаются на твоём устройстве.</small>
+</main>
+<script>
+'use strict';
+const slots=Object.freeze([
+  Object.freeze({id:'mac',file:'mac-capture.json',title:'Mac'}),
+  Object.freeze({id:'iphone',file:'iphone-capture.json',title:'iPhone'}),
+  Object.freeze({id:'windows',file:'windows-capture.json',title:'Windows'})
+]);
+const maxFile=32*1024*1024,maxTotal=96*1024*1024;
+const format='marichevy-local-queue-capture-v1',origin='https://finance.marichev.pro';
+const byId=id=>document.getElementById(id);
+const input=byId('files'),choose=byId('choose'),codes=byId('codes'),copy=byId('copy'),notice=byId('notice');
+const object=value=>value!==null&&typeof value==='object'&&!Array.isArray(value);
+const own=(value,key)=>Object.prototype.hasOwnProperty.call(value,key);
+const labels=Object.freeze({expected:'ожидаемый',missing:'поле отсутствует',other:'другой',
+  'type-other':'не текст',yes:'да',no:'нет'});
+let generation=0;
+function clear(){
+  codes.value='';codes.hidden=true;copy.disabled=true;choose.disabled=false;byId('results').hidden=true;
+  for(const slot of slots)byId(slot.id+'-result').textContent='';
+  notice.textContent='Проверка заголовков…';
+}
+function selectionError(code){
+  codes.value='capture-header-check-v1\nselection='+code;codes.hidden=false;copy.disabled=false;
+  notice.textContent='Выбери именно три файла с указанными именами из одной папки сверки.';
+}
+function field(value,key,expected){
+  if(!own(value,key))return 'missing';
+  if(typeof value[key]!=='string')return 'type-other';
+  return value[key]===expected?'expected':'other';
+}
+function decode(bytes){
+  if(bytes.length>=4&&((bytes[0]===255&&bytes[1]===254&&bytes[2]===0&&bytes[3]===0)||
+    (bytes[0]===0&&bytes[1]===0&&bytes[2]===254&&bytes[3]===255)))throw Error();
+  const encoding=bytes[0]===255&&bytes[1]===254?'utf-16le':
+    bytes[0]===254&&bytes[1]===255?'utf-16be':'utf-8';
+  return new TextDecoder(encoding,{fatal:true}).decode(bytes);
+}
+async function classify(file){
+  try{
+    const bytes=new Uint8Array(await file.arrayBuffer());
+    if(bytes.byteLength!==file.size||bytes.byteLength===0||bytes.byteLength>maxFile)return {error:'json=unreadable'};
+    const value=JSON.parse(decode(bytes));
+    if(!object(value))return {error:'root=other'};
+    return {format:field(value,'format',format),origin:field(value,'origin',origin),
+      ordinary:Array.isArray(value.entries)&&object(value.settings)?'yes':'no'};
+  }catch(_){return {error:'json=unreadable'};}
+}
+choose.addEventListener('click',()=>input.click());
+input.addEventListener('change',async()=>{
+  const current=++generation,files=Array.from(input.files||[]);input.value='';clear();
+  if(files.length!==slots.length){selectionError('wrong-files');return;}
+  const selected=new Map();let total=0;
+  for(const file of files){
+    const slot=slots.find(item=>item.file===file.name.toLowerCase());
+    if(!slot){selectionError('wrong-files');return;}
+    if(selected.has(slot.id)){selectionError('duplicate');return;}
+    if(!Number.isSafeInteger(file.size)||file.size<1||file.size>maxFile){selectionError('size-limit');return;}
+    total+=file.size;if(total>maxTotal){selectionError('size-limit');return;}
+    selected.set(slot.id,file);
+  }
+  choose.disabled=true;
+  try{
+    const results=[];
+    for(const slot of slots){
+      const result=await classify(selected.get(slot.id));
+      if(current!==generation)return;
+      results.push({slot,result});
+    }
+    const lines=['capture-header-check-v1'];
+    for(const {slot,result}of results){
+      const card=byId(slot.id+'-result');
+      if(result.error){
+        lines.push(slot.id+': '+result.error);
+        card.textContent=slot.title+'\n'+(result.error==='root=other'?'Корневая структура JSON другая.':'Не удалось прочитать JSON.');
+      }else{
+        lines.push(slot.id+': format='+result.format+'; origin='+result.origin+'; ordinary='+result.ordinary);
+        card.textContent=slot.title+'\nФормат: '+labels[result.format]+'.\nАдрес источника: '+labels[result.origin]+
+          '.\nПохоже на обычную копию: '+labels[result.ordinary]+'.';
+      }
+    }
+    codes.value=lines.join('\n');codes.hidden=false;copy.disabled=false;byId('results').hidden=false;
+    notice.textContent='Заголовки проверены. Скопируй только служебные коды в чат.';
+  }finally{if(current===generation)choose.disabled=false;}
+});
+copy.addEventListener('click',async()=>{
+  if(copy.disabled||!codes.value)return;
+  codes.focus();codes.select();
+  try{
+    if(!navigator.clipboard?.writeText)throw Error();
+    await navigator.clipboard.writeText(codes.value);
+    notice.textContent='Служебные коды скопированы. Вставь их в чат.';
+  }catch(_){notice.textContent='Коды выделены. Нажми Ctrl+C и вставь их в чат.';}
+});
+</script>
+</html>

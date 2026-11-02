@@ -1,0 +1,17 @@
+{
+  "format": "marichevy-mac-helper-validation-v1",
+  "contains_private_data": false,
+  "archive": "mac-private-backup-helper-v95.zip",
+  "bytes": 77278606,
+  "sha256": "9db462eaea93d35c5a8eaf1a79cf3b4f3427a712da6bfb4aa8f2408472626280",
+  "file_count": 458,
+  "independent_crc_manifest_source_and_modes_check": "passed",
+  "shared_capture_tests": 10,
+  "windows_adapter_wrapper_tests": 1,
+  "windows_bundle_tests": 6,
+  "macos_adapter_contract_cases": 17,
+  "macos_bundle_tests": 8,
+  "native_macos_execution": "unverified; mandatory owner-device fictional selftest before real profile read",
+  "owner_capture": "not yet confirmed",
+  "production_or_main_changed": false
+}

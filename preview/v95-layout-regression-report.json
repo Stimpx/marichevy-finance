@@ -1,0 +1,63 @@
+{
+  "format": "marichevy-responsive-regression-v1",
+  "source_html_sha256": "909816ac5be208fcd700778b408dc952ff54068ab406f153c192dcf5f853d7ea",
+  "data": "fictional-only",
+  "status": "all-observed-failures-resolved",
+  "full_regression": {
+    "tests": 696,
+    "elapsed_seconds": 445.792,
+    "passed_initially": 695,
+    "failure_initially": "stale-derived-public-template",
+    "resolution": "regenerated-public/ledger-template.html",
+    "affected_suite_rerun": {
+      "test_file": "test_public_ledger.py",
+      "tests": 15,
+      "passed": 15,
+      "seconds": 9.406
+    },
+    "full_suite_repeated_after_generation": false
+  },
+  "responsive_geometry": {
+    "test_methods": 4,
+    "passed": 4,
+    "baseline_old_source_failure_cases": 15
+  },
+  "all_sections_sweep": {
+    "passed": true,
+    "sections": [
+      "home",
+      "today",
+      "history",
+      "analytics",
+      "income",
+      "car",
+      "loans",
+      "goals",
+      "chores",
+      "dates",
+      "settings",
+      "help",
+      "plans"
+    ],
+    "widths": [
+      320,
+      360,
+      390,
+      430,
+      768,
+      1024,
+      1280,
+      1512,
+      1920
+    ],
+    "views": 189
+  },
+  "visual_review": "v95-layout-review.json",
+  "hosted_staging_repeat": {
+    "status": "blocked",
+    "reason": "Management API HTTP401",
+    "production_called": false
+  },
+  "native_updated_gadgets_tested": false,
+  "production_changed": false
+}

@@ -1,0 +1,86 @@
+{
+  "status": "passed",
+  "data": "fictional only",
+  "archive_sha256": "8d65e8911d2031eb533d73bd85b32d3c723efe56bd457b1465af8f8586b109d4",
+  "cases": [
+    {
+      "width": 320,
+      "stages": [
+        "home",
+        "subscription",
+        "entry"
+      ],
+      "records_unchanged": true,
+      "expense_total": 16837,
+      "external_requests": 0,
+      "javascript_errors": 0,
+      "horizontal_overflow": 0
+    },
+    {
+      "width": 390,
+      "stages": [
+        "home",
+        "subscription",
+        "entry"
+      ],
+      "records_unchanged": true,
+      "expense_total": 16837,
+      "external_requests": 0,
+      "javascript_errors": 0,
+      "horizontal_overflow": 0
+    },
+    {
+      "width": 768,
+      "stages": [
+        "home",
+        "subscription",
+        "entry"
+      ],
+      "records_unchanged": true,
+      "expense_total": 16837,
+      "external_requests": 0,
+      "javascript_errors": 0,
+      "horizontal_overflow": 0
+    },
+    {
+      "width": 1280,
+      "stages": [
+        "home",
+        "subscription",
+        "entry"
+      ],
+      "records_unchanged": true,
+      "expense_total": 16837,
+      "external_requests": 0,
+      "javascript_errors": 0,
+      "horizontal_overflow": 0
+    },
+    {
+      "width": 1536,
+      "stages": [
+        "home",
+        "subscription",
+        "entry"
+      ],
+      "records_unchanged": true,
+      "expense_total": 16837,
+      "external_requests": 0,
+      "javascript_errors": 0,
+      "horizontal_overflow": 0
+    },
+    {
+      "width": 1920,
+      "stages": [
+        "home",
+        "subscription",
+        "entry"
+      ],
+      "records_unchanged": true,
+      "expense_total": 16837,
+      "external_requests": 0,
+      "javascript_errors": 0,
+      "horizontal_overflow": 0
+    }
+  ],
+  "native_device_acceptance": "pending"
+}

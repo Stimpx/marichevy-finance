@@ -1,0 +1,59 @@
+{
+  "project": {
+    "ref": "iqpoxphtvtogjowruufe",
+    "name": "marichevy-finance-staging",
+    "status": "ACTIVE_HEALTHY",
+    "region": "eu-west-1"
+  },
+  "inventory": {
+    "public_relations": 5,
+    "auth_users": 3,
+    "fixture_exists": true
+  },
+  "outcome": "passed",
+  "checks": [
+    "V2 anonymous/authenticated lack TRUNCATE and TRIGGER capabilities",
+    "V2 exact reviewed self-bound helper and execution grants verified",
+    "fixture-only password renewed 1",
+    "fixture-only password renewed 2",
+    "fixture-only password renewed 3",
+    "two actual UI logins authorized",
+    "both clients read existing synthetic history",
+    "actual clients resolve a real server revision conflict",
+    "both additions survive both reloads exactly once",
+    "offline pending survives reload without clearing storage",
+    "queued edit reaches both real clients after login",
+    "same-record conflict retains both variants and local queue after reload",
+    "real edit/delete conflict preserves unsent edit regardless of clocks",
+    "foreign account cannot unlock cached household UI"
+  ],
+  "fixture_version": 2,
+  "hardening_verified": true,
+  "hardening": {
+    "helper_normalized_source_md5": "efc565a997db06cd434bba971ba8ce4e",
+    "helper_sql_sha256": "34ee3b3fcae3e5e5b7c7672d17bda3d332d9dea04031e459a493d7ed058e7ea3"
+  },
+  "fixture_only": true,
+  "production_tested": false,
+  "browser": {
+    "checks": [
+      "two actual UI logins authorized",
+      "both clients read existing synthetic history",
+      "actual clients resolve a real server revision conflict",
+      "both additions survive both reloads exactly once",
+      "offline pending survives reload without clearing storage",
+      "queued edit reaches both real clients after login",
+      "same-record conflict retains both variants and local queue after reload",
+      "real edit/delete conflict preserves unsent edit regardless of clocks",
+      "foreign account cannot unlock cached household UI"
+    ],
+    "forwarded_real_https_requests": 40,
+    "real_cas_conflicts": 1,
+    "integration_requests_blocked": 0,
+    "native_browser_cors_tested": false,
+    "production_tested": false
+  },
+  "client_sha256": "de2828a889281b8ae730ba28646c8f12bdebed430d685bc27d046fbd1cbe41b8",
+  "network_path": "real verified HTTPS forwarded through Playwright route bridge; native CORS untested",
+  "observed_at": "2026-10-26T19:39:15.403366+00:00"
+}

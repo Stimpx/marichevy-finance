@@ -1,0 +1,63 @@
+{
+  "source_sha256": "9f3b79e5a25129c0e7ccad2b6ac835b05d2b6bb6e731649c9fdfdea85bfc3d40",
+  "demo_sha256": "ff811a3215d931e67d4d27a2bade08dc029f418ddf4bc36d84bef61f76476269",
+  "zip_sha256": "f454407e67783ac3ccba4d7bce221665b1192dfd24b4e6895766c9dc72183b6f",
+  "data": "fictional only",
+  "engine": "Chromium; not native Safari/iPhone acceptance",
+  "profiles": [
+    {
+      "width": 320,
+      "merchant_choices": 8,
+      "help_topics": 18,
+      "state_preserved": true,
+      "external_requests": 0,
+      "js_errors": 0,
+      "horizontal_overflow": false
+    },
+    {
+      "width": 390,
+      "merchant_choices": 8,
+      "help_topics": 18,
+      "state_preserved": true,
+      "external_requests": 0,
+      "js_errors": 0,
+      "horizontal_overflow": false
+    },
+    {
+      "width": 768,
+      "merchant_choices": 8,
+      "help_topics": 18,
+      "state_preserved": true,
+      "external_requests": 0,
+      "js_errors": 0,
+      "horizontal_overflow": false
+    },
+    {
+      "width": 1280,
+      "merchant_choices": 8,
+      "help_topics": 18,
+      "state_preserved": true,
+      "external_requests": 0,
+      "js_errors": 0,
+      "horizontal_overflow": false
+    },
+    {
+      "width": 1536,
+      "merchant_choices": 8,
+      "help_topics": 18,
+      "state_preserved": true,
+      "external_requests": 0,
+      "js_errors": 0,
+      "horizontal_overflow": false
+    },
+    {
+      "width": 1920,
+      "merchant_choices": 8,
+      "help_topics": 18,
+      "state_preserved": true,
+      "external_requests": 0,
+      "js_errors": 0,
+      "horizontal_overflow": false
+    }
+  ]
+}

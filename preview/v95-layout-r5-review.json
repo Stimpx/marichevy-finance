@@ -1,0 +1,24 @@
+{
+  "source_html_sha256": "7845e519a01578c38c5a20f24a85745395dc48047347998a039b3c2ed9d92f30",
+  "fictional_only": true,
+  "engine": "Chromium",
+  "native_device_claim": false,
+  "views": [
+    {
+      "width": 1440,
+      "height": 1000,
+      "paragraphWidth": 990.75,
+      "bodyContentWidth": 991,
+      "alignment": "justify",
+      "state_unchanged": true
+    },
+    {
+      "width": 390,
+      "height": 1000,
+      "paragraphWidth": 312,
+      "bodyContentWidth": 312,
+      "alignment": "start",
+      "state_unchanged": true
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "format": "marichevy-drill-help-layout-review-v1",
+  "status": "passed",
+  "source_html_sha256": "d44a3fc9c55875f4f0600b66ef2630755da732c63876a35d7723eb053604c77f",
+  "data": "fictional-only",
+  "browser": {
+    "engine": "Chromium",
+    "host_platform": "Linux",
+    "version": "154.0.8037.57"
+  },
+  "views": 119,
+  "profiles": 17,
+  "widths": [
+    320,
+    375,
+    390,
+    430,
+    768,
+    820,
+    844,
+    960,
+    1024,
+    1280,
+    1366,
+    1920
+  ],
+  "text_scale_approximations": [
+    1.25,
+    1.5,
+    2
+  ],
+  "document_overflow_count": 0,
+  "javascript_error_count": 0,
+  "unchanged_state_views": 119,
+  "drill_buttons_scrolled_and_reachable": 136,
+  "edit_cancel_return_profiles": [
+    {
+      "width": 1366,
+      "edit_cancel_returns_to_same_person_month_category": true,
+      "state_unchanged": true
+    },
+    {
+      "width": 390,
+      "edit_cancel_returns_to_same_person_month_category": true,
+      "state_unchanged": true
+    },
+    {
+      "width": 320,
+      "edit_cancel_returns_to_same_person_month_category": true,
+      "state_unchanged": true
+    }
+  ],
+  "examples": {
+    "desktop_row_heights_css_px": [
+      78.9,
+      77.9
+    ],
+    "desktop_button_top_difference_css_px": [
+      0.0,
+      0.0
+    ],
+    "desktop_help_max_own_font_ch": 78.0
+  },
+  "screenshots": [
+    {
+      "file": "v95-layout-r2-drill-desktop.png",
+      "sha256": "683b2adb7d70d8dc83f4c18beb15edde115919fce7e318405e68bc8381885732"
+    },
+    {
+      "file": "v95-layout-r2-drill-mobile.png",
+      "sha256": "d165fdc4eec719c76b0a5060c8a8182a516f472a8a84df9692f3a28f625d4466"
+    },
+    {
+      "file": "v95-layout-r2-help-desktop.png",
+      "sha256": "fec63fd6bcc43bf0faed61d7bcf5f32c7e76dd2bb456325c0b5f6239de711251"
+    },
+    {
+      "file": "v95-layout-r2-help-mobile.png",
+      "sha256": "067d3f4048cfa40407d135fcb90bbc085571cc42f44270a05d1e326173f08639"
+    },
+    {
+      "file": "v95-layout-r2-drill-text200.png",
+      "sha256": "de2825c09df4175b610400d020db6a5c900759d8ceb9b441458903261a92f238"
+    }
+  ],
+  "production_changed": false,
+  "native_gadgets_tested": false,
+  "limitations": [
+    "Chromium on Linux with viewport/touch emulation is not native Windows/Mac/iPhone/Safari acceptance.",
+    "Font enlargement is a CSS font-size stress approximation; 960px viewport is a desktop200percent reflow approximation, not browser/OS zoom automation.",
+    "No real bank data, authenticated backend, device queues or production synchronization were read or changed."
+  ]
+}
