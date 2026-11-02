@@ -12,7 +12,7 @@ import json
 from pathlib import Path
 import re
 from urllib.parse import quote
-from build_bundle import ICON, MERCHANT_PLACEHOLDER, detach_merchant_catalog, exact_sub, transform_demo
+from build_bundle import ICON, MERCHANT_PLACEHOLDER, detach_merchant_catalog, exact_sub, redact_current_loan, redact_document_plans, transform_demo
 from serve_staging import CONFIG_RE
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -53,6 +53,7 @@ def replace_function(html: str, name: str, replacement: str) -> str:
 
 def transform_public(source: str) -> str:
     html = remove_demo_wrappers(transform_demo(source))
+    html = redact_document_plans(html)
     html, merchant_catalog = detach_merchant_catalog(html)
     # The source embeds personal installation artwork as data URLs too.
     html = re.sub(r'<link\b[^>]*rel=["\x27](?:icon|apple-touch-icon)["\x27][^>]*>', '', html)
@@ -88,6 +89,7 @@ function currentProfile(){
     html = exact_sub(html, r'const FAMILY_WEDDING=\{[^\n]*\};', 'const FAMILY_WEDDING=null;', 'family wedding')
     html = html.replace(',{...FAMILY_WEDDING}];', ',...(FAMILY_WEDDING?[{...FAMILY_WEDDING}]:[])];')
     html = exact_sub(html, r'const BANK_LOAN_SCHEDULE=\[.*?\];', 'const BANK_LOAN_SCHEDULE=[];', 'loan schedule')
+    html = redact_current_loan(html, [], public=True)
     info = "{contractDate:'',principal:0,rate:0,scheduledPayment:0,averagePayment:0,psk:0,fullCost:0,totalPrincipal:0,totalInterest:0,creditPayments:0,appraisal:0,propertyInsurance:0,personalInsurance:0,endDate:''}"
     html = exact_sub(html, r'const BANK_LOAN_INFO=Object\.freeze\(\{.*?\}\);',
         'const BANK_LOAN_INFO=Object.freeze('+info+');', 'loan info')

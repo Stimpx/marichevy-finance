@@ -41,6 +41,55 @@ def detach_merchant_catalog(source: str) -> tuple[str, str]:
     return source.replace(block, MERCHANT_PLACEHOLDER), block
 
 
+CURRENT_LOAN_CONSTANTS = (
+    'BANK_LOAN_CURRENT_SCHEDULE', 'BANK_LOAN_CURRENT_CHARGES',
+    'BANK_LOAN_RECONCILIATION',
+)
+
+
+def redact_document_plans(source: str) -> str:
+    """Document-derived personal obligations never seed demo/public families."""
+    declared = set(re.findall(r'\bconst\s+(FAMILY_DOCUMENT_\w+)\s*=', source))
+    if declared - {'FAMILY_DOCUMENT_PLANS'}:
+        raise ValueError('Unknown document plan block; review redaction before shipping')
+    if 'FAMILY_DOCUMENT_PLANS' not in source:
+        return source
+    if len(re.findall(r'\bconst\s+FAMILY_DOCUMENT_PLANS\s*=', source)) != 1:
+        raise ValueError('Incomplete document plans; review redaction before shipping')
+    return exact_sub(source, r'const FAMILY_DOCUMENT_PLANS=\[.*?\];',
+        'const FAMILY_DOCUMENT_PLANS=[];', 'document-derived personal plans')
+
+
+def redact_current_loan(source: str, rows: list, *, public: bool = False) -> str:
+    """Redact every additional personal mortgage source as one reviewed unit.
+
+    Older clients do not contain these blocks. Once any new block/reference is
+    present, a partial or renamed source must stop the build, not copy a bank
+    checkpoint into a supposedly fictional or unconfigured application.
+    """
+    known = {'BANK_LOAN_SCHEDULE', 'BANK_LOAN_INFO', *CURRENT_LOAN_CONSTANTS}
+    declared = set(re.findall(r'\bconst\s+(BANK_LOAN_\w+)\s*=', source))
+    if declared - known:
+        raise ValueError('Unknown bank data block; review redaction before shipping')
+    if not any(name in source for name in CURRENT_LOAN_CONSTANTS):
+        return source
+    for name in CURRENT_LOAN_CONSTANTS:
+        if len(re.findall(r'\bconst\s+'+name+r'\s*=', source)) != 1:
+            raise ValueError('Incomplete current bank data; review redaction before shipping')
+    source = exact_sub(source, r'const BANK_LOAN_CURRENT_SCHEDULE=\[.*?\];',
+        'const BANK_LOAN_CURRENT_SCHEDULE='+json.dumps(rows)+';', 'current loan schedule')
+    source = exact_sub(source, r'const BANK_LOAN_CURRENT_CHARGES=\[.*?\];',
+        'const BANK_LOAN_CURRENT_CHARGES=[];', 'current loan charges')
+    source = exact_sub(source, r'const BANK_LOAN_RECONCILIATION=Object\.freeze\(\{.*?\}\);',
+        'const BANK_LOAN_RECONCILIATION=Object.freeze({});', 'current loan checkpoint')
+    version = 'unconfigured' if public else 'fictional-demo'
+    replacement = """function v125BankScheduleData(){
+ return BANK_LOAN_CURRENT_SCHEDULE.map(r=>({n:r[0],payDate:r[1].split('.').reverse().join('-'),periodEnd:r[1].split('.').reverse().join('-'),payment:Number(r[4]),interest:Number(r[3]),body:Number(r[2]),balance:Number(r[5]),bankVersion:'"""+version+"""'}));
+}"""
+    return exact_sub(source, r'function v125BankScheduleData\(\)\{.*?\n\}',
+        replacement, 'current loan data reader')
+
+
 def transform_demo(source: str) -> str:
     """Pure fail-closed transformation of known configuration/data blocks."""
     source, merchant_catalog = detach_merchant_catalog(source)
@@ -49,11 +98,13 @@ def transform_demo(source: str) -> str:
         raise ValueError('Expected exactly one CONFIG block')
     original_values = re.findall(r"(?:url|key|household):'([^']*)'", config.group())
     html = CONFIG_RE.sub("const CONFIG=Object.freeze({url:'',key:'',household:'offline-demo'});", source)
+    html = redact_document_plans(html)
     html = exact_sub(html, r'const TELEGRAM_CHAT_IDS=Object\.freeze\(\{[^\n]*\}\);', 'const TELEGRAM_CHAT_IDS=Object.freeze({sergey:"",victoria:""});', 'Telegram IDs')
     births = "const FAMILY_BIRTHS=[{name:'Алексей',date:'1990-04-12',time:'',group:'Семья',note:''},{name:'Елена',date:'1992-07-21',time:'',group:'Семья',note:''},{name:'София',date:'2015-03-16',time:'',group:'Семья',note:''},{name:'Илья',date:'2020-08-09',time:'',group:'Семья',note:''}];"
     html = exact_sub(html, r'const FAMILY_BIRTHS=\[.*?\];', births, 'family dates')
     html = exact_sub(html, r'const FAMILY_WEDDING=\{[^\n]*\};', "const FAMILY_WEDDING={id:'family-wedding',name:'Годовщина свадьбы',date:'2012-06-15',group:'Семья',kind:'wedding',family:true,note:''};", 'wedding')
     rows = [[i, f'15.{i:02d}.2027', 10000, 1000, 11000, 120000-i*10000] for i in range(1,13)]
+    html = redact_current_loan(html, rows)
     html = exact_sub(html, r'const BANK_LOAN_SCHEDULE=\[.*?\];', 'const BANK_LOAN_SCHEDULE='+json.dumps(rows)+';', 'loan schedule')
     info = dict(contractDate='15.12.2026',principal=120000,rate=.1,scheduledPayment=11000,averagePayment=11000,psk=10,fullCost=132000,totalPrincipal=120000,totalInterest=12000,creditPayments=132000,appraisal=0,propertyInsurance=0,personalInsurance=0,endDate='15.12.2027')
     html = exact_sub(html, r'const BANK_LOAN_INFO=Object\.freeze\(\{.*?\}\);', 'const BANK_LOAN_INFO=Object.freeze('+json.dumps(info)+');', 'loan info')
@@ -74,7 +125,7 @@ def transform_demo(source: str) -> str:
     region = exact_sub(region, r'<div class="credit-note" id="loanRateNote">[^<]*</div>',
         '<div class="credit-note" id="loanRateNote">Учебный график: 12 платежей по 11 000 ₽ с 15 января по 15 декабря 2027 года. Основной долг — 120 000 ₽, проценты — 12 000 ₽. Дополнительные расходы в примере не предусмотрены.</div>',
         'fictional loan note')
-    region = exact_sub(region, r'<div class="hint">Вместо [^<]*</div>',
+    region = exact_sub(region, r'<(?:div|p) class="hint">(?:Вместо [^<]*|Каждая учтённая оплата[^<]*)</(?:div|p)>',
         '<div class="hint">Учебный график с ежемесячными платежами.</div>',
         'fictional loan chart hint')
     region = exact_sub(region, r'<h2>График платежей</h2><div class="hint">[^<]*</div>',

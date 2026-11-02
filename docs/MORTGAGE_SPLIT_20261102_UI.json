@@ -1,0 +1,241 @@
+{
+  "format": "mortgage-split-ui-review-v1",
+  "final_candidate": {
+    "bytes": 3315822,
+    "sha256": "7bb873d59e089e17a7b598f82eaf7a5271d1a5cabf1f2d1240c14a8133079ba1",
+    "base": "ba485961acd65cc01c2053bf752577e43e2a6225",
+    "configuration_preserved": true,
+    "embedded_images_preserved": 155,
+    "original_bank_schedule_preserved": true,
+    "personal_identity_details_excluded": true,
+    "inline_js_blocks": 4,
+    "final_css_only": true,
+    "all_javascript_identical_to_tested_133_case_candidate": true,
+    "tested_133_case_sha256": "4e277e56628a66bd64119adfb13816c95d6582d15b6de5c620cc0c2fbefc7f94"
+  },
+  "mortgage_and_scenario": {
+    "source_sha256": "275e446c793821cc29f92b30466bb6850a6e79c03cc530ef53398a1c1350d5a5",
+    "inline_scripts_identical": true,
+    "profile_count": 4,
+    "issues": [],
+    "page_errors": [],
+    "initial": {
+      "balance": 4458197.19,
+      "advice": 85885,
+      "next": "2026-11-30",
+      "earlyBase": "85 885,00 ₽"
+    },
+    "calculation": {
+      "visible": true,
+      "text": "Ваши досрочные платежи10 000,00 ₽применено в тело · не использовано 0,00 ₽Экономия процентов187 924,68 ₽ориентир по моделиБыло31.10.2040банковский графикСтанет31.07.2040примерно −3 платежей"
+    },
+    "issues_resolved_by_split_card_followup": true
+  },
+  "split_card": {
+    "source_sha256": "afb438cbe80956d0796b1dc739acde88c2f821b0ae9f2659ac0b55dacf916c93",
+    "passed": true,
+    "viewport": 1280,
+    "document_width": 1280,
+    "container_width": 501.28125,
+    "card_width": 501.28125,
+    "text_clipping": false
+  },
+  "split_summary_final": {
+    "sha256": "7bb873d59e089e17a7b598f82eaf7a5271d1a5cabf1f2d1240c14a8133079ba1",
+    "passed": true,
+    "profiles": [
+      {
+        "width": 1280,
+        "zoom": 2,
+        "viewport": 1280,
+        "document": 1280,
+        "labels": [
+          {
+            "text": "Осталось по покупкам частями",
+            "c": 219,
+            "s": 219
+          },
+          {
+            "text": "32 255,00 ₽",
+            "c": 219,
+            "s": 219
+          },
+          {
+            "text": "Оплачено по отмеченным частям",
+            "c": 219,
+            "s": 219
+          },
+          {
+            "text": "0,00 ₽",
+            "c": 219,
+            "s": 219
+          },
+          {
+            "text": "Ближайший платёж",
+            "c": 219,
+            "s": 219
+          },
+          {
+            "text": "10 нояб. 2026 г.",
+            "c": 219,
+            "s": 219
+          },
+          {
+            "text": "Просроченных частей",
+            "c": 219,
+            "s": 219
+          },
+          {
+            "text": "0",
+            "c": 219,
+            "s": 219
+          }
+        ]
+      },
+      {
+        "width": 393,
+        "zoom": 1,
+        "viewport": 393,
+        "document": 393,
+        "labels": [
+          {
+            "text": "Осталось по покупкам частями",
+            "c": 141,
+            "s": 141
+          },
+          {
+            "text": "32 255,00 ₽",
+            "c": 141,
+            "s": 141
+          },
+          {
+            "text": "Оплачено по отмеченным частям",
+            "c": 141,
+            "s": 141
+          },
+          {
+            "text": "0,00 ₽",
+            "c": 141,
+            "s": 141
+          },
+          {
+            "text": "Ближайший платёж",
+            "c": 141,
+            "s": 141
+          },
+          {
+            "text": "10 нояб. 2026 г.",
+            "c": 141,
+            "s": 141
+          },
+          {
+            "text": "Просроченных частей",
+            "c": 141,
+            "s": 141
+          },
+          {
+            "text": "0",
+            "c": 141,
+            "s": 141
+          }
+        ]
+      },
+      {
+        "width": 320,
+        "zoom": 1,
+        "viewport": 320,
+        "document": 320,
+        "labels": [
+          {
+            "text": "Осталось по покупкам частями",
+            "c": 242,
+            "s": 242
+          },
+          {
+            "text": "32 255,00 ₽",
+            "c": 242,
+            "s": 242
+          },
+          {
+            "text": "Оплачено по отмеченным частям",
+            "c": 242,
+            "s": 242
+          },
+          {
+            "text": "0,00 ₽",
+            "c": 242,
+            "s": 242
+          },
+          {
+            "text": "Ближайший платёж",
+            "c": 242,
+            "s": 242
+          },
+          {
+            "text": "10 нояб. 2026 г.",
+            "c": 242,
+            "s": 242
+          },
+          {
+            "text": "Просроченных частей",
+            "c": 242,
+            "s": 242
+          },
+          {
+            "text": "0",
+            "c": 242,
+            "s": 242
+          }
+        ]
+      },
+      {
+        "width": 1920,
+        "zoom": 1,
+        "viewport": 1920,
+        "document": 1920,
+        "labels": [
+          {
+            "text": "Осталось по покупкам частями",
+            "c": 338,
+            "s": 338
+          },
+          {
+            "text": "32 255,00 ₽",
+            "c": 338,
+            "s": 338
+          },
+          {
+            "text": "Оплачено по отмеченным частям",
+            "c": 338,
+            "s": 338
+          },
+          {
+            "text": "0,00 ₽",
+            "c": 338,
+            "s": 338
+          },
+          {
+            "text": "Ближайший платёж",
+            "c": 338,
+            "s": 338
+          },
+          {
+            "text": "10 нояб. 2026 г.",
+            "c": 338,
+            "s": 338
+          },
+          {
+            "text": "Просроченных частей",
+            "c": 338,
+            "s": 338
+          },
+          {
+            "text": "0",
+            "c": 338,
+            "s": 338
+          }
+        ]
+      }
+    ]
+  }
+}

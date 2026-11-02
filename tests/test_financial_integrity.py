@@ -29,6 +29,10 @@ class FinancialIntegrity(unittest.TestCase):
                 loanScheduleData=()=>[];state.settings.preferences.payday=0;"""+code
         return self.page.evaluate('''async () => {
             session=null;state=blankState();localStorage.clear();
+            // These historical contract regressions pin the original bank version;
+            // the revised-bank/daily-interest suites verify the new statement.
+            if(typeof v125BankScheduleData==='function')v125BankScheduleData=()=>BANK_LOAN_SCHEDULE.map(r=>({n:r[0],payDate:r[1].split('.').reverse().join('-'),periodEnd:r[1].split('.').reverse().join('-'),payment:r[4],interest:r[3],body:r[2],balance:r[5]}));
+
             // Mutating payment handlers require the real unlocked application.
             // The fixture remains unauthenticated and all external I/O is blocked.
             showApp();

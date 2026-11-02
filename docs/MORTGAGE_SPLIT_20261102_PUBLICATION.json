@@ -1,0 +1,59 @@
+{
+  "format": "mortgage-split-production-publication-v1",
+  "previous_main": "ba485961acd65cc01c2053bf752577e43e2a6225",
+  "main": "8cebdf50ec436d93288d356e30e0cac07ec4bfc0",
+  "primary_pr": 25,
+  "primary_head": "4a83b7361b6e40bd997ec7cd44aaf1f908a85388",
+  "primary_merge": "537c1e439f219641fde442bc791ace895fd806e5",
+  "layout_followup_pr": 26,
+  "layout_head": "d00541c0ea1e13581e7443757d42a605ecd80a78",
+  "changed_files": [
+    "index.html"
+  ],
+  "html_bytes": 3315822,
+  "html_sha256": "7bb873d59e089e17a7b598f82eaf7a5271d1a5cabf1f2d1240c14a8133079ba1",
+  "canonical": {
+    "url": "https://finance.marichev.pro/",
+    "http_status": 200,
+    "bytes": 3315822,
+    "sha256": "7bb873d59e089e17a7b598f82eaf7a5271d1a5cabf1f2d1240c14a8133079ba1",
+    "verified_at_utc": "2026-11-02T12:46:51.518640+00:00",
+    "main": "8cebdf50ec436d93288d356e30e0cac07ec4bfc0",
+    "tls_verified": true,
+    "main_index_matches_candidate": true,
+    "changed_files_from_base": [
+      "index.html"
+    ]
+  },
+  "pages": {
+    "workflow_id": 371287144,
+    "run_id": 41447202357,
+    "url": "https://github.com/Stimpx/marichevy-finance/actions/runs/41447202357",
+    "status": "completed",
+    "conclusion": "success",
+    "head_sha": "8cebdf50ec436d93288d356e30e0cac07ec4bfc0"
+  },
+  "validation": {
+    "pinned_cases_passed": 133,
+    "pinned_tested_sha256": "4e277e56628a66bd64119adfb13816c95d6582d15b6de5c620cc0c2fbefc7f94",
+    "all_four_scripts_identical_after_final_css": true,
+    "additional_bundle_cases_passed": 7,
+    "additional_money_and_save_cases_passed": 19,
+    "final_summary_geometry_profiles": 4,
+    "config_unchanged": true,
+    "embedded_images_unchanged": 155
+  },
+  "data_operations": {
+    "administrative_sql_executed": false,
+    "production_financial_json_read": false,
+    "expenses_created_by_document_loading": false,
+    "split_saved_by": "Authenticated client after successful full cloud reconciliation, via existing CAS; actual owner-device ACK not observed in this session"
+  },
+  "not_deployed": [
+    "public account gateway",
+    "public backend migrations",
+    "new tariffs",
+    "uploaded PDF/XLSX files"
+  ],
+  "supabase_preview": "skipped; not a functional test"
+}

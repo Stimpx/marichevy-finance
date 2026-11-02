@@ -22,7 +22,10 @@ class ExpenseScopeConsistency(unittest.TestCase):
     def prepare(self):
         self.open()
         self.page.evaluate("""() => {
-            session=null;state=blankState();localStorage.clear();showApp();
+            session=null;state=blankState();localStorage.clear();
+            // Scope tests exercise legacy recognition separately from the new bank checkpoint.
+            if(typeof v125BankScheduleData==='function')v125BankScheduleData=()=>[];
+            showApp();
             window.__scopeEntry=(id,amount,category,fields={})=>({id,type:'expense',
                 date:today(),amount,category,who:'Сергей',beneficiary:'Общее',
                 store:'Fictional shop',comment:'Fictional transaction',...fields});
