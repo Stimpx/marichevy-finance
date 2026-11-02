@@ -4169,8 +4169,14 @@ function savePendingLocal(){
   localStorage.setItem(KEYS.pending,JSON.stringify(state));return true;
  }catch{v89StorageFailed=true;updateSync('Не удалось сохранить очередь изменений — скачайте JSON');return false}
 }
-function money(n){const value=Number(n)||0;return new Intl.NumberFormat('ru-RU',{minimumFractionDigits:Number.isInteger(value)?0:2,maximumFractionDigits:2}).format(value)+' ₽'}
-function today(){const p=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Moscow',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());const y=p.find(x=>x.type==='year').value,m=p.find(x=>x.type==='month').value,d=p.find(x=>x.type==='day').value;return `${y}-${m}-${d}`}
+// Formatters are immutable; financial state is always calculated from live records.
+var v129MoneyFormats,v129TodayCache,v129DayLabel;
+function v129MoneyFormat(digits){const cache=v129MoneyFormats||(v129MoneyFormats={});return cache[digits]||(cache[digits]=new Intl.NumberFormat('ru-RU',{minimumFractionDigits:digits,maximumFractionDigits:2}))}
+function money(n){const value=Number(n)||0;return v129MoneyFormat(Number.isInteger(value)?0:2).format(value)+' ₽'}
+function today(){
+ const now=new Date(),slot=Math.floor(now.getTime()/1000),cache=v129TodayCache||(v129TodayCache={formatter:new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Moscow',year:'numeric',month:'2-digit',day:'2-digit'})});
+ if(cache.slot!==slot){const p=cache.formatter.formatToParts(now);cache.value=p.find(x=>x.type==='year').value+'-'+p.find(x=>x.type==='month').value+'-'+p.find(x=>x.type==='day').value;cache.slot=slot}return cache.value;
+}
 function month(){return today().slice(0,7)}
 function homeMonth(){const v=document.getElementById('homeMonth')?.value;return /^\d{4}-\d{2}$/.test(v||'')?v:month()}
 function esc(x){return String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
@@ -6096,9 +6102,9 @@ function v78BankExpense(e){
 }
 function v78Obligations(m){
  const valid=/^\d{4}-\d{2}$/.test(m)?m:month();
- const loanRows=loanScheduleData().filter(r=>r.payDate.slice(0,7)===valid);
+ const loanRows=loanScheduleData().filter(r=>r.payDate.slice(0,7)===valid),todayKey=today();
  const mortgagePlanned=Math.round(loanRows.reduce((n,r)=>n+v77Cents(r.payment),0))/100;
- const mortgageActual=(state.entries||[]).filter(e=>e.date<=today()&&v125ScheduledMonth(e)===valid).reduce((n,e)=>n+v77Cents(v125ScheduledCash(e)),0)/100;
+ const mortgageActual=(state.entries||[]).filter(e=>e.date<=todayKey&&v125ScheduledMonth(e)===valid).reduce((n,e)=>n+v77Cents(v125ScheduledCash(e)),0)/100;
  const mortgagePaid=loanRows.reduce((n,row)=>n+v77Cents(v125ScheduledExpenseAllocated(row.payDate,loanRows)),0)/100;
  const mortgageSettled=loanRows.reduce((n,row)=>n+v77Cents(v125ScheduledAllocated(row.payDate,loanRows)),0)/100,bankConfirmed=Math.max(0,v77Cents(mortgageSettled)-v77Cents(mortgagePaid))/100;
  const groups=(state.installments||[]).map(i=>{
@@ -6117,7 +6123,7 @@ function v78ObligationRows(o){
  const items=[];
  for(const r of o.loanRows){
   const allocated=v125ScheduledAllocated(r.payDate,o.loanRows),expenseAllocated=v125ScheduledExpenseAllocated(r.payDate,o.loanRows),bankAllocated=Math.max(0,v77Cents(allocated)-v77Cents(expenseAllocated))/100;
-  const fullyPaid=allocated>=r.payment-.001,expenseDates=[...new Set((state.entries||[]).filter(e=>e.date<=today()&&v125MortgageRecord(e)?.kind==='regular'&&v125MortgageRecord(e).dueDate===r.payDate).map(e=>e.date))].sort();
+  const fullyPaid=allocated>=r.payment-.001,expenseDates=[...new Set((state.entries||[]).filter(e=>e.date<=todayKey&&v125MortgageRecord(e)?.kind==='regular'&&v125MortgageRecord(e).dueDate===r.payDate).map(e=>e.date))].sort();
   items.push({kind:'mortgage',date:r.payDate,title:'Ипотека · УралСиб',subtitle:v77DateLabel(r.payDate)+' · по графику банка'+(bankAllocated>0?' · '+(expenseAllocated>0?'Расход в истории учтён частично':'Нет привязки к расходу в истории'):'')+(expenseDates.length?' · Расход в истории: '+expenseDates.map(v77DateLabel).join(', '):''),amount:r.payment,allocated,expenseAllocated,bankAllocated,partial:allocated>.001&&!fullyPaid,paid:fullyPaid,late:r.payDate<todayKey&&!fullyPaid});
  }
  for(const group of o.groups)for(const p of group.parts){
@@ -6933,7 +6939,7 @@ function v125BankScheduleData(){
  return BANK_LOAN_CURRENT_SCHEDULE.map((r,i)=>{const monthIndex=2026*12+9+i,year=Math.floor(monthIndex/12),month=monthIndex%12+1,periodEnd=new Date(Date.UTC(year,month,0,12)).toISOString().slice(0,10);return {n:r[0],payDate:r[1].split('.').reverse().join('-'),periodEnd,payment:Number(r[4]),interest:Number(r[3]),body:Number(r[2]),balance:Number(r[5]),bankVersion:'2026-11-02'}});
 }
 
-function money2(n){return new Intl.NumberFormat('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2}).format(Number(n)||0)+' ₽'}
+function money2(n){return v129MoneyFormat(2).format(Number(n)||0)+' ₽'}
 let loanRange='all';
 function setLoanRange(range){loanRange=range;renderLoanCharts(loanScheduleData())}
 
@@ -7219,27 +7225,28 @@ function v125MortgageRecord(e){
  if(['principal','interest','charges','extraPrincipal'].some(k=>!v125Money(r[k]))||v125Cents(r.principal)+v125Cents(r.interest)+v125Cents(r.charges)!==v125Cents(e.amount)||r.extraPrincipal>r.principal)return null;
  if(r.kind==='early'&&r.extraPrincipal!==r.principal)return null;
  if(e.date<String(BANK_LOAN_INFO.contractDate||'').split('.').reverse().join('-'))return null;
- if(r.kind==='regular'&&(!isValidCalendarDate(r.dueDate)||![...v125BankScheduleData(),...v125MortgageCharges()].some(x=>x.payDate===r.dueDate)))return null;
+ if(r.kind==='regular'){if(!isValidCalendarDate(r.dueDate))return null;const bankDate=r.dueDate.split('-').reverse().join('.');if(!BANK_LOAN_CURRENT_SCHEDULE.some(x=>x[1]===bankDate)&&!BANK_LOAN_CURRENT_CHARGES.some(x=>x.payDate===r.dueDate))return null;}
  return r;
 }
-function v125BuiltinMortgageSnapshot(){return v125BankScheduleData()[0]?.bankVersion==='2026-11-02'?BANK_LOAN_RECONCILIATION:null}
+// This source is the fixed bank-file-2026-11-02 table; checking it must not rebuild the full schedule.
+function v125BuiltinMortgageSnapshot(){return BANK_LOAN_CURRENT_SCHEDULE.length?BANK_LOAN_RECONCILIATION:null}
 function v125SnapshotKey(s){return s?JSON.stringify([s.date,s.balance,s.endDate,s.updated_at||s.source||'']):''}
 function v125MortgageSnapshot(){
  const s=state.settings?.loans?.mortgageSnapshot||v125BuiltinMortgageSnapshot(),contract=String(BANK_LOAN_INFO.contractDate||'').split('.').reverse().join('-');
  return s?.version===1&&isValidCalendarDate(s.date)&&s.date>=contract&&s.date<=today()&&v125Money(s.balance)&&isValidCalendarDate(s.endDate)&&s.endDate>=s.date?s:null;
 }
 
-function v125MortgageRecords(){return (state.entries||[]).map(e=>({entry:e,record:v125MortgageRecord(e)})).filter(x=>x.record&&x.entry.date<=today()).sort((a,b)=>a.entry.date.localeCompare(b.entry.date)||(a.record.kind==='early')-(b.record.kind==='early')||a.entry.id.localeCompare(b.entry.id))}
+function v125MortgageRecords(){const todayKey=today();return (state.entries||[]).map(e=>({entry:e,record:v125MortgageRecord(e)})).filter(x=>x.record&&x.entry.date<=todayKey).sort((a,b)=>a.entry.date.localeCompare(b.entry.date)||(a.record.kind==='early')-(b.record.kind==='early')||a.entry.id.localeCompare(b.entry.id))}
 function v125ScheduledCash(e){const r=v125MortgageRecord(e);if(e?.mortgageAllocation&&!r)return 0;return r?(r.kind==='early'?0:Math.max(0,e.amount-r.extraPrincipal)):(!v125BuiltinMortgageSnapshot()&&v78BankExpense(e)?Number(e.amount):0)}
 function v125ScheduledMonth(e){const r=v125MortgageRecord(e);return String(r?.dueDate||e.date||'').slice(0,7)}
 function v125ScheduledAllocated(date,rows){
  const checkpoint=v125MortgageSnapshot(),covered=checkpoint&&date<=checkpoint.date?rows.find(r=>r.payDate===date):null;return covered?covered.payment:v125ScheduledExpenseAllocated(date,rows);
 }
 function v125ScheduledExpenseAllocated(date,rows){
- const checkpoint=v125MortgageSnapshot();
- const explicit=(state.entries||[]).filter(e=>{const r=v125MortgageRecord(e);return e.date<=today()&&r?.kind==='regular'&&r.dueDate===date}).reduce((n,e)=>n+v125Cents(v125ScheduledCash(e)),0);
- const legacy=(state.entries||[]).filter(e=>e.date<=today()&&!e.mortgageAllocation&&!v125BuiltinMortgageSnapshot()&&v78BankExpense(e)&&(!checkpoint||e.date>checkpoint.date)&&String(e.date||'').slice(0,7)===date.slice(0,7)).reduce((n,e)=>n+v125Cents(e.amount),0);
- const prior=rows.filter(r=>r.payDate<date&&r.payDate.slice(0,7)===date.slice(0,7)).reduce((n,r)=>{const linked=(state.entries||[]).filter(e=>e.date<=today()&&v125MortgageRecord(e)?.dueDate===r.payDate).reduce((s,e)=>s+v125Cents(v125ScheduledCash(e)),0);return n+Math.max(0,v125Cents(r.payment)-linked)},0);
+ const checkpoint=v125MortgageSnapshot(),todayKey=today(),builtin=v125BuiltinMortgageSnapshot();
+ const explicit=(state.entries||[]).filter(e=>{const r=v125MortgageRecord(e);return e.date<=todayKey&&r?.kind==='regular'&&r.dueDate===date}).reduce((n,e)=>n+v125Cents(v125ScheduledCash(e)),0);
+ const legacy=builtin?0:(state.entries||[]).filter(e=>e.date<=todayKey&&!e.mortgageAllocation&&v78BankExpense(e)&&(!checkpoint||e.date>checkpoint.date)&&String(e.date||'').slice(0,7)===date.slice(0,7)).reduce((n,e)=>n+v125Cents(e.amount),0);
+ const prior=legacy>0?rows.filter(r=>r.payDate<date&&r.payDate.slice(0,7)===date.slice(0,7)).reduce((n,r)=>{const linked=(state.entries||[]).filter(e=>e.date<=todayKey&&v125MortgageRecord(e)?.dueDate===r.payDate).reduce((s,e)=>s+v125Cents(v125ScheduledCash(e)),0);return n+Math.max(0,v125Cents(r.payment)-linked)},0):0;
  const row=rows.find(r=>r.payDate===date);return Math.min(row?.payment||0,(explicit+Math.max(0,legacy-prior))/100);
 }
 function v125MortgageCharges(){return v125BuiltinMortgageSnapshot()?BANK_LOAN_CURRENT_CHARGES.map(r=>({...r,n:'—',periodEnd:r.payDate,body:0,interest:0,charges:r.payment,balance:null,kind:'insurance',bankVersion:'2026-11-02'})):[]}
@@ -7410,7 +7417,7 @@ function installmentPaid(i,part){return v77Cents(installmentAllocated(i,part))>=
 function installmentUpcoming(){
  return (state.installments||[]).flatMap(i=>(i.parts||[]).filter(p=>!installmentPaid(i,p)).map(p=>({id:i.id,partId:p.id,name:i.title||V77_KINDS[i.kind]||'Рассрочка',date:p.date,amount:Math.max(0,(Number(p.amount)||0)-installmentAllocated(i,p))}))).sort((a,b)=>a.date.localeCompare(b.date));
 }
-function v77DateLabel(date){return /^\d{4}-\d{2}-\d{2}$/.test(date)?new Date(date+'T12:00:00').toLocaleDateString('ru-RU',{day:'numeric',month:'short',year:'numeric'}):'—'}
+function v77DateLabel(date){if(!/^\d{4}-\d{2}-\d{2}$/.test(date))return '—';const value=new Date(date+'T12:00:00');if(!Number.isFinite(value.getTime()))return '—';return (v129DayLabel||(v129DayLabel=new Intl.DateTimeFormat('ru-RU',{day:'numeric',month:'short',year:'numeric'}))).format(value)}
 function v77Form(show){const e=document.getElementById('v77InstallmentForm');if(e){e.hidden=!show;if(show){document.getElementById('v77FirstDate').value||=today();e.scrollIntoView({behavior:'smooth',block:'nearest'})}}}
 function v77KindChanged(){const kind=document.getElementById('v77Kind').value;document.getElementById('v77Provider').value=(kind==='split'?'Яндекс Сплит':'');document.getElementById('v77Period').value=kind==='split'?'fortnight':'monthly';document.getElementById('v77PartCount').value=kind==='split'?'4':'6'}
 function v77CreateInstallment(){
