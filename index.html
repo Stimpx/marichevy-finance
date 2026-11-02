@@ -19,6 +19,58 @@
 
 #history .v76-action-group{flex-wrap:wrap}#history .v76-actions{white-space:normal}#v97FavoriteEditor[hidden]{display:none!important}#v97FavoriteEditor{padding:14px;background:#f3f6fa;border:1px solid var(--line);border-radius:14px;margin-bottom:12px}#v97FavoriteEditor h4{margin:0 0 10px;font-size:15px}#v97FavoriteEditor label{display:block;margin:0 0 6px;font-size:12px}#v97FavoriteEditor .actions{margin-top:10px}#v97FavoriteEditorStatus{font-size:12px;line-height:1.5;margin:7px 0 0}
 
+/* v125 · Mortgage progress */
+.v125-actions{display:flex;flex-wrap:wrap;gap:10px}.v125-mortgage .section-head{align-items:flex-start;gap:18px;flex-wrap:wrap}.v125-mortgage .section-head>div:first-child{flex:1 1 300px}.v125-status,.v125-preview{padding:14px 16px;background:#f3f6fc;border-radius:14px;color:#405575;line-height:1.6}.v125-form{padding:20px;margin:18px 0;border:1px solid var(--line);border-radius:18px}.v125-form[hidden]{display:none}.v125-form h3{margin:0 0 10px}.v125-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:16px 0}.v125-form-grid label,.v125-point-label{display:flex;flex-direction:column;gap:8px;min-width:0;font-size:13px;color:#405575}.v125-wide{grid-column:1/-1}.v125-form-grid input,.v125-form-grid select,.v125-point-label select{width:100%;min-width:0;min-height:46px}.v125-form-grid input:not([type=checkbox]){border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:#fbfcff;color:var(--ink)}.v125-check[hidden]{display:none}.v125-form-grid [hidden]{display:none}.v125-check{display:flex;gap:10px;align-items:flex-start;margin:16px 0;line-height:1.5;font-size:14px}.v125-check input{width:18px;min-width:18px;height:18px;min-height:18px;margin-top:2px}.v125-empty{padding:18px 0;color:#687b97;line-height:1.7}.v125-mortgage table small{color:#687b97}.v125-mortgage table .btn{margin:3px}.v125-chart-card{min-width:0}.v125-chart-card .loan-svg-wrap{height:auto;overflow:hidden}.v125-chart-card #loanDebtSvg{display:block;width:100%;height:auto;min-height:230px;overflow:visible}.v125-chart-card circle[role=button]{cursor:pointer;outline:none}.v125-chart-card circle:focus-visible{stroke:#182c55;stroke-width:4}.v125-legend{display:flex;flex-wrap:wrap;gap:10px 18px;font-size:12px;color:#60728d;margin:12px 0}.v125-legend span{display:flex;gap:7px;align-items:center}.v125-legend i{display:inline-block;width:22px;border-top:3px solid #169d81}.v125-legend .forecast{border-top:3px dashed #6886e7}.v125-legend .original{border-color:#b7c2d8}.v125-point-label{margin-top:16px}.v125-point-output{min-height:3em;margin:12px 0 0;line-height:1.6;color:#405575;font-size:13px}.v125-mortgage-grid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:24px}.v125-mortgage-grid>.card{min-width:0}
+@media(max-width:1000px){.v125-mortgage-grid{grid-template-columns:1fr}}
+@media(max-width:600px){.v125-form{padding:16px 12px}.v125-form-grid{grid-template-columns:1fr}.v125-wide{grid-column:auto}.v125-actions{width:100%}.v125-actions>.btn{flex:1 1 160px}.v125-chart-card #loanDebtSvg{min-height:210px}.v125-chart-card .loan-chart-toolbar{gap:12px}.v125-mortgage-grid{gap:16px}}
+/* Compact mortgage scenario actions; appended after the legacy cascade. */
+.early-card .early-plan-actions{
+  display:flex!important;flex-wrap:wrap;align-items:center!important;
+  justify-content:flex-start;gap:12px!important;
+}
+.early-card .early-plan-actions>.btn{
+  flex:0 1 auto;min-width:0;min-height:50px!important;height:auto!important;align-self:center;
+  width:auto;max-width:100%;white-space:normal;
+}
+.early-card .early-plan-actions>.early-strategy{
+  display:flex!important;flex:0 1 400px;flex-flow:row nowrap;
+  align-items:center!important;align-self:center;justify-self:auto!important;
+  width:auto!important;min-width:0!important;max-width:400px;
+  margin:0!important;gap:10px;
+}
+.early-card .early-strategy>span:not(.v107-select){
+  flex:0 1 155px;min-width:0;font-size:12px;line-height:1.4;
+  white-space:normal;
+}
+.early-card .early-strategy>.v107-select{
+  --v107-select-height:50px!important;flex:1 1 215px;
+  width:215px;min-width:0;max-width:100%;align-self:center;
+}
+.early-card .early-strategy>.v107-select>.v107-select-trigger{
+  min-height:50px;padding:12px 14px;font-size:14px;
+}
+.early-card .early-strategy>select:not(.v107-native-select){
+  flex:1 1 215px;width:215px;min-width:0;max-width:100%;min-height:50px;
+}
+@media(max-width:1100px){
+  .early-card .early-plan-actions>.early-strategy{
+    flex-basis:100%;max-width:400px;
+  }
+}
+@media(max-width:600px){
+  .early-card .early-plan-actions>.btn{flex:1 1 100%;width:100%}
+  .early-card .early-plan-actions>.early-strategy{
+    flex:1 1 100%;max-width:none;flex-direction:column;align-items:stretch!important;
+    gap:7px;
+  }
+  .early-card .early-strategy>span:not(.v107-select){flex:none}
+  .early-card .early-strategy>.v107-select,
+  .early-card .early-strategy>select:not(.v107-native-select){
+    flex:none;width:100%;align-self:stretch;
+  }
+}
+
+@media(max-width:600px){.v125-journal-table{display:block;min-width:0!important;width:100%}.v125-journal-table thead{display:none}.v125-journal-table tbody{display:grid;gap:12px}.v125-journal-table tr{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);padding:10px;border:1px solid var(--line);border-radius:14px;background:#fbfcff}.v125-journal-table td{display:block;min-width:0;white-space:normal!important;border:0;padding:8px;word-break:normal;overflow-wrap:anywhere}.v125-journal-table td:before{content:attr(data-label);display:block;color:#718096;font-size:11px;line-height:1.5;margin-bottom:4px}.v125-journal-table td:first-child,.v125-journal-table .v125-journal-actions{grid-column:1/-1}.v125-journal-table td[data-label="Остаток"]{font-weight:700;color:#17345e}.v125-journal-table .v125-journal-actions:empty{display:none}}
 </style>
 <!-- v70 HOME TASKS: domestic chores + in-app reminders, based on v69 -->
 <meta charset="utf-8"/>
@@ -2338,6 +2390,66 @@ input:is([type="date"],[type="month"])::-webkit-date-and-time-value{min-height:1
 #v119CSVFile.v124-csv-native{position:absolute!important;left:0;top:0;width:1px!important;height:1px!important;min-height:0!important;max-height:1px!important;padding:0!important;margin:0!important;border:0!important;opacity:0;overflow:hidden;pointer-events:none}
 @media(max-width:600px){.v124-csv-picker{padding:14px;gap:14px}.v124-csv-file{flex-basis:100%}#v124CSVChoose{width:100%}}
 </style>
+<style>
+/* Compact mortgage scenario actions; appended after the legacy cascade. */
+#loans .early-card .early-plan-actions{
+  display:flex!important;flex-wrap:wrap;align-items:center!important;
+  justify-content:flex-start;gap:12px!important;
+}
+#loans .early-card .early-plan-actions>.btn{
+  flex:0 1 auto;min-width:0;min-height:50px!important;height:auto!important;align-self:center;
+  width:auto;max-width:100%;white-space:normal;
+}
+#loans .early-card .early-plan-actions>.early-strategy{
+  display:flex!important;flex:0 1 400px;flex-flow:row nowrap;
+  align-items:center!important;align-self:center;justify-self:auto!important;
+  width:auto!important;min-width:0!important;max-width:400px;
+  margin:0!important;gap:10px;
+}
+#loans .early-card .early-strategy>span:not(.v107-select){
+  flex:0 1 155px;min-width:0;font-size:12px;line-height:1.4;
+  white-space:normal;
+}
+#loans .early-card .early-strategy>.v107-select{
+  --v107-select-height:50px!important;flex:1 1 215px;
+  width:215px;min-width:0;max-width:100%;align-self:center;
+}
+#loans .early-card .early-strategy>.v107-select>.v107-select-trigger{
+  min-height:50px;padding:12px 14px;font-size:14px;
+}
+#loans .early-card .early-strategy>select:not(.v107-native-select){
+  flex:1 1 215px;width:215px;min-width:0;max-width:100%;min-height:50px;
+}
+@media(max-width:1100px){
+  #loans .early-card .early-plan-actions>.early-strategy{
+    flex-basis:100%;max-width:400px;
+  }
+}
+@media(max-width:600px){
+  #loans .early-card .early-plan-actions>.btn{flex:1 1 100%;width:100%}
+  #loans .early-card .early-plan-actions>.early-strategy{
+    flex:1 1 100%;max-width:none;flex-direction:column;align-items:stretch!important;
+    gap:7px;
+  }
+  #loans .early-card .early-strategy>span:not(.v107-select){flex:none}
+  #loans .early-card .early-strategy>.v107-select,
+  #loans .early-card .early-strategy>select:not(.v107-native-select){
+    flex:none;width:100%;align-self:stretch;
+  }
+}
+
+#loans .v125-mortgage-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr))}
+@media(max-width:600px){#loans .v125-journal-table .v125-journal-actions:not(:empty){display:flex!important;flex-wrap:wrap;gap:8px}#loans .v125-journal-table .v125-journal-actions:empty{display:none!important}}
+
+</style>
+<style>
+#loans .early-scenario-grid,#loans .early-grid,#loans .scenario-compare,#loans .v77-installment-metrics,#loans .v78-obligations-stats{grid-template-columns:repeat(auto-fit,minmax(min(100%,160px),1fr))}
+#loans .early-plan-head{grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr))}
+#loans .credit-kpis{grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr))}
+#loans .contract-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr))}
+</style>
+<style>#loans .v77-installment-list{grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr))}
+</style>
 </head>
 <body>
 <noscript><div style="padding:14px;background:#fff3cd;color:#664d03;text-align:center;font:600 14px/1.4 system-ui">Для работы «Семейный капитал» необходимо включить JavaScript.</div></noscript>
@@ -2683,28 +2795,42 @@ input:is([type="date"],[type="month"])::-webkit-date-and-time-value{min-height:1
   <div class="actions"><button class="btn primary" type="button" id="v77SaveInstallmentBtn">Сохранить график</button><button class="btn" type="button" id="v77CancelInstallmentBtn">Отмена</button></div>
   <div id="v77InstallmentError" class="v77-form-error" role="alert" aria-live="polite"></div>
  </div>
- <div class="v77-installment-list" id="v77InstallmentList"></div>
+ <div id="v126DocumentPlanNotice" class="v125-status" hidden role="status"></div><div class="v77-installment-list" id="v77InstallmentList"></div>
 </section>
 <div class="card credit-hero-card">
-<div class="section-head"><div><h2>Ипотека · УралСиб</h2><div class="hint">Данные обновлены по актуальному графику платежей из личного кабинета УралСиба по Кредитному договору № 9946-WZ3/00067 от 02.09.2026. Ниже используются фактические строки банковского Excel-графика; именно он является источником истины для дат и сумм.</div></div><span class="contract-badge">22% годовых</span></div>
+<div class="section-head"><div><h2>Ипотека · УралСиб</h2><div class="hint">График обновлён по файлу банка от 02.11.2026. Остаток после обычного и досрочного платежей подтверждён справкой банка. Следующие оплаты обновляют остаток и прогноз срока.</div></div><span class="contract-badge">22% годовых</span></div>
 <div class="credit-kpis">
 <div><small>Сумма кредита</small><b id="loanPrincipal">4 500 000 ₽</b></div>
 <div><small>Платёж по графику</small><b id="loanScheduledPayment">85 885 ₽</b></div>
-<div><small>Остаток по модели</small><b id="loanBalanceNow">—</b></div>
-<div><small>Дата окончания</small><b id="loanEndDate">02.09.2041</b></div>
-<div><small>Следующий платёж</small><b id="loanNextPayment">—</b></div>
+<div><small id="v125MortgageBalanceLabel">Остаток по учтённым оплатам</small><b id="loanBalanceNow">—</b></div>
+<div><small id="v125MortgageEndLabel">Расчёт последнего платежа</small><b id="loanEndDate">—</b></div>
+<div><small>Следующий платёж</small><b id="loanNextPayment">—</b></div><div><small>Основной долг погашен к</small><b id="v125PrincipalEnd">—</b></div>
 </div>
 <div class="credit-note" id="loanRateNote">Актуальный банковский график: 179 платежей. Первый платёж — 161 830,21 ₽ до 02.11.2026; далее стандартный платёж — 85 885 ₽, последний — 9 259,69 ₽ до 02.09.2041. Дополнительные расходы по графику: оценка 2 500 ₽, имущественное страхование 37 088,43 ₽, личное страхование 195 744,51 ₽.</div>
 </div>
-<div class="grid2">
-<div class="card"><h2>Как меняется долг</h2><div class="hint">Вместо 179 полосок — одна понятная история кредита.</div><div class="loan-chart-toolbar"><div class="loan-range"><button data-loan-range="1" onclick="setLoanRange(1)" type="button">1 год</button><button data-loan-range="3" onclick="setLoanRange(3)" type="button">3 года</button><button data-loan-range="all" onclick="setLoanRange('all')" type="button">Весь срок</button></div><span class="hint" id="loanChartSummary">—</span></div><div class="loan-svg-wrap"><div class="loan-chart-tooltip" id="loanChartTooltip">Остаток<b>—</b></div><svg aria-label="График изменения долга" id="loanDebtSvg" preserveaspectratio="none" role="img" viewbox="0 0 900 310"></svg></div><div class="loan-chart-legend"><span><i></i>Остаток основного долга</span><span><i class="end"></i>Полное погашение</span></div></div>
-<div class="card"><h2>Проценты vs тело кредита</h2><div class="hint">Суммарно по актуальному банковскому графику</div><div id="loanSplitChart"></div></div>
-</div>
+<section class="card v125-mortgage" id="v125MortgagePayments" aria-labelledby="v125MortgagePaymentsTitle">
+ <div class="section-head"><div><h2 id="v125MortgagePaymentsTitle">Оплаты и остаток долга</h2><p class="hint">Учтите обычный и досрочный платёж отдельно или укажите досрочную часть одного списания. Каждый внесённый платёж добавит точку на график.</p></div><div class="v125-actions"><button type="button" class="btn primary" onclick="v125OpenMortgagePayment()">Учесть оплату из истории</button><button type="button" class="btn" onclick="v125OpenMortgageBank()">Сверить с банком</button></div></div>
+ <p id="v125MortgageStatus" class="v125-status" role="status"></p>
+ <form id="v125MortgagePaymentForm" class="v125-form" hidden onsubmit="event.preventDefault();v125SaveMortgagePayment()">
+  <h3>Учесть уже внесённый расход</h3><p class="hint">Привязка не создаёт нового расхода. Если оплаты ещё нет в истории, сначала добавьте её как расход категории «Кредит».</p>
+  <div class="v125-form-grid"><label class="v125-wide">Оплата в истории<select id="v125MortgageEntry" onchange="v125MortgageEntryChanged()" aria-label="Оплата ипотеки из истории"></select></label><label>Назначение<select id="v125MortgageKind" onchange="v125MortgageFill()"><option value="regular">Обычный платёж</option><option value="early">Досрочно · уменьшить срок</option></select></label><label id="v125MortgageDueField">За какой срок платежа<select id="v125MortgageDue" onchange="v125MortgageFill()"></select></label><label>Проценты в этом списании, ₽<input id="v125MortgageInterest" type="text" inputmode="decimal" oninput="v125MortgageFill(false)"></label><label>Страхование и другие начисления, ₽<input id="v125MortgageCharges" type="text" inputmode="decimal" oninput="v125MortgageFill(false)"></label><label id="v125MortgageExtraField">Из тела — досрочно, ₽<input id="v125MortgageExtra" type="text" inputmode="decimal" placeholder="0"></label></div>
+  <p id="v125MortgageAllocationPreview" class="v125-preview" aria-live="polite"></p><p class="hint">В поля подставляется расчёт по текущему графику. Уточните проценты и начисления по банковскому списанию. При досрочном взносе уменьшается тело; проценты обычного платежа повторно не списываются.</p>
+  <label id="v125MortgageBankIncludedField" class="v125-check" hidden><input id="v125MortgageBankIncluded" type="checkbox"><span id="v125MortgageBankIncludedLabel"></span></label><label class="v125-check"><input id="v125MortgageChecked" type="checkbox">Назначение и распределение суммы проверены по банку</label><div class="v125-actions"><button type="submit" class="btn primary">Учесть и обновить график</button><button type="button" class="btn" onclick="document.getElementById('v125MortgagePaymentForm').hidden=true">Отмена</button></div>
+ </form>
+ <form id="v125MortgageBankForm" class="v125-form" hidden onsubmit="event.preventDefault();v125SaveMortgageBank()">
+  <h3>Актуальные данные банка</h3><p class="hint">Укажите остаток основного долга после всех списаний за выбранную дату и последний платёж из обновлённого графика. Сверка не создаёт расход. Для расчёта будущих процентов удобнее сверять в день обычного платежа.</p>
+  <div class="v125-form-grid"><label>Дата сверки<input id="v125BankDate" type="date"></label><label>Остаток основного долга, ₽<input id="v125BankBalance" type="text" inputmode="decimal"></label><label>Последний платёж по графику банка<input id="v125BankEnd" type="date"></label></div><label class="v125-check"><input id="v125BankChecked" type="checkbox">Остаток и срок взяты из банка; остаток включает все оплаты за эту дату</label><div class="v125-actions"><button type="submit" class="btn primary">Сохранить данные банка</button><button type="button" class="btn" onclick="document.getElementById('v125MortgageBankForm').hidden=true">Отмена</button></div>
+ </form>
+ <p id="v125MortgageMessage" class="error" role="alert" hidden></p><div id="v125MortgageJournal"></div>
+</section>
+<div class="v125-mortgage-grid">
+<div class="card v125-chart-card"><h2>Как уменьшается долг</h2><p class="hint">Каждая учтённая оплата — отдельная точка. Пунктир показывает расчёт будущего при обычных платежах, без новых досрочных взносов.</p><div class="loan-chart-toolbar"><div class="loan-range"><button data-loan-range="1" onclick="setLoanRange(1)" type="button">1 год</button><button data-loan-range="3" onclick="setLoanRange(3)" type="button">3 года</button><button data-loan-range="all" onclick="setLoanRange('all')" type="button">Весь срок</button></div><span class="hint" id="loanChartSummary">—</span></div><div class="loan-svg-wrap"><svg aria-label="Остаток долга: учтённые оплаты и будущий расчёт" id="loanDebtSvg" role="group" viewBox="0 0 900 320"></svg></div><div class="v125-legend"><span><i></i>Учтённые оплаты</span><span><i class="forecast"></i>Будущий расчёт</span><span><i class="original"></i>Исходный график банка</span></div><label class="v125-point-label">Остаток после платежа<select id="v125PointSelect" onchange="v125SelectMortgagePoint(this.value)"></select></label><p id="v125MortgagePoint" class="v125-point-output" aria-live="polite"></p></div>
+<div class="card"><h2>Сколько осталось выплатить</h2><p class="hint">Основной долг и расчёт будущих процентов</p><div id="loanSplitChart"></div></div></div>
 <div class="card early-card">
-<div class="section-head"><div><h2>Досрочное погашение</h2><div class="hint">Это отдельный пробный расчёт. Суммы отсюда не попадают в расходы, обязательства или историю платежей. Добавьте свой сценарий и удалите его в любой момент.</div></div></div>
+<div class="section-head"><div><h2>Проверить будущий досрочный платёж</h2><div class="hint">Это отдельный пробный расчёт. Суммы отсюда не попадают в расходы, обязательства или историю платежей. Добавьте свой сценарий и удалите его в любой момент.</div></div></div>
 <div class="early-plan-head">
 <div class="early-base-payment"><small>Основной платёж по графику</small><b id="earlyBasePayment">—</b><span id="earlyBaseDate">—</span></div>
-<div class="early-total-payment"><small>Первый досрочный взнос</small><b id="earlyTotalPayment">—</b><span>в тело и начисленные проценты</span></div>
+<div class="early-total-payment"><small>Первый досрочный взнос</small><b id="earlyTotalPayment">—</b><span>в тело; проценты при полном закрытии</span></div>
 </div>
 <div class="early-plan-table">
 <div class="early-plan-row early-plan-head-row"><span>№</span><span>В тело досрочно, ₽</span><span>Когда внести</span><span>Взнос и проценты</span><span></span></div>
@@ -2718,7 +2844,7 @@ input:is([type="date"],[type="month"])::-webkit-date-and-time-value{min-height:1
 <div class="early-scenario-grid">
 <div class="early-scenario"><small>План досрочных платежей</small><b id="earlyPlanTotal">0 ₽</b><span id="earlyPlanCount">0 платежей</span></div>
 <div class="early-scenario"><small>Свободно на досрочное погашение</small><b id="earlyFreeMoney">0 ₽</b><span>по введённому вами плану</span></div>
-<div class="early-scenario"><small>В дату первого досрочного платежа</small><b id="earlyFirstTotal">—</b><span>досрочно в тело + начисленные проценты</span></div>
+<div class="early-scenario"><small>В дату первого досрочного платежа</small><b id="earlyFirstTotal">—</b><span>досрочно в тело; проценты при закрытии</span></div>
 <div class="early-scenario"><small>Новый остаток после первого взноса</small><b id="earlyFirstBalance">—</b><span>ориентир по модели</span></div>
 </div>
 <div class="actions"><button class="btn primary" onclick="renderEarlyRepayment()" type="button">Рассчитать весь план</button></div>
@@ -2726,8 +2852,8 @@ input:is([type="date"],[type="month"])::-webkit-date-and-time-value{min-height:1
 </div>
 <div class="card" id="v96UnassignedCredit"><div class="section-head"><div><h2>Расходы без привязки к кредиту или рассрочке</h2><div class="hint">Эти записи ещё не связаны с конкретным обязательством и не считаются оплатой УралСиба. Если платёж уже внесён, добавьте график Сплита и выберите «Из истории» — новый расход не нужен.</div></div></div>
 <div class="v77-loan-actual-grid v96-unassigned-credit"><div><small>Всего без привязки</small><b id="loanActualTotal">0 ₽</b></div><div><small>В текущем месяце</small><b id="v77LoanActualMonth">0 ₽</b></div></div><details class="v77-installment-details"><summary>Посмотреть оплаты по месяцам</summary><div id="loanActualMonths" class="v77-loan-months"></div></details></div>
-<div class="card"><div class="section-head"><div><h2>График платежей</h2><div class="hint">Дата — крайний срок платежа из актуального банковского графика. Проценты, тело, платёж и остаток взяты из Excel-графика УралСиба.</div></div><button class="btn small" onclick="toggleLoanSchedule()">Показать / скрыть</button></div><div id="loanScheduleWrap" style="display:none"><div class="table-wrap"><table class="table loan-table"><thead><tr><th>№</th><th>Дата</th><th>Платёж</th><th>Проценты</th><th>Тело</th><th>Остаток</th></tr></thead><tbody id="loanScheduleBody"></tbody></table></div></div></div>
-<div class="card loan-contract-info"><h2>Условия договора</h2><div class="contract-grid"><div><span>Договор</span><b>№ 9946-WZ3/00067</b></div><div><span>Дата</span><b>2 сентября 2026</b></div><div><span>Программа</span><b>Нецелевой кредит под залог недвижимости</b></div><div><span>Срок</span><b>180 месяцев</b></div><div><span>ПСК</span><b>22,590% годовых</b></div><div><span>Полная стоимость</span><b>11 206 500,10 ₽</b></div><div><span>Всего процентов по графику</span><b>10 872 734,90 ₽</b></div><div><span>Платёж по графику</span><b>85 885 ₽</b></div><div><span>Средний платёж</span><b>87 258,33 ₽</b></div><div><span>Дата платежа</span><b>по актуальному банковскому графику</b></div><div><span>Имущественное страхование</span><b>37 088,43 ₽</b></div><div><span>Личное страхование</span><b>195 744,51 ₽</b></div><div><span>Оценка</span><b>2 500 ₽</b></div></div></div>
+<div class="card"><div class="section-head"><div><h2>График платежей</h2><div class="hint">Учтённые оплаты меняют расчёт оставшихся платежей. Будущие строки отмечены «Расчёт»; исходные банковские строки сохранены. Полный обновлённый график банка нужен для сверки дат и сумм до копейки.</div></div><button class="btn small" onclick="toggleLoanSchedule()">Показать / скрыть</button></div><div id="loanScheduleWrap" style="display:none"><div class="table-wrap"><table class="table loan-table"><thead><tr><th>№</th><th>Дата</th><th>Платёж</th><th>Проценты</th><th>Тело</th><th>Остаток</th></tr></thead><tbody id="loanScheduleBody"></tbody></table></div></div></div>
+<div class="card loan-contract-info"><h2>Условия договора</h2><div class="contract-grid"><div><span>Договор</span><b>№ 9946-WZ3/00067</b></div><div><span>Дата</span><b>2 сентября 2026</b></div><div><span>Программа</span><b>Нецелевой кредит под залог недвижимости</b></div><div><span>Срок</span><b>180 месяцев</b></div><div><span>ПСК по графику от 02.11.2026</span><b>22,609% годовых</b></div><div><span>Полная стоимость по графику от 02.11.2026</span><b>10 335 241,34 ₽</b></div><div><span>Проценты по графику от 02.11.2026</span><b>10 001 476,14 ₽</b></div><div><span>Платёж по графику</span><b>85 885 ₽</b></div><div><span>Средний платёж по графику от 02.11.2026</span><b>82 418,01 ₽</b></div><div><span>Дата платежа</span><b>по актуальному банковскому графику</b></div><div><span>Имущественное страхование</span><b>37 088,43 ₽</b></div><div><span>Личное страхование</span><b>195 744,51 ₽</b></div><div><span>Оценка</span><b>2 500 ₽</b></div></div></div>
 </section>
 <section class="section" id="goals">
 <div class="v119-page-head"><div><p class="hint">Отмечайте прогресс и отдельно защищайте деньги на своих счетах.</p></div><button class="btn primary" type="button" onclick="v119NewGoal()">Новая цель</button></div>
@@ -3758,6 +3884,7 @@ var localRecoveryBlocked=false;
 var localRecoveryNotice='';
 const LOCAL_BACKUP_KEY='marichevy_state_backup_v44';
 const LOCAL_PREIMPORT_KEY='marichevy_pre_import_backup_v73';
+const FAMILY_DOCUMENT_PLANS=[{"id":"split-statement-5d430561d05ad5d0cb0e0282","kind":"split","title":"Супер Сплит · остаток по графику","provider":"Яндекс Банк","amount":32255,"period":"monthly","parts":[{"id":"split-statement-5d430561d05ad5d0cb0e0282-2026-11-10","date":"2026-11-10","amount":4608},{"id":"split-statement-5d430561d05ad5d0cb0e0282-2026-12-10","date":"2026-12-10","amount":4608},{"id":"split-statement-5d430561d05ad5d0cb0e0282-2027-01-10","date":"2027-01-10","amount":4608},{"id":"split-statement-5d430561d05ad5d0cb0e0282-2027-02-10","date":"2027-02-10","amount":4608},{"id":"split-statement-5d430561d05ad5d0cb0e0282-2027-03-10","date":"2027-03-10","amount":4608},{"id":"split-statement-5d430561d05ad5d0cb0e0282-2027-04-10","date":"2027-04-10","amount":4608},{"id":"split-statement-5d430561d05ad5d0cb0e0282-2027-05-10","date":"2027-05-10","amount":4607}],"links":{},"source":{"kind":"statement-and-user-schedule","version":1,"snapshotDate":"2026-11-02","balanceOnly":true,"statementPrincipal":32255,"fingerprint":"5d430561d05ad5d0cb0e02824f212cff9cf7b5674d16ecb977839721b8aa5d8a"}}];
 let state=loadLocal();
 let session=null;
 let editId=null;
@@ -3864,6 +3991,7 @@ function validateBackup(raw){
   if(typeof e.date!=='string')fail(p+'.date');date(e.date,p+'.date');
   for(const k of ['category','who','beneficiary','subcategory','store','pay','comment','from','to','created_at','updated_at','installmentId','installmentPartId','recurringId','recurringPeriod'])text(e[k],p+'.'+k);
   for(const key of ['accountId','fromAccountId','toAccountId'])if(e[key]!==undefined&&e[key]!==null&&e[key]!=='')id(e[key],p+'.'+key);
+  if(e.mortgageAllocation!==undefined){const r=e.mortgageAllocation;if(!object(r)||r.version!==1||!['regular','early'].includes(r.kind)||!isValidCalendarDate(r.date)||!['amount','principal','interest','charges','extraPrincipal'].every(k=>v125Money(r[k]))||v125Cents(r.principal)+v125Cents(r.interest)+v125Cents(r.charges)!==v125Cents(r.amount)||r.extraPrincipal>r.principal||(r.kind==='early'&&r.extraPrincipal!==r.principal)||(r.kind==='regular'&&!isValidCalendarDate(r.dueDate)))fail(p+'.mortgageAllocation')}
   if(e.balanceAdjustment===true){if(e.type!=='transfer'||!Number.isFinite(Number(e.amount))||Number(e.amount)<=0||![1,-1].includes(e.adjustmentDirection))fail(p+'.balanceAdjustment');id(e.accountId,p+'.accountId');id(e.reconciliationRevision,p+'.reconciliationRevision');number(e.expectedBalance,p+'.expectedBalance');number(e.actualBalance,p+'.actualBalance')}
  });
  const eventStamp=(value,path)=>{text(value,path);if(value!==undefined&&(!value||!Number.isFinite(Date.parse(value))))fail(path)};
@@ -3910,6 +4038,7 @@ function validateBackup(raw){
   else{if(!object(deleted))fail(key);for(const [keyId,at] of Object.entries(deleted)){id(keyId,key);text(at,key)}}
  }
  for(const key of ['loans','preferences','notifications'])if(raw.settings[key]!==undefined&&!object(raw.settings[key]))fail('settings.'+key);
+ const mortgageSnapshot=raw.settings.loans?.mortgageSnapshot;if(mortgageSnapshot!==undefined){const x=mortgageSnapshot;if(!object(x)||x.version!==1||!isValidCalendarDate(x.date)||!v125Money(x.balance)||!isValidCalendarDate(x.endDate)||x.endDate<x.date)fail('settings.loans.mortgageSnapshot')}
  const archive=raw.settings.preferences?.humanArchive;if(archive!==undefined){
   if(!object(archive))fail('settings.preferences.humanArchive');
   for(const kind of ['goals','chores'])if(archive[kind]!==undefined){if(!object(archive[kind]))fail('humanArchive.'+kind);for(const [key,packet]of Object.entries(archive[kind])){
@@ -4291,7 +4420,7 @@ function showApp(){
  renderAll();v121ActivateRoute();
 }
 function showGate(){
- for(const clear of [typeof v119ResetOperations==='function'?v119ResetOperations:null,typeof v119ClearEditors==='function'?v119ClearEditors:null,typeof v117ClearAccountDrafts==='function'?v117ClearAccountDrafts:null,typeof v118ClearPlanningDrafts==='function'?v118ClearPlanningDrafts:null])if(clear)clear();
+ for(const clear of [typeof v125ClearMortgageDrafts==='function'?v125ClearMortgageDrafts:null,typeof v119ResetOperations==='function'?v119ResetOperations:null,typeof v119ClearEditors==='function'?v119ClearEditors:null,typeof v117ClearAccountDrafts==='function'?v117ClearAccountDrafts:null,typeof v118ClearPlanningDrafts==='function'?v118ClearPlanningDrafts:null])if(clear)clear();
  v110ClosePickers();const closedDialog=v113CloseDialogsForNavigation();v98ClearCategoryReview();
  document.getElementById('appRoot').classList.add('auth-locked');
  v99RenderEntryDirections();
@@ -5928,8 +6057,8 @@ function v78Obligations(m){
  const valid=/^\d{4}-\d{2}$/.test(m)?m:month();
  const loanRows=loanScheduleData().filter(r=>r.payDate.slice(0,7)===valid);
  const mortgagePlanned=Math.round(loanRows.reduce((n,r)=>n+v77Cents(r.payment),0))/100;
- const mortgageActual=(state.entries||[]).filter(e=>v78BankExpense(e)&&String(e.date||'').startsWith(valid)).reduce((n,e)=>n+v77Cents(e.amount),0)/100;
- const mortgagePaid=Math.min(mortgagePlanned,mortgageActual);
+ const mortgageActual=(state.entries||[]).filter(e=>v125ScheduledMonth(e)===valid).reduce((n,e)=>n+v77Cents(v125ScheduledCash(e)),0)/100;
+ const mortgagePaid=loanRows.reduce((n,row)=>n+v125ScheduledAllocated(row.payDate,loanRows),0);
  const groups=(state.installments||[]).map(i=>{
   const parts=(i.parts||[]).filter(p=>String(p.date||'').startsWith(valid));
   const planned=parts.reduce((n,p)=>n+v77Cents(p.amount),0)/100;
@@ -5945,7 +6074,7 @@ function v78ObligationRows(o){
  const todayKey=today();
  const items=[];
  for(const r of o.loanRows){
-  const allocated=Math.min(Math.max(0,o.mortgagePaid-items.filter(x=>x.kind==='mortgage').reduce((n,x)=>n+x.allocated,0)),r.payment);
+  const allocated=v125ScheduledAllocated(r.payDate,o.loanRows);
   const fullyPaid=allocated>=r.payment-.001;
   items.push({kind:'mortgage',date:r.payDate,title:'Ипотека · УралСиб',subtitle:v77DateLabel(r.payDate)+' · по графику банка',amount:r.payment,allocated,partial:allocated>.001&&!fullyPaid,paid:fullyPaid,late:r.payDate<todayKey&&!fullyPaid});
  }
@@ -5976,8 +6105,9 @@ function v78RenderPanel(id,o,options={}){
  }
 }
 let v78LoanMonthSelection='';
-function v78RenderLoansPanel(){const chosen=v78LoanMonthSelection||homeMonth();v78RenderPanel('v78LoansObligations',v78Obligations(chosen),{chooseMonth:true,mortgageTools:true})}
+function v78RenderLoansPanel(){const chosen=v78LoanMonthSelection||homeMonth();v78RenderPanel('v78LoansObligations',v78Obligations(chosen),{chooseMonth:true,mortgageTools:!v125BuiltinMortgageSnapshot()})}
 function v78ToggleMortgage(id){
+ if(v125BuiltinMortgageSnapshot()){const record=state.entries.find(e=>e.id===id);if(!record)return;if(v125MortgageRecord(record))return v125UnlinkMortgage(id);v125OpenMortgagePayment(id);return}
  const e=(state.entries||[]).find(x=>x.id===id);
  if(!e||e.type!=='expense'||e.installmentId||v77EntryIsLinked(id))return;
  e.mortgagePayment=!v78BankExpense(e);e.updated_at=new Date().toISOString();
@@ -6695,10 +6825,7 @@ setInterval(()=>v115MaybeRefreshWeather(),60000);
 function dayOfYearMoscow(){const now=new Date();const parts=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Moscow',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(now);const y=Number(parts.find(x=>x.type==='year').value),m=Number(parts.find(x=>x.type==='month').value)-1,d=Number(parts.find(x=>x.type==='day').value);return Math.floor((Date.UTC(y,m,d)-Date.UTC(y,0,0))/86400000)}
 function renderLiveClock(){const el=document.getElementById('liveClock');if(!el)return;el.textContent=new Intl.DateTimeFormat('ru-RU',{timeZone:'Europe/Moscow',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).format(new Date())}
 function renderTodayHeader(){renderLiveClock();const hour=Number(new Intl.DateTimeFormat('ru-RU',{timeZone:'Europe/Moscow',hour:'2-digit',hourCycle:'h23'}).format(new Date()));const profile=currentProfile();const name=profile.name==='семья'?'':profile.name;const greet=document.getElementById('todayGreeting');if(greet)greet.textContent=(name?greetingForHour(hour)+', '+name+'!':greetingForHour(hour)+'!')+' ';const d=document.getElementById('todayDate');if(d)d.textContent=todayRu()+' · Москва';v115RenderWeather()}
-function nextLoanPaymentForAdvice(){
- const row=loanScheduleData().find(r=>new Date(r.payDate+'T23:59:59')>new Date());
- return row||null;
-}
+function nextLoanPaymentForAdvice(){return firstUpcomingLoanRow()||null}
 function v96MonthlyReviewData(m=homeMonth()){
  const rows=monthEntries(m),expenseRows=rows.filter(isExpense),incomeRows=rows.filter(entry=>entry.type==='income');
  const spent=sum(expenseRows),income=sum(incomeRows),result=sum([{amount:income},{amount:-spent}]);
@@ -6739,6 +6866,10 @@ function renderTodayAdvice(){v96RenderMonthlyReview()}
 function monthEnd(y,m){return new Date(y,m+1,0)}
 function nextBusinessDate(d){const x=new Date(d);x.setHours(12,0,0,0);while([0,6].includes(x.getDay()))x.setDate(x.getDate()+1);return x}
 const BANK_LOAN_SCHEDULE=[[1,"02.11.2026",1802.81,160027.4,161830.21,4498197.19],[2,"30.11.2026",4545.57,81339.43,85885.0,4493651.62],[3,"11.01.2027",1921.42,83963.58,85885.0,4491730.2],[4,"01.02.2027",1944.59,83940.41,85885.0,4489785.61],[5,"01.03.2027",10111.01,75773.99,85885.0,4479674.6],[6,"31.03.2027",2176.49,83708.51,85885.0,4477498.11],[7,"30.04.2027",4922.02,80962.98,85885.0,4472576.09],[8,"31.05.2027",2315.23,83569.77,85885.0,4470260.86],[9,"30.06.2027",5052.88,80832.12,85885.0,4465207.98],[10,"02.08.2027",2452.9,83432.1,85885.0,4462755.08],[11,"31.08.2027",2495.77,83389.23,106045.38,4460259.31],[12,"30.09.2027",5233.73,80651.27,85885.0,4455025.58],[13,"01.11.2027",2643.15,83241.85,85885.0,4452382.43],[14,"30.11.2027",5374.58,80510.42,85885.0,4447007.85],[15,"31.12.2027",2792.96,83092.04,85885.0,4444214.89],[16,"31.01.2028",3072.03,82812.97,85885.0,4441142.86],[17,"29.02.2028",8468.36,77416.64,85885.0,4432674.5],[18,"31.03.2028",3287.08,82597.92,85885.0,4429387.42],[19,"02.05.2028",6010.8,79874.2,85885.0,4423376.62],[20,"31.05.2028",3453.1,82431.9,85885.0,4419923.52],[21,"30.06.2028",6181.46,79703.54,85885.0,4413742.06],[22,"31.07.2028",3639.87,82245.13,85885.0,4410102.19],[23,"31.08.2028",3707.68,82177.32,105801.9,4406394.51],[24,"02.10.2028",6425.43,79459.57,85885.0,4399969.08],[25,"31.10.2028",3888.78,81996.22,85885.0,4396080.3],[26,"30.11.2028",6611.42,79273.58,85885.0,4389468.88],[27,"09.01.2029",4092.16,81792.84,85885.0,4385376.72],[28,"31.01.2029",3922.34,81962.66,85885.0,4381454.38],[29,"28.02.2029",11940.46,73944.54,85885.0,4369513.92],[30,"02.04.2029",4240.93,81644.07,85885.0,4365272.99],[31,"30.04.2029",6946.18,78938.82,85885.0,4358326.81],[32,"31.05.2029",4449.97,81435.03,85885.0,4353876.84],[33,"02.07.2029",7157.36,78727.64,85885.0,4346719.48],[34,"31.07.2029",4658.22,81226.78,85885.0,4342061.26],[35,"31.08.2029",4753.88,81131.12,105489.63,4337307.38],[36,"01.10.2029",7456.97,78428.03,85885.0,4329850.41],[37,"31.10.2029",4977.55,80907.45,85885.0,4324872.86],[38,"30.11.2029",7681.82,78203.18,85885.0,4317191.04],[39,"31.12.2029",5218.58,80666.42,85885.0,4311972.46],[40,"31.01.2030",5316.09,80568.91,85885.0,4306656.37],[41,"28.02.2030",13202.8,72682.2,85885.0,4293453.57],[42,"01.04.2030",5662.12,80222.88,85885.0,4287791.45],[43,"30.04.2030",8348.92,77536.08,85885.0,4279442.53],[44,"31.05.2030",5923.9,79961.1,85885.0,4273518.63],[45,"01.07.2030",8610.42,77274.58,85885.0,4264908.21],[46,"31.07.2030",6190.29,79694.71,85885.0,4258717.92],[47,"02.09.2030",6311.15,79573.85,85885.0,4252406.77],[48,"30.09.2030",8984.56,76900.44,85885.0,4243422.21],[49,"31.10.2030",6596.95,79288.05,85885.0,4236825.26],[50,"02.12.2030",9273.91,76611.09,85885.0,4227551.35],[51,"31.12.2030",6882.31,79002.69,85885.0,4220669.04],[52,"31.01.2031",7022.09,78862.91,85885.0,4213646.95],[53,"28.02.2031",14772.49,71112.51,85885.0,4198874.46],[54,"31.03.2031",7429.32,78455.68,85885.0,4191445.14],[55,"30.04.2031",10094.49,75790.51,85885.0,4181350.65],[56,"02.06.2031",7756.74,78128.26,85885.0,4173593.91],[57,"30.06.2031",10407.93,75477.07,85885.0,4163185.98],[58,"31.07.2031",8096.15,77788.85,85885.0,4155089.83],[59,"01.09.2031",8247.44,77637.56,85885.0,4146842.39],[60,"30.09.2031",10896.02,74988.98,85885.0,4135946.37],[61,"31.10.2031",8605.13,77279.87,85885.0,4127341.24],[62,"01.12.2031",11253.62,74631.38,85885.0,4116087.62],[63,"31.12.2031",8969.41,76915.59,85885.0,4107118.21],[64,"02.02.2032",9353.45,76531.55,85885.0,4097764.76],[65,"01.03.2032",14442.77,71442.23,85885.0,4083321.99],[66,"31.03.2032",9788.19,76096.81,85885.0,4073533.8],[67,"30.04.2032",12427.83,73457.17,85885.0,4061105.97],[68,"31.05.2032",10210.84,75674.16,85885.0,4050895.13],[69,"30.06.2032",12836.07,73048.93,85885.0,4038059.06],[70,"02.08.2032",10640.3,75244.7,85885.0,4027418.76],[71,"31.08.2032",10825.77,75059.23,104040.0,4016592.99],[72,"30.09.2032",13454.63,72430.37,85885.0,4003138.36],[73,"01.11.2032",11291.0,74594.0,85885.0,3991847.36],[74,"30.11.2032",13894.08,71990.92,85885.0,3977953.28],[75,"31.12.2032",11760.3,74124.7,85885.0,3966192.98],[76,"31.01.2033",11776.96,74108.04,85885.0,3954416.02],[77,"28.02.2033",19147.46,66737.54,85885.0,3935268.56],[78,"31.03.2033",12354.77,73530.23,85885.0,3922913.79],[79,"02.05.2033",14950.12,70934.88,85885.0,3907963.67],[80,"31.05.2033",12846.95,73038.05,85885.0,3895116.72],[81,"30.06.2033",15452.75,70432.25,85885.0,3879663.97],[82,"01.08.2033",13393.74,72491.26,85885.0,3866270.23],[83,"31.08.2033",13635.94,72249.06,103298.91,3852634.29],[84,"30.09.2033",16220.92,69664.08,85885.0,3836413.37],[85,"31.10.2033",14201.88,71683.12,85885.0,3822211.49],[86,"30.11.2033",16771.04,69113.96,85885.0,3805440.45],[87,"09.01.2034",14780.61,71104.39,85885.0,3790659.84],[88,"31.01.2034",14976.6,70908.4,85885.0,3775683.24],[89,"28.02.2034",22163.88,63721.12,85885.0,3753519.36],[90,"31.03.2034",15750.75,70134.25,85885.0,3737768.61],[91,"02.05.2034",18297.95,67587.05,85885.0,3719470.66],[92,"31.05.2034",16364.89,69520.11,85885.0,3703105.77],[93,"30.06.2034",18924.73,66960.27,85885.0,3684181.04],[94,"31.07.2034",17046.33,68838.67,85885.0,3667134.71],[95,"31.08.2034",17364.84,68520.16,102381.96,3649769.87],[96,"02.10.2034",19889.16,65995.84,85885.0,3629880.71],[97,"31.10.2034",18036.95,67848.05,85885.0,3611843.76],[98,"30.11.2034",20574.95,65310.05,85885.0,3591268.81],[99,"09.01.2035",18782.39,67102.61,85885.0,3572486.42],[100,"31.01.2035",19031.44,66853.56,85885.0,3553454.98],[101,"28.02.2035",25914.37,59970.63,85885.0,3527540.61],[102,"02.04.2035",19973.14,65911.86,85885.0,3507567.47],[103,"30.04.2035",22436.42,63448.58,85885.0,3485131.05],[104,"31.05.2035",20765.56,65119.44,85885.0,3464365.49],[105,"02.07.2035",23241.68,62643.32,85885.0,3441123.81],[106,"31.07.2035",21559.82,64325.18,85885.0,3419563.99],[107,"31.08.2035",21990.68,63894.32,101242.03,3397573.31],[108,"01.10.2035",24449.43,61435.57,85885.0,3373123.88],[109,"31.10.2035",22843.67,63041.33,85885.0,3350280.21],[110,"30.11.2035",25304.59,60580.41,85885.0,3324975.62],[111,"31.12.2035",23758.06,62126.94,85885.0,3301217.56],[112,"31.01.2036",24370.51,61514.49,85885.0,3276847.05],[113,"29.02.2036",28764.01,57120.99,85885.0,3248083.04],[114,"31.03.2036",25360.61,60524.39,85885.0,3222722.43],[115,"30.04.2036",27770.33,58114.67,85885.0,3194952.1],[116,"02.06.2036",26350.65,59534.35,85885.0,3168601.45],[117,"30.06.2036",28714.6,57170.4,85885.0,3139886.85],[118,"31.07.2036",27376.73,58508.27,85885.0,3112510.12],[119,"01.09.2036",27886.86,57998.14,85885.0,3084623.26],[120,"30.09.2036",30243.88,55641.12,85885.0,3054379.38],[121,"31.10.2036",28970.07,56914.93,85885.0,3025409.31],[122,"01.12.2036",31328.44,54556.56,85885.0,2994080.87],[123,"31.12.2036",30074.82,55810.18,85885.0,2964006.05],[124,"02.02.2037",30502.75,55382.25,85885.0,2933503.3],[125,"02.03.2037",36340.34,49544.66,85885.0,2897162.96],[126,"31.03.2037",31707.9,54177.1,85885.0,2865455.06],[127,"30.04.2037",34071.29,51813.71,85885.0,2831383.77],[128,"01.06.2037",32980.79,52904.21,85885.0,2798402.98],[129,"30.06.2037",35263.86,50621.14,85885.0,2763139.12],[130,"31.07.2037",34255.94,51629.06,85885.0,2728883.18],[131,"31.08.2037",34896.0,50989.0,98061.82,2693987.18],[132,"30.09.2037",37171.81,48713.19,85885.0,2656815.37],[133,"02.11.2037",36242.59,49642.41,85885.0,2620572.78],[134,"30.11.2037",38455.61,47429.39,85885.0,2582117.17],[135,"31.12.2037",37638.31,48246.69,85885.0,2544478.86],[136,"01.02.2038",38341.59,47543.41,85885.0,2506137.27],[137,"01.03.2038",43566.53,42318.47,85885.0,2462570.74],[138,"31.03.2038",39845.78,46039.22,85885.0,2422724.96],[139,"30.04.2038",42076.82,43808.18,85885.0,2380648.14],[140,"31.05.2038",41402.75,44482.25,85885.0,2339245.39],[141,"30.06.2038",43586.32,42298.68,85885.0,2295659.07],[142,"02.08.2038",42990.77,42894.23,85885.0,2252668.3],[143,"31.08.2038",43742.22,42142.78,95869.35,2208926.08],[144,"30.09.2038",45942.77,39942.23,85885.0,2162983.31],[145,"01.11.2038",45469.81,40415.19,85885.0,2117513.5],[146,"30.11.2038",47568.31,38316.69,85885.0,2069945.19],[147,"31.12.2038",47208.21,38676.79,85885.0,2022736.98],[148,"31.01.2039",48090.3,37794.7,85885.0,1974646.68],[149,"28.02.2039",52559.46,33325.54,85885.0,1922087.22],[150,"31.03.2039",49970.93,35914.07,85885.0,1872116.29],[151,"02.05.2039",52033.03,33851.97,85885.0,1820083.26],[152,"31.05.2039",51814.15,34070.85,85885.0,1768269.11],[153,"30.06.2039",53910.82,31974.18,85885.0,1714358.29],[154,"01.08.2039",53852.33,32032.67,85885.0,1660505.96],[155,"31.08.2039",54826.1,31058.9,93142.67,1605679.86],[156,"30.09.2039",56850.79,29034.21,85885.0,1548829.07],[157,"31.10.2039",56945.23,28939.77,85885.0,1491883.84],[158,"30.11.2039",58908.47,26976.53,85885.0,1432975.37],[159,"09.01.2040",59109.96,26775.04,85885.0,1373865.41],[160,"31.01.2040",59964.78,25920.22,85885.0,1313900.63],[161,"29.02.2040",62981.49,22903.51,85885.0,1250919.14],[162,"02.04.2040",62575.52,23309.48,85885.0,1188343.62],[163,"30.04.2040",64380.62,21504.38,85885.0,1123963.0],[164,"31.05.2040",64941.21,20943.79,85885.0,1059021.79],[165,"02.07.2040",66787.89,19097.11,85885.0,992233.9],[166,"31.07.2040",67315.54,18569.46,85885.0,924918.36],[167,"31.08.2040",68650.18,17234.82,89755.33,856268.18],[168,"01.10.2040",70444.1,15440.9,85885.0,785824.08],[169,"31.10.2040",71199.71,14685.29,85885.0,714624.37],[170,"30.11.2040",72998.33,12886.67,85885.0,641626.04],[171,"31.12.2040",73929.01,11955.99,85885.0,567697.03],[172,"31.01.2041",75277.62,10607.38,85885.0,492419.41],[173,"28.02.2041",77574.58,8310.42,85885.0,414844.83],[174,"01.04.2041",78133.66,7751.34,85885.0,336711.17],[175,"30.04.2041",79749.43,6135.57,85885.0,256961.74],[176,"31.05.2041",81083.68,4801.32,85885.0,175878.06],[177,"01.07.2041",82704.74,3180.26,85885.0,93173.32],[178,"31.07.2041",84094.22,1790.78,85885.0,9079.1],[179,"02.09.2041",9079.1,180.59,9259.69,0.0]];
+const BANK_LOAN_CURRENT_SCHEDULE=[[1,"02.11.2026",41802.81,160027.4,201830.21,4458197.19],[2,"30.11.2026",5220.63,80664.37,85885.0,4452976.56],[3,"11.01.2027",2681.44,83203.56,85885.0,4450295.12],[4,"01.02.2027",2713.76,83171.24,85885.0,4447581.36],[5,"01.03.2027",10822.82,75062.18,85885.0,4436758.54],[6,"31.03.2027",2977.94,82907.06,85885.0,4433780.6],[7,"30.04.2027",5712.53,80172.47,85885.0,4428068.07],[8,"31.05.2027",3146.85,82738.15,85885.0,4424921.22],[9,"30.06.2027",5872.73,80012.27,85885.0,4419048.49],[10,"02.08.2027",3315.38,82569.62,85885.0,4415733.11],[11,"31.08.2027",3373.33,82511.67,106045.38,4412359.78],[12,"30.09.2027",6099.87,79785.13,85885.0,4406259.91],[13,"01.11.2027",3554.33,82330.67,85885.0,4402705.58],[14,"30.11.2027",6272.3,79612.7,85885.0,4396433.28],[15,"31.12.2027",3737.94,82147.06,85885.0,4392695.34],[16,"31.01.2028",4032.04,81852.96,85885.0,4388663.3],[17,"29.02.2028",9383.17,76501.83,85885.0,4379280.13],[18,"31.03.2028",4282.02,81602.98,85885.0,4374998.11],[19,"02.05.2028",6991.59,78893.41,85885.0,4368006.52],[20,"31.05.2028",4483.69,81401.31,85885.0,4363522.83],[21,"30.06.2028",7198.52,78686.48,85885.0,4356324.31],[22,"31.07.2028",4709.78,81175.22,85885.0,4351614.53],[23,"31.08.2028",4797.53,81087.47,105801.9,4346817.0],[24,"02.10.2028",7499.78,78385.22,85885.0,4339317.22],[25,"31.10.2028",5017.67,80867.33,85885.0,4334299.55],[26,"30.11.2028",7725.5,78159.5,85885.0,4326574.05],[27,"09.01.2029",5264.14,80620.86,85885.0,4321309.91],[28,"31.01.2029",5113.06,80771.94,85885.0,4316196.85],[29,"28.02.2029",13041.79,72843.21,85885.0,4303155.06],[30,"02.04.2029",5480.84,80404.16,85885.0,4297674.22],[31,"30.04.2029",8167.02,77717.98,85885.0,4289507.2],[32,"31.05.2029",5735.86,80149.14,85885.0,4283771.34],[33,"02.07.2029",8425.02,77459.98,85885.0,4275346.32],[34,"31.07.2029",5990.29,79894.71,85885.0,4269356.03],[35,"31.08.2029",6112.38,79772.62,105489.63,4263243.65],[36,"01.10.2029",8796.21,77088.79,85885.0,4254447.44],[37,"31.10.2029",6385.64,79499.36,85885.0,4248061.8],[38,"30.11.2029",9070.73,76814.27,85885.0,4238991.07],[39,"31.12.2029",6679.74,79205.26,85885.0,4232311.33],[40,"31.01.2030",6804.55,79080.45,85885.0,4225506.78],[41,"28.02.2030",14572.34,71312.66,85885.0,4210934.44],[42,"01.04.2030",7203.98,78681.02,85885.0,4203730.46],[43,"30.04.2030",9868.0,76017.0,85885.0,4193862.46],[44,"31.05.2030",7522.96,78362.04,85885.0,4186339.5],[45,"01.07.2030",10186.81,75698.19,85885.0,4176152.69],[46,"31.07.2030",7847.73,78037.27,85885.0,4168304.96],[47,"02.09.2030",8000.51,77884.49,85885.0,4160304.45],[48,"30.09.2030",10647.93,75237.07,85885.0,4149656.52],[49,"31.10.2030",8348.96,77536.04,85885.0,4141307.56],[50,"02.12.2030",11001.08,74883.92,85885.0,4130306.48],[51,"31.12.2030",8697.24,77187.76,85885.0,4121609.24],[52,"31.01.2031",8873.02,77011.98,85885.0,4112736.22],[53,"28.02.2031",16475.53,69409.47,85885.0,4096260.69],[54,"31.03.2031",9346.65,76538.35,85885.0,4086914.04],[55,"30.04.2031",11984.64,73900.36,85885.0,4074929.4],[56,"02.06.2031",9745.22,76139.78,85885.0,4065184.18],[57,"30.06.2031",12365.81,73519.19,85885.0,4052818.37],[58,"31.07.2031",10158.37,75726.63,85885.0,4042660.0],[59,"01.09.2031",10348.17,75536.83,85885.0,4032311.83],[60,"30.09.2031",12965.73,72919.27,85885.0,4019346.1],[61,"31.10.2031",10783.79,75101.21,85885.0,4008562.31],[62,"01.12.2031",13401.41,72483.59,85885.0,3995160.9],[63,"31.12.2031",11227.62,74657.38,85885.0,3983933.28],[64,"02.02.2032",11648.86,74236.14,85885.0,3972284.42],[65,"01.03.2032",16627.35,69257.65,85885.0,3955657.07],[66,"31.03.2032",12165.77,73719.23,85885.0,3943491.3],[67,"30.04.2032",14772.86,71112.14,85885.0,3928718.44],[68,"31.05.2032",12677.73,73207.27,85885.0,3916040.71],[69,"30.06.2032",15267.88,70617.12,85885.0,3900772.83],[70,"02.08.2032",13198.46,72686.54,85885.0,3887574.37],[71,"31.08.2032",13428.54,72456.46,104040.0,3874145.83],[72,"30.09.2032",16023.36,69861.64,85885.0,3858122.47],[73,"01.11.2032",13993.21,71891.79,85885.0,3844129.26],[74,"30.11.2032",16556.22,69328.78,85885.0,3827573.04],[75,"31.12.2032",14562.47,71322.53,85885.0,3813010.57],[76,"31.01.2033",14639.15,71245.85,85885.0,3798371.42],[77,"28.02.2033",21780.98,64104.02,85885.0,3776590.44],[78,"31.03.2033",15319.67,70565.33,85885.0,3761270.77],[79,"02.05.2033",17872.98,68012.02,85885.0,3743397.79],[80,"31.05.2033",15918.32,69966.68,85885.0,3727479.47],[81,"30.06.2033",18484.0,67401.0,85885.0,3708995.47],[82,"01.08.2033",16582.68,69302.32,85885.0,3692412.79],[83,"31.08.2033",16882.52,69002.48,103298.91,3675530.27],[84,"30.09.2033",19423.36,66461.64,85885.0,3656106.91],[85,"31.10.2033",17570.89,68314.11,85885.0,3638536.02],[86,"30.11.2033",20092.3,65792.7,85885.0,3618443.72],[87,"09.01.2034",18274.62,67610.38,85885.0,3600169.1],[88,"31.01.2034",18516.96,67368.04,85885.0,3581652.14],[89,"28.02.2034",25438.48,60446.52,85885.0,3556213.66],[90,"31.03.2034",19437.4,66447.6,85885.0,3536776.26],[91,"02.05.2034",21932.33,63952.67,85885.0,3514843.93],[92,"31.05.2034",20183.94,65701.06,85885.0,3494659.99],[93,"30.06.2034",22693.89,63191.11,85885.0,3471966.1],[94,"31.07.2034",21011.55,64873.45,85885.0,3450954.55],[95,"31.08.2034",21404.15,64480.85,102381.96,3429550.4],[96,"02.10.2034",23871.21,62013.79,85885.0,3405679.19],[97,"31.10.2034",22221.34,63663.66,85885.0,3383457.85],[98,"30.11.2034",24704.67,61180.33,85885.0,3358753.18],[99,"09.01.2035",23126.93,62758.07,85885.0,3335626.25],[100,"31.01.2035",23433.59,62451.41,85885.0,3312192.66],[101,"28.02.2035",29986.08,55898.92,85885.0,3282206.58],[102,"02.04.2035",24557.2,61327.8,85885.0,3257649.38],[103,"30.04.2035",26949.95,58935.05,85885.0,3230699.43],[104,"31.05.2035",25519.6,60365.4,85885.0,3205179.83],[105,"02.07.2035",27928.33,57956.67,85885.0,3177251.5],[106,"31.07.2035",26484.6,59400.4,85885.0,3150766.9],[107,"31.08.2035",27013.14,58871.86,101242.03,3123753.76],[108,"01.10.2035",29400.69,56484.31,85885.0,3094353.07],[109,"31.10.2035",28049.5,57835.5,85885.0,3066303.57],[110,"30.11.2035",30439.51,55445.49,85885.0,3035864.06],[111,"31.12.2035",29160.09,56724.91,85885.0,3006703.97],[112,"31.01.2036",29858.44,56026.56,85885.0,2976845.53],[113,"29.02.2036",33993.54,51891.46,85885.0,2942851.99],[114,"31.03.2036",31048.25,54836.75,85885.0,2911803.74],[115,"30.04.2036",33377.06,52507.94,85885.0,2878426.68],[116,"02.06.2036",32248.75,53636.25,85885.0,2846177.93],[117,"30.06.2036",34521.71,51363.29,85885.0,2811656.22],[118,"31.07.2036",33492.93,52392.07,85885.0,2778163.29],[119,"01.09.2036",34117.04,51767.96,85885.0,2744046.25],[120,"30.09.2036",36381.69,49503.31,85885.0,2707664.56],[121,"31.10.2036",35430.71,50454.29,85885.0,2672233.85],[122,"01.12.2036",37697.17,48187.83,85885.0,2634536.68],[123,"31.12.2036",36770.7,49114.3,85885.0,2597765.98],[124,"02.02.2037",37345.92,48539.08,85885.0,2560420.06],[125,"02.03.2037",42628.51,43256.49,85885.0,2517791.55],[126,"31.03.2037",38788.85,47096.15,85885.0,2479002.7],[127,"30.04.2037",41059.2,44825.8,85885.0,2437943.5],[128,"01.06.2037",40332.19,45552.81,85885.0,2397611.31],[129,"30.06.2037",42506.62,43378.38,85885.0,2355104.69],[130,"31.07.2037",41880.03,44004.97,85885.0,2313224.66],[131,"31.08.2037",42662.56,43222.44,98061.82,2270562.1],[132,"30.09.2037",44828.26,41056.74,85885.0,2225733.84],[133,"02.11.2037",44297.32,41587.68,85885.0,2181436.52],[134,"30.11.2037",46386.44,39498.56,85885.0,2135050.08],[135,"31.12.2037",45991.74,39893.26,85885.0,2089058.34],[136,"01.02.2038",46851.09,39033.91,85885.0,2042207.25],[137,"01.03.2038",51391.01,34493.99,85885.0,1990816.24],[138,"31.03.2038",48655.76,37229.24,85885.0,1942160.48],[139,"30.04.2038",50766.49,35118.51,85885.0,1891393.99],[140,"31.05.2038",50544.43,35340.57,85885.0,1840849.56],[141,"30.06.2038",52598.4,33286.6,85885.0,1788251.16],[142,"02.08.2038",52471.65,33413.35,85885.0,1735779.51],[143,"31.08.2038",53388.83,32496.17,95869.35,1682390.68],[144,"30.09.2038",55463.69,30421.31,85885.0,1626926.99],[145,"01.11.2038",55485.98,30399.02,85885.0,1571441.01],[146,"30.11.2038",57436.46,28448.54,85885.0,1514004.55],[147,"31.12.2038",57595.93,28289.07,85885.0,1456408.62],[148,"31.01.2039",58672.1,27212.9,85885.0,1397736.52],[149,"28.02.2039",62295.8,23589.2,85885.0,1335440.72],[150,"31.03.2039",60932.38,24952.62,85885.0,1274508.34],[151,"02.05.2039",62839.1,23045.9,85885.0,1211669.24],[152,"31.05.2039",63169.29,22715.71,85885.0,1148499.95],[153,"30.06.2039",65117.61,20767.39,85885.0,1083382.34],[154,"01.08.2039",65642.07,20242.93,85885.0,1017740.27],[155,"31.08.2039",66829.03,19055.97,93142.67,950911.24],[156,"30.09.2039",68690.44,17194.56,85885.0,882220.8],[157,"31.10.2039",69400.76,16484.24,85885.0,812820.04],[158,"30.11.2039",71187.44,14697.56,85885.0,741632.6],[159,"09.01.2040",72027.64,13857.36,85885.0,669604.96],[160,"31.01.2040",73018.01,12866.99,85885.0,596586.95],[161,"29.02.2040",75485.47,10399.53,85885.0,521101.48],[162,"02.04.2040",76174.86,9710.14,85885.0,444926.62],[163,"30.04.2040",77770.16,8114.84,85885.0,367156.46],[164,"31.05.2040",79043.45,6841.55,85885.0,288113.01],[165,"02.07.2040",80689.52,5195.48,85885.0,207423.49],[166,"31.07.2040",81922.89,3962.11,85885.0,125500.6],[167,"31.08.2040",83546.44,2338.56,89755.33,41954.16],[168,"01.10.2040",41954.16,756.55,42710.71,0.0],[169,"31.10.2040",0.0,25.22,25.22,0.0]];
+const BANK_LOAN_CURRENT_CHARGES=[{"payDate":"2030-08-31","payment":19249.41,"propertyInsurance":3066.28,"personalInsurance":16183.13},{"payDate":"2031-08-31","payment":18781,"propertyInsurance":2991.66,"personalInsurance":15789.34},{"payDate":"2036-08-31","payment":14068.55,"propertyInsurance":2241.01,"personalInsurance":11827.54}];
+const BANK_LOAN_RECONCILIATION=Object.freeze({version:1,source:'bank-file-2026-11-02',date:'2026-11-02',balance:4458197.19,endDate:'2040-10-31',principalEndDate:'2040-10-01',outstandingInterest:5424.65,fullRepaymentAmount:4463621.84,regularPayment:161830.21,regularPrincipal:1802.81,paidInterest:160027.40,earlyPrincipal:40000});
+function v125OriginalBankScheduleData(){return BANK_LOAN_SCHEDULE.map(r=>({n:r[0],payDate:r[1].split('.').reverse().join('-'),periodEnd:r[1].split('.').reverse().join('-'),payment:r[4],interest:r[3],body:r[2],balance:r[5]}))}
 const BANK_LOAN_INFO=Object.freeze({
  contractDate:'02.09.2026',
  principal:4500000,
@@ -6755,28 +6886,13 @@ const BANK_LOAN_INFO=Object.freeze({
  personalInsurance:195744.51,
  endDate:'02.09.2041'
 });
-function loanScheduleData(){
- return BANK_LOAN_SCHEDULE.map(r=>({n:r[0],payDate:r[1].split('.').reverse().join('-'),periodEnd:r[1].split('.').reverse().join('-'),payment:Number(r[4])||0,interest:Number(r[3])||0,body:Number(r[2])||0,balance:Number(r[5])||0}));
+function v125BankScheduleData(){
+ return BANK_LOAN_CURRENT_SCHEDULE.map((r,i)=>{const monthIndex=2026*12+9+i,year=Math.floor(monthIndex/12),month=monthIndex%12+1,periodEnd=new Date(Date.UTC(year,month,0,12)).toISOString().slice(0,10);return {n:r[0],payDate:r[1].split('.').reverse().join('-'),periodEnd,payment:Number(r[4]),interest:Number(r[3]),body:Number(r[2]),balance:Number(r[5]),bankVersion:'2026-11-02'}});
 }
+
 function money2(n){return new Intl.NumberFormat('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2}).format(Number(n)||0)+' ₽'}
 let loanRange='all';
 function setLoanRange(range){loanRange=range;renderLoanCharts(loanScheduleData())}
-function renderLoanCharts(rows){
- const svg=document.getElementById('loanDebtSvg');
- if(svg){
-  const now=new Date();let data=rows;
-  if(loanRange!=='all'){const start=new Date(now.getFullYear()-Number(loanRange)+1,now.getMonth(),1);data=rows.filter(r=>new Date(r.payDate+'T12:00:00')>=start);if(!data.length)data=rows.slice(0,12)}
-  const step=Math.max(1,Math.floor(data.length/48));const pts=data.filter((r,i)=>i%step===0||i===data.length-1);const w=900,h=310,pad={l:48,r:18,t:20,b:42};const max=Math.max(...pts.map(r=>r.balance),4500000),min=Math.min(...pts.map(r=>r.balance),0);const range=Math.max(1,max-min);const x=i=>pad.l+(i/Math.max(pts.length-1,1))*(w-pad.l-pad.r);const y=v=>pad.t+(1-(v-min)/range)*(h-pad.t-pad.b);
-  const line=pts.map((r,i)=>`${x(i).toFixed(1)},${y(r.balance).toFixed(1)}`).join(' ');const area=`${pad.l},${h-pad.b} ${line} ${x(pts.length-1)},${h-pad.b}`;
-  const grid=[0,.25,.5,.75,1].map(t=>{const yy=pad.t+t*(h-pad.t-pad.b);const val=max-t*range;return `<line x1="${pad.l}" y1="${yy}" x2="${w-pad.r}" y2="${yy}" stroke="#e8edf5" stroke-width="1"/><text x="${pad.l-8}" y="${yy+4}" text-anchor="end" fill="#7b879b" font-size="11">${money2(val).replace(' ₽','')}</text>`}).join('');
-  const labels=pts.filter((r,i)=>i===0||i===pts.length-1||i===Math.floor(pts.length/2)).map((r,idx)=>{const original=pts.indexOf(r),anchor=idx===0?'start':idx===2?'end':'middle';return `<text x="${x(original)}" y="${h-14}" text-anchor="${anchor}" fill="#718096" font-size="11">${fmtDate(r.payDate)}</text>`}).join('');
-  svg.innerHTML=`${grid}<polygon points="${area}" fill="#4a73f7" opacity=".08"></polygon><polyline points="${line}" fill="none" stroke="#4a73f7" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></polyline><circle cx="${x(0)}" cy="${y(pts[0].balance)}" r="5" fill="#4a73f7"></circle><circle cx="${x(pts.length-1)}" cy="${y(pts[pts.length-1].balance)}" r="6" fill="#31c487"></circle>${labels}`;
-  const first=pts[0],last=pts[pts.length-1];const tip=document.getElementById('loanChartTooltip');if(tip)tip.innerHTML=`${loanRange==='all'?'Весь срок':loanRange+' года'}<b>${money2(last.balance)}</b><span>${fmtDate(last.payDate)}</span>`;
-  const sum=document.getElementById('loanChartSummary');if(sum)sum.textContent=`${fmtDate(first.payDate)} → ${fmtDate(last.payDate)}`;
-  document.querySelectorAll('[data-loan-range]').forEach(b=>b.classList.toggle('active',String(b.dataset.loanRange)===String(loanRange)));
- }
- const totalI=BANK_LOAN_INFO.totalInterest,totalB=BANK_LOAN_INFO.totalPrincipal;const split=document.getElementById('loanSplitChart');if(split){const max=Math.max(totalI,totalB,1);split.innerHTML=`<div class="bar-row"><div class="bar-top"><span>Тело кредита</span><b>${money2(totalB)}</b></div><div class="bar"><i style="width:${totalB/max*100}%"></i></div></div><div class="bar-row"><div class="bar-top"><span>Проценты</span><b>${money2(totalI)}</b></div><div class="bar"><i style="width:${totalI/max*100}%"></i></div></div><div class="loan-total-line">По актуальному банковскому графику: <b>${money2(totalB+totalI)}</b></div>`}
-}
 
 function parseEarlyDate(v){return v?new Date(v+'T12:00:00'):null}
 function isoDate(d){return d.toISOString().slice(0,10)}
@@ -6792,8 +6908,8 @@ function getEarlyPayments(report=false){
  return payments.filter(x=>x.amount>0&&x.date).sort((a,b)=>a.date.localeCompare(b.date));
 }
 function firstUpcomingLoanRow(){
- const rows=loanScheduleData(), now=today();
- return rows.find(r=>r.payDate>=now)||rows[rows.length-1];
+ const rows=loanScheduleData(),checkpoint=v125MortgageSnapshot();
+ return rows.find(r=>(!checkpoint||r.payDate>checkpoint.date)&&v125ScheduledAllocated(r.payDate,rows)<r.payment-.005)||null;
 }
 function addEarlyPaymentRow(amount=0,date=''){
  const wrap=document.getElementById('earlyPlanRows');if(!wrap)return;
@@ -6818,7 +6934,7 @@ function resetEarlyPayments(){
 }
 function renderEarlyPlanRows(){
  const wrap=document.getElementById('earlyPlanRows');if(!wrap)return;
- const sim=simulateEarlyPlan(getEarlyPayments(),document.getElementById('earlyMode')?.value||'term'),available=(sim?.rows||[]).filter(r=>r.kind==='extra'||r.kind==='unused');
+ const sim=v125Scenario(getEarlyPayments(),document.getElementById('earlyMode')?.value||'term'),available=(sim?.rows||[]).filter(r=>r.kind==='extra'||r.kind==='unused');
  [...wrap.querySelectorAll('.early-plan-row[data-extra-row]')].forEach((row,i)=>{
   const n=row.querySelector('.early-plan-num');if(n)n.textContent=i+1;
   const amount=v113ReadMoney(row.querySelector('.early-plan-amount'),{optional:true,report:false}),date=row.querySelector('.early-plan-date')?.value||'',index=available.findIndex(r=>r.date===date&&r.requested===amount),payment=index>=0?available.splice(index,1)[0]:null;
@@ -6829,12 +6945,12 @@ function refreshEarlyPlan(){
  const result=document.getElementById('earlyResult');
  if(result)result.innerHTML='<div class="form-note">Черновик расчёта. Введите сумму и дату, затем нажмите «Рассчитать весь план». Расходы и ипотечный график не меняются.</div>';
  renderEarlyPlanRows();
- const rows=loanScheduleData(), draft=getEarlyPayments(),extras=draft||[],first=extras[0],base=first?rows.find(r=>r.payDate>=first.date):firstUpcomingLoanRow();
+ const rows=loanScheduleData(), draft=getEarlyPayments(),extras=draft||[],first=extras[0],base=first?rows.find(r=>r.payDate>=first.date&&(!v125MortgageSnapshot()||r.payDate>v125MortgageSnapshot().date)&&v125ScheduledAllocated(r.payDate,rows)<r.payment-.005):firstUpcomingLoanRow();
  if(draft===null&&result)result.innerHTML='<div class="form-note">Проверьте суммы досрочных платежей: например, 1 250,50; не больше двух знаков после запятой.</div>';
  const baseEl=document.getElementById('earlyBasePayment'),dateEl=document.getElementById('earlyBaseDate');
  if(baseEl)baseEl.textContent=base?money2(base.payment):'—';
  if(dateEl)dateEl.textContent=base?`до ${fmtDate(base.payDate)}`:'—';
- const sim=first?simulateEarlyPlan(extras,document.getElementById('earlyMode')?.value||'term'):null,firstRow=sim?.rows.find(r=>r.kind==='extra');
+ const sim=first?v125Scenario(extras,document.getElementById('earlyMode')?.value||'term'):null,firstRow=sim?.rows.find(r=>r.kind==='extra');
  const firstTotal=firstRow?.total||0;
  const totalEl=document.getElementById('earlyTotalPayment');if(totalEl)totalEl.textContent=first?money2(firstTotal):'—';
  const planTotal=sim?.totalExtra||0;
@@ -6847,55 +6963,307 @@ function refreshEarlyPlan(){
    const fb=document.getElementById('earlyFirstBalance');if(fb)fb.textContent=money2(sim?.firstBalance??prevBal);
  }else{const fb=document.getElementById('earlyFirstBalance');if(fb)fb.textContent='—'}
 }
-function simulateEarlyPlan(extras,mode){
- const base=loanScheduleData(),round=n=>Math.round((n+Number.EPSILON)*100)/100;
- if(!base.length||!Array.isArray(extras))return null;
- const sorted=extras.map(x=>({date:String(x.date||''),amount:Number(x.amount)})).sort((a,b)=>a.date.localeCompare(b.date));
- if(sorted.some(x=>!/^\d{4}-\d{2}-\d{2}$/.test(x.date)||!Number.isFinite(x.amount)||x.amount<0||x.date<'2026-09-02'||x.date>base[base.length-1].payDate))return null;
- const positive=sorted.filter(x=>x.amount>0),firstIndex=positive.length?base.findIndex(r=>r.payDate>=positive[0].date):0;
+function simulateEarlyPlan(extras,mode,options={}){
+ const round=n=>Math.round((n+Number.EPSILON)*100)/100;
+ const validDate=value=>typeof value==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(value)&&Number.isFinite(Date.parse(value+'T12:00:00Z'))&&new Date(value+'T12:00:00Z').toISOString().slice(0,10)===value;
+ const day=value=>Date.parse(value+'T12:00:00Z')/86400000;
+ const money=value=>typeof value==='number'&&Number.isFinite(value)&&value>=0&&Number.isSafeInteger(Math.round(value*100));
+ if(!Array.isArray(extras)||!options||typeof options!=='object'||Array.isArray(options)||!['term','payment'].includes(mode))return null;
+ // This source is always the bank version, never the payment projection.
+ const reference=typeof v125BankScheduleData==='function'?v125BankScheduleData():loanScheduleData();
+ const source=Object.hasOwn(options,'base')?options.base:reference;
+ if(!Array.isArray(source)||!source.length)return null;
+ const base=source.map(r=>({...r}));
+ if(base.some((r,i)=>!validDate(r.payDate)||['payment','interest','body','balance'].some(k=>!money(r[k]))||(i>0&&r.payDate<=base[i-1].payDate)||round(r.payment-r.body-r.interest)<0))return null;
+ const contract=typeof BANK_LOAN_INFO==='object'?String(BANK_LOAN_INFO.contractDate||''):'';
+ const contractDate=/^\d{2}\.\d{2}\.\d{4}$/.test(contract)?contract.split('.').reverse().join('-'):contract;
+ const sorted=extras.map(x=>({date:String(x?.date||''),amount:x?.amount})).sort((a,b)=>a.date.localeCompare(b.date));
+ const positive=sorted.filter(x=>x.amount>0),anchored=Object.hasOwn(options,'openingBalance')||Object.hasOwn(options,'openingDate');
+ const firstIndex=anchored?0:(positive.length?base.findIndex(r=>r.payDate>=positive[0].date):0);
  if(firstIndex<0)return null;
- let bal=firstIndex>0?base[firstIndex-1].balance:4500000,ei=0,interest=0,totalExtra=0,totalUnused=0,totalCharges=0,rows=[];
- for(let i=firstIndex;i<base.length&&bal>.005;i++){
-  const bank=base[i],start=parseEarlyDate(i>0?base[i-1].payDate:'2026-09-02'),end=parseEarlyDate(bank.payDate),baseStart=i>0?base[i-1].balance:4500000,totalDays=Math.max(1,(end-start)/86400000);
-  let cursor=start;
-  while(ei<positive.length&&parseEarlyDate(positive[ei].date)<=end){
-   const ex=positive[ei++],date=parseEarlyDate(ex.date),days=Math.max(0,(date-cursor)/86400000),accrued=round(Number(bank.interest)*(days/totalDays)*(bal/Math.max(baseStart,1))),applied=Math.min(bal,round(ex.amount)),unused=round(ex.amount-applied);
-   interest=round(interest+accrued);totalExtra=round(totalExtra+applied);totalUnused=round(totalUnused+unused);bal=round(Math.max(0,bal-applied));
-   rows.push({date:ex.date,kind:'extra',scheduled:0,extra:applied,requested:ex.amount,unused,total:round(applied+accrued),interest:accrued,charges:0,body:applied,balance:bal});cursor=date;
-   if(bal<=.005)break;
-  }
-  if(bal<=.005)break;
-  const accrued=round(Number(bank.interest)*(Math.max(0,(end-cursor)/86400000)/totalDays)*(bal/Math.max(baseStart,1))),charges=round(Math.max(0,Number(bank.payment)-Number(bank.body)-Number(bank.interest)));
-  let payment=Number(bank.payment);
-  if(mode==='payment'&&totalExtra>0){const remaining=Math.max(1,base.length-i),rate=Number(bank.interest)/Math.max(baseStart,1),annuity=rate>0?bal*rate/(1-Math.pow(1+rate,-remaining)):bal/remaining;payment=Math.min(payment,round(annuity+charges))}
-  const body=round(Math.min(bal,Math.max(0,payment-accrued-charges))),actual=round(body+accrued+charges);
-  bal=round(Math.max(0,bal-body));interest=round(interest+accrued);totalCharges=round(totalCharges+charges);
-  rows.push({date:bank.payDate,kind:'scheduled',scheduled:actual,extra:0,unused:0,total:actual,interest:accrued,charges,body,balance:bal});
+ const first=base[firstIndex];
+ const previousBankDate=row=>{
+  if(validDate(row.periodStart))return row.periodStart;
+  const index=Array.isArray(reference)?reference.findIndex(r=>r.payDate===row.payDate):-1;
+  if(index>0&&validDate(reference[index-1].payDate))return reference[index-1].payDate;
+  return index===0&&validDate(contractDate)?contractDate:null;
+ };
+ const startDate=Object.hasOwn(options,'openingDate')?options.openingDate:(firstIndex>0?base[firstIndex-1].payDate:previousBankDate(first));
+ const opening=Object.hasOwn(options,'openingBalance')?options.openingBalance:round(first.balance+first.body);
+ if(!validDate(startDate)||startDate>first.payDate||!money(opening))return null;
+ if(sorted.some(x=>!validDate(x.date)||!money(x.amount)||x.date<startDate||x.date>base[base.length-1].payDate))return null;
+ // An untouched bank baseline is authoritative, including interest-only or
+ // fee-only rows after principal reaches zero. Reconstructing it from a
+ // principal loop would silently discard those final contractual payments.
+ if(!positive.length&&opening===round(first.balance+first.body)&&startDate===previousBankDate(first)){
+  const selected=base.slice(firstIndex),rows=selected.map(r=>({date:r.payDate,kind:'scheduled',scheduled:r.payment,extra:0,unused:0,total:r.payment,interest:r.interest,charges:round(Math.max(0,r.payment-r.body-r.interest)),body:r.body,balance:r.balance}));
+  const remainingBalance=selected.at(-1).balance,paidOff=remainingBalance<=.005,lastCash=rows.filter(r=>r.total>0).at(-1),principalEndDate=opening===0?startDate:rows.find(r=>r.balance<=.005)?.date||null;
+  const totalInterest=round(rows.reduce((n,r)=>n+r.interest,0)),totalCharges=round(rows.reduce((n,r)=>n+r.charges,0));
+  return {rows,oldInterest:totalInterest,totalInterest,totalExtra:0,totalUnused:0,totalCharges,totalCash:round(rows.reduce((n,r)=>n+r.total,0)),remainingBalance,paidOff,endDate:paidOff?(lastCash?.date||startDate):null,principalEndDate,monthsSaved:0,firstBalance:null,oldEndDate:base.at(-1).payDate};
  }
- // Later planned extras after payoff remain unused; they are never principal.
+ // The supplied revised bank schedule explicitly identifies its calendar
+ // interest periods. Future changes use daily opening principal and retain
+ // the bank's fractional-interest carry between periods.
+ const dailyRows=base.slice(firstIndex);
+ if(dailyRows.every(r=>r.bankVersion==='2026-11-02'&&validDate(r.periodEnd)&&r.periodEnd<=r.payDate)&&Array.isArray(reference)&&reference.length&&validDate(contractDate)){
+  const rate=typeof BANK_LOAN_INFO==='object'?Number(BANK_LOAN_INFO.rate):NaN;
+  if(!Number.isFinite(rate)||rate<0||startDate<contractDate||dailyRows.some(r=>r.periodEnd<startDate))return null;
+  const dateAt=d=>new Date(d*86400000).toISOString().slice(0,10),yearDays=d=>{const y=new Date(d*86400000).getUTCFullYear();return y%4===0&&(y%100!==0||y%400===0)?366:365};
+  const referenceByDay=new Map(reference.map(r=>[day(r.payDate),r]));
+  let baselineBalance=round(reference[0].body+reference[0].balance),baselineAccrued=0,baselinePaid=0;
+  // This seed includes interest accrued after the last calendar boundary but
+  // before an ordinary debit was posted (e.g. Nov1-2 before the Nov2 payment).
+  for(let d=day(contractDate)+1;d<=day(startDate);d++){
+   baselineAccrued+=baselineBalance*rate/yearDays(d);
+   const r=referenceByDay.get(d);if(r){baselineBalance=round(baselineBalance-r.body);baselinePaid=round(baselinePaid+r.interest)}
+  }
+  const estimatedSeed=Math.abs(baselineBalance-opening)>.005;
+  let balance=round(opening),accrued=(baselineAccrued-baselinePaid)*(estimatedSeed&&baselineBalance>0?opening/baselineBalance:1),paidInterest=0,totalInterest=0,totalCharges=0,totalExtra=0,totalUnused=0,rows=[],ei=0,principalEndDate=opening===0?startDate:null;
+  const periodTotals=new Map(),bankByDay=new Map(dailyRows.map(r=>[day(r.payDate),r])),periodDays=new Set(dailyRows.map(r=>day(r.periodEnd)));
+  const extraRow=ex=>{
+   const applied=round(Math.min(balance,ex.amount)),unused=round(ex.amount-applied);balance=round(Math.max(0,balance-applied));totalExtra=round(totalExtra+applied);totalUnused=round(totalUnused+unused);
+   const interest=balance<=.005?Math.max(0,round(accrued-paidInterest)):0;paidInterest=round(paidInterest+interest);totalInterest=round(totalInterest+interest);
+   if(balance<=.005&&!principalEndDate)principalEndDate=ex.date;
+   rows.push({date:ex.date,kind:'extra',scheduled:0,extra:applied,requested:ex.amount,unused,total:round(applied+interest),interest,charges:0,body:applied,balance});
+  };
+  while(ei<positive.length&&positive[ei].date===startDate)extraRow(positive[ei++]);
+  for(let d=day(startDate)+1;d<=day(base.at(-1).payDate);d++){
+   if(balance<=.005&&Math.max(0,round(accrued-paidInterest))===0)break;
+   accrued+=balance*rate/yearDays(d);if(periodDays.has(d))periodTotals.set(d,accrued);
+   const bank=bankByDay.get(d);
+   if(bank){
+    const assessed=periodTotals.get(day(bank.periodEnd));if(assessed===undefined)return null;
+    const interest=Math.max(0,round(assessed-paidInterest)),charges=balance>.005?round(Math.max(0,bank.payment-bank.body-bank.interest)):0;let payment=bank.payment;
+    if(mode==='payment'&&totalExtra>0&&balance>.005){const remaining=Math.max(1,dailyRows.filter(r=>r.payDate>=bank.payDate&&r.body>0).length),monthlyRate=rate/12,annuity=monthlyRate>0?balance*monthlyRate/(1-Math.pow(1+monthlyRate,-remaining)):balance/remaining;payment=Math.min(payment,round(annuity+charges))}
+    const body=round(Math.min(balance,Math.max(0,payment-interest-charges))),actual=round(body+interest+charges);balance=round(Math.max(0,balance-body));paidInterest=round(paidInterest+interest);totalInterest=round(totalInterest+interest);totalCharges=round(totalCharges+charges);
+    if(balance<=.005&&!principalEndDate)principalEndDate=bank.payDate;
+    rows.push({date:bank.payDate,kind:'scheduled',scheduled:actual,extra:0,unused:0,total:actual,interest,charges,body,balance});
+   }
+   const date=dateAt(d);while(ei<positive.length&&positive[ei].date===date)extraRow(positive[ei++]);
+  }
+  for(;ei<positive.length;ei++){const ex=positive[ei];totalUnused=round(totalUnused+ex.amount);rows.push({date:ex.date,kind:'unused',scheduled:0,extra:0,requested:ex.amount,unused:ex.amount,total:0,interest:0,charges:0,body:0,balance})}
+  const remainingInterest=Math.max(0,round(accrued-paidInterest)),paidOff=balance<=.005&&remainingInterest===0,lastCash=rows.filter(r=>r.total>0).at(-1),scheduled=rows.filter(r=>r.kind==='scheduled');
+  return {rows,oldInterest:round(dailyRows.reduce((n,r)=>n+r.interest,0)),totalInterest,totalExtra,totalUnused,totalCharges,totalCash:round(rows.reduce((n,r)=>n+r.total,0)),remainingBalance:balance,remainingInterest,paidOff,endDate:paidOff?(lastCash?.date||startDate):null,principalEndDate,monthsSaved:paidOff?Math.max(0,dailyRows.length-scheduled.length):0,firstBalance:rows.find(r=>r.kind==='extra')?.balance??null,oldEndDate:base.at(-1).payDate,dailyInterest:true,interestSeedEstimated:estimatedSeed};
+ }
+ let bal=round(opening),ei=0,interest=0,totalExtra=0,totalUnused=0,totalCharges=0,rows=[],lastPaidDate=bal===0?startDate:null;
+ for(let i=firstIndex;i<base.length&&bal>.005;i++){
+  const bank=base[i],periodStart=i>0?base[i-1].payDate:(previousBankDate(bank)||startDate),end=bank.payDate;
+  // The bank's original opening balance and interval calibrate its exact row.
+  // An explicit opening anchor changes the simulated balance, not that rate.
+  const baseStart=round(bank.balance+bank.body),totalDays=Math.max(1,day(end)-day(periodStart));
+  if(baseStart<=0)return null;
+  let cursor=i===firstIndex?startDate:base[i-1].payDate,bucket=0;
+  const accrue=to=>{const days=Math.max(0,day(to)-day(cursor));bucket=round(bucket+Number(bank.interest)*(days/totalDays)*(bal/baseStart));cursor=to};
+  const applyExtra=ex=>{
+   const applied=round(Math.min(bal,ex.amount)),unused=round(ex.amount-applied);
+   bal=round(Math.max(0,bal-applied));totalExtra=round(totalExtra+applied);totalUnused=round(totalUnused+unused);
+   // Partial prepayment is principal only. At full closure accrued interest
+   // becomes payable once; it must never also appear in another payment.
+   const accrued=bal<=.005?bucket:0;if(accrued){interest=round(interest+accrued);bucket=0}
+   rows.push({date:ex.date,kind:'extra',scheduled:0,extra:applied,requested:ex.amount,unused,total:round(applied+accrued),interest:accrued,charges:0,body:applied,balance:bal});lastPaidDate=ex.date;
+  };
+  // Scheduled payment precedes a principal-only extra on the same bank date.
+  while(ei<positive.length&&positive[ei].date<end){const ex=positive[ei++];accrue(ex.date);applyExtra(ex);if(bal<=.005)break}
+  if(bal<=.005)break;
+  accrue(end);
+  const charges=round(Math.max(0,bank.payment-bank.body-bank.interest));let payment=bank.payment;
+  if(mode==='payment'&&totalExtra>0){const remaining=Math.max(1,base.length-i),rate=bank.interest/baseStart,annuity=rate>0?bal*rate/(1-Math.pow(1+rate,-remaining)):bal/remaining;payment=Math.min(payment,round(annuity+charges))}
+  const body=round(Math.min(bal,Math.max(0,payment-bucket-charges))),actual=round(body+bucket+charges);
+  bal=round(Math.max(0,bal-body));interest=round(interest+bucket);totalCharges=round(totalCharges+charges);
+  rows.push({date:end,kind:'scheduled',scheduled:actual,extra:0,unused:0,total:actual,interest:bucket,charges,body,balance:bal});lastPaidDate=end;
+  while(ei<positive.length&&positive[ei].date===end){const ex=positive[ei++];if(bal>.005)applyExtra(ex);else{totalUnused=round(totalUnused+ex.amount);rows.push({date:ex.date,kind:'unused',scheduled:0,extra:0,requested:ex.amount,unused:ex.amount,total:0,interest:0,charges:0,body:0,balance:bal})}}
+ }
+ // Later planned extras after payoff remain explicitly unused.
  for(;ei<positive.length;ei++){const ex=positive[ei];totalUnused=round(totalUnused+ex.amount);rows.push({date:ex.date,kind:'unused',scheduled:0,extra:0,requested:ex.amount,unused:ex.amount,total:0,interest:0,charges:0,body:0,balance:bal})}
- const paidRows=rows.filter(r=>r.kind!=='unused'),last=paidRows[paidRows.length-1],oldInterest=round(base.slice(firstIndex).reduce((a,r)=>a+Number(r.interest),0)),oldScheduledCount=base.length-firstIndex,newScheduled=rows.filter(r=>r.kind==='scheduled');
- return {rows,oldInterest,totalInterest:interest,totalExtra,totalUnused,totalCharges,totalCash:round(rows.reduce((n,r)=>n+r.total,0)),remainingBalance:bal,endDate:last?.date||base[base.length-1].payDate,monthsSaved:Math.max(0,oldScheduledCount-newScheduled.length),firstBalance:rows.find(r=>r.kind==='extra')?.balance??null,oldEndDate:base[base.length-1].payDate};
+ const paidOff=bal<=.005,oldInterest=round(base.slice(firstIndex).reduce((n,r)=>n+r.interest,0)),oldScheduledCount=base.length-firstIndex,newScheduled=rows.filter(r=>r.kind==='scheduled');
+ return {rows,oldInterest,totalInterest:interest,totalExtra,totalUnused,totalCharges,totalCash:round(rows.reduce((n,r)=>n+r.total,0)),remainingBalance:bal,paidOff,endDate:paidOff?lastPaidDate:null,principalEndDate:paidOff?(opening===0?startDate:rows.find(r=>r.balance<=.005&&r.kind!=='unused')?.date||lastPaidDate):null,monthsSaved:paidOff?Math.max(0,oldScheduledCount-newScheduled.length):0,firstBalance:rows.find(r=>r.kind==='extra')?.balance??null,oldEndDate:base[base.length-1].payDate};
 }
-
 function renderEarlyRepayment(){
  const out=document.getElementById('earlyResult');if(!out)return;const extras=getEarlyPayments(true),mode=document.getElementById('earlyMode')?.value||'term';
  if(extras===null){out.innerHTML='<div class="form-note">Проверьте суммы досрочных платежей: например, 1 250,50; не больше двух знаков после запятой.</div>';return}
  if(!extras.length){out.innerHTML='<div class="form-note">Добавьте свободную сумму и дату. Можно создать несколько досрочных платежей — например 50 000 ₽ в ноябре и 100 000 ₽ в январе.</div>';refreshEarlyPlan();return}
- const sim=simulateEarlyPlan(extras,mode);if(!sim){out.innerHTML='<div class="form-note">Проверьте даты и суммы досрочных платежей.</div>';return}
- const save=Math.max(0,sim.oldInterest-sim.totalInterest),scheduled=sim.rows.filter(r=>r.kind==='scheduled'),firstExtra=sim.rows.find(r=>r.kind==='extra'),nextScheduled=scheduled[0],firstTotal=firstExtra?.total||0,last=sim.rows[sim.rows.length-1],endDate=fmtDate(sim.endDate);
+ const sim=v125Scenario(extras,mode);if(!sim){out.innerHTML='<div class="form-note">Проверьте даты и суммы. Если есть новые оплаты, сначала учтите их и сверьте остаток; будущий сценарий считается после последней учтённой оплаты.</div>';return}
+ const save=Math.max(0,sim.oldInterest-sim.totalInterest),scheduled=sim.rows.filter(r=>r.kind==='scheduled'),firstExtra=sim.rows.find(r=>r.kind==='extra'),nextScheduled=scheduled[0],firstTotal=firstExtra?.total||0,last=sim.rows[sim.rows.length-1],endDate=sim.endDate?fmtDate(sim.endDate):'Не определён';
  const oldMonths=sim.oldEndDate?Math.max(0,Math.round((parseEarlyDate(sim.oldEndDate)-parseEarlyDate(firstUpcomingLoanRow()?.payDate||sim.oldEndDate))/30.4375/86400000)):0;
  const paymentText=mode==='payment'?(nextScheduled?money2(nextScheduled.scheduled):'—'):(nextScheduled?money2(nextScheduled.scheduled):'Закрыт по модели');
  const preview=sim.rows.slice(0,14).map(r=>`<tr><td>${fmtDate(r.date)}</td><td>${r.kind==='extra'?'Досрочно':r.kind==='unused'?'Не использовано':'По графику'}</td><td>${money2(r.scheduled)}</td><td>${money2(r.extra)}</td><td>${money2(r.interest)}</td><td>${money2(r.charges)}</td><td>${money2(r.unused)}</td><td><b>${money2(r.total)}</b></td><td>${money2(r.balance)}</td></tr>`).join('');
- out.innerHTML=`<div class="early-grid"><div><small>Ваши досрочные платежи</small><b>${money2(sim.totalExtra)}</b><span>применено в тело · не использовано ${money2(sim.totalUnused)}</span></div><div><small>Экономия процентов</small><b>${money2(save)}</b><span>ориентир по модели</span></div><div><small>Было</small><b>${fmtDate(sim.oldEndDate)}</b><span>банковский график</span></div><div><small>Станет</small><b>${endDate}</b><span>${sim.monthsSaved>0?`примерно −${sim.monthsSaved} мес.`:'срок почти не меняется'}</span></div></div>
+ out.innerHTML=`<div class="early-grid"><div><small>Ваши досрочные платежи</small><b>${money2(sim.totalExtra)}</b><span>применено в тело · не использовано ${money2(sim.totalUnused)}</span></div><div><small>Экономия процентов</small><b>${money2(save)}</b><span>ориентир по модели</span></div><div><small>Было</small><b>${fmtDate(sim.oldEndDate)}</b><span>банковский график</span></div><div><small>Станет</small><b>${endDate}</b><span>${!sim.paidOff?'В доступном графике остаётся долг '+money2(sim.remainingBalance):sim.monthsSaved>0?`примерно −${sim.monthsSaved} платежей`:'срок почти не меняется'}</span></div></div>
  <div class="early-explain"><strong>${mode==='term'?'Как это работает':'Что изменится в платеже'}</strong><div style="margin-top:5px;color:#42516a;line-height:1.5;font-size:13px">${mode==='term'?`Обязательный платёж остаётся по графику. Ваши свободные деньги идут дополнительно в тело кредита. Поэтому 1 ₽ почти ничего не меняет — заметный эффект появляется только при существенных и регулярных досрочных платежах.`:`Срок стараемся сохранить близким к банковскому, а после досрочного погашения пересчитываем ориентир ежемесячного платежа. Фактический платёж определит банк.`}</div></div>
  <div class="scenario-compare"><div><small>Обычный платёж</small><b>${money2(loanScheduleData().find(r=>r.payDate>=(firstExtra?.date||today()))?.payment||0)}</b><span>по выбранной ближайшей дате</span></div><div class="win"><small>${mode==='term'?'С вашим планом':'Ориентир после пересчёта'}</small><b>${paymentText}</b><span>${mode==='term'?'плюс ваши свободные деньги в указанные даты':'расчётная сумма после досрочного погашения'}</span></div></div>
- <div class="form-note"><b>Важно:</b>это сценарный расчёт, а не обещание банка. УралСиб может получить другой результат из-за даты зачисления, дневного начисления процентов и округлений. Досрочная сумма означает взнос в тело; начисленные до этой даты проценты показаны отдельно и включены в общую сумму. Превышение остатка не применяется в тело. Прочие начисления банковского графика не уменьшают основной долг. Это оценка: сумму полного закрытия и дополнительные начисления подтвердит банк.</div>
+ <div class="form-note"><b>Важно:</b>это сценарный расчёт, а не обещание банка. УралСиб может получить другой результат из-за даты зачисления, дневного начисления процентов и округлений. Досрочная сумма означает взнос в тело. При частичном погашении проценты остаются в обычном платеже и повторно не списываются. При полном закрытии накопленные проценты добавляются один раз. Превышение остатка не применяется в тело. Прочие начисления банковского графика не уменьшают основной долг. Это оценка: сумму полного закрытия и дополнительные начисления подтвердит банк.</div>
  <div class="early-preview"><div class="early-preview-head"><b>Первые изменения по вашему плану</b><span>обязательные и дополнительные платежи отдельно</span></div><div class="table-wrap"><table class="table"><thead><tr><th>Дата</th><th>Тип</th><th>Основной</th><th>В тело досрочно</th><th>Проценты</th><th>Прочие начисления</th><th>Не использовано</th><th>Всего</th><th>Остаток</th></tr></thead><tbody>${preview}</tbody></table></div></div>`;
 }
 
 function toggleLoanSchedule(){const x=document.getElementById('loanScheduleWrap');if(x)x.style.display=x.style.display==='none'?'block':'none'}
-function renderLoanSchedule(){const rows=loanScheduleData();const body=document.getElementById('loanScheduleBody');if(body)body.innerHTML=rows.map(r=>`<tr><td>${r.n}</td><td>${new Date(r.payDate+'T12:00:00').toLocaleDateString('ru-RU')}</td><td>${money2(r.payment)}</td><td>${money2(r.interest)}</td><td>${money2(r.body)}</td><td>${money2(r.balance)}</td></tr>`).join('');const now=new Date();const completed=rows.filter(r=>new Date(r.payDate+'T23:59:59')<=now);const current=completed.length?completed[completed.length-1].balance:4500000;const next=rows.find(r=>new Date(r.payDate+'T00:00:00')>now);const balEl=document.getElementById('loanBalanceNow');if(balEl)balEl.textContent=money2(current);const endEl=document.getElementById('loanEndDate');if(endEl)endEl.textContent=rows[rows.length-1]?.payDate?new Date(rows[rows.length-1].payDate+'T12:00:00').toLocaleDateString('ru-RU'):'—';const nextEl=document.getElementById('loanNextPayment');if(nextEl)nextEl.textContent=next?`${money(next.payment)} · ${new Date(next.payDate+'T12:00:00').toLocaleDateString('ru-RU')}`:'—';renderLoanCharts(rows)}
+/* v125 · Confirmed mortgage allocations and bank checkpoints, independent of drafts. */
+function v125Cents(n){return Math.round(Number(n)*100)}
+function v125Money(n){return typeof n==='number'&&Number.isFinite(n)&&n>=0&&n<=1e12&&Math.abs(n*100-Math.round(n*100))<.001}
+function v125MortgageRecord(e){
+ const r=e?.mortgageAllocation;
+ if(!r||r.version!==1||!['regular','early'].includes(r.kind)||e.type!=='expense'||e.installmentId||v77EntryIsLinked(e.id)||!isValidCalendarDate(e.date)||r.date!==e.date||!v125Money(e.amount)||e.amount<=0||r.amount!==e.amount)return null;
+ if(['principal','interest','charges','extraPrincipal'].some(k=>!v125Money(r[k]))||v125Cents(r.principal)+v125Cents(r.interest)+v125Cents(r.charges)!==v125Cents(e.amount)||r.extraPrincipal>r.principal)return null;
+ if(r.kind==='early'&&r.extraPrincipal!==r.principal)return null;
+ if(e.date<String(BANK_LOAN_INFO.contractDate||'').split('.').reverse().join('-'))return null;
+ if(r.kind==='regular'&&(!isValidCalendarDate(r.dueDate)||![...v125BankScheduleData(),...v125MortgageCharges()].some(x=>x.payDate===r.dueDate)))return null;
+ return r;
+}
+function v125BuiltinMortgageSnapshot(){return v125BankScheduleData()[0]?.bankVersion==='2026-11-02'?BANK_LOAN_RECONCILIATION:null}
+function v125SnapshotKey(s){return s?JSON.stringify([s.date,s.balance,s.endDate,s.updated_at||s.source||'']):''}
+function v125MortgageSnapshot(){
+ const s=state.settings?.loans?.mortgageSnapshot||v125BuiltinMortgageSnapshot(),contract=String(BANK_LOAN_INFO.contractDate||'').split('.').reverse().join('-');
+ return s?.version===1&&isValidCalendarDate(s.date)&&s.date>=contract&&s.date<=today()&&v125Money(s.balance)&&isValidCalendarDate(s.endDate)&&s.endDate>=s.date?s:null;
+}
+
+function v125MortgageRecords(){return (state.entries||[]).map(e=>({entry:e,record:v125MortgageRecord(e)})).filter(x=>x.record&&x.entry.date<=today()).sort((a,b)=>a.entry.date.localeCompare(b.entry.date)||(a.record.kind==='early')-(b.record.kind==='early')||a.entry.id.localeCompare(b.entry.id))}
+function v125ScheduledCash(e){const r=v125MortgageRecord(e);if(e?.mortgageAllocation&&!r)return 0;return r?(r.kind==='early'?0:Math.max(0,e.amount-r.extraPrincipal)):(!v125BuiltinMortgageSnapshot()&&v78BankExpense(e)?Number(e.amount):0)}
+function v125ScheduledMonth(e){const r=v125MortgageRecord(e);return String(r?.dueDate||e.date||'').slice(0,7)}
+function v125ScheduledAllocated(date,rows){
+ const checkpoint=v125MortgageSnapshot();const covered=checkpoint&&date<=checkpoint.date?rows.find(r=>r.payDate===date):null;if(covered)return covered.payment;
+ const explicit=(state.entries||[]).filter(e=>{const r=v125MortgageRecord(e);return r?.kind==='regular'&&r.dueDate===date}).reduce((n,e)=>n+v125Cents(v125ScheduledCash(e)),0);
+ const legacy=(state.entries||[]).filter(e=>!e.mortgageAllocation&&!v125BuiltinMortgageSnapshot()&&v78BankExpense(e)&&(!checkpoint||e.date>checkpoint.date)&&String(e.date||'').slice(0,7)===date.slice(0,7)).reduce((n,e)=>n+v125Cents(e.amount),0);
+ const prior=rows.filter(r=>r.payDate<date&&r.payDate.slice(0,7)===date.slice(0,7)).reduce((n,r)=>{const linked=(state.entries||[]).filter(e=>v125MortgageRecord(e)?.dueDate===r.payDate).reduce((s,e)=>s+v125Cents(v125ScheduledCash(e)),0);return n+Math.max(0,v125Cents(r.payment)-linked)},0);
+ const row=rows.find(r=>r.payDate===date);return Math.min(row?.payment||0,(explicit+Math.max(0,legacy-prior))/100);
+}
+function v125MortgageCharges(){return v125BuiltinMortgageSnapshot()?BANK_LOAN_CURRENT_CHARGES.map(r=>({...r,n:'—',periodEnd:r.payDate,body:0,interest:0,charges:r.payment,balance:null,kind:'insurance',bankVersion:'2026-11-02'})):[]}
+function v125MortgageProgress(){
+ const base=v125BankScheduleData(),principal=base.length?Math.round((base[0].body+base[0].balance)*100)/100:0;
+ const contract=String(BANK_LOAN_INFO.contractDate||'').split('.').reverse().join('-'),start=isValidCalendarDate(contract)?contract:base[0]?.payDate;
+ const builtin=v125BuiltinMortgageSnapshot(),snapshot=v125MortgageSnapshot(),records=v125MortgageRecords(),history=[{date:start,balance:principal,kind:'opening',principal:0,amount:0,label:'Начало кредита'}],warnings=[],events=[];
+ const key=v125SnapshotKey(snapshot),builtinKey=v125SnapshotKey(builtin);
+ if(builtin&&builtin.date<=today())events.push({date:builtin.date,priority:0,kind:'bank-regular',principal:builtin.regularPrincipal,amount:builtin.regularPayment,interest:builtin.paidInterest,extraPrincipal:0,label:'Обычный платёж · подтверждён банком'},{date:builtin.date,priority:1,kind:'bank-early',principal:builtin.earlyPrincipal,amount:builtin.earlyPrincipal,interest:0,extraPrincipal:builtin.earlyPrincipal,label:'Досрочно · подтверждено банком'});
+ for(const {entry:e,record:r} of records){
+  const after=r.afterCheckpoint===true&&r.checkpointKey===key&&e.date===snapshot?.date;
+  const afterBuiltin=r.afterCheckpoint===true&&r.checkpointKey===builtinKey&&e.date===builtin?.date;
+  if(builtin&&e.date<=builtin.date&&!after&&!afterBuiltin)continue;
+  if(snapshot?.includedEntryStates&&e.date===snapshot.date&&!after&&snapshot.includedEntryStates[e.id]!==JSON.stringify([e.date,e.amount,r])&&r.checkpointKey!==key)warnings.push('Платёж в день сверки добавлен или изменён позже. Уточните, включён ли он в остаток банка.');
+  events.push({date:e.date,priority:after?4:afterBuiltin?2:r.kind==='regular'?0:1,kind:r.kind,principal:r.principal,amount:e.amount,interest:r.interest,charges:r.charges,extraPrincipal:r.extraPrincipal,entryId:e.id,label:r.kind==='early'?'Досрочное погашение':'Обычный платёж',dueDate:r.dueDate});
+ }
+ if(snapshot)events.push({date:snapshot.date,priority:3,kind:'bank',principal:0,amount:0,bankBalance:snapshot.balance,label:'Остаток по данным банка',endDate:snapshot.endDate});
+ events.sort((a,b)=>a.date.localeCompare(b.date)||a.priority-b.priority||String(a.entryId||'').localeCompare(String(b.entryId||'')));
+ let balance=principal,anchorDate=start;
+ for(const event of events){if(event.kind==='bank')balance=event.bankBalance;else{if(event.principal>balance+.005)warnings.push('Погашенное тело превышает остаток. Проверьте распределение платежей.');balance=Math.round((balance-event.principal)*100)/100}anchorDate=event.date;history.push({...event,balance})}
+ const invalid=(state.entries||[]).filter(e=>e.mortgageAllocation&&!v125MortgageRecord(e));if(invalid.length)warnings.push('Есть изменённые или некорректные оплаты. Откройте их и подтвердите распределение заново.');
+ const bankCutoff=snapshot?.date||start,regular=records.filter(x=>x.record.kind==='regular'&&x.entry.date>bankCutoff&&base.some(r=>r.payDate===x.record.dueDate)),lastRegular=regular.at(-1);
+ const openingDate=lastRegular?.entry.date||bankCutoff,openingBalance=history.filter(p=>p.date<=openingDate).at(-1)?.balance??principal;
+ const missing=base.filter(row=>row.payDate>bankCutoff&&row.payDate<=today()&&records.filter(x=>x.record.kind==='regular'&&x.record.dueDate===row.payDate).reduce((n,x)=>n+v125Cents(x.entry.amount-x.record.extraPrincipal),0)<v125Cents(row.payment));
+ const futureBase=base.filter(r=>r.payDate>openingDate),extras=records.filter(x=>x.record.kind==='early'&&x.entry.date>openingDate).map(x=>({date:x.entry.date,amount:x.record.principal}));
+ if(records.some(x=>x.record.kind==='early'&&x.entry.date>openingDate&&(x.record.interest>0||x.record.charges>0)))warnings.push('При досрочном взносе отдельно оплачены проценты или начисления. Для прогноза нужна новая сверка или график банка.');
+ const settledOpening=openingDate===start||base.some(r=>r.payDate===openingDate)||openingBalance===0;
+ let projection=balance>=0&&!warnings.length&&!missing.length&&settledOpening&&futureBase.length?simulateEarlyPlan(extras,'term',{base:futureBase,openingBalance,openingDate}):null;
+ if(balance===0&&projection&&records.some(x=>x.record.kind==='early'&&x.entry.date>openingDate)&&projection.rows.some(r=>r.kind==='extra'&&r.date<=anchorDate&&r.interest>0)){warnings.push('Основной долг погашен, но начисленные проценты при полном закрытии ещё не сверены. Подтвердите окончательный расчёт с банком.');projection=null}
+ const bankUnchanged=builtin&&snapshot===builtin&&anchorDate===builtin.date&&balance===builtin.balance;
+ const projected=(projection?.rows||[]).filter(r=>r.kind==='scheduled').map((r,i)=>({n:i+1,payDate:r.date,periodEnd:r.periodEnd||r.date,payment:r.total,body:r.body,interest:r.interest,charges:r.charges,balance:r.balance,estimated:!bankUnchanged}));
+ let schedule=projection?[...base.filter(r=>r.payDate<=openingDate),...projected]:base;
+ if(builtin)schedule=schedule.map(r=>r.payDate===builtin.date?{...r,payment:builtin.regularPayment,body:builtin.regularPrincipal,balance:builtin.balance+builtin.earlyPrincipal,bankExtra:builtin.earlyPrincipal,afterExtraBalance:builtin.balance}:r);
+ const lastDate=projection?.endDate||base.at(-1)?.payDate;
+ schedule=[...schedule,...v125MortgageCharges().filter(r=>r.payDate<=lastDate)].sort((a,b)=>a.payDate.localeCompare(b.payDate)).map((r,i)=>({...r,n:i+1}));
+ return {balance,principal,history,projection,schedule,anchorDate,snapshot,missing,warnings,openingDate,openingBalance,futureBase,settledOpening,records,bankUnchanged};
+}
+
+function loanScheduleData(){return v125MortgageProgress().schedule}
+function v125Scenario(extras,mode){
+ const p=v125MortgageProgress();if(p.history.length===1)return simulateEarlyPlan(extras,mode);
+ if(!p.projection||!p.futureBase.length)return null;
+ const applied=p.records.filter(x=>x.record.kind==='early'&&x.entry.date>p.openingDate).map(x=>({date:x.entry.date,amount:x.record.principal}));
+ if(extras.some(x=>x.date<p.anchorDate))return null;
+ const sim=simulateEarlyPlan([...applied,...extras],mode,{base:p.futureBase,openingBalance:p.openingBalance,openingDate:p.openingDate});
+ if(sim){
+  sim.oldInterest=p.projection.totalInterest;sim.oldEndDate=p.projection.endDate;sim.monthsSaved=sim.paidOff?Math.max(0,p.projection.rows.filter(x=>x.kind==='scheduled').length-sim.rows.filter(x=>x.kind==='scheduled').length):0;
+  // Confirmed earlier extras influence future interest, but the draft summary
+  // must show only new requested amounts and their first resulting balance.
+  const historical=applied.slice();sim.rows=sim.rows.filter(row=>{if(row.kind!=='extra'&&row.kind!=='unused')return true;const i=historical.findIndex(e=>e.date===row.date&&v125Cents(e.amount)===v125Cents(row.requested));if(i<0)return true;historical.splice(i,1);return false});
+  sim.totalExtra=Math.round(sim.rows.reduce((n,r)=>n+r.extra,0)*100)/100;sim.totalUnused=Math.round(sim.rows.reduce((n,r)=>n+r.unused,0)*100)/100;sim.totalCash=Math.round(sim.rows.reduce((n,r)=>n+r.total,0)*100)/100;sim.firstBalance=sim.rows.find(r=>r.kind==='extra')?.balance??null;
+ }
+ return sim;
+}
+let v125MortgageBusy=false,v125MortgageEditing='',v125MortgageEditingStamp='',v125BankEditingStamp='',v125SelectedPoint=0,v125MortgageContext=null,v125ChartFrame=0;
+window.addEventListener('resize',()=>{cancelAnimationFrame(v125ChartFrame);v125ChartFrame=requestAnimationFrame(()=>{if(document.getElementById('loans')?.classList.contains('active')&&!document.getElementById('appRoot')?.classList.contains('auth-locked'))renderLoanCharts()})});
+function v125ClearMortgageDrafts(){v125MortgageContext=null;v125MortgageEditing='';v125MortgageEditingStamp='';v125BankEditingStamp='';for(const id of ['v125MortgagePaymentForm','v125MortgageBankForm']){const f=document.getElementById(id);if(f){f.reset();f.hidden=true}}v125MortgageError('')}
+function v125MortgageAllowed(){return !v125MortgageBusy&&v117CanWrite()&&!document.getElementById('appRoot').classList.contains('auth-locked')}
+function v125MortgageError(text){const el=document.getElementById('v125MortgageMessage');if(el){el.textContent=text;el.hidden=!text}}
+function v125MortgageCandidates(){return (state.entries||[]).filter(e=>e.type==='expense'&&!e.installmentId&&!v77EntryIsLinked(e.id)&&e.date<=today()&&(e.mortgageAllocation||v78BankExpense(e)||e.category==='Кредит')).sort((a,b)=>b.date.localeCompare(a.date)||a.id.localeCompare(b.id))}
+function v125OpenMortgagePayment(id=''){
+ if(!v125MortgageAllowed())return;v125MortgageContext={epoch:authEpoch,household:CONFIG.household};
+ const select=document.getElementById('v125MortgageEntry'),candidates=v125MortgageCandidates();
+ select.innerHTML='<option value="">Выберите уже внесённый расход</option>'+candidates.map(e=>`<option value="${esc(e.id)}">${esc(fmtDate(e.date))} · ${esc(money2(e.amount))} · ${esc(e.store||e.comment||'Платёж')}</option>`).join('');
+ select.value=id;document.getElementById('v125MortgagePaymentForm').hidden=false;v125MortgageEntryChanged();select.focus({preventScroll:true});document.getElementById('v125MortgagePaymentForm').scrollIntoView({block:'nearest'});v110RefreshPickers();
+}
+function v125MortgageEntryChanged(){
+ const e=state.entries.find(x=>x.id===document.getElementById('v125MortgageEntry').value),r=v125MortgageRecord(e),rows=loanScheduleData();v125MortgageEditing=e?.id||'';v125MortgageEditingStamp=e?.updated_at||'';
+ const due=document.getElementById('v125MortgageDue');due.innerHTML=rows.map(row=>`<option value="${row.payDate}">${fmtDate(row.payDate)} · ${money2(row.payment)}</option>`).join('');
+ due.value=r?.dueDate||(rows.find(row=>row.payDate>=(e?.date||today()))||rows.at(-1))?.payDate||'';
+ document.getElementById('v125MortgageKind').value=r?.kind||'regular';
+ document.getElementById('v125MortgageInterest').value=r?.interest??'';document.getElementById('v125MortgageCharges').value=r?.charges??0;document.getElementById('v125MortgageExtra').value=r?.extraPrincipal??'';
+ document.getElementById('v125MortgageChecked').checked=false;document.getElementById('v125MortgageBankIncluded').checked=!(r?.afterCheckpoint===true&&r?.checkpointKey===v125SnapshotKey(v125MortgageSnapshot()));v125MortgageError('');v125MortgageFill(!r);v110RefreshPickers();
+}
+function v125MortgageFill(seed=true){
+ const e=state.entries.find(x=>x.id===document.getElementById('v125MortgageEntry').value),kind=document.getElementById('v125MortgageKind').value,row=loanScheduleData().find(r=>r.payDate===document.getElementById('v125MortgageDue').value);
+ const checkpoint=v125MortgageSnapshot();const inDay=!!e&&!!checkpoint&&e.date<=checkpoint.date;document.getElementById('v125MortgageBankIncludedField').hidden=!inDay;document.getElementById('v125MortgageBankIncludedLabel').textContent=inDay?'Эта оплата уже включена в остаток банка на '+fmtDate(checkpoint.date):'';
+ document.getElementById('v125MortgageDueField').hidden=kind==='early';document.getElementById('v125MortgageExtraField').hidden=kind==='early';
+ if(seed){document.getElementById('v125MortgageInterest').value=kind==='early'?0:row?.interest??0;document.getElementById('v125MortgageCharges').value=kind==='early'?0:Math.max(0,Math.round(((row?.payment||0)-(row?.interest||0)-(row?.body||0))*100)/100);document.getElementById('v125MortgageExtra').value=kind==='early'?'':Math.max(0,Math.round(((e?.amount||0)-(row?.payment||0))*100)/100)}
+ const interest=parseMoneyInput(document.getElementById('v125MortgageInterest').value),charges=parseMoneyInput(document.getElementById('v125MortgageCharges').value);const principal=e&&Number.isFinite(interest)&&Number.isFinite(charges)?Math.round((e.amount-interest-charges)*100)/100:null;
+ document.getElementById('v125MortgageAllocationPreview').textContent=e?`Расход ${money2(e.amount)} · ${fmtDate(e.date)}. В основной долг: ${principal!==null&&principal>=0?money2(principal):'проверьте проценты и начисления'}. Суммы ниже проверьте по списанию банка.`:'Выберите расход. Новый расход при привязке не создаётся.';
+}
+async function v125PersistMortgage(success){
+ const epoch=authEpoch,household=CONFIG.household;v125MortgageBusy=true;renderAll();let ok=false;try{ok=await saveAll()}finally{v125MortgageBusy=false}
+ if(epoch!==authEpoch||household!==CONFIG.household||!v117CanWrite())return false;
+ renderAll();const durable=ok||!v89StorageFailed;v125MortgageError(durable?'':'Изменение осталось в памяти. Повторите сохранение или скачайте резервную копию.');toast(localSaveMessage(ok,durable?success:'Не удалось сохранить изменение на устройстве'));return durable;
+}
+async function v125SaveMortgagePayment(){
+ if(!v125MortgageAllowed()||v125MortgageContext?.epoch!==authEpoch||v125MortgageContext?.household!==CONFIG.household)return false;const e=state.entries.find(x=>x.id===v125MortgageEditing),fail=text=>{v125MortgageError(text);return false};
+ if(!e||e.id!==document.getElementById('v125MortgageEntry').value||String(e.updated_at||'')!==v125MortgageEditingStamp)return fail('Расход изменился. Выберите его заново и проверьте суммы.');
+ const interest=v113ReadMoney('v125MortgageInterest',{optional:true}),charges=v113ReadMoney('v125MortgageCharges',{optional:true}),kind=document.getElementById('v125MortgageKind').value,principal=Math.round((Number(e.amount)-interest-charges)*100)/100,extraPrincipal=kind==='early'?principal:v113ReadMoney('v125MortgageExtra',{optional:true}),dueDate=document.getElementById('v125MortgageDue').value;
+ const checkpoint=v125MortgageSnapshot(),alreadyIncluded=document.getElementById('v125MortgageBankIncluded').checked;if(checkpoint&&e.date<checkpoint.date&&!alreadyIncluded)return fail('Оплата раньше сверки уже входит в остаток банка. Для уточнения сохраните новую сверку.');
+ const allocation={version:1,kind,date:e.date,amount:e.amount,principal,interest,charges,extraPrincipal,...(kind==='regular'?{dueDate}:{}),...(checkpoint&&e.date<=checkpoint.date?{checkpointKey:v125SnapshotKey(checkpoint),afterCheckpoint:!alreadyIncluded}:{})};
+ if(!v125MortgageRecord({...e,mortgageAllocation:allocation}))return fail('Проверьте распределение: тело, проценты и начисления должны составлять сумму расхода. Досрочная часть не может превышать тело.');
+ if(!document.getElementById('v125MortgageChecked').checked)return fail('Подтвердите, что назначение и суммы сверены с банком.');
+ e.mortgageAllocation=allocation;e.mortgagePayment=true;e.updated_at=v119MonotonicStamp(e.updated_at);v125MortgageEditingStamp=e.updated_at;document.getElementById('v125MortgagePaymentForm').hidden=true;return v125PersistMortgage('Оплата учтена; график пересчитан');
+}
+async function v125UnlinkMortgage(id){
+ if(!v125MortgageAllowed())return false;const e=state.entries.find(x=>x.id===id);if(!e?.mortgageAllocation)return false;if(!confirm('Убрать оплату из расчёта ипотеки? Сам расход останется в истории.'))return false;
+ delete e.mortgageAllocation;e.mortgagePayment=false;e.updated_at=v119MonotonicStamp(e.updated_at);return v125PersistMortgage('Привязка снята; расход сохранён');
+}
+function v125OpenMortgageBank(){
+ if(!v125MortgageAllowed())return;v125MortgageContext={epoch:authEpoch,household:CONFIG.household};const p=v125MortgageProgress(),s=p.snapshot;v125BankEditingStamp=state.settings.updated_at||'';
+ document.getElementById('v125BankDate').value=s?.date||p.anchorDate||today();document.getElementById('v125BankBalance').value=s?.balance??'';document.getElementById('v125BankEnd').value=s?.endDate||'';document.getElementById('v125BankChecked').checked=false;document.getElementById('v125MortgageBankForm').hidden=false;v125MortgageError('');v110RefreshPickers();document.getElementById('v125BankBalance').focus({preventScroll:true});
+}
+async function v125SaveMortgageBank(){
+ if(!v125MortgageAllowed()||v125MortgageContext?.epoch!==authEpoch||v125MortgageContext?.household!==CONFIG.household)return false;const fail=text=>{v125MortgageError(text);return false};if(String(state.settings.updated_at||'')!==v125BankEditingStamp)return fail('Семейные настройки изменились. Откройте сверку заново.');
+ const date=document.getElementById('v125BankDate').value,balance=v113ReadMoney('v125BankBalance'),endDate=document.getElementById('v125BankEnd').value,start=String(BANK_LOAN_INFO.contractDate||'').split('.').reverse().join('-');
+ if(!isValidCalendarDate(date)||date>today()||date<start||!v125Money(balance)||!isValidCalendarDate(endDate)||endDate<date)return fail('Укажите корректные дату сверки, остаток и дату последнего платежа.');
+ if(!document.getElementById('v125BankChecked').checked)return fail('Подтвердите, что остаток включает все списания за выбранную дату.');
+ const builtin=v125BuiltinMortgageSnapshot();if(builtin&&date<builtin.date)return fail('В файле банка уже есть более поздняя сверка от '+fmtDate(builtin.date)+'.');const includedEntryStates=Object.fromEntries(v125MortgageRecords().filter(x=>x.entry.date===date).map(x=>[x.entry.id,JSON.stringify([x.entry.date,x.entry.amount,x.record])]));
+ state.settings.loans.mortgageSnapshot={version:1,date,balance,endDate,updated_at:v119MonotonicStamp(state.settings.updated_at),includedEntryStates};state.settings.updated_at=v119MonotonicStamp(state.settings.updated_at);v125BankEditingStamp=state.settings.updated_at;document.getElementById('v125MortgageBankForm').hidden=true;return v125PersistMortgage('Остаток и срок банка сохранены');
+}
+function v125RenderMortgageJournal(p){
+ const root=document.getElementById('v125MortgageJournal');if(!root)return;
+ const points=p.history.filter(x=>x.entryId||x.kind==='bank'||x.kind==='bank-regular'||x.kind==='bank-early');root.innerHTML=points.length?`<div class="table-wrap"><table class="table v125-journal-table"><thead><tr><th>Дата и назначение</th><th>Внесено</th><th>В тело / досрочно</th><th>Остаток</th><th></th></tr></thead><tbody>${points.map(x=>`<tr><td data-label="Дата и назначение">${esc(fmtDate(x.date))}<br><small>${esc(x.label)}</small></td><td data-label="Внесено">${x.kind==='bank'?'Сверка':money2(x.amount)}</td><td data-label="В тело / досрочно">${x.kind==='bank'?'—':money2(x.principal)+(x.extraPrincipal?'<br><small>досрочно '+money2(x.extraPrincipal)+'</small>':'')}</td><td data-label="Остаток">${money2(x.balance)}${x.kind==='bank'?'<br><small>По данным банка</small>':''}</td><td class="v125-journal-actions">${x.entryId?`<button type="button" class="btn small" data-v125-edit="${esc(x.entryId)}">Проверить</button> <button type="button" class="btn small danger" data-v125-unlink="${esc(x.entryId)}">Убрать</button>`:''}</td></tr>`).join('')}</tbody></table></div>`:'<div class="v125-empty">Учтённых оплат пока нет. Выберите уже внесённые расходы — график будет учитывать их без повторного списания денег.</div>';
+ root.onclick=event=>{const edit=event.target.closest('[data-v125-edit]'),remove=event.target.closest('[data-v125-unlink]');if(edit)v125OpenMortgagePayment(edit.dataset.v125Edit);if(remove)v125UnlinkMortgage(remove.dataset.v125Unlink)};
+ const status=document.getElementById('v125MortgageStatus');status.textContent=p.warnings.join(' ')||(p.missing.length?`Не сверены обычные платежи: ${p.missing.slice(0,3).map(r=>fmtDate(r.payDate)).join(', ')}. Учтите их из истории или сохраните актуальный остаток банка.`:!p.settledOpening?'Остаток банка подтверждён между обычными платежами. Для расчёта процентов нужен обновлённый банковский график.':'После новых оплат остаток и расчёт будущих платежей обновляются автоматически. Срок банка сохраняется отдельной сверкой.');
+ document.querySelectorAll('#v125MortgagePayments button,#v125MortgagePayments input,#v125MortgagePayments select').forEach(el=>{const disabled=v125MortgageBusy||!v117CanWrite();if(el.disabled!==disabled)el.disabled=disabled});
+}
+function v125SelectMortgagePoint(index){const p=v125MortgageProgress();v125SelectedPoint=Math.max(0,Math.min(p.history.length-1,Number(index)||0));const point=p.history[v125SelectedPoint],out=document.getElementById('v125MortgagePoint');if(out&&point)out.textContent=`${fmtDate(point.date)} · ${point.label} · остаток ${money2(point.balance)}${point.amount?' · внесено '+money2(point.amount)+' · погашено тела '+money2(point.principal):''}`;const select=document.getElementById('v125PointSelect');if(select)select.value=String(v125SelectedPoint)}
+function renderLoanCharts(){
+ const p=v125MortgageProgress(),svg=document.getElementById('loanDebtSvg');if(!svg)return;const base=v125BankScheduleData(),all=[...p.history,...(p.projection?.rows||[]).filter(r=>r.date>p.anchorDate).map(r=>({date:r.date,balance:r.balance}))];
+ const start=loanRange==='all'?(p.history[0]?.date||today()):(p.anchorDate||today()),rangeEnd=new Date((p.anchorDate||today())+'T12:00:00Z');if(loanRange!=='all')rangeEnd.setUTCFullYear(rangeEnd.getUTCFullYear()+Number(loanRange));const end=loanRange==='all'?([all.at(-1)?.date,base.at(-1)?.payDate,v125BuiltinMortgageSnapshot()?v125OriginalBankScheduleData().at(-1)?.payDate:''].filter(Boolean).sort().at(-1)||today()):rangeEnd.toISOString().slice(0,10);
+ const visible=all.filter(r=>r.date>=start&&r.date<=end),w=Math.max(300,Math.min(900,svg.parentElement?.clientWidth||900)),h=320,pad={l:80,r:24,t:22,b:44},max=Math.max(p.principal,...visible.map(r=>r.balance),1),t=d=>Date.parse(d+'T12:00:00Z'),x=d=>pad.l+(t(d)-t(start))/Math.max(86400000,t(end)-t(start))*(w-pad.l-pad.r),y=v=>pad.t+(1-v/max)*(h-pad.t-pad.b),points=rows=>rows.map(r=>`${x(r.date).toFixed(2)},${y(r.balance).toFixed(2)}`).join(' ');
+ const history=p.history.filter(r=>r.date>=start&&r.date<=end),future=[p.history.at(-1),...(p.projection?.rows||[]).filter(r=>r.date>p.anchorDate).map(r=>({date:r.date,balance:r.balance}))].filter(r=>r&&r.date>=start&&r.date<=end),original=(v125BuiltinMortgageSnapshot()?v125OriginalBankScheduleData():base).map(r=>({date:r.payDate,balance:r.balance})).filter(r=>r.date>=start&&r.date<=end);
+ const grid=[0,.25,.5,.75,1].map(f=>`<line x1="${pad.l}" x2="${w-pad.r}" y1="${y(max*f)}" y2="${y(max*f)}" stroke="#e5eaf4"/><text x="${pad.l-12}" y="${y(max*f)+4}" text-anchor="end" fill="#718096" font-size="13">${new Intl.NumberFormat('ru-RU',{maximumFractionDigits:2}).format(max*f/1000000)} млн</text>`).join('');
+ svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.innerHTML=grid+`<polyline points="${points(original)}" fill="none" stroke="#b7c2d8" stroke-width="2"/><polyline points="${points(future)}" fill="none" stroke="#6886e7" stroke-width="3" stroke-dasharray="9 6"/><polyline points="${points(history)}" fill="none" stroke="#169d81" stroke-width="4" stroke-linejoin="round"/>`+history.map(point=>{const i=p.history.indexOf(point);return `<circle cx="${x(point.date)}" cy="${y(point.balance)}" r="6" fill="${point.kind==='bank'?'#3159c6':'#169d81'}" stroke="white" stroke-width="2" data-v125-point="${i}" tabindex="0" role="button" aria-label="${esc(fmtDate(point.date)+' '+point.label+' '+money2(point.balance))}"><title>${esc(fmtDate(point.date)+' · '+point.label+' · '+money2(point.balance))}</title></circle>`}).join('')+`<text x="${pad.l}" y="${h-12}" fill="#718096" font-size="13">${fmtDate(start)}</text><text x="${w-pad.r}" y="${h-12}" text-anchor="end" fill="#718096" font-size="13">${fmtDate(end)}</text>`;
+ svg.onclick=event=>{const point=event.target.closest('[data-v125-point]');if(point)v125SelectMortgagePoint(point.dataset.v125Point)};svg.onkeydown=event=>{if(event.key==='Enter'||event.key===' '){const point=event.target.closest('[data-v125-point]');if(point){event.preventDefault();v125SelectMortgagePoint(point.dataset.v125Point)}}};
+ const summary=document.getElementById('loanChartSummary');if(summary)summary.textContent=`${fmtDate(start)} → ${fmtDate(end)}`;document.querySelectorAll('[data-loan-range]').forEach(b=>b.classList.toggle('active',String(b.dataset.loanRange)===String(loanRange)));
+ const select=document.getElementById('v125PointSelect');if(select){const signature=JSON.stringify(p.history);if(select.dataset.signature!==signature){select.innerHTML=p.history.map((point,i)=>`<option value="${i}">${esc(fmtDate(point.date)+' · '+point.label)}</option>`).join('');select.dataset.signature=signature;v125SelectedPoint=p.history.length-1}v125SelectMortgagePoint(v125SelectedPoint)}
+ const split=document.getElementById('loanSplitChart');if(split){if(!p.projection)split.innerHTML='<p class="hint">Сверьте обычные оплаты или остаток банка, чтобы увидеть расчёт оставшихся процентов.</p>';else{const totals=[['Основной долг',p.balance],['Будущие проценты',p.projection.rows.filter(r=>r.date>p.anchorDate).reduce((n,r)=>n+r.interest,0)],['Страхование и начисления',p.projection.rows.filter(r=>r.date>p.anchorDate).reduce((n,r)=>n+r.charges,0)+v125MortgageCharges().filter(r=>r.payDate>p.anchorDate&&(!p.projection.endDate||r.payDate<=p.projection.endDate)).reduce((n,r)=>n+r.payment,0)]],largest=Math.max(...totals.map(x=>x[1]),1);split.innerHTML=totals.map(([name,value])=>`<div class="bar-row"><div class="bar-top"><span>${name}</span><b>${money2(value)}</b></div><div class="bar"><i style="width:${Math.max(0,value/largest*100)}%"></i></div></div>`).join('')+'<p class="hint">При дальнейших платежах по графику, без новых досрочных взносов. Будущие проценты — расчёт.</p>'}}
+}
+function renderLoanSchedule(){
+ const p=v125MortgageProgress(),rows=p.schedule,body=document.getElementById('loanScheduleBody');if(body)body.innerHTML=rows.map(r=>`<tr><td>${r.n}</td><td>${fmtDate(r.payDate)}${r.kind==='insurance'?'<br><small>Страхование</small>':''}${r.estimated?'<br><small>Расчёт</small>':''}</td><td>${money2(r.payment)}</td><td>${money2(r.interest)}</td><td>${money2(r.body)}</td><td>${r.balance===null?'—':money2(r.balance)}</td></tr>${r.bankExtra?`<tr><td>—</td><td>${fmtDate(r.payDate)}<br><small>Досрочно · по банку</small></td><td>${money2(r.bankExtra)}</td><td>${money2(0)}</td><td>${money2(r.bankExtra)}</td><td>${money2(r.afterExtraBalance)}</td></tr>`:''}`).join('');
+ const balance=document.getElementById('loanBalanceNow');if(balance)balance.textContent=p.balance>=0?money2(p.balance):'Проверьте оплаты';const label=document.getElementById('v125MortgageBalanceLabel');if(label)label.textContent=p.snapshot&&p.anchorDate===p.snapshot.date&&p.balance===p.snapshot.balance?'Остаток по данным банка':'Остаток по учтённым оплатам';
+ const bankCurrent=p.snapshot&&p.anchorDate===p.snapshot.date&&p.balance===p.snapshot.balance,endDate=bankCurrent?p.snapshot.endDate:p.projection?.endDate;document.getElementById('loanEndDate').textContent=endDate?fmtDate(endDate):p.balance===0?'Нужна сверка процентов':'Нужна сверка';document.getElementById('v125MortgageEndLabel').textContent=bankCurrent?'Последний платёж по банку':'Расчёт последнего платежа';
+ const principalEnd=bankCurrent?p.snapshot.principalEndDate:(p.projection?.principalEndDate||(p.balance===0?p.anchorDate:null));document.getElementById('v125PrincipalEnd').textContent=principalEnd?fmtDate(principalEnd):'—';
+ const next=rows.find(r=>(!p.snapshot||r.payDate>p.snapshot.date)&&v125ScheduledAllocated(r.payDate,rows)<r.payment-.005),nextEl=document.getElementById('loanNextPayment');if(nextEl)nextEl.textContent=next?`${money2(Math.max(0,next.payment-v125ScheduledAllocated(next.payDate,rows)))} · ${fmtDate(next.payDate)}`:'—';
+ document.getElementById('loanRateNote').textContent=p.snapshot?`Банк: остаток ${money2(p.snapshot.balance)} на ${fmtDate(p.snapshot.date)}, последний платёж ${fmtDate(p.snapshot.endDate)}. ${p.snapshot.outstandingInterest!==undefined?' Начисленные проценты по справке на эту дату: '+money2(p.snapshot.outstandingInterest)+'; полное погашение на дату справки — '+money2(p.snapshot.fullRepaymentAmount)+'.':''} Последующие оплаты пересчитывают прогноз; он не подменяет график банка.`:'Исходный график банка сохранён для сравнения. Текущий долг уменьшается только после учтённых оплат или сверки с банком; наступление даты само по себе не подтверждает платёж.';
+ v125RenderMortgageJournal(p);renderLoanCharts();
+}
 
 
 /* v77 · Покупки частями. Даты и суммы фиксируются отдельно от операций.
@@ -6992,7 +7360,7 @@ function renderInstallments(){
   const status=left.length?(next?.date<today()?'Есть просрочка':'Активна'):'Закрыта';
   return `<article class="v77-installment-card"><div class="v77-installment-top"><div><span class="v77-kind">${esc(V77_KINDS[i.kind]||'Покупка частями')}</span><h3>${esc(i.title)}</h3><small>${esc(i.provider||'Без указания сервиса')}</small></div><div class="v77-installment-status ${left.length?(next?.date<today()?'late':'active'):'done'}">${status}</div></div>
    <div class="v77-installment-metrics"><div><small>Осталось</small><b>${money2(remaining)}</b></div><div><small>Оплачено</small><b>${paidParts.length} из ${i.parts.length}</b></div><div><small>Следующий платёж</small><b>${next?v77DateLabel(next.date):'Все оплачены'}</b></div></div>
-   <details class="v77-installment-details"><summary>График платежей и история <span>⌄</span></summary><div class="v77-part-list">${i.parts.map((p,index)=>{const linked=installmentLinkedEntry(i,p),allocated=installmentAllocated(i,p),fullyPaid=installmentPaid(i,p);return `<div class="v77-part ${fullyPaid?'paid':''}"><div><strong>Часть ${index+1} · ${money2(p.amount)}</strong><small>${v77DateLabel(p.date)} ${fullyPaid?'· ✓ Оплачено':allocated>0?'· Частично: '+money2(allocated)+' · остаток '+money2(Number(p.amount)-allocated):'· Ожидает оплаты'}</small></div><div class="v77-part-actions">${linked?`<button class="btn small" type="button" data-v77-op="history">История ↗</button>`:`<button class="btn small primary" type="button" data-v77-pay="${esc(i.id)}" data-v77-part="${esc(p.id)}">Записать оплату</button><button class="btn small" type="button" data-v77-match="${esc(i.id)}" data-v77-part="${esc(p.id)}">Из истории</button>`}</div>${linked?'':`<div class="v77-change-date"><label>Дата по вашему графику <input type="date" data-v77-date="${esc(i.id)}" data-v77-part="${esc(p.id)}" value="${esc(p.date)}"></label><button class="btn small" data-v77-save-date="${esc(i.id)}" data-v77-part="${esc(p.id)}" type="button">Сохранить дату</button></div>`}<div id="v77Matches_${esc(p.id)}" class="v77-matches" hidden></div></div>`}).join('')}</div><div class="v77-plan-foot">${i.kind==='card'?'Для кредитной карты это упрощённый план, без расчёта процентов и минимального платежа. Сверяйте выписку банка.':'Плановый график; реальные расходы появляются только после отметки оплаты.'}<button class="btn small danger" type="button" data-v77-delete="${esc(i.id)}">Удалить план</button></div></details>
+   <details class="v77-installment-details"><summary>График платежей и история <span>⌄</span></summary><div class="v77-part-list">${i.parts.map((p,index)=>{const linked=installmentLinkedEntry(i,p),allocated=installmentAllocated(i,p),fullyPaid=installmentPaid(i,p);return `<div class="v77-part ${fullyPaid?'paid':''}"><div><strong>Часть ${index+1} · ${money2(p.amount)}</strong><small>${v77DateLabel(p.date)} ${fullyPaid?'· ✓ Оплачено':allocated>0?'· Частично: '+money2(allocated)+' · остаток '+money2(Number(p.amount)-allocated):'· Ожидает оплаты'}</small></div><div class="v77-part-actions">${linked?`<button class="btn small" type="button" data-v77-op="history">История ↗</button>`:`<button class="btn small primary" type="button" data-v77-pay="${esc(i.id)}" data-v77-part="${esc(p.id)}">Записать оплату</button><button class="btn small" type="button" data-v77-match="${esc(i.id)}" data-v77-part="${esc(p.id)}">Из истории</button>`}</div>${linked?'':`<div class="v77-change-date"><label>Дата по вашему графику <input type="date" data-v77-date="${esc(i.id)}" data-v77-part="${esc(p.id)}" value="${esc(p.date)}"></label><button class="btn small" data-v77-save-date="${esc(i.id)}" data-v77-part="${esc(p.id)}" type="button">Сохранить дату</button></div>`}<div id="v77Matches_${esc(p.id)}" class="v77-matches" hidden></div></div>`}).join('')}</div><div class="v77-plan-foot">${i.source?.balanceOnly?'Добавлен только остаток по документам на '+v77DateLabel(i.source.snapshotDate)+'. Первоначальная покупка и прошлые расходы не создавались.':i.kind==='card'?'Для кредитной карты это упрощённый план, без расчёта процентов и минимального платежа. Сверяйте выписку банка.':'Плановый график; реальные расходы появляются только после отметки оплаты.'}<button class="btn small danger" type="button" data-v77-delete="${esc(i.id)}">Удалить план</button></div></details>
   </article>`;
  }).join('');
 }
@@ -7006,7 +7374,38 @@ function v77Click(e){const t=e.target.closest('button');if(!t)return;
 }
 function v77Init(){document.getElementById('v77NewInstallmentBtn')?.addEventListener('click',()=>v77Form(true));document.getElementById('v77CloseInstallmentBtn')?.addEventListener('click',()=>v77Form(false));document.getElementById('v77CancelInstallmentBtn')?.addEventListener('click',()=>v77Form(false));document.getElementById('v77SaveInstallmentBtn')?.addEventListener('click',v77CreateInstallment);document.getElementById('v77Kind')?.addEventListener('change',v77KindChanged);document.getElementById('v77InstallmentList')?.addEventListener('click',v77Click);document.getElementById('v77FirstDate').value=today()}
 
-function renderLoans(){renderInstallments();renderLoanSchedule();v78RenderLoansPanel();const actualEntries=state.entries.filter(e=>e.type==='expense'&&!e.installmentId&&!v77EntryIsLinked(e.id)&&!v78BankExpense(e)&&String(e.category||'').trim().toLowerCase()==='кредит');const total=actualEntries.reduce((a,e)=>a+Number(e.amount||0),0);const byMonth={};actualEntries.forEach(e=>{const key=String(e.date||'').slice(0,7);if(key)byMonth[key]=(byMonth[key]||0)+Number(e.amount||0)});const rows=Object.entries(byMonth).sort((a,b)=>a[0].localeCompare(b[0]));const summary=document.getElementById('loanActualTotal');if(summary)summary.textContent=money(total);const paidM=document.getElementById('v77LoanActualMonth');if(paidM)paidM.textContent=money(byMonth[month()]||0);const monthly=document.getElementById('loanActualMonths');if(monthly)monthly.innerHTML=rows.slice(-6).map(([key,v])=>`<div class="bar-row"><div class="bar-top"><span>${new Date(key+'-01T12:00:00').toLocaleDateString('ru-RU',{month:'long',year:'numeric'})}</span><b>${money(v)}</b></div></div>`).join('')||'<div class="loan-empty">Фактических платежей пока нет.</div>'}
+let v126DocumentPlanBusy=false,v126DocumentPlanRetry=false,v126DocumentPlanAmbiguous=[],v126DocumentPlanReady=null;
+function v126MarkDocumentPlansReady(epoch,household){if(epoch!==authEpoch||household!==CONFIG.household)return false;v126DocumentPlanReady={epoch,household};return true}
+function v126DocumentPlanAccess(){return Boolean(session?.access_token)&&v126DocumentPlanReady?.epoch===authEpoch&&v126DocumentPlanReady?.household===CONFIG.household&&v117CanWrite()&&!document.getElementById('appRoot')?.classList.contains('auth-locked')}
+function v126SameDocumentTimeline(plan,wanted){return plan.kind==='split'&&wanted.parts.every(part=>(plan.parts||[]).some(p=>p.date===part.date&&v77Cents(p.amount)===v77Cents(part.amount)))}
+function v126ApplyDocumentPlans({persist=true,separate=false}={}){
+ const result={added:[],equivalent:[],ambiguous:[]};if(!v126DocumentPlanAccess()||v126DocumentPlanBusy)return result;
+ for(const source of FAMILY_DOCUMENT_PLANS){
+  if(state.deletedInstallments?.[source.id])continue;
+  const existing=(state.installments||[]).find(plan=>plan.id===source.id||plan.source?.fingerprint===source.source?.fingerprint||v126SameDocumentTimeline(plan,source));
+  if(existing){result.equivalent.push(existing.id);continue}
+  const overlap=(state.installments||[]).filter(plan=>plan.kind==='split'&&(plan.parts||[]).some(part=>source.parts.some(p=>p.date===part.date&&v77Cents(p.amount)===v77Cents(part.amount))));
+  if(overlap.length&&!separate){result.ambiguous.push({id:source.id,matches:overlap.map(p=>({id:p.id,title:p.title||p.provider||'Сплит'}))});continue}
+  const stamp=new Date().toISOString(),plan={...JSON.parse(JSON.stringify(source)),created_at:stamp,updated_at:stamp};state.installments.push(plan);result.added.push(plan.id);
+ }
+ v126DocumentPlanAmbiguous=result.ambiguous;if(result.added.length&&persist)v126PersistDocumentPlans();return result;
+}
+async function v126PersistDocumentPlans(){
+ if(!v126DocumentPlanAccess()||v126DocumentPlanBusy)return false;
+ const epoch=authEpoch,household=CONFIG.household;v126DocumentPlanBusy=true;v126DocumentPlanRetry=false;let ok=false;
+ try{ok=await saveAll()}finally{v126DocumentPlanBusy=false}
+ if(epoch!==authEpoch||household!==CONFIG.household||!v126DocumentPlanAccess())return false;
+ v126DocumentPlanRetry=!ok&&v89StorageFailed;v126RenderDocumentPlanNotice();return ok||!v89StorageFailed;
+}
+function v126AddSeparateDocumentPlan(){if(!v126DocumentPlanAccess())return;v126ApplyDocumentPlans({separate:true});renderAll()}
+function v126RenderDocumentPlanNotice(){
+ const root=document.getElementById('v126DocumentPlanNotice');if(!root)return;
+ if(!v126DocumentPlanAccess()){root.hidden=true;return}
+ if(v126DocumentPlanAmbiguous.length){root.hidden=false;root.innerHTML=`<p>В документах Сплит на <b>32 255 ₽</b>, но в семье уже есть похожий график: ${v126DocumentPlanAmbiguous.flatMap(p=>p.matches.map(m=>esc(m.title))).join(', ')}. Проверьте его перед добавлением второго.</p><button type="button" class="btn" onclick="v126AddSeparateDocumentPlan()">Это другой Сплит — добавить отдельно</button>`;return}
+ if(v126DocumentPlanRetry){root.hidden=false;root.innerHTML='<p>График Сплита остался в памяти. Сохранение на устройстве не удалось; повторная попытка не создаст второй план.</p><button type="button" class="btn" onclick="v126PersistDocumentPlans()">Повторить сохранение</button>';return}
+ root.hidden=true;root.replaceChildren();
+}
+function renderLoans(){renderInstallments();v126RenderDocumentPlanNotice();renderLoanSchedule();v78RenderLoansPanel();const actualEntries=state.entries.filter(e=>e.type==='expense'&&!e.installmentId&&!v77EntryIsLinked(e.id)&&!v78BankExpense(e)&&String(e.category||'').trim().toLowerCase()==='кредит');const total=actualEntries.reduce((a,e)=>a+Number(e.amount||0),0);const byMonth={};actualEntries.forEach(e=>{const key=String(e.date||'').slice(0,7);if(key)byMonth[key]=(byMonth[key]||0)+Number(e.amount||0)});const rows=Object.entries(byMonth).sort((a,b)=>a[0].localeCompare(b[0]));const summary=document.getElementById('loanActualTotal');if(summary)summary.textContent=money(total);const paidM=document.getElementById('v77LoanActualMonth');if(paidM)paidM.textContent=money(byMonth[month()]||0);const monthly=document.getElementById('loanActualMonths');if(monthly)monthly.innerHTML=rows.slice(-6).map(([key,v])=>`<div class="bar-row"><div class="bar-top"><span>${new Date(key+'-01T12:00:00').toLocaleDateString('ru-RU',{month:'long',year:'numeric'})}</span><b>${money(v)}</b></div></div>`).join('')||'<div class="loan-empty">Фактических платежей пока нет.</div>'}
 
 function birthdayDays(b){
   // Москва, а не часовой пояс компьютера: одинаковые «сегодня/завтра» на всех устройствах.
@@ -7928,7 +8327,7 @@ for(const [id,kind] of [['donut','group'],['peopleDonut','person']]){
 }
 for(const id of ['analyticsMonth','homeMonth'])document.getElementById(id)?.addEventListener('change',v84RenderAll);
 
-function renderAll(){v97RenderFavorites();refreshHistoryPeriods();renderHome();renderToday();renderHistory();renderAnalytics();renderIncome();renderCar();renderGoals();renderLoans();renderChores();renderDates();renderFamilyBoard();renderFamilySpark();renderTodayHeader();renderTodayAdvice();settingsFields();try{renderEarlyRepayment()}catch(err){console.warn('early repayment render',err)}v84RenderAll();v96ApplyBranding();v96RenderBrandingChoices();v99RenderEntryDirections();if(typeof v118RenderPlanning==='function')v118RenderPlanning();if(typeof v119InitOperations==='function')v119InitOperations();if(typeof v120RenderTruthStatus==='function')v120RenderTruthStatus();if(typeof v121RenderHomeOverview==='function')v121RenderHomeOverview();v110RefreshPickers()}
+function renderAll(){v126ApplyDocumentPlans();v97RenderFavorites();refreshHistoryPeriods();renderHome();renderToday();renderHistory();renderAnalytics();renderIncome();renderCar();renderGoals();renderLoans();renderChores();renderDates();renderFamilyBoard();renderFamilySpark();renderTodayHeader();renderTodayAdvice();settingsFields();try{renderEarlyRepayment()}catch(err){console.warn('early repayment render',err)}v84RenderAll();v96ApplyBranding();v96RenderBrandingChoices();v99RenderEntryDirections();if(typeof v118RenderPlanning==='function')v118RenderPlanning();if(typeof v119InitOperations==='function')v119InitOperations();if(typeof v120RenderTruthStatus==='function')v120RenderTruthStatus();if(typeof v121RenderHomeOverview==='function')v121RenderHomeOverview();v110RefreshPickers()}
 function exportCsv(){
  const columns=['Дата','Тип','Категория','Участник','Сумма ₽','Где / источник','Оплата','Комментарий','Откуда','Куда','Уточнение расхода','Для кого'];
  const safe=(v)=>'"'+String(v??'').replace(/^[=+@\-\t\r]/,x=>"'"+x).replace(/"/g,'""')+'"';
@@ -8098,11 +8497,16 @@ async function syncFromCloud(){
    const epoch=authEpoch,readSerial=mutationSerial,cloud=await fetchCloudState(),pending=readPendingLocal();
    if(epoch!==authEpoch)return false;
    if(!cloud)return preserveUnconfirmedSync('Сохранено на устройстве — облачная копия пока недоступна');
-   const before=JSON.stringify(state),hasChanges=!!pending||readSerial!==mutationSerial;
+   const before=JSON.stringify(state);let hasChanges=!!pending||readSerial!==mutationSerial;
    const reconciled=hasChanges?reconcileCloudSnapshot(cloud,state):cloud;
    if(!reconciled)return false;state=reconciled;
    if(!hasChanges)rememberCloudBase(cloud);
-   if(!saveLocal())return preserveUnconfirmedSync('Не удалось сохранить локальную копию — скачайте JSON');
+   // Read the full family snapshot before the one-time document addition, so
+   // a new device can detect an equivalent plan with an older identifier.
+   v126MarkDocumentPlansReady(epoch,CONFIG.household);
+   const documentPlans=v126ApplyDocumentPlans({persist:false});
+   if(documentPlans.added.length){mutationSerial++;hasChanges=true;if(!savePendingLocal()){v126DocumentPlanRetry=true;renderAll();return preserveUnconfirmedSync('График Сплита добавлен в память — сохранение на устройстве не удалось')}}
+   if(!saveLocal()){if(documentPlans.added.length)v126DocumentPlanRetry=true;return preserveUnconfirmedSync('Не удалось сохранить локальную копию — скачайте JSON')}
    if(JSON.stringify(state)!==before)renderAll();
    if(hasChanges){if(!savePendingLocal())return false;return await pushCloud(true)}
    if(cloudReadMeta.protocol!==2){updateSync('Облачная копия прочитана — безопасная запись ждёт обновления сервера');return false}
