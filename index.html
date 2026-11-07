@@ -2327,6 +2327,18 @@ body .v112-record-action .v112-record-icon{display:block;width:18px;height:18px;
 @media(prefers-reduced-motion:reduce){body .v112-record-action{transition:none}}
 
 </style>
+<style id="v139CompactAddedOperations">
+/* Recent additions share one compact row, with actions beside the amount. */
+#today .card:has(>#todayList){padding:16px 20px}#today .card:has(>#todayList)>h2{font-size:18px;margin:0 0 8px}
+#today #todayList .v91-transaction{grid-template-columns:minmax(0,1fr) auto minmax(90px,auto);gap:8px 14px;align-items:center;padding:10px 0}#today #todayList .v91-transaction-main{grid-column:1;grid-row:1;min-width:0}#today #todayList .v91-transaction-main b{font-size:14px;line-height:1.4;overflow-wrap:anywhere}#today #todayList .v91-transaction-main small{font-size:12px;line-height:1.4;margin-top:3px}#today #todayList .v91-transaction-main p{font-size:12px;line-height:1.4;margin-top:4px;overflow-wrap:anywhere}#today #todayList .v96-merchant-badge{width:24px;height:24px;flex-basis:24px;margin-right:6px;border-radius:7px;font-size:10px}
+#today #todayList .v91-transaction>strong{grid-column:3;grid-row:1;font-size:15px;justify-self:end;align-self:center;white-space:nowrap;text-align:right}#today #todayList .v91-row-actions{grid-column:2;grid-row:1;display:flex;flex-wrap:nowrap;gap:5px;align-items:center;justify-content:flex-end;align-self:center}#today #todayList .v112-record-action{flex:0 0 40px!important;width:40px!important;height:40px!important;min-width:40px!important;max-width:40px!important;min-height:40px!important;border-radius:9px}#today #todayList .v112-record-icon{width:17px;height:17px;flex-basis:17px}
+@media(max-width:700px){#today .card:has(>#todayList){padding:14px}#today #todayList .v91-transaction{grid-template-columns:minmax(0,1fr) auto;gap:5px 10px;padding:9px 0;align-items:start}#today #todayList .v91-transaction>strong{grid-column:2;grid-row:1;font-size:14px;align-self:start;padding-top:2px}#today #todayList .v91-row-actions{grid-column:1/-1;grid-row:2;gap:6px;justify-self:end}#today #todayList .v112-record-action{flex-basis:44px!important;width:44px!important;height:44px!important;min-width:44px!important;max-width:44px!important;min-height:44px!important}#today #todayList .v112-record-icon{width:18px;height:18px;flex-basis:18px}}
+</style>
+<style id="v140HistoryColumns">
+/* Dates stay whole, with record actions before the rightmost amount. */
+#history .v140-history-date-text{display:inline-block;white-space:nowrap;overflow-wrap:normal;word-break:normal}#history .v105-history-table td.v76-date{overflow-wrap:normal;word-break:normal}#history .v105-history-table td.v76-amount{white-space:nowrap;overflow-wrap:normal;word-break:normal}
+@container v105ledger (min-width:54em){#history .v105-history-table .v105-col-date{width:118px}#history .v105-history-table .v105-col-actions{width:204px}#history .v105-history-table .v105-col-sum{width:152px}#history .v105-history-table th:nth-child(3){text-align:left}#history .v105-history-table th:nth-child(4){text-align:right}#history .v105-history-table th,#history .v105-history-table td{padding:11px 12px}#history .v105-history-table td.v76-date{white-space:nowrap}#history .v105-history-table td.v76-actions{padding:11px 8px 11px 12px}#history .v76-action-group{flex-wrap:nowrap;gap:6px}#history .v100-history-icon-actions{gap:6px}#history .v76-action-group .v112-record-action{flex:0 0 40px!important;width:40px!important;height:40px!important;min-width:40px!important;max-width:40px!important;min-height:40px!important}}
+</style>
 <style id="v114SaveFeedbackStyle">
 #today .v114-field-error{margin:8px 0 0;color:#ad3447;font-size:13px;line-height:1.5;overflow-wrap:anywhere}
 #today .v114-field-error[hidden]{display:none!important}
@@ -2746,7 +2758,7 @@ input:is([type="date"],[type="month"])::-webkit-date-and-time-value{min-height:1
 <div class="card"><h2>Все операции</h2><div class="hint">Поиск по магазинам и комментариям, фильтры и любые месяцы — история остаётся с вами.</div>
 <div class="filters"><input id="fSearch" placeholder="Поиск: магазин, комментарий..."/><select id="fWho" aria-label="Фильтр по старым участникам записи"></select><select id="fGroup" aria-label="Группа расходов"><option value="">Все группы</option></select><select id="fCat" aria-label="Точная категория"></select><select id="fType"><option value="">Все операции</option><option value="expense">Расходы</option><option value="income">Доходы</option><option value="transfer">Переводы</option><option value="cash">Наличные</option></select><input id="fMonth" type="month" aria-label="Месяц или все даты"/><input id="fDay" type="date" aria-label="День операций"/></div>
 <div class="v76-history-tools"><span id="historyCount" aria-live="polite">Загружаем операции…</span><div class="v76-tool-buttons"><button class="btn small v75-all-dates" onclick="clearHistoryMonth()" type="button">Все даты</button><button class="v76-reset-btn" type="button" onclick="resetHistoryFilters()">Сбросить фильтры</button></div></div>
-<div class="table-wrap v105-history-wrap"><table class="table v105-history-table"><colgroup><col class="v105-col-date"><col><col class="v105-col-sum"><col class="v105-col-actions"></colgroup><thead><tr><th>Дата</th><th>Операция</th><th>Сумма</th><th aria-label="Действия"></th></tr></thead><tbody id="historyBody"></tbody></table></div></div>
+<div class="table-wrap v105-history-wrap"><table class="table v105-history-table"><colgroup><col class="v105-col-date"><col><col class="v105-col-actions"><col class="v105-col-sum"></colgroup><thead><tr><th>Дата</th><th>Операция</th><th aria-label="Действия"></th><th>Сумма</th></tr></thead><tbody id="historyBody"></tbody></table></div></div>
 </section>
 <section class="section" id="analytics">
 <div class="card">
@@ -6503,10 +6515,10 @@ function renderHistory(){
   const date=String(e.date||''),dateLabel=/^\d{4}-\d{2}-\d{2}$/.test(date)?date.slice(8,10)+'.'+date.slice(5,7)+'.'+date.slice(0,4):date;
   const shop=String(e.store||'').trim(),comment=String(e.comment||'').trim();
   return `<tr class="v76-entry-row">
-   <td data-label="Дата" class="v76-date">${safeFull(dateLabel)}<span class="v105-history-type ${e.type==='income'?'v76-income-pill':''}">${typeName(e.type)}</span></td>
+   <td data-label="Дата" class="v76-date"><span class="v140-history-date-text">${safeFull(dateLabel)}</span><span class="v105-history-type ${e.type==='income'?'v76-income-pill':''}">${typeName(e.type)}</span></td>
    <td data-label="Операция" class="v76-cat"><div class="v105-history-title">${safeFull(e.category||'—')}${e.subcategory?`<span class="v105-history-subcategory">${safeFull(e.subcategory)}</span>`:''}</div><div class="v105-history-meta">${shop?`<span class="v105-history-store">${v96MerchantBadge(shop)}<span>${safeFull(v96MerchantDisplayName(shop))}</span></span>`:''}<span class="v105-history-person">${e.type==='expense'?'Для: ':''}${safeFull(e.type==='expense'?v86ExpenseTarget(e):e.who||'—')}</span></div>${comment?`<p class="v105-history-note">${safeFull(comment)}</p>`:''}</td>
-   <td data-label="Сумма" class="v76-amount ${e.type==='income'?'money-green':e.type==='expense'?'money-red':''}">${amountText(e)}</td>
    <td data-label="Действия" class="v76-actions"><div class="v76-action-group">${v112EntryAction('entry-repeat',e)}${v112EntryAction('favorite-from-entry',e)}<span class="v100-history-icon-actions">${v112EntryAction('entry-edit',e,'history')}${v112EntryAction('entry-delete',e,'history')}</span></div></td>
+   <td data-label="Сумма" class="v76-amount ${e.type==='income'?'money-green':e.type==='expense'?'money-red':''}">${amountText(e)}</td>
   </tr>`
  }).join('')||'<tr class="v76-empty-row"><td colspan="4" class="empty">Операций не найдено. Попробуйте изменить фильтры или выберите «Все даты».</td></tr>';
 }
