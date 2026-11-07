@@ -2526,6 +2526,13 @@ body .v141-operation{display:grid;grid-template-columns:minmax(0,1fr) minmax(90p
 #today #v90Extra>summary>.v145-details-label{display:inline!important;font-size:14px!important;font-weight:650!important;color:#273e66;margin-left:0}
 #today .v95-suggestions>#v92SearchHint.v144-no-category{display:block;color:#28446f;font-size:14px!important;font-weight:650!important;line-height:1.5;padding:10px 12px;margin:0 0 4px;border:1px solid #c5d6f0;border-left:3px solid #5379d1;border-radius:10px;background:#eef4ff}
 </style>
+<style id="v146HomeMonthlyCards">
+#home #v121HomeSummary .v121-home-actions{gap:10px;margin-top:20px}#home #v121HomeSummary .v121-home-actions>.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px!important;padding:12px 16px!important;border-radius:12px;font-size:14px!important;font-weight:650!important;line-height:1.4;color:#fff!important;box-shadow:none}#home #v121HomeSummary .v121-home-actions>.btn>span{color:inherit!important;font-weight:inherit!important}#home #v121HomeSummary .v121-home-actions>.btn>svg{width:19px;height:19px;flex:0 0 19px}#home #v121HomeSummary .v146-add-expense{background:#b94e64!important;border:1px solid #b94e64!important}#home #v121HomeSummary .v146-add-income{background:#117c62!important;border:1px solid #117c62!important}#home #v121HomeSummary .v146-add-expense:hover{background:#9f3e52!important;border-color:#9f3e52!important}#home #v121HomeSummary .v146-add-income:hover{background:#0c654f!important;border-color:#0c654f!important}#home #v121HomeSummary .v121-home-actions>.btn:focus-visible{outline:3px solid #8da7dd;outline-offset:3px}
+
+#home #v121HomeSummary .v146-home-body{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(270px,.9fr);gap:28px;align-items:start;margin-top:16px}#home .v146-home-main,#home .v146-monthly{min-width:0}#home .v146-home-main>.v121-home-amount{margin-top:8px}#home .v146-monthly{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}#home .v146-period{margin:0 0 1px;color:#667b9d;font-size:13px;font-weight:600;line-height:1.5}#home .v146-metric{min-width:0;border:1px solid;border-radius:16px;padding:16px 18px}#home .v146-income{background:linear-gradient(120deg,#e9f8f1,#f3fbf7);border-color:#b9dfce;color:#226b54}#home .v146-expense{background:linear-gradient(120deg,#fff0f2,#fff8f8);border-color:#efc7cf;color:#974f60}#home .v146-metric-heading{display:flex;align-items:center;gap:9px;min-width:0;font-size:14px;font-weight:650;line-height:1.4}#home .v146-metric-heading>span:last-child{min-width:0;overflow-wrap:anywhere}#home .v146-icon{display:inline-flex;align-items:center;justify-content:center;flex:0 0 30px;width:30px;height:30px;border-radius:9px}#home .v146-income .v146-icon{background:#d0eee0;color:#178360}#home .v146-expense .v146-icon{background:#fbdde2;color:#bd586b}#home .v146-icon svg{display:block;width:19px;height:19px}#home .v146-metric>strong{display:block;min-width:0;font-size:clamp(24px,2.4vw,32px);font-weight:700!important;font-variant-numeric:tabular-nums;line-height:1.25;margin-top:10px;overflow-wrap:anywhere}#home .v146-income>strong{color:#138267}#home .v146-expense>strong{color:#c45267}#home .v146-track{height:7px;border-radius:20px;margin-top:15px;overflow:hidden;background:rgba(35,93,73,.09)}#home .v146-expense .v146-track{background:rgba(169,79,97,.09)}#home .v146-track>span{display:block;width:0;height:100%;border-radius:inherit;background:#17a57e}#home .v146-expense .v146-track>span{background:#e16c80}#home .v146-comparison-note{font-size:11px;line-height:1.5;color:#7686a0;margin:0}
+@media(max-width:1000px){#home #v121HomeSummary .v146-home-body{grid-template-columns:minmax(0,1fr);gap:14px}#home .v146-monthly{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}#home .v146-period,#home .v146-comparison-note{grid-column:1/-1}}
+@media(max-width:520px){#home .v146-monthly{grid-template-columns:minmax(0,1fr)}#home .v146-metric{padding:14px 16px}#home .v146-metric>strong{font-size:27px}#home .v146-metric-heading{font-size:13px}}
+</style>
 </head>
 <body>
 <noscript><div style="padding:14px;background:#fff3cd;color:#664d03;text-align:center;font:600 14px/1.4 system-ui">Для работы «Семейный капитал» необходимо включить JavaScript.</div></noscript>
@@ -2569,11 +2576,17 @@ body .v141-operation{display:grid;grid-template-columns:minmax(0,1fr) minmax(90p
 <section class="section active" id="home">
 <section class="card v121-home-summary" id="v121HomeSummary" aria-labelledby="v121HomeAvailableTitle">
  <div class="v121-home-summary-top"><div><span class="v121-eyebrow">ДЕНЬГИ НА СЕГОДНЯ</span><h2 id="v121HomeAvailableTitle">Доступно до следующего дохода</h2></div><span id="v121HomeBoundary" class="hint"></span></div>
+ <div class="v146-home-body"><div class="v146-home-main">
  <strong id="v121HomeAvailable" class="v121-home-amount">Нужна настройка</strong>
  <p id="v121HomeAvailableNote" class="hint">Добавьте счета и план, чтобы рассчитать доступную сумму.</p>
  <div id="v128HomeBankWarning" class="v128-bank-notice" hidden role="status"><p id="v128HomeBankWarningText"></p><button type="button" class="btn small" onclick="v128OpenBankHistory()">Учесть списания ипотеки</button></div>
- <div class="v121-home-actions"><button type="button" class="btn primary" onclick="openEntry('expense')">Добавить расход</button><button type="button" class="btn" onclick="openEntry('income')">Добавить доход</button></div>
- <div class="v121-home-links"><button type="button" class="v91-link" onclick="go('accounts')">Счета и сверка</button><button type="button" class="v91-link" onclick="go('planning')">План месяца</button></div>
+ <div class="v121-home-actions"><button type="button" class="btn v146-add-expense" onclick="openEntry('expense')"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m7 7 10 10M7 17h10V7"/></svg><span>Добавить расход</span></button><button type="button" class="btn v146-add-income" onclick="openEntry('income')"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg><span>Добавить доход</span></button></div>
+ </div><aside class="v146-monthly" id="v146HomeMonthly" aria-label="Доходы и расходы семьи за месяц">
+  <p class="v146-period" id="v146HomeMonthLabel">За выбранный месяц</p>
+  <section class="v146-metric v146-income" aria-labelledby="v146IncomeLabel"><div class="v146-metric-heading"><span class="v146-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg></span><span id="v146IncomeLabel">Доход семьи за месяц</span></div><strong id="v146HomeIncome">0 ₽</strong><div class="v146-track" aria-hidden="true"><span id="v146IncomeBar"></span></div></section>
+  <section class="v146-metric v146-expense" aria-labelledby="v146ExpenseLabel"><div class="v146-metric-heading"><span class="v146-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m7 7 10 10M7 17h10V7"/></svg></span><span id="v146ExpenseLabel">Расход семьи за месяц</span></div><strong id="v146HomeExpense">0 ₽</strong><div class="v146-track" aria-hidden="true"><span id="v146ExpenseBar"></span></div></section>
+  <p class="v146-comparison-note">Сравнение доходов и расходов за месяц</p>
+ </aside></div>
  <details class="v121-calculation"><summary>Что входит в расчёт</summary><dl id="v121HomeComponents"></dl><ul id="v121HomeReasons"></ul></details>
  <p id="v121HomeSyncState" class="v121-home-sync" role="status"></p>
 </section>
@@ -5234,6 +5247,14 @@ function v121InitHomeLayout(){
 }
 function v121ReadableReason(value){return typeof value==='string'?value:typeof value?.message==='string'?value.message:typeof value?.detail==='string'?value.detail:''}
 function v121HomeMoney(node,value){if(!node)return;node.innerHTML=Number.isFinite(value)?v114MoneyHtml(money2(value)):'—'}
+function v146RenderHomeMonthly(carry){
+ const root=document.getElementById('v146HomeMonthly');if(!root)return;
+ const income=carry?.income,expense=carry?.expense,m=carry?.month||homeMonth()||month();
+ document.getElementById('v146HomeMonthLabel').textContent='За '+v84MonthLabel(m);root.dataset.month=m;
+ v121HomeMoney(document.getElementById('v146HomeIncome'),income);v121HomeMoney(document.getElementById('v146HomeExpense'),expense);
+ const a=Number.isFinite(income)?Math.abs(income):0,b=Number.isFinite(expense)?Math.abs(expense):0,scale=Math.max(a,b,1);
+ document.getElementById('v146IncomeBar').style.width=Math.min(100,a/scale*100)+'%';document.getElementById('v146ExpenseBar').style.width=Math.min(100,b/scale*100)+'%';
+}
 function v121RenderHomeOverview(){
  v121InitHomeLayout();
  const root=document.getElementById('v121HomeSummary');if(!root)return;
@@ -5258,6 +5279,7 @@ function v121RenderHomeOverview(){
  reasonList.hidden=!reasonList.children.length;
  const sync=document.getElementById('v121HomeSyncState'),status=typeof v120SyncSummary==='function'?v120SyncSummary():null;
  if(sync){sync.textContent=status?[status.label,status.detail].filter(Boolean).join(' · '):'';sync.hidden=!sync.textContent}
+ v146RenderHomeMonthly(carry||v111MonthBalance(month()));
  v97SyncHomePresentation();
 }
 function v121NavButton(page,label,path){
