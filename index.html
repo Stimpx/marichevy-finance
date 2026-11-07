@@ -112,9 +112,9 @@
 @media(max-width:700px){#income .v135-income-top{grid-template-columns:minmax(0,1fr)}#income .v135-income-source-card{padding:14px}#income .v135-source-grid{gap:8px}#income #incomePeopleLegend .legend-row{gap:7px}#income #incomePeopleLegend .legend-row>b{font-size:12px}}
 @media(max-width:380px){#income .v135-source-visual{grid-template-columns:88px minmax(0,1fr);gap:9px}#income .v135-source-donut{width:88px;height:88px;min-width:88px}#income .v135-source-donut:after{inset:18px}#income #incomePeopleLegend .legend-row{grid-template-columns:8px minmax(0,1fr) auto auto;gap:5px}#income #incomePeopleLegend .legend-row>b,#income .v135-income-share{font-size:11px}}
 /* Selected analytics period never changes planning-month values. */
-.v130-period-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap;max-width:100%}.v130-period-controls .month-select{max-width:100%}.v130-period-controls>span{min-width:0;max-width:100%}
+#analytics .v130-period-controls{display:grid;grid-template-columns:minmax(0,220px) minmax(0,240px);align-items:stretch;gap:10px;width:min(100%,470px);max-width:100%;flex:0 1 470px}#analytics .v130-period-controls>.month-select,#analytics #v130AnalyticsMonthField,#analytics #v130AnalyticsMonthField>.v107-select{min-width:0;width:100%!important;max-width:100%;margin:0}#analytics #v130AnalyticsMonthField,#analytics #v130AnalyticsMonthField>.v107-select{display:flex}#analytics .v130-period-controls>.v107-select{display:flex}#analytics .v130-period-controls .v107-select-trigger{min-height:44px;height:100%;font-size:13px;line-height:1.4;padding:10px 11px;gap:8px}
 .v130-analytics-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:18px}.v130-analytics-summary.v130-all-time{grid-template-columns:minmax(0,1fr)}.v130-analytics-summary>.kpi{min-width:0}.v130-analytics-summary .hint{display:block;margin-top:6px;font-size:12px}.v130-analytics-summary strong{overflow-wrap:anywhere}
-@media(max-width:600px){.v130-period-controls{width:100%}.v130-period-controls>span,.v130-period-controls>.month-select{flex:1 1 180px;width:100%}.v130-period-controls>span>.month-select{width:100%}.v130-analytics-summary{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:600px){#analytics .v130-period-controls{width:100%;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr)}.v130-analytics-summary{grid-template-columns:minmax(0,1fr)}}
 </style>
 <!-- v70 HOME TASKS: domestic chores + in-app reminders, based on v69 -->
 <meta charset="utf-8"/>
@@ -2518,8 +2518,12 @@ body .v141-operation{display:grid;grid-template-columns:minmax(0,1fr) minmax(90p
 @media(max-width:560px){body .v141-operation{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"main amount" "actions actions"}body .v141-operation>.v141-actions{justify-self:end;flex-wrap:wrap}body .v141-operation.v141-no-actions{grid-template-areas:"main amount"}}
 </style>
 <style id="v143CategoryDiscovery">
-#today .v95-suggestions>#v92SearchHint{font-size:12px;line-height:1.5;margin:0 0 6px}#today .v95-suggestions>#v90Quick{margin:0;gap:6px}#today .v143-category-choices{grid-column:1!important;grid-row:2!important;display:flex;flex-wrap:wrap;align-items:flex-start;gap:6px;min-width:0;align-self:start}#today #v143Popular{display:contents}#today #v143Popular[hidden]{display:none!important}#today #v143Popular>.btn,#today .v143-category-choices #v91All{min-height:40px!important;padding:7px 9px!important;font-size:11px!important;line-height:1.4;border-radius:9px;white-space:normal;overflow-wrap:anywhere}#today .v143-category-choices #v90Categories{margin:0!important;min-width:0}#today .v143-category-choices #v91All{display:inline-flex;align-items:center;justify-content:center;font-weight:650;color:#365dc2;background:#e9f0ff;border:1px solid #b8caef;white-space:nowrap}#today .v143-category-choices #v91All:hover{background:#dde9ff;border-color:#91ace0}#today .v143-category-choices #v91All:focus-visible{outline:2px solid #819bd1;outline-offset:2px}#today .v138-category-summary:has(#v92Selected:not([hidden]))>.v143-category-choices{display:contents}#today .v138-category-summary:has(#v92Selected:not([hidden])) #v90Categories{grid-column:1;grid-row:1;justify-self:end;align-self:center}#today .v138-category-summary:has(#v92Selected:not([hidden])) #v91All{box-sizing:border-box;min-height:20px!important;height:20px!important;padding:0 5px!important;font-size:10px!important;line-height:18px;border-radius:5px}#today .v136-purchase-fields:has(#v92Selected[hidden])>.v136-place{grid-template-rows:20px 40px;align-content:start}
-@media(max-width:700px){#today #v143Popular>.btn,#today .v143-category-choices #v91All{min-height:44px!important}#today .v138-category-summary:has(#v92Selected:not([hidden])) #v91All{min-height:20px!important}#today .v136-purchase-fields:has(#v92Selected[hidden])>.v136-place{grid-template-rows:20px 44px}}
+#today .v95-suggestions>#v92SearchHint{font-size:12px;line-height:1.5;margin:0 0 6px}#today .v95-suggestions>#v90Quick{margin:0;gap:6px}#today .v143-category-choices{grid-column:1!important;grid-row:2!important;display:flex;flex-wrap:wrap;align-items:flex-start;gap:6px;min-width:0;align-self:start}#today #v143Popular{display:contents}#today #v143Popular[hidden]{display:none!important}#today #v143Popular>.btn,#today .v143-category-choices #v91All{min-height:40px!important;padding:7px 9px!important;font-size:11px!important;line-height:1.4;border-radius:9px;white-space:normal;overflow-wrap:anywhere}#today .v143-category-choices #v90Categories{margin:0!important;min-width:0}#today .v143-category-choices #v91All{display:inline-flex;align-items:center;justify-content:center;font-weight:650;color:#365dc2;background:#e9f0ff;border:1px solid #b8caef;white-space:nowrap}#today .v143-category-choices #v91All:hover{background:#dde9ff;border-color:#91ace0}#today .v143-category-choices #v91All:focus-visible{outline:2px solid #819bd1;outline-offset:2px}#today .v138-category-summary:has(#v92Selected:not([hidden]))>.v143-category-choices{display:none!important}#today .v138-category-summary>#v92Selected:not([hidden]){display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;max-width:100%;text-align:left;cursor:pointer;font-weight:500;color:#344b68;background-color:#edf8f1;border-color:#8fbea4}#today #v92Selected>span{min-width:0;overflow-wrap:anywhere}#today #v92Selected>svg{width:18px;height:18px;flex:0 0 18px;color:#6f87a0}#today #v92Selected:hover{border-color:#6aa786;background-color:#e5f4ec}#today #v92Selected:focus-visible{outline:2px solid #899fff;outline-offset:2px}#today .v133-compact[data-entry-type="expense"]:is([data-categories-expanded="true"],:has(#v92Selected:not([hidden]))){grid-template-areas:"operation date" "amount recipients" "search search" "purchase purchase" "suggestions suggestions" "details details"}#today .v136-purchase-fields:has(#v92Selected[hidden])>.v136-place{grid-template-rows:20px 40px;align-content:start}
+@media(max-width:700px){#today #v143Popular>.btn,#today .v143-category-choices #v91All{min-height:44px!important}#today .v133-compact[data-entry-type="expense"]:is([data-categories-expanded="true"],:has(#v92Selected:not([hidden]))){grid-template-areas:"operation" "date" "amount" "recipients" "search" "purchase" "suggestions" "details"}#today .v136-purchase-fields:has(#v92Selected[hidden])>.v136-place{grid-template-rows:20px 44px}}
+</style>
+<style id="v144SearchEmptyHint">
+#today #v90Extra>summary>.v145-details-label{display:inline!important;font-size:14px!important;font-weight:650!important;color:#273e66;margin-left:0}
+#today .v95-suggestions>#v92SearchHint.v144-no-category{display:block;color:#28446f;font-size:14px!important;font-weight:650!important;line-height:1.5;padding:10px 12px;margin:0 0 4px;border:1px solid #c5d6f0;border-left:3px solid #5379d1;border-radius:10px;background:#eef4ff}
 </style>
 </head>
 <body>
@@ -2732,12 +2736,12 @@ body .v141-operation{display:grid;grid-template-columns:minmax(0,1fr) minmax(90p
 <div class="field transfer-field v133-transfer-from"><label for="eFrom">Откуда</label><select id="eFrom"><option>Карта</option><option>Наличные</option><option>Накопления</option></select></div>
 <div class="field transfer-field v133-transfer-to"><label for="eTo">Куда</label><select id="eTo"><option>Накопления</option><option>Карта</option><option>Наличные</option></select></div>
 <div class="field expense-field full v136-purchase-fields">
-<div class="v138-category-summary"><div class="v138-category-heading"><span>Категория</span></div><p id="v92Selected" role="status" hidden></p><div class="v143-category-choices"><div id="v143Popular" class="v90-chips" aria-label="Популярные категории"></div><div id="v90Categories"><button type="button" class="btn small v143-all-categories" id="v91All" onclick="v91Toggle()" aria-expanded="false" aria-controls="v90Quick">Все категории</button><div id="v90Results" hidden></div></div></div></div>
+<div class="v138-category-summary"><div class="v138-category-heading"><span>Категория</span></div><button type="button" id="v92Selected" class="v143-selected-category" onclick="v91Toggle()" aria-label="Изменить категорию" aria-expanded="false" aria-controls="v90Quick" hidden></button><div class="v143-category-choices"><div id="v143Popular" class="v90-chips" aria-label="Популярные категории"></div><div id="v90Categories"><button type="button" class="btn small v143-all-categories" id="v91All" onclick="v91Toggle()" aria-expanded="false" aria-controls="v90Quick">Все категории</button><div id="v90Results" hidden></div></div></div></div>
 <div class="field expense-field full v81-detail-field" id="v81DetailField" hidden><label for="eSubcategory">Уточнение · необязательно</label><select id="eSubcategory"></select></div>
 <div class="field v136-place"><label for="eStore">Где? · необязательно</label><input id="eStore" placeholder="Магазин или место"></div>
 </div>
 <div class="field income-field v138-income-source v133-primary"><label for="eIncomeSource">Источник дохода · необязательно</label><input id="eIncomeSource" placeholder="Пропуска, консультации, зарплата…"></div>
-<details class="field full" id="v90Extra"><summary>Детали <span>необязательно: счёт, оплата, комментарий</span></summary><div class="form-grid">
+<details class="field full" id="v90Extra"><summary><span class="v145-details-label">Детали</span> <span>необязательно: счёт, оплата, комментарий</span></summary><div class="form-grid">
 <div class="field"><label for="eComment" id="eCommentLabel">Комментарий · необязательно</label><input id="eComment" maxlength="200" placeholder="Например: продукты на неделю"></div>
 <div class="field expense-field"><label for="ePay">Как оплатили?</label><select id="ePay"><option>Карта</option><option>Наличные</option><option>СБП</option><option>Перевод</option></select></div>
 </div></details></div>
@@ -2766,7 +2770,7 @@ body .v141-operation{display:grid;grid-template-columns:minmax(0,1fr) minmax(90p
 <div><h2>Семейная аналитика</h2><div class="hint" style="margin-bottom:0">Выберите месяц или всё время: суммы, диаграммы и расшифровки считаются за один выбранный период.</div></div>
 <button type="button" class="btn" onclick="v98OpenCategoryReview()">Проверить категории</button><div class="v130-period-controls"><select aria-label="Период аналитики" class="month-select" id="analyticsScope" onchange="v130AnalyticsScopeChanged()" style="margin-left:0;color:#142033;border-color:var(--line)"><option value="month">За месяц</option><option value="all">За всё время</option></select><span id="v130AnalyticsMonthField"><select aria-label="Месяц аналитики" class="month-select" id="analyticsMonth" style="margin-left:0;color:#142033;border-color:var(--line)"></select></span></div>
 </div>
-<div class="v130-analytics-summary" id="v130AnalyticsSummary"><div class="kpi"><small id="v130AnalyticsPeriodLabel">За выбранный месяц</small><strong id="v130AnalyticsPeriodTotal">0 ₽</strong></div><div class="kpi" id="v130AnalyticsAllSummary"><small>Всего за всю историю</small><strong id="v130AnalyticsAllTotal">0 ₽</strong><span class="hint">Сумма расходов всех месяцев</span></div></div>
+<div class="v130-analytics-summary" id="v130AnalyticsSummary"><div class="kpi"><small id="v130AnalyticsPeriodLabel">Расходы семьи за выбранный месяц</small><strong id="v130AnalyticsPeriodTotal">0 ₽</strong></div><div class="kpi" id="v130AnalyticsAllSummary"><small>Всего расходов за всю историю</small><strong id="v130AnalyticsAllTotal">0 ₽</strong><span class="hint">Сумма расходов всех месяцев</span></div></div>
 </div>
 <div class="grid2">
 <div class="card"><h2>Расходы без пересечений</h2><div class="hint v114-scope-note" id="peopleChartHint">Автомобиль и кредиты выделены отдельно от получателей</div><div id="aPeopleChart"></div></div>
@@ -3869,6 +3873,14 @@ function v92DiaperCategory(query){
  if(/(?:^| )взросл[а-я]*(?: |$)/.test(q))return 'Аптека и медицина';
  return 'Дети';
 }
+function v92HygieneCategory(value){
+ const q=v92Norm(value),diaper=v92DiaperCategory(q);if(diaper)return diaper;
+ if(!/(?:^| )салфет[а-я]*(?: |$)/.test(q))return '';
+ if(/(?:^| )(?:собак[а-я]*|собач[а-я]*|щен[а-я]*|кошк[а-я]*|кошек|кошач[а-я]*|кот(?:а|ам|ов|у|ы|ят[а-я]*|ен[а-я]*)?|питомц[а-я]*|животн[а-я]*)(?: |$)/.test(q))return 'Животные';
+ if(/(?:^| )взросл[а-я]*(?: |$)/.test(q))return '';
+ return /(?:^| )(?:детск[а-я]*|малыш[а-я]*|младен[а-я]*|ребен[а-я]*|ребят[а-я]*|груднич[а-я]*)(?: |$)/.test(q)?'Дети':'';
+}
+function v92AmbiguousWipes(value){return /^(?:влажн[а-я]* )?салфет[а-я]*(?: влажн[а-я]*)?$/.test(v92Norm(value))}
 function v92DigitalService(value){return /(?:^| )(?:chat ?gpt|open ?ai|чат ?(?:gpt|гпт|жпт|джипити))(?: |$)/.test(v92Norm(value))}
 function v99PurchasePurpose(value){
  const text=v92Norm(value),has=pattern=>pattern.test(text);
@@ -3881,7 +3893,9 @@ function v99PurchasePurpose(value){
  return choices.length===1?choices[0]:'';
 }
 function v99PurchaseDetail(category,value){
- const q=v92Norm(value);if(v99PurchasePurpose(q)!==category)return '';
+ const q=v92Norm(value);category=category==='Детские товары'?'Дети':category;
+ if(category==='Дети'&&(v92HygieneCategory(q)==='Дети'||v92AmbiguousWipes(q)))return 'Гигиена';
+ if(v99PurchasePurpose(q)!==category)return '';
  if(category==='Транспорт')return 'Такси';
  if(category==='Подписки')return /(?:^| )хостинг[а-я]*(?: |$)|(?:^| )hosting(?: |$)/.test(q)?'Хостинг':'Домен';
  if(category==='Спорт и здоровье'){
@@ -3910,7 +3924,8 @@ function v92Matches(query,merchant=''){
  // Offer purpose choices for a digital tool; never copy a historical misclassification into the form.
  if(digital){add('Подписки',118,'Цифровой сервис — выберите назначение');add('Работа',117,'Цифровой инструмент — выберите назначение')}
  const purpose=v99PurchasePurpose(q);if(purpose)add(purpose,119,'По назначению покупки — выберите категорию');
- const diaperCategory=v92DiaperCategory(q);if(diaperCategory)add(diaperCategory,119,'По назначению товара — выберите категорию');
+ const hygieneCategory=v92HygieneCategory(q);if(hygieneCategory)add(hygieneCategory,119,'По назначению товара — выберите категорию');
+ if(!hygieneCategory&&v92AmbiguousWipes(q)){add('Дом',90,'Салфетки: выберите назначение');add('Дети',89,'Салфетки: выберите назначение')}
  return V90_CATEGORIES.filter(x=>scores.has(x[0])).map(x=>({key:x[0],label:x[1],score:scores.get(x[0]),reason:reasons.get(x[0])})).sort((a,b)=>b.score-a.score);
 }
 let v91Expanded=false;
@@ -3949,11 +3964,12 @@ function v90Paint(){
  document.getElementById('v90Quick').hidden=!items.length;
  const currentDetail=document.getElementById('eSubcategory').value;
  document.getElementById('v90Quick').innerHTML=items.map(({key,label,detail},i)=>{const active=selected===key&&(!detail||currentDetail===detail);return `<button type="button" class="btn small ${active?'primary':''}" aria-pressed="${active}" data-cat="${esc(key)}" data-choice="${i}"><span>${esc(label)}</span></button>`}).join('');
- const hint=document.getElementById('v92SearchHint');
+ const hint=document.getElementById('v92SearchHint');hint.classList.toggle('v144-no-category',!v91Expanded&&hasQuery&&!matches.length);
  hint.textContent=v91Expanded?'Все категории — выберите подходящую.':hasQuery?(v92DigitalService(q+' '+merchant)?'Цифровой сервис: выберите «Подписки и онлайн-сервисы» или «Работа» по назначению.':matches.length?'Подходящие категории ниже. Не нашли нужную? Посмотрите все категории.':'Совпадений нет. Выберите популярную категорию ниже или нажмите «Все категории».'):'Выберите популярную категорию ниже или откройте все категории.';
  hint.hidden=Boolean(selected)&&!hasQuery&&!v91Expanded;
- const status=document.getElementById('v92Selected');status.hidden=!selected;
- status.textContent=selected?'Выбрано: '+(V90_CATEGORIES.find(x=>x[0]===selected)?.[1]||selected)+(currentDetail?' · '+currentDetail:''):'';
+ const status=document.getElementById('v92Selected'),categoryLabel=V90_CATEGORIES.find(x=>x[0]===selected)?.[1]||selected;status.hidden=!selected;
+ status.innerHTML=selected?`<span>${esc(categoryLabel)}</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m7 10 5 5 5-5"/></svg>`:'';status.setAttribute('aria-label',selected?'Изменить категорию: '+categoryLabel:'Изменить категорию');status.setAttribute('aria-expanded',String(v91Expanded));
+ const form=document.querySelector('#today .v133-compact');if(form&&form.dataset.categoriesExpanded!==String(v91Expanded))form.dataset.categoriesExpanded=String(v91Expanded);
  document.getElementById('v93CreditHelp').hidden=selected!=='Кредит';
  const all=document.getElementById('v91All');all.textContent=v91Expanded?'Скрыть категории':'Все категории';all.setAttribute('aria-expanded',String(v91Expanded));
  document.querySelectorAll('#v90Quick [data-choice]').forEach(b=>b.onclick=()=>{const item=items[Number(b.dataset.choice)];v90Choose(item.key,item.detail||'')});v132RefreshFieldStates();v133RenderRecipients();
@@ -5380,7 +5396,7 @@ function amountText(e){return (e.type==='income'?'+':e.type==='expense'?'−':'�
 const V81_SUBCATEGORIES={
  'Школа и занятия':['Школьное питание','Английский язык','Танцы','Школьные принадлежности','Курсы','Другое'],
  'Авто и транспорт':['Бензин','ТО','Ремонт','Запчасти','Шины','Парковка','Мойка','Платные дороги','Автострахование','Транспортный налог','Штрафы','Такси','Общественный транспорт'],
- 'Дети':['Английский язык','Танцы','Спорт и секции','Музыка и творчество','Репетитор','Сад и школа','Развивающие занятия','Одежда и обувь','Игрушки и книги','Здоровье ребёнка','Праздники','Другое'],
+ 'Дети':['Гигиена','Детское питание','Одежда и обувь','Игрушки и книги','Коляски и автокресла','Здоровье ребёнка','Другое'],
  'Образование':['Английский язык','Курсы','Репетитор','Школа','Детский сад','Спорт и секции','Танцы','Музыка и творчество','Учебники','Другое'],
  'Животные':['Корм','Ветеринар','Лекарства','Прививки','Груминг','Наполнитель','Игрушки и аксессуары','Передержка','Другое'],
  'Продукты':['Продукты на неделю','Овощи и фрукты','Мясо и рыба','Молочные продукты','Доставка продуктов','Другое'],
@@ -5405,7 +5421,7 @@ const V81_SUBCATEGORIES={
  'Путешествия':['Билеты','Отель','Питание','Экскурсии','Другое'],
  'Кредит':['Ипотека','Рассрочка / Сплит','Кредитная карта','Потребительский кредит','Другое']
 };
-function v81DetailOptions(category){return V81_SUBCATEGORIES[v99PurposeCategory(category)]||['Другое']}
+function v81DetailOptions(category){const key=category==='Детские товары'?'Дети':v99PurposeCategory(category);return V81_SUBCATEGORIES[key]||['Другое']}
 function v81BeneficiaryOptions(){return v99BeneficiaryChoices()}
 function v81FillDetails(prefix,category,detail='',beneficiary){
  const sub=document.getElementById(prefix+'Subcategory'),who=document.getElementById(prefix+'Beneficiary');if(!sub||!who)return;
@@ -6584,7 +6600,7 @@ function renderAnalytics(){
  v81RenderLifeAnalytics();
  const allTime=v130AnalyticsAllTime(),ex=v130AnalyticsExpenses(),total=sum(ex),allTotal=sum(v130AnalyticsExpenses('all'));
  const field=document.getElementById('v130AnalyticsMonthField');field.hidden=allTime;field.style.display=allTime?'none':'';
- document.getElementById('v130AnalyticsPeriodLabel').textContent=v130AnalyticsPeriodLabel();document.getElementById('v130AnalyticsPeriodTotal').textContent=money2(total);document.getElementById('v130AnalyticsAllTotal').textContent=money2(allTotal);document.getElementById('v130AnalyticsAllSummary').hidden=allTime;document.getElementById('v130AnalyticsAllSummary').style.display=allTime?'none':'';document.getElementById('v130AnalyticsSummary').classList.toggle('v130-all-time',allTime);
+ document.getElementById('v130AnalyticsPeriodLabel').textContent='Расходы семьи '+v130AnalyticsPeriodLabel().toLowerCase();document.getElementById('v130AnalyticsPeriodTotal').textContent=money2(total);document.getElementById('v130AnalyticsAllTotal').textContent=money2(allTotal);document.getElementById('v130AnalyticsAllSummary').hidden=allTime;document.getElementById('v130AnalyticsAllSummary').style.display=allTime?'none':'';document.getElementById('v130AnalyticsSummary').classList.toggle('v130-all-time',allTime);
  const people=v86TargetTotals(ex);
  const cats=Object.entries(aggregate(groupedExpenseEntries(ex),'category')).sort((a,b)=>b[1]-a[1]);
  const days=new Set(ex.map(e=>e.date)).size;
