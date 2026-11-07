@@ -5314,7 +5314,7 @@ function v121InitNavigationLayout(){
  buttons.set('planning',v121NavButton('planning','План месяца','M4 5h16v16H4z M8 3v4 M16 3v4 M4 10h16 M8 14h3 M8 17h7'));
  const tariffButton=buttons.get('plans');if(tariffButton)tariffButton.querySelector('.v81-nav-label').textContent='Тарифы FREE / PRO';
  nav.replaceChildren();
- for(const [title,pages] of [['',['home','today','history','accounts']],['Планирование',['planning','goals','loans']],['Аналитика',['analytics','income','car']],['Семья',['chores','dates']],['Сервис',['settings','help','plans']]]){
+ for(const [title,pages] of [['',['home','today','history','accounts']],['Аналитика',['analytics','income','car']],['Планирование',['planning','goals','loans']],['Семья',['chores','dates']],['Сервис',['settings','help','plans']]]){
   if(title){const heading=document.createElement('div');heading.className='v121-nav-group';heading.textContent=title;nav.appendChild(heading)}
   for(const page of pages){const button=buttons.get(page);if(button)nav.appendChild(button)}
  }
@@ -5322,7 +5322,7 @@ function v121InitNavigationLayout(){
  const more=document.querySelector('#v74MorePanel .v74-more-grid'),moreButtons=new Map([...more.querySelectorAll('button[data-page]')].map(button=>[button.dataset.page,button]));
  for(const [page,label] of [['accounts','Счета и сверка'],['planning','План месяца']]){const button=document.createElement('button');button.type='button';button.dataset.page=page;const span=document.createElement('span');span.textContent=label;button.appendChild(span);button.addEventListener('click',()=>v74Go(page));moreButtons.set(page,button)}
  const moreTariffButton=moreButtons.get('plans');if(moreTariffButton)moreTariffButton.querySelector('span').textContent='Тарифы FREE / PRO';
- more.replaceChildren();for(const page of ['accounts','planning','income','car','loans','goals','chores','dates','settings','help','plans']){const button=moreButtons.get(page);if(button)more.appendChild(button)}
+ more.replaceChildren();for(const page of ['accounts','income','car','planning','goals','loans','chores','dates','settings','help','plans']){const button=moreButtons.get(page);if(button)more.appendChild(button)}
  for(const button of document.querySelectorAll('#nav button,#mobileNav button,#v74MorePanel [data-page]')){const label=button.textContent.trim();button.setAttribute('aria-label',label);button.setAttribute('title',label)}
  v121WrapSettings('v96BrandingCard','Оформление семьи');v121WrapSettings('v89AuditCard','Проверка данных и восстановление');v121WrapSettings('v88FeedbackCard','Обратная связь');
  const telegram=document.querySelector('#settings .telegram-settings-card');if(telegram&&!telegram.id)telegram.id='v121TelegramSettings';if(telegram)v121WrapSettings(telegram.id,'Уведомления');
