@@ -66,10 +66,10 @@ class EntryLayout(unittest.TestCase):
 
     def test_optional_fields_are_folded_and_amount_is_more_prominent(self):
         self.assertFalse(self.page.locator('#v90Extra').evaluate('e=>e.open'))
-        for identifier in ['ePay','eComment','eAccountId','eIncomeSource']:
+        for identifier in ['ePay','eComment','eAccountId']:
             self.assertTrue(self.page.locator('#'+identifier).evaluate('e=>!!e.closest("#v90Extra")'),identifier)
             self.assertFalse(self.page.locator('#'+identifier).is_visible(),identifier)
-        for identifier in ['eStore','eSubcategory']:
+        for identifier in ['eStore','eSubcategory','eIncomeSource']:
             self.assertFalse(self.page.locator('#'+identifier).evaluate('e=>!!e.closest("#v90Extra")'),identifier)
         self.assertTrue(self.page.locator('#eStore').is_visible())
         self.assertFalse(self.page.locator('#v81DetailField').is_visible())
@@ -92,7 +92,7 @@ class EntryLayout(unittest.TestCase):
         self.page.evaluate('clearEntry()')
         self.assertEqual(self.page.locator('#v133ExpenseRecipients [aria-pressed="true"]').count(),0)
 
-    def test_category_reveals_matching_refinement_before_visible_place(self):
+    def test_category_reveals_matching_refinement_beside_visible_place(self):
         self.assertFalse(self.page.locator('#v81DetailField').is_visible())
         self.page.locator('#v90Search').fill('парковка')
         self.page.locator('#v90Quick [data-cat="Авто и транспорт"]').first.click()
@@ -105,8 +105,9 @@ class EntryLayout(unittest.TestCase):
         self.page.get_by_role('option',name='Бензин',exact=True).click()
         self.assertEqual(self.page.locator('#eSubcategory').input_value(),'Бензин')
         self.page.locator('#eStore').fill('Тестовое место')
-        r=self.evaluate('''const rect=id=>document.getElementById(id).getBoundingClientRect();return {detailBottom:rect('v81DetailField').bottom,placeTop:document.getElementById('eStore').closest('.field').getBoundingClientRect().top};''')
-        self.assertGreaterEqual(r['placeTop'],r['detailBottom'])
+        r=self.evaluate('''const detail=document.getElementById('v81DetailField').getBoundingClientRect(),place=document.getElementById('eStore').closest('.field').getBoundingClientRect();return {detailTop:detail.top,detailRight:detail.right,placeTop:place.top,placeLeft:place.left};''')
+        self.assertLessEqual(abs(r['placeTop']-r['detailTop']),2)
+        self.assertGreaterEqual(r['placeLeft'],r['detailRight'])
         self.page.locator('#v90Search').fill('продукты')
         self.assertFalse(self.page.locator('#v81DetailField').is_visible())
         self.page.locator('#v90Quick [data-cat="Продукты"]').first.click()
@@ -158,7 +159,8 @@ class EntryLayout(unittest.TestCase):
         self.assertTrue(self.page.locator('#eDate').is_visible());self.assertFalse(self.page.locator('#v90Search').is_visible())
         participant=self.page.locator('#v133IncomeRecipients button[data-v133-recipient]').first
         person=participant.get_attribute('data-v133-recipient');participant.click()
-        self.page.locator('#eAmount').fill('5000');self.page.locator('#v90Extra > summary').click();self.page.locator('#eIncomeSource').fill('Пропуска')
+        self.assertFalse(self.page.locator('#v90Extra').evaluate('e=>e.open'));self.assertTrue(self.page.locator('#eIncomeSource').is_visible())
+        self.page.locator('#eAmount').fill('5000');self.page.locator('#eIncomeSource').fill('Пропуска')
         self.page.locator('#v90Save').click();self.page.wait_for_function('state.entries.length===2&&!v90Saving')
         r=self.evaluate("const e=state.entries.find(e=>e.type==='income');return {amount:e.amount,who:e.who,source:e.store};")
         self.assertEqual(r,{'amount':5000,'who':person,'source':'Пропуска'})
