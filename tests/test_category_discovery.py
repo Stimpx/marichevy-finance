@@ -1,0 +1,33 @@
+"""Category discovery uses explicit choices and never creates expenses or comments automatically.
+
+Offline synthetic UI checks; all external requests are blocked.
+"""
+from pathlib import Path
+import os, shutil, unittest
+from playwright.sync_api import sync_playwright
+HTML=(Path(__file__).resolve().parents[1]/'index.html').read_text()
+BASE='http://127.0.0.1:9891/'
+
+class CategoryDiscovery(unittest.TestCase):
+ @classmethod
+ def setUpClass(cls):
+  cls.p=sync_playwright().start();executable=os.environ.get('CHROMIUM_EXECUTABLE') or shutil.which('chromium') or shutil.which('chromium-browser');cls.browser=cls.p.chromium.launch(headless=True,**({'executable_path':executable} if executable else {}))
+ @classmethod
+ def tearDownClass(cls):cls.browser.close();cls.p.stop()
+ def setUp(self):
+  self.context=self.browser.new_context(viewport={'width':1280,'height':1100},timezone_id='Europe/Moscow',service_workers='block');self.context.route('**/*',lambda r:r.fulfill(status=200,content_type='text/html',body=HTML) if r.request.url==BASE else r.abort());self.page=self.context.new_page();self.errors=[];self.page.on('pageerror',lambda e:self.errors.append(str(e)));self.page.on('dialog',lambda d:d.accept());self.page.goto(BASE,wait_until='domcontentloaded');self.page.wait_for_function("typeof v143FrequentCategories==='function'")
+  self.page.evaluate('''() => {session=null;localRecoveryBlocked=false;window.__FINANCE_BRIDGE__=null;localStorage.clear();state=blankState();state.entries=['Дом','Дом','Дом','Одежда','Одежда','Продукты'].map((category,i)=>({id:'existing-'+i,type:'expense',date:today(),amount:100,category,subcategory:'',beneficiary:'Общее',who:'Общее',store:'Тестовый магазин',comment:'',pay:'Карта',created_at:today()+'T12:00:00Z'}));state.entries.push({id:'not-an-expense',type:'income',date:today(),amount:90000,category:'Подарки',who:'Сергей',store:'Пропуска'});showApp();go('today');clearEntry();window.originalDiscoveryEntries=JSON.stringify(state.entries);}''')
+ def tearDown(self):
+  errors=self.errors;self.context.close();self.assertEqual(errors,[])
+ def keys(self):return self.page.locator('#v90Quick button').evaluate_all('nodes=>nodes.map(node=>node.dataset.cat)')
+ def popular(self):return self.page.locator('#v143Popular button').evaluate_all('nodes=>nodes.map(node=>node.dataset.v143Popular)')
+ def test_default_three_use_actual_expense_frequency_without_selecting_a_category(self):
+  self.assertEqual(self.popular(),['Дом','Одежда','Продукты']);self.assertEqual(self.page.locator('#eCategory').input_value(),'');self.assertIn('популярную категорию',self.page.locator('#v92SearchHint').inner_text());self.assertTrue(self.page.locator('#v91All').is_visible());self.assertTrue(self.page.locator('#v91All').evaluate("node=>!!node.closest('.v138-category-summary')"));self.assertTrue(self.page.evaluate('JSON.stringify(state.entries)===originalDiscoveryEntries'))
+ def test_unknown_query_can_open_full_list_select_and_save_without_search_comment(self):
+  self.page.locator('#eAmount').fill('1533');self.page.locator('[data-v133-target="eBeneficiary"][data-v133-recipient="Общее"]').click();self.page.locator('#v90Search').fill('кофрщз');self.assertEqual(self.popular(),['Дом','Одежда','Продукты']);self.assertIn('Совпадений нет',self.page.locator('#v92SearchHint').inner_text());self.assertIn('Все категории',self.page.locator('#v92SearchHint').inner_text());self.page.locator('#v91All').click();self.assertEqual(self.page.locator('#v91All').get_attribute('aria-expanded'),'true');self.assertEqual(len(self.keys()),self.page.evaluate('V90_CATEGORIES.length'));self.page.locator('#v90Quick [data-cat="Одежда"]').click();self.assertEqual(self.page.locator('#eCategory').input_value(),'Одежда');self.assertFalse(self.page.locator('#v90Quick').is_visible());self.assertTrue(self.page.locator('#v91All').is_visible());self.assertEqual(self.page.locator('#eComment').input_value(),'');self.page.locator('#v90Save').click();self.page.wait_for_function('state.entries.length===8&&!v90Saving');record=self.page.evaluate('state.entries.at(-1)');self.assertEqual((record['amount'],record['category'],record['comment']),(1533,'Одежда',''))
+ def test_query_limits_matches_to_three_and_preserves_narrow_refinement(self):
+  self.page.locator('#v90Search').fill('продукты одежда дом кафе');self.assertGreater(self.page.evaluate("v92Matches(document.getElementById('v90Search').value).length"),3);self.assertEqual(len(self.keys()),3);self.page.locator('#v90Search').fill('парковка');self.assertLessEqual(len(self.keys()),3);self.page.locator('#v90Quick [data-cat="Авто и транспорт"]').first.click();self.assertEqual(self.page.locator('#eSubcategory').input_value(),'Парковка');self.assertEqual(self.page.locator('#eComment').input_value(),'');self.assertTrue(self.page.evaluate('JSON.stringify(state.entries)===originalDiscoveryEntries'))
+ def test_expansion_typing_collapse_and_clear_restore_three_suggestions(self):
+  self.page.locator('#v91All').click();self.assertGreater(len(self.keys()),3);self.page.locator('#v91All').click();self.assertEqual(len(self.popular()),3);self.assertFalse(self.page.locator('#v90Quick').is_visible());self.assertEqual(self.page.locator('#v91All').get_attribute('aria-expanded'),'false');self.page.locator('#v91All').click();self.page.locator('#v90Search').fill('парковка');self.assertLessEqual(len(self.keys()),3);self.assertEqual(self.page.locator('#v91All').get_attribute('aria-expanded'),'false');self.page.evaluate('clearEntry()');self.assertEqual(self.popular(),['Дом','Одежда','Продукты']);self.page.locator('#eType').select_option('income',force=True);self.assertFalse(self.page.locator('#v91All').is_visible());self.assertTrue(self.page.evaluate('JSON.stringify(state.entries)===originalDiscoveryEntries'))
+
+if __name__=='__main__':unittest.main(verbosity=2)

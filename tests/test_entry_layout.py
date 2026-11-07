@@ -121,13 +121,16 @@ class EntryLayout(unittest.TestCase):
 
     def test_categories_open_dynamically_and_clear_returns_compact_state(self):
         self.assertFalse(self.page.locator('#v90Quick').is_visible())
+        self.assertEqual(self.page.locator('#v143Popular button').count(),3)
+        self.assertTrue(self.page.locator('#v91All').is_visible())
         self.page.locator('#v90Search').fill('парковка')
         self.assertTrue(self.page.locator('#v90Quick').is_visible())
-        self.assertLessEqual(self.page.locator('#v90Quick button').count(),6)
+        self.assertLessEqual(self.page.locator('#v90Quick button').count(),3)
         self.assertEqual(self.page.locator('#eCategory').input_value(),'')
         self.assertIn('Парковка',self.page.locator('#v90Quick').inner_text())
         self.page.locator('#v90Search').fill('несуществующийпоиск')
         self.assertFalse(self.page.locator('#v90Quick').is_visible())
+        self.assertTrue(self.page.locator('#v143Popular button').first.is_visible())
         self.page.locator('#v91All').click()
         self.assertTrue(self.page.locator('#v90Quick').is_visible())
         self.assertGreater(self.page.locator('#v90Quick button').count(),6)
@@ -135,6 +138,8 @@ class EntryLayout(unittest.TestCase):
         self.assertTrue(self.page.locator('#v90Extra').evaluate('e=>e.open'))
         self.page.evaluate('clearEntry()')
         self.assertFalse(self.page.locator('#v90Quick').is_visible())
+        self.assertEqual(self.page.locator('#v143Popular button').count(),3)
+        self.assertTrue(self.page.locator('#v143Popular button').first.is_visible())
         self.assertFalse(self.page.locator('#v90Extra').evaluate('e=>e.open'))
 
     def test_actual_parking_save_uses_selected_chip_date_and_subcategory(self):
