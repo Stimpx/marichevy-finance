@@ -51,7 +51,8 @@ class FieldCompletion(unittest.TestCase):
             self.assertEqual((self.state_of('eAmount')['filled'],self.state_of('eAmount')['pending']),(False,True))
         self.page.locator('#eAmount').fill('1 250,50');self.assertTrue(self.state_of('eAmount')['filled'])
         self.page.locator('#eAmount').fill('');self.assertEqual((self.state_of('eAmount')['filled'],self.state_of('eAmount')['pending']),(False,False))
-        self.open_details()
+        self.assertFalse(self.page.locator('#v90Extra').evaluate('node=>node.open'))
+        self.assertTrue(self.page.locator('#eStore').is_visible())
         self.page.locator('#eStore').fill('Тестовая парковка');self.assertTrue(self.state_of('eStore')['filled'])
         self.page.locator('#eStore').fill('   ');self.assertFalse(self.state_of('eStore')['filled'])
     def test_select_placeholders_real_choices_and_dynamic_account_proxy(self):
@@ -80,6 +81,10 @@ class FieldCompletion(unittest.TestCase):
         self.assertEqual(self.page.locator('#eCategory').input_value(),'Авто и транспорт')
         self.assertEqual(self.state_of('v90Search'),{'filled':True,'pending':False,'value':''})
         self.assertTrue(self.page.locator('#v92Selected').is_visible());self.assertIn('Авто и транспорт',self.page.locator('#v92Selected').inner_text())
+        self.assertTrue(self.page.locator('#v81DetailField').is_visible());self.assertTrue(self.state_of('eSubcategory')['filled'])
+        self.assertIn('v132-filled',self.trigger('eSubcategory').get_attribute('class'))
+        self.trigger('eSubcategory').click();self.page.get_by_role('option',name='Без уточнения',exact=True).click()
+        self.assertFalse(self.state_of('eSubcategory')['filled']);self.assertNotIn('v132-filled',self.trigger('eSubcategory').get_attribute('class'))
         self.page.locator('#v90Search').fill('корм');self.assertFalse(self.state_of('v90Search')['filled']);self.assertTrue(self.state_of('v90Search')['pending'])
         self.page.locator('#v90Search').fill('');self.assertFalse(self.state_of('v90Search')['filled']);self.assertFalse(self.state_of('v90Search')['pending'])
     def test_repeat_favorite_and_clear_refresh_programmatic_values(self):

@@ -50,6 +50,9 @@ class EntryLayout(unittest.TestCase):
     def chip(self,value,target='eBeneficiary'):
         return self.page.locator('button[data-v133-target="'+target+'"][data-v133-recipient="'+value+'"]')
 
+    def select_trigger(self,identifier):
+        return self.page.locator('#'+identifier).locator('..').locator('.v107-select-trigger')
+
     def test_desktop_main_order_keeps_date_visible_and_recipient_next_to_amount(self):
         r=self.evaluate('''const rect=id=>{const r=document.querySelector(id).getBoundingClientRect();return {x:r.x,y:r.y,right:r.right,bottom:r.bottom}};
           return {amount:rect('#today .v95-amount'),recipients:rect('#v81BeneficiaryField'),search:rect('#today .v91-category'),
@@ -63,14 +66,57 @@ class EntryLayout(unittest.TestCase):
 
     def test_optional_fields_are_folded_and_amount_is_more_prominent(self):
         self.assertFalse(self.page.locator('#v90Extra').evaluate('e=>e.open'))
-        for identifier in ['eStore','ePay','eComment','eSubcategory','eAccountId','eIncomeSource']:
+        for identifier in ['ePay','eComment','eAccountId','eIncomeSource']:
             self.assertTrue(self.page.locator('#'+identifier).evaluate('e=>!!e.closest("#v90Extra")'),identifier)
             self.assertFalse(self.page.locator('#'+identifier).is_visible(),identifier)
+        for identifier in ['eStore','eSubcategory']:
+            self.assertFalse(self.page.locator('#'+identifier).evaluate('e=>!!e.closest("#v90Extra")'),identifier)
+        self.assertTrue(self.page.locator('#eStore').is_visible())
+        self.assertFalse(self.page.locator('#v81DetailField').is_visible())
         self.assertFalse(self.page.locator('#v133FavoritesWrap').evaluate('e=>e.open'))
         self.page.locator('#v90Extra > summary').click()
-        self.assertTrue(self.page.locator('#eStore').is_visible())
-        r=self.evaluate('''const amount=document.getElementById('eAmount'),optional=document.getElementById('eStore');return {amountHeight:amount.getBoundingClientRect().height,optionalHeight:optional.getBoundingClientRect().height,amountFont:parseFloat(getComputedStyle(amount).fontSize),optionalFont:parseFloat(getComputedStyle(optional).fontSize)};''')
+        self.assertTrue(self.page.locator('#eComment').is_visible())
+        r=self.evaluate('''const amount=document.getElementById('eAmount'),optional=document.getElementById('eComment');return {amountHeight:amount.getBoundingClientRect().height,optionalHeight:optional.getBoundingClientRect().height,amountFont:parseFloat(getComputedStyle(amount).fontSize),optionalFont:parseFloat(getComputedStyle(optional).fontSize)};''')
         self.assertGreater(r['amountHeight'],r['optionalHeight']);self.assertGreater(r['amountFont'],r['optionalFont'])
+
+    def test_recipient_chips_have_one_neutral_color_until_chosen(self):
+        colors=self.page.locator('#v133ExpenseRecipients [data-v133-recipient]').evaluate_all('nodes=>nodes.map(node=>{const s=getComputedStyle(node);return [s.backgroundColor,s.borderTopColor,s.color]})')
+        self.assertGreater(len(colors),4)
+        self.assertTrue(all(color==colors[0] for color in colors))
+        self.assertNotEqual(colors[0][0],'rgb(223, 243, 231)')
+        self.chip('Сергей').click()
+        self.page.wait_for_function("getComputedStyle(document.querySelector('button[data-v133-recipient=\"Сергей\"]')).backgroundColor==='rgb(223, 243, 231)'")
+        self.assertEqual(self.chip('Сергей').get_attribute('aria-pressed'),'true')
+        unselected=self.page.locator('#v133ExpenseRecipients [data-v133-recipient][aria-pressed="false"]').evaluate_all('nodes=>nodes.map(node=>{const s=getComputedStyle(node);return [s.backgroundColor,s.borderTopColor,s.color]})')
+        self.assertTrue(all(color==colors[0] for color in unselected))
+        self.page.evaluate('clearEntry()')
+        self.assertEqual(self.page.locator('#v133ExpenseRecipients [aria-pressed="true"]').count(),0)
+
+    def test_category_reveals_matching_refinement_before_visible_place(self):
+        self.assertFalse(self.page.locator('#v81DetailField').is_visible())
+        self.page.locator('#v90Search').fill('парковка')
+        self.page.locator('#v90Quick [data-cat="Авто и транспорт"]').first.click()
+        self.assertTrue(self.page.locator('#v81DetailField').is_visible())
+        self.assertTrue(self.select_trigger('eSubcategory').is_visible())
+        self.assertEqual(self.page.locator('#eSubcategory').input_value(),'Парковка')
+        self.assertIn('Бензин',self.page.locator('#eSubcategory').locator('option').all_text_contents())
+        self.assertFalse(self.page.locator('#v90Extra').evaluate('node=>node.open'))
+        self.select_trigger('eSubcategory').click()
+        self.page.get_by_role('option',name='Бензин',exact=True).click()
+        self.assertEqual(self.page.locator('#eSubcategory').input_value(),'Бензин')
+        self.page.locator('#eStore').fill('Тестовое место')
+        r=self.evaluate('''const rect=id=>document.getElementById(id).getBoundingClientRect();return {detailBottom:rect('v81DetailField').bottom,placeTop:document.getElementById('eStore').closest('.field').getBoundingClientRect().top};''')
+        self.assertGreaterEqual(r['placeTop'],r['detailBottom'])
+        self.page.locator('#v90Search').fill('продукты')
+        self.assertFalse(self.page.locator('#v81DetailField').is_visible())
+        self.page.locator('#v90Quick [data-cat="Продукты"]').first.click()
+        self.assertTrue(self.page.locator('#v81DetailField').is_visible())
+        self.assertEqual(self.page.locator('#eSubcategory').input_value(),'')
+        options=self.page.locator('#eSubcategory').locator('option').all_text_contents()
+        self.assertIn('Овощи и фрукты',options);self.assertNotIn('Бензин',options);self.assertNotIn('Парковка',options)
+        self.assertEqual(self.page.locator('#eStore').input_value(),'Тестовое место')
+        self.page.locator('#eType').select_option('income',force=True)
+        self.assertFalse(self.page.locator('#v81DetailField').is_visible());self.assertFalse(self.page.locator('#eStore').is_visible())
 
     def test_categories_open_dynamically_and_clear_returns_compact_state(self):
         self.assertFalse(self.page.locator('#v90Quick').is_visible())
@@ -100,10 +146,11 @@ class EntryLayout(unittest.TestCase):
         self.page.locator('#v90Quick [data-cat="Авто и транспорт"]').first.click()
         self.page.locator('#eDate').fill('2026-10-30')
         self.assertFalse(self.page.locator('#v90Extra').evaluate('e=>e.open'))
+        self.page.locator('#eStore').fill('Тестовая парковка')
         self.page.locator('#v90Save').click()
         self.page.wait_for_function('state.entries.length===2&&!v90Saving')
         r=self.evaluate("const e=state.entries.find(e=>e.id!=='synthetic-existing');return {type:e.type,amount:e.amount,beneficiary:e.beneficiary,category:e.category,subcategory:e.subcategory,date:e.date,store:e.store,originalUnchanged:JSON.stringify(state.entries[0])===JSON.parse(originalEntryJSON).map(e=>JSON.stringify(e))[0]};")
-        self.assertEqual(r,{'type':'expense','amount':200,'beneficiary':'Автомобиль','category':'Авто и транспорт','subcategory':'Парковка','date':'2026-10-30','store':'','originalUnchanged':True})
+        self.assertEqual(r,{'type':'expense','amount':200,'beneficiary':'Автомобиль','category':'Авто и транспорт','subcategory':'Парковка','date':'2026-10-30','store':'Тестовая парковка','originalUnchanged':True})
 
     def test_income_and_transfer_modes_keep_date_and_save_their_meaning(self):
         self.page.locator('#eType').select_option('income',force=True)
@@ -138,12 +185,16 @@ class EntryLayout(unittest.TestCase):
         self.assertTrue(self.page.locator('#v133FavoritesWrap').evaluate('e=>e.open'))
 
     def test_mobile_order_and_width_keep_primary_controls_usable(self):
-        for width in [320,390]:
+        for width in [320,390,768,1280]:
             with self.subTest(width=width):
                 self.page.set_viewport_size({'width':width,'height':1000})
                 self.page.evaluate('clearEntry()')
                 r=self.evaluate('''const amount=document.querySelector('#today .v95-amount').getBoundingClientRect(),who=document.getElementById('v81BeneficiaryField').getBoundingClientRect(),search=document.querySelector('#today .v91-category').getBoundingClientRect();return {overflow:document.documentElement.scrollWidth>document.documentElement.clientWidth+1,amountBottom:amount.bottom,whoTop:who.top,whoBottom:who.bottom,searchTop:search.top,dateVisible:!!document.getElementById('eDate').getClientRects().length};''')
-                self.assertFalse(r['overflow']);self.assertGreaterEqual(r['whoTop'],r['amountBottom']);self.assertGreaterEqual(r['searchTop'],r['whoBottom']);self.assertTrue(r['dateVisible'])
+                self.assertFalse(r['overflow']);self.assertGreaterEqual(r['searchTop'],r['whoBottom']);self.assertTrue(r['dateVisible'])
+                if width<=700:self.assertGreaterEqual(r['whoTop'],r['amountBottom'])
                 self.assertGreaterEqual(self.chip('Автомобиль').bounding_box()['height'],30)
+                self.page.locator('#v90Search').fill('парковка');self.page.locator('#v90Quick [data-cat="Авто и транспорт"]').first.click()
+                self.assertTrue(self.page.locator('#v81DetailField').is_visible());self.assertTrue(self.page.locator('#eStore').is_visible())
+                self.assertFalse(self.page.evaluate('document.documentElement.scrollWidth>document.documentElement.clientWidth+1'))
 
 if __name__=='__main__':unittest.main(verbosity=2)
