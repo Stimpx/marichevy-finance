@@ -2525,6 +2525,7 @@ body .v141-operation{display:grid;grid-template-columns:minmax(0,1fr) minmax(90p
 #today .v136-purchase-fields .v148-field-label{font-size:14px!important;font-weight:650!important;color:#273e66!important}#today .v136-purchase-fields .v148-field-optional{font-size:12px!important;font-weight:500!important;color:#687b94!important}
 #today #v130SearchHelp[hidden]{display:none!important}
 #today #v90Extra>summary>.v145-details-label{display:inline!important;font-size:14px!important;font-weight:650!important;color:#273e66;margin-left:0}
+#today #v90Save{font-size:14px!important}
 #today .v95-suggestions>#v92SearchHint.v144-no-category{display:block;color:#28446f;font-size:14px!important;font-weight:650!important;line-height:1.5;padding:10px 12px;margin:0 0 4px;border:1px solid #c5d6f0;border-left:3px solid #5379d1;border-radius:10px;background:#eef4ff}
 </style>
 <style id="v146HomeMonthlyCards">
@@ -2767,7 +2768,7 @@ body .v141-operation{display:grid;grid-template-columns:minmax(0,1fr) minmax(90p
 <div class="field transfer-field v133-transfer-to"><label for="eTo">Куда</label><select id="eTo"><option>Накопления</option><option>Карта</option><option>Наличные</option></select></div>
 <div class="field expense-field full v136-purchase-fields">
 <div class="v138-category-summary"><div class="v138-category-heading"><span class="v148-field-label">Популярные категории</span></div><button type="button" id="v92Selected" class="v143-selected-category" onclick="v91Toggle()" aria-label="Изменить категорию" aria-expanded="false" aria-controls="v90Quick" hidden></button><div class="v143-category-choices"><div id="v143Popular" class="v90-chips" aria-label="Популярные категории"></div><div id="v90Categories"><button type="button" class="btn small v143-all-categories" id="v91All" onclick="v91Toggle()" aria-expanded="false" aria-controls="v90Quick">Все категории</button><div id="v90Results" hidden></div></div></div></div>
-<div class="field expense-field full v81-detail-field" id="v81DetailField" hidden><label for="eSubcategory">Уточнение · необязательно</label><select id="eSubcategory"></select></div>
+<div class="field expense-field full v81-detail-field" id="v81DetailField" hidden><label for="eSubcategory"><span class="v148-field-label">Уточнение</span><span class="v148-field-optional"> · необязательно</span></label><select id="eSubcategory"></select></div>
 <div class="field v136-place"><label for="eStore"><span class="v148-field-label">Где?</span><span class="v148-field-optional"> · необязательно</span></label><input id="eStore" placeholder="Магазин или место"></div>
 </div>
 <div class="field income-field v138-income-source v133-primary"><label for="eIncomeSource">Источник дохода · необязательно</label><input id="eIncomeSource" placeholder="Пропуска, консультации, зарплата…"></div>
