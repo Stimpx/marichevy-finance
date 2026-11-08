@@ -76,9 +76,9 @@ class HomeMonthlyCards(unittest.TestCase):
         self.assertEqual(result['expenseOnly']['income'],'0,00 ₽');self.assertEqual(result['expenseOnly']['expense'],'25,50 ₽')
         self.assertEqual(result['expenseOnly']['incomeWidth'],0);self.assertEqual(result['expenseOnly']['expenseWidth'],100)
 
-    def test_monthly_card_rendering_preserves_existing_available_amount_and_ledger(self):
+    def test_monthly_card_rendering_preserves_account_bank_and_ledger(self):
         result=self.evaluate('''const before={available:document.getElementById('v121HomeAvailable').textContent,title:document.getElementById('v121HomeAvailableTitle').textContent,ledger:JSON.stringify(state.entries),settings:JSON.stringify(state.settings)};v146RenderHomeMonthly(v111MonthBalance(homeMonth()));v146RenderHomeMonthly(v111MonthBalance(homeMonth()));const after={available:document.getElementById('v121HomeAvailable').textContent,title:document.getElementById('v121HomeAvailableTitle').textContent,ledger:JSON.stringify(state.entries),settings:JSON.stringify(state.settings)};return {same:JSON.stringify(before)===JSON.stringify(after),available:before.available.replaceAll('\\u00a0',' '),cards:readHomeMonthly()};''')
-        self.assertTrue(result['same']);self.assertEqual(result['available'],'1 150,35 ₽')
+        self.assertTrue(result['same']);self.assertEqual(result['available'],'—')
         self.assertEqual(result['cards']['income'],'350,35 ₽');self.assertEqual(result['cards']['expense'],'100,00 ₽')
 
 

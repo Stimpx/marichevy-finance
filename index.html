@@ -2545,6 +2545,13 @@ body .v141-operation{display:grid;grid-template-columns:minmax(0,1fr) minmax(90p
 @media(max-width:760px){#home .v149-home-rankings{grid-template-columns:minmax(0,1fr);gap:22px}}
 @media(max-width:520px){#home #v121HomeSummary .v146-monthly{grid-template-columns:minmax(0,1fr)}}
 </style>
+<style id="v151HomeClarity">
+#home .v146-metric{display:block;text-align:left;text-decoration:none;cursor:pointer;transition:border-color .15s ease,box-shadow .15s ease}#home .v146-metric:hover{box-shadow:0 3px 12px #243d6010}#home .v146-income:hover{border-color:#a4c5b5}#home .v146-expense:hover{border-color:#d2a9b7}#home .v146-metric:focus-visible{outline:2px solid #5676bc;outline-offset:3px}#home .v146-metric:hover .v146-metric-heading{text-decoration:underline;text-underline-offset:3px}#home .v146-metric-heading{color:#344866}#home .v146-income>strong{color:#34775f}#home .v146-expense>strong{color:#a14c63}#home .v146-track{height:6px}#home .v146-track>span{background:#418c71}#home .v146-expense .v146-track>span{background:#bd687e}#home .v146-period,#home .v146-comparison-note{color:#536987}#home .v147-home-top>h3{color:#2b4364}#home .v147-top-name{color:#354b68;font-weight:500}#home .v147-top-value{color:#273f60}#home .v147-top-bar{height:5px;background:#e7edf5}#home .v147-top-bar>span{background:#6384c5}#home #v149HomeTopTargets .v147-top-bar>span{background:#548f87}
+</style>
+<style id="v150HomeBankStyle">
+#home .v150-home-accounts{display:grid;gap:0;margin:12px 0;min-width:0}#home .v150-home-account{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:10px;align-items:center;min-width:0;padding:9px 0;border-bottom:1px solid #e2e8f1}#home .v150-home-account>div{min-width:0}#home .v150-home-account-name{display:block;font-size:13px;font-weight:600;color:#283f60;overflow-wrap:anywhere}#home .v150-home-account small{display:block;font-size:11px;color:#65758c;margin-top:3px}#home .v150-home-account-amount{font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;color:#283f60;white-space:nowrap}#home .v150-home-account .btn{min-height:32px!important;padding:5px 8px!important;font-size:11px!important}#home #v150HomeAccountButton{margin:0 0 12px}#v150HomeAccountModal .modal{width:min(460px,calc(100vw - 24px))}#v150HomeAccountModal .field{margin:14px 0}#v150HomeAccountModal .field>label{display:block;margin-bottom:6px}#v150HomeAccountModal .actions{flex-wrap:wrap}#v150HomeAccountModal .hint{font-size:12px;line-height:1.6}#v150AccountError{color:#a33b53;font-size:13px;line-height:1.5;margin:10px 0}#v150AccountError[hidden]{display:none}
+@media(max-width:520px){#home .v150-home-account{grid-template-columns:minmax(0,1fr) auto;gap:6px 9px}#home .v150-home-account .btn{grid-column:1/-1;justify-self:start}#v150HomeAccountModal .actions>.btn{flex:1}}
+</style>
 </head>
 <body>
 <noscript><div style="padding:14px;background:#fff3cd;color:#664d03;text-align:center;font:600 14px/1.4 system-ui">Для работы «Семейный капитал» необходимо включить JavaScript.</div></noscript>
@@ -2587,20 +2594,24 @@ body .v141-operation{display:grid;grid-template-columns:minmax(0,1fr) minmax(90p
 </header>
 <section class="section active" id="home">
 <section class="card v121-home-summary" id="v121HomeSummary" aria-labelledby="v121HomeAvailableTitle">
- <div class="v121-home-summary-top"><div><span class="v121-eyebrow">ДЕНЬГИ НА СЕГОДНЯ</span><h2 id="v121HomeAvailableTitle">Доступно до следующего дохода</h2></div><span id="v121HomeBoundary" class="hint"></span></div>
+ <div class="v121-home-summary-top"><div><span class="v121-eyebrow">ДЕНЬГИ НА СЕГОДНЯ</span><h2 id="v121HomeAvailableTitle">Общий банк семьи по всем счетам</h2></div><span id="v121HomeBoundary" class="hint"></span></div>
  <div class="v146-home-body"><div class="v146-home-main">
- <strong id="v121HomeAvailable" class="v121-home-amount">Нужна настройка</strong>
+ <span class="hint v150-bank-total-label">Итого по счетам</span>
+ <strong id="v121HomeAvailable" class="v121-home-amount">—</strong>
+ <div id="v150HomeAccounts" class="v150-home-accounts"></div>
+ <div id="v150HomeDebtAccounts" class="v150-home-debts" hidden></div>
+ <button type="button" id="v150HomeAccountButton" class="btn small" onclick="v150OpenHomeAccount()">Добавить счёт</button>
  <p id="v121HomeAvailableNote" class="hint">Добавьте счета и план, чтобы рассчитать доступную сумму.</p>
  <div id="v128HomeBankWarning" class="v128-bank-notice" hidden role="status"><p id="v128HomeBankWarningText"></p><button type="button" class="btn small" onclick="v128OpenBankHistory()">Учесть списания ипотеки</button></div>
  <div class="v121-home-actions"><button type="button" class="btn v146-add-expense" onclick="openEntry('expense')"><span>Добавить расход</span></button><button type="button" class="btn v146-add-income" onclick="openEntry('income')"><span>Добавить доход</span></button></div>
   </div><aside class="v146-monthly" id="v146HomeMonthly" aria-label="Доходы и расходы семьи за месяц">
   <p class="v146-period" id="v146HomeMonthLabel">За выбранный месяц</p>
-  <section class="v146-metric v146-income" aria-labelledby="v146IncomeLabel"><div class="v146-metric-heading"><span id="v146IncomeLabel">Доход семьи за месяц</span></div><strong id="v146HomeIncome">0 ₽</strong><div class="v146-track" aria-hidden="true"><span id="v146IncomeBar"></span></div></section>
-  <section class="v146-metric v146-expense" aria-labelledby="v146ExpenseLabel"><div class="v146-metric-heading"><span id="v146ExpenseLabel">Расход семьи за месяц</span></div><strong id="v146HomeExpense">0 ₽</strong><div class="v146-track" aria-hidden="true"><span id="v146ExpenseBar"></span></div></section>
+  <a class="v146-metric v146-income" href="#income" onclick="return v151OpenHomeMonthly(event,'income')" aria-labelledby="v146IncomeLabel" title="Открыть доходы семьи за выбранный месяц"><div class="v146-metric-heading"><span id="v146IncomeLabel">Доход семьи за месяц</span></div><strong id="v146HomeIncome">0 ₽</strong><div class="v146-track" aria-hidden="true"><span id="v146IncomeBar"></span></div></a>
+  <a class="v146-metric v146-expense" href="#analytics" onclick="return v151OpenHomeMonthly(event,'analytics')" aria-labelledby="v146ExpenseLabel" title="Открыть анализ расходов за выбранный месяц"><div class="v146-metric-heading"><span id="v146ExpenseLabel">Расход семьи за месяц</span></div><strong id="v146HomeExpense">0 ₽</strong><div class="v146-track" aria-hidden="true"><span id="v146ExpenseBar"></span></div></a>
   <p class="v146-comparison-note">Сравнение доходов и расходов за месяц</p>
  </aside>
  <div class="v149-home-rankings">
-  <section class="v147-home-top" id="v147HomeTopCategories" aria-labelledby="v147HomeTopTitle"><h3 id="v147HomeTopTitle">Топ-5 категорий расходов за месяц</h3><div id="v147HomeTopList"></div><div class="v147-top-footer"><button type="button" id="v147HomeAnalyticsButton" class="btn small v147-analytics-button" onclick="go('analytics')">Аналитика расходов</button></div></section>
+  <section class="v147-home-top" id="v147HomeTopCategories" aria-labelledby="v147HomeTopTitle"><h3 id="v147HomeTopTitle">Топ-5 категорий расходов за месяц</h3><div id="v147HomeTopList"></div><div class="v147-top-footer"><button type="button" id="v147HomeAnalyticsButton" class="btn small v147-analytics-button" onclick="return v151OpenHomeMonthly(event,'analytics')">Аналитика расходов</button></div></section>
   <section class="v147-home-top" id="v149HomeTopTargets" aria-labelledby="v149HomeTargetsTitle"><h3 id="v149HomeTargetsTitle">Топ-5 участников и направлений</h3><div id="v149HomeTargetsList"></div></section>
  </div></div>
 </section>
@@ -3486,6 +3497,7 @@ body .v141-operation{display:grid;grid-template-columns:minmax(0,1fr) minmax(90p
 </div>
 <div class="v84-modal-back" id="v84DrillModal" aria-hidden="true" onclick="if(event.target===this)v84CloseDrill()"><div class="v84-modal" role="dialog" aria-modal="true" aria-labelledby="v84DrillTitle" tabindex="-1"><div class="v84-modal-head"><div><small id="v84DrillPeriod"></small><h2 id="v84DrillTitle">Расшифровка расходов</h2></div><button type="button" class="v84-close" aria-label="Закрыть расшифровку" onclick="v84CloseDrill()">×</button></div><div id="v84DrillBody"></div></div></div>
 <div class="modal-back" id="authModal" aria-hidden="true"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="authModalTitle" tabindex="-1"><div class="login-brand">СЕМЕЙНЫЙ КАПИТАЛ</div><h2 id="authModalTitle">Вход в семейный бюджет</h2><p class="login-copy">Сергей и Виктория используют разные аккаунты, а финансовые данные семьи общие.</p><div class="field"><label for="loginEmail">Email</label><input autocomplete="username" id="loginEmail" type="email"/></div><div class="field" style="margin-top:10px"><label for="loginPassword">Пароль</label><input autocomplete="current-password" id="loginPassword" type="password"/></div><div id="loginError"></div><div class="actions"><button class="btn primary" id="loginBtn" onclick="login()">Войти</button><button class="btn" onclick="closeAuth()">Закрыть</button></div></div></div>
+<div class="modal-back" id="v150HomeAccountModal" aria-hidden="true"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="v150HomeAccountTitle" tabindex="-1"><h2 id="v150HomeAccountTitle">Начальный остаток счёта</h2><p class="hint">Укажите деньги на начало выбранного дня. Следующие привязанные к счёту операции будут менять остаток автоматически. Это не доход.</p><form onsubmit="event.preventDefault();v150SaveHomeAccount()"><div class="field"><label for="v150AccountName">Название счёта</label><input id="v150AccountName" maxlength="65" placeholder="Карта, наличные, накопления" required></div><div class="field"><label for="v150AccountDate">Дата начала учёта</label><input id="v150AccountDate" type="date" required></div><div class="field"><label for="v150AccountOpening">Начальный остаток, ₽</label><input id="v150AccountOpening" type="text" inputmode="decimal" placeholder="0" required></div><p id="v150AccountError" role="status" hidden></p><div class="actions"><button type="submit" class="btn primary" id="v150AccountSave">Сохранить остаток</button><button type="button" class="btn" onclick="v150CloseHomeAccount()">Отмена</button></div><button type="button" class="btn small" id="v150AccountReconcile" onclick="v150ReconcileHomeAccount()" hidden>Сверить текущий остаток</button></form></div></div>
 <div class="modal-back" id="editModal" aria-hidden="true"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="editModalTitle" tabindex="-1"><h2 id="editModalTitle">Изменить операцию</h2><div id="editForm"></div><div class="actions"><button class="btn primary" onclick="saveEdit()">Сохранить</button><button class="btn" onclick="closeEdit()">Отмена</button></div></div></div>
 <script>
 /* Маричевы · Траты.Банк · v75 STABILITY & EXPERIENCE / v74 storage keys and historical records preserved. */
@@ -5199,6 +5211,7 @@ function v113CloseDialogsForNavigation(){
  if(document.getElementById('editModal').classList.contains('open'))closeEdit(false);
  if(document.getElementById('v84DrillModal').classList.contains('open'))v84CloseDrill(false);
  if(document.getElementById('authModal').classList.contains('open'))closeAuth(false);
+ if(document.getElementById('v150HomeAccountModal')?.classList.contains('open'))v150CloseHomeAccount(false);
  if(hadDialog){v113DialogRecords.clear();document.activeElement?.blur()}
  return hadDialog;
 }
@@ -5219,7 +5232,7 @@ document.addEventListener('keydown',event=>{
  const modal=v113DialogTop();if(!modal||event.defaultPrevented||document.querySelector('dialog[open]'))return;
  if(event.key==='Escape'){
   event.preventDefault();
-  if(modal.id==='editModal')closeEdit();else if(modal.id==='authModal')closeAuth();else v84CloseDrill();
+  if(modal.id==='editModal')closeEdit();else if(modal.id==='authModal')closeAuth();else if(modal.id==='v150HomeAccountModal')v150CloseHomeAccount();else v84CloseDrill();
  }else if(event.key==='Tab'){
   const stops=v113DialogStops(modal),active=document.activeElement,index=stops.indexOf(active);
   if(!stops.length||index<0||(!event.shiftKey&&index===stops.length-1)||(event.shiftKey&&index===0)){
@@ -5264,6 +5277,49 @@ function v121InitHomeLayout(){
 }
 function v121ReadableReason(value){return typeof value==='string'?value:typeof value?.message==='string'?value.message:typeof value?.detail==='string'?value.detail:''}
 function v121HomeMoney(node,value){if(!node)return;node.innerHTML=Number.isFinite(value)?v114MoneyHtml(money2(value)):'—'}
+let v150HomeAccountDraft=null,v150HomeAccountBusy=false;
+function v150HomeBankData(){
+ const summary=v117AccountSummary(today()),items=(summary.items||[]).filter(item=>item.kind==='asset').map(item=>({...item,balance:Number.isFinite(item.balance)&&(item.enabled||(typeof item.account.amount==='number'&&Number.isFinite(item.account.amount)&&(!item.snapshotDate||item.snapshotDate<=today())))?item.balance:null}));
+ const known=items.filter(item=>Number.isFinite(item.balance)),unknownCount=items.length-known.length;
+ return {items,debtItems:(summary.items||[]).filter(item=>item.kind==='debt'),total:known.length?sum(known.map(item=>({amount:item.balance}))):null,unknownCount,unassignedCount:summary.unassignedCount||0,asOf:today()};
+}
+function v150RenderHomeBank(data=v150HomeBankData()){
+ const root=document.getElementById('v150HomeAccounts');if(!root)return data;
+ const canWrite=v99CanWriteDirections()&&!v150HomeAccountBusy,amount=document.getElementById('v121HomeAvailable'),title=document.getElementById('v121HomeAvailableTitle'),note=document.getElementById('v121HomeAvailableNote');
+ title.textContent='Общий банк семьи по всем счетам';v121HomeMoney(amount,data.total);amount.classList.toggle('money-red',Number.isFinite(data.total)&&data.total<0);
+ note.textContent=!data.items.length?'Добавьте первый счёт и укажите деньги, которые уже были у семьи.':data.unknownCount?'Не все остатки указаны: '+data.unknownCount+'. Показана сумма счетов с известным остатком.':data.unassignedCount?'Свои деньги на всех счетах. Операций без привязки к счёту: '+data.unassignedCount+'.':'Свои деньги на картах, наличными и на накопительных счетах.';
+ document.getElementById('v121HomeBoundary').textContent='На '+fmtDate(data.asOf);
+ root.innerHTML=data.items.map(item=>{const status=!Number.isFinite(item.balance)?'Укажите остаток':item.account.ledger?.enabled&&!item.enabled?'Проверьте начало учёта':item.exact===false?'Проверьте суммы: дробные копейки':item.difference!==null&&item.difference!==0?'Нужна сверка остатка':item.invalidCount?'Проверьте операции счёта':!item.enabled?'Остаток на '+(item.snapshotDate?fmtDate(item.snapshotDate):'дату проверки'):item.stale?'Обновите сверку остатка':'';return `<div class="v150-home-account" data-v150-account-id="${esc(item.id)}"><div><span class="v150-home-account-name">${esc(item.name)}</span>${status?'<small>'+esc(status)+'</small>':''}</div><strong class="v150-home-account-amount">${v117Cash(item.balance)}</strong><button type="button" class="btn small" onclick="v150OpenHomeAccount(this.dataset.accountId)" data-account-id="${esc(item.id)}"${canWrite?'':' disabled'}>Изменить остаток</button></div>`}).join('');
+ const debtRoot=document.getElementById('v150HomeDebtAccounts'),debts=data.debtItems||[];if(debtRoot){debtRoot.hidden=!debts.length;debtRoot.innerHTML=debts.length?'<p class="hint">Кредитные счета · отдельно от денег семьи</p>'+debts.map(item=>`<div class="v150-home-account" data-v150-debt-account-id="${esc(item.id)}"><span class="v150-home-account-name">${esc(item.name)}</span><strong class="v150-home-account-amount">${v117Cash(item.balance)}</strong><button class="btn small" type="button" onclick="go('accounts')">Открыть</button></div>`).join(''):'';}
+ const button=document.getElementById('v150HomeAccountButton');button.textContent='Добавить счёт';button.disabled=!canWrite||v150HomeAccountBusy;return data;
+}
+function v150HomeAccountAllowed(draft=v150HomeAccountDraft){return !!draft&&draft===v150HomeAccountDraft&&draft.epoch===authEpoch&&draft.household===CONFIG.household&&v99CanWriteDirections()}
+function v150OpenHomeAccount(id=''){
+ if(v150HomeAccountBusy||!v117CanWriteAccounts())return false;
+ const account=id?v117AccountRecord(id):null;if(id&&(!account||account.archived||v117AccountBalance(account)?.kind!=='asset'))return false;
+ const ledger=v117LedgerSpec(account);v150HomeAccountDraft={epoch:authEpoch,household:CONFIG.household,id:account?.id||uid(),isNew:!account,version:account?JSON.stringify(account):''};
+ document.getElementById('v150HomeAccountTitle').textContent=account?'Начальный остаток · '+String(account.name||'Счёт'):'Добавить счёт и накопления';document.getElementById('v150AccountName').value=account?.name||'';document.getElementById('v150AccountDate').value=ledger?.startDate||v117SnapshotDate(account)||today();document.getElementById('v150AccountDate').max=today();document.getElementById('v150AccountOpening').value=ledger?.openingBalance??account?.amount??'';document.getElementById('v150AccountError').hidden=true;document.getElementById('v150AccountReconcile').hidden=!ledger;document.getElementById('v150AccountReconcile').disabled=false;document.getElementById('v150AccountSave').disabled=false;
+ document.getElementById('v150HomeAccountModal').classList.add('open');v113OpenDialog('v150HomeAccountModal','#v150AccountName');return true;
+}
+function v150CloseHomeAccount(restoreFocus=true){document.getElementById('v150HomeAccountModal')?.classList.remove('open');v113CloseDialog('v150HomeAccountModal',restoreFocus);v150HomeAccountDraft=null}
+function v150ReconcileHomeAccount(){const draft=v150HomeAccountDraft;if(v150HomeAccountBusy||!v150HomeAccountAllowed(draft))return;const id=draft.id;v150CloseHomeAccount(false);v117OpenReconcile(id)}
+async function v150SaveHomeAccount(){
+ const draft=v150HomeAccountDraft,error=document.getElementById('v150AccountError'),fail=text=>{error.textContent=text;error.hidden=false;return false};
+ if(v150HomeAccountBusy||v117AccountsBusy||!v150HomeAccountAllowed(draft))return false;
+ const data=v84Data(),old=v117AccountRecord(draft.id);if((draft.isNew&&old)||(!draft.isNew&&(!old||old.archived||JSON.stringify(old)!==draft.version)))return fail('Счёт изменился. Откройте его заново и проверьте остаток.');
+ const name=document.getElementById('v150AccountName').value.trim().slice(0,65),date=document.getElementById('v150AccountDate').value,opening=v113ReadMoney('v150AccountOpening',{signed:true,min:-1e12,max:1e12,message:'Укажите начальный остаток от −1 трлн до 1 трлн ₽'});
+ if(!name)return fail('Укажите название счёта.');if(!isValidCalendarDate(date)||date>today())return fail('Укажите дату начала не позже сегодняшнего дня.');if(!Number.isFinite(opening))return false;
+ const next=old?JSON.parse(JSON.stringify(old)):{id:draft.id,name,amount:opening,created_at:new Date().toISOString()},oldSpec=v117LedgerSpec(old),at=old?v117TouchAccount(next):v117RecordStamp();next.name=name;next.updated_at=at;
+ const log=Array.isArray(old?.ledger?.configurationLog)?old.ledger.configurationLog.slice():[];if(oldSpec)log.push({at,startDate:oldSpec.startDate,openingBalance:oldSpec.openingBalance,kind:oldSpec.kind,includeInSpending:oldSpec.includeInSpending});
+ next.ledger={...(old?.ledger||{}),version:1,enabled:true,startDate:date,openingBalance:opening,kind:'asset',includeInSpending:oldSpec?.includeInSpending??true,creditLimit:0,configurationLog:log};if(!oldSpec)v117VerifySnapshot(next,opening,date,at);
+ const index=data.accounts.findIndex(account=>account.id===draft.id);if(index<0)data.accounts.push(next);else data.accounts[index]=next;v150HomeAccountBusy=true;v117AccountsBusy=true;document.getElementById('v150AccountSave').disabled=true;document.getElementById('v150AccountReconcile').disabled=true;error.hidden=true;v150RenderHomeBank();
+ let ok=false,failed=false;try{ok=await saveAll()}catch{failed=true}
+ try{
+  if(draft.epoch!==authEpoch||draft.household!==CONFIG.household)return false;
+  if(failed||(!ok&&v89StorageFailed)){const current=v117AccountRecord(draft.id),accounts=v84Data().accounts;if(current&&JSON.stringify(current)===JSON.stringify(next)){const atIndex=accounts.findIndex(account=>account.id===draft.id);if(old)accounts[atIndex]=old;else accounts.splice(atIndex,1)}renderAll();if(draft===v150HomeAccountDraft)fail('Не удалось сохранить остаток. Проверьте доступное место и повторите сохранение.');return false;}
+  renderAll();if(draft===v150HomeAccountDraft){v150CloseHomeAccount();if(v99CanWriteDirections())toast(localSaveMessage(ok,'Начальный остаток счёта сохранён'));}return true;
+ }finally{v150HomeAccountBusy=false;v117AccountsBusy=false;document.getElementById('v150AccountSave').disabled=false;document.getElementById('v150AccountReconcile').disabled=false;if(draft.epoch===authEpoch&&draft.household===CONFIG.household){v150RenderHomeBank();v117RenderAccounts()}}
+}
 function v147HomeTopCategories(monthKey=homeMonth()){
  return v99DashboardTotals(monthEntries(monthKey).filter(isExpense),entry=>v99CategoryLabel(v99PurposeCategory(entry))).slice(0,5);
 }
@@ -5273,12 +5329,21 @@ function v147RenderHomeTopCategories(monthKey=homeMonth()){
  list.innerHTML=rows.length?rows.map(([label,amount])=>`<div class="v147-top-row" data-v147-category="${esc(label)}"><span class="v147-top-name">${esc(label)}</span><strong class="v147-top-value">${v114MoneyHtml(money2(amount))}</strong><div class="v147-top-bar" aria-hidden="true"><span style="width:${max>0?Math.max(0,Math.min(100,amount/max*100)):0}%"></span></div></div>`).join(''):'<p class="v147-top-empty">Расходов за этот месяц пока нет.</p>';
 }
 function v149HomeTopTargets(monthKey=homeMonth()){
- return v99DashboardTotals(monthEntries(monthKey).filter(isExpense),v86ExpenseTarget).slice(0,5);
+ return v99DashboardTotals(monthEntries(monthKey).filter(isExpense),entry=>v111IsLoanExpense(entry)?'Кредиты и рассрочки':v86ExpenseTarget(entry)).slice(0,5);
 }
 function v149RenderHomeTopTargets(monthKey=homeMonth()){
  const root=document.getElementById('v149HomeTopTargets'),list=document.getElementById('v149HomeTargetsList');if(!root||!list)return;
  root.dataset.month=monthKey;const rows=v149HomeTopTargets(monthKey),max=Math.max(0,...rows.map(([,amount])=>amount));
  list.innerHTML=rows.length?rows.map(([label,amount])=>`<div class="v147-top-row" data-v149-target="${esc(label)}"><span class="v147-top-name">${esc(label)}</span><strong class="v147-top-value">${v114MoneyHtml(money2(amount))}</strong><div class="v147-top-bar" aria-hidden="true"><span style="width:${max>0?Math.max(0,Math.min(100,amount/max*100)):0}%"></span></div></div>`).join(''):'<p class="v147-top-empty">Расходов за этот месяц пока нет.</p>';
+}
+function v151OpenHomeMonthly(event,page){
+ if(event&&(event.button>0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey))return true;
+ if(!['income','analytics'].includes(page))return false;
+ event?.preventDefault();
+ const period=homeMonth()||month(),field=document.getElementById(page==='income'?'incomeMonth':'analyticsMonth');
+ if(field){if(![...field.options].some(option=>option.value===period))field.add(new Option(v84MonthLabel(period),period));field.value=period}
+ if(page==='analytics')document.getElementById('analyticsScope').value='month';
+ go(page);return false;
 }
 function v146RenderHomeMonthly(carry){
  const root=document.getElementById('v146HomeMonthly');if(!root)return;
@@ -5290,31 +5355,9 @@ function v146RenderHomeMonthly(carry){
  v147RenderHomeTopCategories(m);v149RenderHomeTopTargets(m);
 }
 function v121RenderHomeOverview(){
- v121InitHomeLayout();
- const root=document.getElementById('v121HomeSummary');if(!root)return;
- const data=typeof v118AvailableData==='function'?v118AvailableData():{},cash=Number.isFinite(data.ownCash)?data.ownCash:Number.isFinite(data.cash)?data.cash:null;
- const complete=data.complete===true&&Number.isFinite(data.amount),carry=v111MonthBalance(homeMonth()),value=complete?data.amount:cash!==null?cash:carry?.closing;
- const title=document.getElementById('v121HomeAvailableTitle'),amount=document.getElementById('v121HomeAvailable'),note=document.getElementById('v121HomeAvailableNote'),boundary=document.getElementById('v121HomeBoundary');
- const reasons=[...(Array.isArray(data.reasons)?data.reasons:[]),...(Array.isArray(data.warnings)?data.warnings:[])].map(v121ReadableReason).filter(Boolean);
- const bankHistory=typeof v128BankHistoryState==='function'?v128BankHistoryState():null,bankMissing=Number(bankHistory?.missingAmount)||0;
- title.textContent=complete?'Доступно до следующего дохода':cash!==null?'На доступных счетах':bankMissing>0?'Остаток по истории · не сверен':'Остаток по истории';
- v121HomeMoney(amount,value);amount.classList.toggle('money-red',Number.isFinite(value)&&value<0);
- if(complete)note.textContent=data.amount<0?'План больше доступных денег. Откройте план и выберите, что изменить.':'После оставшихся платежей, бытового плана и зарезервированных денег.';
- else if(cash!==null)note.textContent=reasons[0]||'Для расчёта доступной суммы проверьте счета и заполните план будущих трат.';
- else note.textContent=bankMissing>0?'В истории пока не учтены списания ипотеки на '+money2(bankMissing)+'. Запишите или свяжите их, чтобы получить верный остаток.':'Расчёт по внесённым операциям. Добавьте счета и план, чтобы видеть доступную сумму.';
- const bankNotice=document.getElementById('v128HomeBankWarning');if(bankNotice){bankNotice.hidden=bankMissing<=0;document.getElementById('v128HomeBankWarningText').textContent=bankMissing>0?'Списания ипотеки на '+money2(bankMissing)+' подтверждены банком, но не связаны с расходами в истории. Сверьте операции; повторная оплата не нужна.':'';}
- boundary.textContent=cash===null?('За '+v84MonthLabel(homeMonth())):isValidCalendarDate(data.boundary)?'До '+fmtDate(data.boundary):'На сегодня';
- const components=document.getElementById('v121HomeComponents');components.replaceChildren();
- const rows=cash===null?[['С прошлого месяца',carry?.opening],['Доходы месяца',carry?.income],['Расходы месяца',carry?.expense],['Остаток по истории',carry?.closing]]:[['На доступных счетах',cash],['Неоплаченные платежи',data.obligations],['Будущие бытовые траты',data.everydayRemaining??data.futurePlan],['Зарезервировано',data.reserves]];
- if(!complete&&cash!==null&&Number.isFinite(data.estimate))rows.push(['Предварительная оценка',data.estimate]);
- for(const [label,total] of rows){const row=document.createElement('div'),dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;v121HomeMoney(dd,total);row.append(dt,dd);components.appendChild(row)}
- const reasonList=document.getElementById('v121HomeReasons');reasonList.replaceChildren();
- for(const reason of [...new Set(reasons)].slice(0,8)){const item=document.createElement('li');item.textContent=reason;reasonList.appendChild(item)}
- reasonList.hidden=!reasonList.children.length;
- const sync=document.getElementById('v121HomeSyncState'),status=typeof v120SyncSummary==='function'?v120SyncSummary():null;
- if(sync){sync.textContent=status?[status.label,status.detail].filter(Boolean).join(' · '):'';sync.hidden=!sync.textContent}
- v146RenderHomeMonthly(carry||v111MonthBalance(month()));
- v97SyncHomePresentation();
+ v121InitHomeLayout();if(!document.getElementById('v121HomeSummary'))return;
+ v150RenderHomeBank();const bankNotice=document.getElementById('v128HomeBankWarning');if(bankNotice)bankNotice.hidden=true;
+ v146RenderHomeMonthly(v111MonthBalance(homeMonth())||v111MonthBalance(month()));v97SyncHomePresentation();
 }
 function v121NavButton(page,label,path){
  const button=document.createElement('button');button.type='button';button.dataset.page=page;

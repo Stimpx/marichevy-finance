@@ -94,7 +94,7 @@ class HomeTopTargets(unittest.TestCase):
     def evaluate(self, code):
         return self.page.evaluate('async () => {' + code + '}')
 
-    def test_top_five_use_recorded_targets_month_and_exact_cents(self):
+    def test_top_five_keep_loans_separate_and_use_recorded_other_targets(self):
         result = self.evaluate('''
           const balance=document.getElementById('v121HomeAvailable').textContent;
           v149RenderHomeTopTargets('2026-11');v149RenderHomeTopTargets('2026-11');
@@ -104,16 +104,44 @@ class HomeTopTargets(unittest.TestCase):
             balanceUnchanged:document.getElementById('v121HomeAvailable').textContent===balance};
         ''')
         self.assertEqual([row['name'] for row in result['rows']], [
-            'Сергей', 'Виктория', 'Автомобиль', 'Кредиты и рассрочки', 'Общее'])
+            'Кредиты и рассрочки', 'Виктория', 'Автомобиль', 'Общее', 'Антон'])
         self.assertEqual([row['amount'] for row in result['rows']], [
-            '500,30 ₽', '400,10 ₽', '300,05 ₽', '250,15 ₽', '200,30 ₽'])
+            '750,25 ₽', '400,10 ₽', '300,05 ₽', '200,30 ₽', '150,45 ₽'])
         self.assertEqual([row['target'] for row in result['rows']],
                          [row['name'] for row in result['rows']])
         self.assertEqual(result['rows'][0]['width'], 100)
-        self.assertAlmostEqual(result['rows'][2]['width'], 300.05 / 500.30 * 100, delta=.1)
+        self.assertAlmostEqual(result['rows'][2]['width'], 300.05 / 750.25 * 100, delta=.1)
         self.assertTrue(result['unchanged'])
         self.assertTrue(result['settingsUnchanged'])
         self.assertTrue(result['balanceUnchanged'])
+
+    def test_shared_loans_and_installments_count_once_without_changing_totals(self):
+        result = self.evaluate('''
+          state.entries=[
+            targetTestEntry('shared-credit','Общее',100.15,{category:'Кредит'}),
+            targetTestEntry('shared-installment','Семья',125.20,{installmentId:'test-plan'}),
+            targetTestEntry('legacy-mortgage','',80.10,{who:'Общие расходы',mortgagePayment:true}),
+            targetTestEntry('mortgage-obligation','Общее',40.05,{obligationType:'mortgage'}),
+            targetTestEntry('explicit-loan','Кредиты и рассрочки',60.30),
+            targetTestEntry('ordinary-shared','Семья / общее',20.10),
+            targetTestEntry('personal-car','Виктория',70.25,{category:'Авто и транспорт'})];
+          const before=JSON.stringify(state.entries),monthlyBefore=v111MonthBalance('2026-11').expense,
+            categoriesBefore=JSON.stringify(v147HomeTopCategories('2026-11'));
+          v149RenderHomeTopTargets('2026-11');v149RenderHomeTopTargets('2026-11');
+          return {rows:readHomeTargets(),totals:v149HomeTopTargets('2026-11'),
+            monthlyBefore,monthlyAfter:v111MonthBalance('2026-11').expense,
+            sameCategories:JSON.stringify(v147HomeTopCategories('2026-11'))===categoriesBefore,
+            sameLedger:JSON.stringify(state.entries)===before};
+        ''')
+        self.assertEqual([row['name'] for row in result['rows']],
+                         ['Кредиты и рассрочки', 'Виктория', 'Общее'])
+        self.assertEqual([row['amount'] for row in result['rows']],
+                         ['405,80 ₽', '70,25 ₽', '20,10 ₽'])
+        self.assertEqual(sum(round(total * 100) for _, total in result['totals']), 49615)
+        self.assertEqual(result['monthlyBefore'], 496.15)
+        self.assertEqual(result['monthlyAfter'], 496.15)
+        self.assertTrue(result['sameCategories'])
+        self.assertTrue(result['sameLedger'])
 
     def test_archived_legacy_pet_blank_and_shared_aliases_each_count_once(self):
         result = self.evaluate('''
@@ -163,7 +191,7 @@ class HomeTopTargets(unittest.TestCase):
         self.assertEqual([row['amount'] for row in result['rows']], ['9 999,99 ₽', '1,01 ₽'])
         self.assertTrue(result['unchanged'])
 
-    def test_actual_add_edit_delete_refresh_targets_and_preserve_balance_calculation(self):
+    def test_actual_add_edit_delete_refresh_targets_and_preserve_account_bank(self):
         result = self.evaluate('''
           const beforeAvailable=document.getElementById('v121HomeAvailable').textContent;
           openEntry('expense');document.getElementById('eAmount').value='300';
@@ -172,20 +200,21 @@ class HomeTopTargets(unittest.TestCase):
           openEdit(added.id);document.getElementById('xAmount').value='50';
           await saveEdit();const afterEdit=readHomeTargets(),
             availableAfterEdit=document.getElementById('v121HomeAvailable').textContent,
-            expectedAvailable=money2(v111MonthBalance(homeMonth()).closing);
+            expectedAvailable='—';
           await deleteEntry(added.id);
           return {afterAdd,afterEdit,afterDelete:readHomeTargets(),
             sameLedger:JSON.stringify(state.entries)===originalTargetLedger,
             sameAvailable:document.getElementById('v121HomeAvailable').textContent===beforeAvailable,
             availableAfterEdit,expectedAvailable};
         ''')
-        self.assertEqual(result['afterAdd'][0]['name'], 'Виктория')
-        self.assertEqual(result['afterAdd'][0]['amount'], '700,10 ₽')
-        self.assertEqual(result['afterEdit'][0]['name'], 'Сергей')
+        self.assertEqual(result['afterAdd'][0]['name'], 'Кредиты и рассрочки')
+        victoria_added = next(row for row in result['afterAdd'] if row['name'] == 'Виктория')
+        self.assertEqual(victoria_added['amount'], '700,10 ₽')
+        self.assertEqual(result['afterEdit'][0]['name'], 'Кредиты и рассрочки')
         victoria = next(row for row in result['afterEdit'] if row['name'] == 'Виктория')
         self.assertEqual(victoria['amount'], '450,10 ₽')
         self.assertEqual([row['name'] for row in result['afterDelete']], [
-            'Сергей', 'Виктория', 'Автомобиль', 'Кредиты и рассрочки', 'Общее'])
+            'Кредиты и рассрочки', 'Виктория', 'Автомобиль', 'Общее', 'Антон'])
         self.assertEqual(result['availableAfterEdit'], result['expectedAvailable'])
         self.assertTrue(result['sameLedger'])
         self.assertTrue(result['sameAvailable'])
