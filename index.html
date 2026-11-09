@@ -2552,6 +2552,25 @@ body .v141-operation{display:grid;grid-template-columns:minmax(0,1fr) minmax(90p
 #home .v150-home-accounts{display:grid;gap:0;margin:12px 0;min-width:0}#home .v150-home-account{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:10px;align-items:center;min-width:0;padding:9px 0;border-bottom:1px solid #e2e8f1}#home .v150-home-account>div{min-width:0}#home .v150-home-account-name{display:block;font-size:13px;font-weight:600;color:#283f60;overflow-wrap:anywhere}#home .v150-home-account small{display:block;font-size:11px;color:#65758c;margin-top:3px}#home .v150-home-account-amount{font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;color:#283f60;white-space:nowrap}#home .v150-home-account .btn{min-height:32px!important;padding:5px 8px!important;font-size:11px!important}#home #v150HomeAccountButton{margin:0 0 12px}#v150HomeAccountModal .modal{width:min(460px,calc(100vw - 24px))}#v150HomeAccountModal .field{margin:14px 0}#v150HomeAccountModal .field>label{display:block;margin-bottom:6px}#v150HomeAccountModal .actions{flex-wrap:wrap}#v150HomeAccountModal .hint{font-size:12px;line-height:1.6}#v150AccountError{color:#a33b53;font-size:13px;line-height:1.5;margin:10px 0}#v150AccountError[hidden]{display:none}
 @media(max-width:520px){#home .v150-home-account{grid-template-columns:minmax(0,1fr) auto;gap:6px 9px}#home .v150-home-account .btn{grid-column:1/-1;justify-self:start}#v150HomeAccountModal .actions>.btn{flex:1}}
 </style>
+<style id="v152PlansSettingsLayout">
+#settings #v117SettingsAccountsLink{display:flex;flex-direction:column;align-items:flex-start;gap:12px;min-width:0}#settings #v117SettingsAccountsLink>h2,#settings #v117SettingsAccountsLink>p{margin:0!important;max-width:100%;overflow-wrap:anywhere}#settings #v117SettingsAccountsLink>.btn{margin:0;align-self:flex-start;max-width:100%;white-space:normal}
+#plans .v96-plan-grid{grid-template-rows:auto auto auto auto repeat(6,auto) auto;row-gap:12px}#plans .v96-plan-card{display:grid;grid-row:span 11;grid-template-rows:subgrid;row-gap:12px;align-content:start}#plans .v96-plan-card>.v96-plan-name,#plans .v96-plan-card>h3,#plans .v96-plan-card>.v96-plan-price,#plans .v96-plan-card>.v96-plan-description{margin:0;align-self:start;min-width:0;overflow-wrap:anywhere}#plans .v96-plan-card>.v96-plan-features{grid-row:5 / span 6;display:grid;grid-template-rows:subgrid;row-gap:12px;margin:0;align-self:stretch}#plans .v96-plan-card>.btn{grid-row:11;align-self:end;margin:0}
+@supports not (grid-template-rows:subgrid){#plans .v96-plan-grid{grid-template-rows:none}#plans .v96-plan-card{display:flex;gap:12px}#plans .v96-plan-card>h3{min-height:2.6em}#plans .v96-plan-card>.v96-plan-description{min-height:4.8em}#plans .v96-plan-card>.v96-plan-features{display:grid;grid-template-rows:none}#plans .v96-plan-card>.btn{margin-top:auto}}
+@media(max-width:900px){#plans .v96-plan-grid{grid-template-columns:minmax(0,1fr);grid-template-rows:none;gap:16px}#plans .v96-plan-card{display:flex;flex-direction:column;gap:12px;grid-row:auto}#plans .v96-plan-card>.v96-plan-features{display:grid;grid-template-rows:none;gap:12px}#plans .v96-plan-card>h3,#plans .v96-plan-card>.v96-plan-description{min-height:0}#plans .v96-plan-card>.btn{margin-top:4px}}
+</style>
+<style id="v154GoalFormLayout">
+#goals #v119GoalCreate{container:v154goal / inline-size}#goals #v119GoalCreate .goal-form{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:start;gap:8px 16px!important;margin-top:0}#goals #v119GoalCreate .goal-form>.field{display:grid;grid-template-rows:auto auto auto;align-content:start;gap:6px;min-width:0;margin:0}#goals #v119GoalCreate .goal-form>.field>label:not(.v119-archive-toggle){grid-row:1;margin:0;line-height:1.45;min-height:0;overflow-wrap:anywhere}#goals #v119GoalCreate .goal-form>.field>:is(input,select,.v107-select){grid-row:2;min-width:0;width:100%;margin:0;align-self:start}#goals #v119GoalCreate .goal-form>.field>:is(input,.v107-select),#goals #v119GoalCreate .goal-form .v107-select-trigger{min-height:46px}#goals #v119GoalCreate .goal-form>.field>small.hint{grid-row:3;display:block;margin:0;line-height:1.5;overflow-wrap:anywhere}#goals #v119GoalCreate .goal-form>.field>.v119-archive-toggle{grid-row:3;display:flex;align-items:flex-start;gap:8px;min-height:36px;margin:0;font-size:12px;line-height:1.5;cursor:pointer}#goals #v119GoalCreate .goal-form .v119-archive-toggle>input{width:20px!important;min-width:20px;height:20px!important;min-height:20px!important;margin:0;flex:none;accent-color:#5269bd}#goals #v119GoalCreate>.hint{margin:12px 0 0;line-height:1.5}#goals #v119GoalCreate>.actions{margin-top:16px;gap:8px;align-items:stretch}#goals #v119GoalCreate>.actions>.btn{min-height:44px!important}
+@supports(grid-template-rows:subgrid){#goals #v119GoalCreate .goal-form>.field{grid-row:span 3;grid-template-rows:subgrid}}
+@container v154goal (max-width:1100px){#goals #v119GoalCreate .goal-form{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@container v154goal (max-width:540px){#goals #v119GoalCreate .goal-form{grid-template-columns:minmax(0,1fr);row-gap:6px!important}#goals #v119GoalCreate .goal-form>.field{margin-bottom:8px}#goals #v119GoalCreate .goal-form>.field>.v119-archive-toggle{min-height:44px}#goals #v119GoalCreate>.actions{flex-wrap:wrap}#goals #v119GoalCreate>.actions>.btn{flex:1 1 140px;min-width:0;width:auto}}
+@supports not (container-type:inline-size){@media(max-width:1400px){#goals #v119GoalCreate .goal-form{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:900px){#goals #v119GoalCreate .goal-form{grid-template-columns:minmax(0,1fr)}}}
+</style>
+<style id="v156PlanningCompactStyle">
+#planning #v86Calendar{container-type:inline-size}#planning #v86CalendarList{gap:8px}#planning #v86Calendar .v86-calendar-row{grid-template-columns:52px minmax(0,1fr) 145px 245px;gap:10px 14px;align-items:center;padding:10px 12px}#planning #v86Calendar .v86-calendar-date{grid-column:1;grid-row:1;height:48px}#planning #v86Calendar .v86-calendar-description{grid-column:2;grid-row:1}#planning #v86Calendar .v86-calendar-description small{margin-top:3px;color:#687b94}#planning #v86Calendar .v156-calendar-metrics{grid-column:3;grid-row:1;display:grid;justify-items:end;gap:5px;min-width:0}#planning #v86Calendar .v156-calendar-metrics>.v86-calendar-sum,#planning #v86Calendar .v156-calendar-metrics>.v86-state{grid-column:auto;grid-row:auto;justify-self:end;max-width:100%}#planning #v86Calendar .v156-calendar-metrics>.v86-state{white-space:normal;text-align:right;line-height:1.35}#planning #v86Calendar .v881-cal-actions{grid-column:4;grid-row:1;justify-content:flex-start;flex-wrap:nowrap;gap:7px;margin:0}#planning #v86Calendar .v881-cal-actions>.btn{min-height:40px!important;padding:8px 10px!important;max-width:160px;line-height:1.35;flex:0 1 auto}#planning #v86Calendar .v86-calendar-controls{align-items:center;min-width:0}#planning #v86Calendar .v86-calendar-controls>.v107-select{width:220px;max-width:100%;min-width:0}#planning #v86Calendar .v86-calendar-controls select{margin:0}#planning #v86Calendar .v86-calendar-totals{grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr))}#planning #v86Calendar .v86-filters{margin:12px 0}#planning #v86Calendar .v86-disclaimer{max-width:100%;margin-top:12px;line-height:1.55}#planning>.card,#planning #v118PlanningExisting>.card{margin-bottom:16px}#planning .v118-form-grid{gap:12px;margin:14px 0;align-items:start}#planning .v118-form-grid>.v118-check{align-self:end;min-height:44px;margin:0}#planning .v118-group-inputs{gap:10px}#planning .v118-group-input{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:9px 10px;padding:12px}#planning .v118-group-input>label:first-child{grid-column:1/-1}#planning .v118-group-input>.v118-check{margin:0;line-height:1.4}#planning .v118-group-input>small{align-self:center;margin:0;text-align:right;font-size:11px}#planning fieldset{margin:16px 0;padding:14px}#planning>.v118-plan-head>label{flex:0 1 220px}#planning #v118MonthResult:empty{margin-top:0}
+@container(max-width:900px){#planning #v86Calendar .v86-calendar-row{grid-template-columns:48px minmax(0,1fr) max-content;gap:8px 12px}#planning #v86Calendar .v881-cal-actions{grid-column:2/-1;grid-row:2;justify-content:flex-start}#planning #v86Calendar .v881-cal-actions>.btn{max-width:none}}
+@container(max-width:520px){#planning #v86Calendar .v86-total:last-child:nth-child(odd){grid-column:1/-1}#planning #v86Calendar .v86-calendar-row{grid-template-columns:44px minmax(0,1fr);padding:10px;gap:7px 10px}#planning #v86Calendar .v86-calendar-date{grid-row:1/3;height:48px;align-self:start}#planning #v86Calendar .v86-calendar-description{grid-column:2;grid-row:1}#planning #v86Calendar .v156-calendar-metrics{grid-column:2;grid-row:2;display:flex;align-items:center;justify-content:flex-start;flex-wrap:wrap;gap:6px 9px}#planning #v86Calendar .v156-calendar-metrics>.v86-state{text-align:left}#planning #v86Calendar .v881-cal-actions{grid-column:1/-1;grid-row:3;flex-wrap:wrap;margin-top:2px}#planning #v86Calendar .v881-cal-actions>.btn{flex:1 1 120px;min-height:44px!important}#planning #v86Calendar .v86-calendar-description b{line-height:1.4}#planning #v86Calendar .v86-calendar-controls{flex-wrap:wrap;gap:7px;width:100%}#planning #v86Calendar .v86-calendar-controls>.v107-select{flex:1 1 160px;width:auto}#planning #v86Calendar .v86-heading{margin-bottom:14px}#planning #v86Calendar .v86-total{padding:10px}}
+@media(max-width:600px){#planning .v118-plan-head{gap:10px}#planning .v118-plan-head>.btn{max-width:100%;white-space:normal}#planning .v118-form-grid{grid-template-columns:minmax(0,1fr)}#planning>.v118-plan-head>label{flex:1 1 100%}#planning #v86Calendar .v86-filters>.btn{flex:1 1 auto}#planning fieldset{padding:12px}}
+</style>
 </head>
 <body>
 <noscript><div style="padding:14px;background:#fff3cd;color:#664d03;text-align:center;font:600 14px/1.4 system-ui">Для работы «Семейный капитал» необходимо включить JavaScript.</div></noscript>
@@ -7148,18 +7167,19 @@ function renderWeddingFeature(){
 
 const MOSCOW={lat:55.7558,lon:37.6173};
 const WEATHER_STORAGE_KEY='marichevy_weather_last_good_v74';
-const WEATHER_FRESH_MS=30*60*1000,WEATHER_MAX_AGE_MS=48*3600000,WEATHER_RETRY_MS=3*60*1000,WEATHER_TIMEOUT_MS=10000;
+const WEATHER_FRESH_MS=30*60*1000,WEATHER_MAX_AGE_MS=48*3600000,WEATHER_RETRY_MS=3*60*1000,WEATHER_TIMEOUT_MS=6000,WEATHER_SOURCE_MAX_AGE_MS=3*3600000;
 function v115WeatherData(value){
  if(!value||!Number.isFinite(value.temperature_2m)||value.temperature_2m<-100||value.temperature_2m>70)return null;
  return {temperature_2m:value.temperature_2m,
   apparent_temperature:Number.isFinite(value.apparent_temperature)&&value.apparent_temperature>=-150&&value.apparent_temperature<=100?value.apparent_temperature:null,
   weather_code:Number.isInteger(value.weather_code)&&value.weather_code>=0&&value.weather_code<=99?value.weather_code:null,
-  wind_speed_10m:Number.isFinite(value.wind_speed_10m)&&value.wind_speed_10m>=0&&value.wind_speed_10m<=200?value.wind_speed_10m:null};
+  wind_speed_10m:Number.isFinite(value.wind_speed_10m)&&value.wind_speed_10m>=0&&value.wind_speed_10m<=200?value.wind_speed_10m:null,
+  description:typeof value.description==='string'?value.description.trim().slice(0,120):''};
 }
 function v115ValidWeather(value,now=Date.now()){
- return !!value&&typeof value.at==='number'&&Number.isFinite(value.at)&&value.at>0&&value.at<=now&&now-value.at<WEATHER_MAX_AGE_MS&&!!v115WeatherData(value.data);
+ return !!value&&typeof value.at==='number'&&Number.isFinite(value.at)&&value.at>0&&value.at<=now&&now-value.at<WEATHER_MAX_AGE_MS&&(value.observedAt===undefined||(typeof value.observedAt==='number'&&Number.isFinite(value.observedAt)&&value.observedAt>0&&value.observedAt<=now+15*60000&&now-value.observedAt<WEATHER_MAX_AGE_MS))&&!!v115WeatherData(value.data);
 }
-function readLastWeather(){try{const value=JSON.parse(localStorage.getItem(WEATHER_STORAGE_KEY)||'null');if(v115ValidWeather(value))return {at:value.at,data:v115WeatherData(value.data),source:value.source==='Open-Meteo · ICON'?value.source:'Open-Meteo'}}catch{}return null}
+function readLastWeather(){try{const value=JSON.parse(localStorage.getItem(WEATHER_STORAGE_KEY)||'null');if(v115ValidWeather(value))return {at:value.at,...(value.observedAt===undefined?{}:{observedAt:value.observedAt}),data:v115WeatherData(value.data),source:['Open-Meteo · ICON','wttr.in'].includes(value.source)?value.source:'Open-Meteo'}}catch{}return null}
 let weatherCache=readLastWeather()||{at:0,data:null,source:null};
 let weatherRequest=null,weatherLastFailure=0,weatherLoading=false,weatherLastRecoveryAttempt=0;
 function greetingForHour(h){if(h<5)return 'Доброй ночи';if(h<12)return 'Доброе утро';if(h<18)return 'Добрый день';return 'Добрый вечер'}
@@ -7171,46 +7191,76 @@ function v115WeatherSnapshot(){
 }
 function v115RenderWeather(){
  const cached=v115WeatherSnapshot(),w=cached&&v115WeatherData(cached.data),card=document.getElementById('weatherCard'),refresh=document.getElementById('weatherRefresh'),meta=document.getElementById('weatherMeta'),desc=document.getElementById('weatherText'),temp=document.getElementById('weatherTemp'),icon=document.getElementById('weatherIcon');
- const saved=!!cached&&(!!weatherLastFailure||Date.now()-cached.at>=WEATHER_FRESH_MS);
+ const saved=!!cached&&(!!weatherLastFailure||Date.now()-Math.min(cached.at,cached.observedAt||cached.at)>=WEATHER_FRESH_MS);
  if(card){card.classList.toggle('weather-loading',weatherLoading);card.classList.toggle('weather-offline',!weatherLoading&&(!!weatherLastFailure||saved));card.setAttribute('aria-busy',String(weatherLoading));card.title=weatherLastFailure?'Не удалось обновить погоду. Нажмите ↻, чтобы повторить.':''}
  if(refresh)refresh.disabled=weatherLoading;
  if(temp)temp.textContent=w?`${Math.round(w.temperature_2m)}°`:'—';
  if(icon)icon.textContent=weatherText(w?.weather_code)[0];
  if(w){
-  const details=['Москва',weatherText(w.weather_code)[1]];
+  const details=['Москва',w.description||weatherText(w.weather_code)[1]];
   if(Number.isFinite(w.apparent_temperature))details.push(`ощущается ${Math.round(w.apparent_temperature)}°`);
   if(Number.isFinite(w.wind_speed_10m))details.push(`ветер ${Math.round(w.wind_speed_10m)} м/с`);
   if(desc)desc.textContent=details.join(' · ');
-  const at=new Intl.DateTimeFormat('ru-RU',{timeZone:'Europe/Moscow',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}).format(new Date(cached.at));
-  if(meta)meta.textContent=weatherLoading?`Обновляем · последние данные получены ${at}`:saved?`${weatherLastFailure?'Не удалось обновить · ':''}Сохранённые данные от ${at} · ↻ обновить`:`${cached.source||'Open-Meteo'} · получено ${at}`;
+  const at=new Intl.DateTimeFormat('ru-RU',{timeZone:'Europe/Moscow',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}).format(new Date(cached.observedAt||cached.at));
+  if(meta)meta.textContent=weatherLoading?`Обновляем · последние данные от ${at}`:saved?`${weatherLastFailure?'Не удалось обновить · ':''}Сохранённые данные от ${at} · ↻ обновить`:`${cached.source||'Open-Meteo'} · данные от ${at}`;
  }else{
   if(desc)desc.textContent=weatherLoading?'Москва · загружаем погоду…':weatherLastFailure?'Москва · погода временно недоступна':'Москва · погода ещё не получена';
   if(meta)meta.textContent=weatherLoading?'Подключаемся к погодному сервису…':weatherLastFailure?'Не удалось получить погоду · ↻ повторить':'Нажмите ↻, чтобы загрузить погоду';
  }
 }
+function v115WeatherNumber(value){if(typeof value==='number')return Number.isFinite(value)?value:null;if(typeof value!=='string'||!/^[-+]?\d+(?:\.\d+)?$/.test(value.trim()))return null;const number=Number(value);return Number.isFinite(number)?number:null}
+function v115WeatherObservation(value,format='iso'){
+ let normalized=value;
+ if(format==='wttr'){
+  const match=typeof value==='string'&&/^(\d{4}-\d{2}-\d{2})\s+(\d{1,2}):(\d{2})\s*(AM|PM)$/i.exec(value.trim());if(!match||!isValidCalendarDate(match[1])||Number(match[2])<1||Number(match[2])>12||Number(match[3])>59)return null;
+  const hour=Number(match[2])%12+(match[4].toUpperCase()==='PM'?12:0);normalized=match[1]+'T'+String(hour).padStart(2,'0')+':'+match[3]+':00+03:00';
+ }else if(typeof value==='string'){
+  const match=/^(\d{4}-\d{2}-\d{2})T(\d{2}):(\d{2})(?::(\d{2}))?(Z|[-+]\d{2}:\d{2})?$/.exec(value);if(!match||!isValidCalendarDate(match[1])||Number(match[2])>23||Number(match[3])>59||Number(match[4]||0)>59)return null;normalized=match[5]?value:value+'+03:00';
+ }
+ const at=typeof normalized==='number'?normalized*1000:typeof normalized==='string'?Date.parse(normalized):NaN,now=Date.now();
+ return Number.isFinite(at)&&at>0&&at<=now+15*60000&&now-at<=WEATHER_SOURCE_MAX_AGE_MS?at:null;
+}
+function v115DecodeWeather(source,payload){
+ let data,observedAt;
+ if(source.format==='wttr'){
+  const current=payload?.current_condition?.[0];if(!current)throw new Error('Нет текущей погоды');
+  const temp=v115WeatherNumber(current.temp_C),feels=v115WeatherNumber(current.FeelsLikeC),wind=v115WeatherNumber(current.windspeedKmph),code=v115WeatherNumber(current.weatherCode),codes={113:0,116:2,119:3,122:3,143:45,248:45,260:48,176:61,179:71,200:95,227:73,230:75,263:51,266:53,293:61,296:61,299:63,302:63,305:65,308:65,323:71,326:71,329:73,332:73,335:75,338:75,353:80,356:81,359:82,368:71,371:73,386:95,389:95,392:95,395:95};
+  data=v115WeatherData({temperature_2m:temp,apparent_temperature:feels,wind_speed_10m:wind!==null&&wind>=0?wind/3.6:null,weather_code:codes[code]??null,description:current.lang_ru?.[0]?.value});observedAt=v115WeatherObservation(current.localObsDateTime,'wttr');
+ }else{data=v115WeatherData(payload?.current);observedAt=v115WeatherObservation(payload?.current?.time)}
+ if(!data)throw new Error('Нет корректных текущих данных');if(observedAt===null)throw new Error('Погодные данные устарели или не содержат времени');return {data,observedAt};
+}
+async function v115FetchWeatherSource(source){
+ const controller=new AbortController();let timer;
+ const deadline=new Promise((_,reject)=>{timer=setTimeout(()=>{const error=new Error('Превышено время ответа');error.name='TimeoutError';reject(error);try{controller.abort()}catch{}},WEATHER_TIMEOUT_MS)});
+ try{
+  // Bound both the response and its body: an abort alone can leave a blocked
+  // fetch/body promise pending in a browser extension or a stalled connection.
+  const payload=await Promise.race([Promise.resolve().then(async()=>{
+   const response=await fetch(source.url,{signal:controller.signal,cache:'no-store',credentials:'omit',headers:{Accept:'application/json'}});
+   if(!response.ok)throw new Error(`HTTP ${response.status}`);
+   return response.json();
+  }),deadline]);
+  return v115DecodeWeather(source,payload);
+ }finally{clearTimeout(timer)}
+}
 async function loadWeather(force=false){
  const cached=v115WeatherSnapshot();v115RenderWeather();
  if(weatherRequest)return weatherRequest;
- if(!force&&cached&&!weatherLastFailure&&Date.now()-cached.at<WEATHER_FRESH_MS)return cached.data;
+ if(!force&&cached&&!weatherLastFailure&&Date.now()-cached.at<WEATHER_FRESH_MS&&Date.now()-(cached.observedAt||cached.at)<WEATHER_SOURCE_MAX_AGE_MS)return cached.data;
  if(!force&&weatherLastFailure&&Date.now()-weatherLastFailure<WEATHER_RETRY_MS)return cached?.data||null;
  if(navigator.onLine===false){weatherLastFailure=Date.now();v115RenderWeather();return cached?.data||null}
  weatherLoading=true;v115RenderWeather();
  const common=`latitude=${MOSCOW.lat}&longitude=${MOSCOW.lon}&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&wind_speed_unit=ms&timezone=Europe%2FMoscow&forecast_days=1`;
- const sources=[{name:'Open-Meteo',url:`https://api.open-meteo.com/v1/forecast?${common}`},{name:'Open-Meteo · ICON',url:`https://api.open-meteo.com/v1/dwd-icon?${common}`}];
+ const sources=[{name:'Open-Meteo',url:`https://api.open-meteo.com/v1/forecast?${common}`},{name:'wttr.in',format:'wttr',url:`https://wttr.in/${MOSCOW.lat},${MOSCOW.lon}?format=j1&lang=ru`}];
  // Defer the worker so its shared promise exists even if fetch throws immediately.
  const request=Promise.resolve().then(async()=>{
   for(const source of sources){
-   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),WEATHER_TIMEOUT_MS);
    try{
-    const response=await fetch(source.url,{signal:controller.signal,cache:'no-store',credentials:'omit',headers:{Accept:'application/json'}});
-    if(!response.ok)throw new Error(`HTTP ${response.status}`);
-    const payload=await response.json(),current=v115WeatherData(payload?.current);
-    if(!current)throw new Error('Нет корректных текущих данных');
-    weatherCache={at:Date.now(),data:current,source:source.name};
+    const current=await v115FetchWeatherSource(source);
+    weatherCache={at:Date.now(),observedAt:current.observedAt,data:current.data,source:source.name};
     try{localStorage.setItem(WEATHER_STORAGE_KEY,JSON.stringify(weatherCache))}catch{}
-    weatherLastFailure=0;return current;
-   }catch(e){console.warn('weather:',source.name,e?.name==='AbortError'?'Превышено время ответа':String(e?.message||'Сеть недоступна'))}
-   finally{clearTimeout(timer)}
+    weatherLastFailure=0;return current.data;
+   }catch(e){console.warn('weather:',source.name,['AbortError','TimeoutError'].includes(e?.name)?'Превышено время ответа':String(e?.message||'Сеть недоступна'))}
   }
   weatherLastFailure=Date.now();return v115WeatherSnapshot()?.data||null;
  });
@@ -9202,7 +9252,7 @@ function v86RenderCalendar(){
  document.querySelectorAll('[data-v86-filter]').forEach(b=>{const active=b.dataset.v86Filter===v86CalendarFilter;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))});
  const subset=data.filter(x=>v86CalendarFilter==='all'||(v86CalendarFilter==='paid'?x.paid:!x.paid));
  list.innerHTML=subset.length?subset.map(x=>{const [,year,mo,day]=x.date.match(/^(\d{4})-(\d{2})-(\d{2})$/)||[];const label=x.bankAllocated>0?'По сверке банка':x.paid?'Учтено в истории':x.part?'Частично':x.date<today()?'Срок прошёл':'Ожидается';const cls=x.paid?'paid':x.part?'part':x.date<today()?'late':'';
-  return `<div class="v86-calendar-row"><div class="v86-calendar-date"><strong>${esc(String(Number(day)||'—'))}</strong><span>${esc(new Date(x.date+'T12:00:00').toLocaleDateString('ru-RU',{month:'short'}))}</span></div><div class="v86-calendar-description"><b>${esc(x.title)}</b><small>${esc(x.subtitle)}</small></div><strong class="v86-calendar-sum">${money(x.amount)}</strong><span class="v86-state ${cls}">${label}</span>${x.kind==='regular'&&!x.paid?`<div class="v881-cal-actions"><button class="btn small" type="button" ${recordAction('recurring-link',x.recurringId,x.period)}>Связать расход</button><button class="btn primary small" type="button" ${recordAction('recurring-confirm',x.recurringId,x.period)}>Отметить оплату</button></div>`:''}</div>`}).join(''):'<div class="v84-empty">Для этого фильтра платежей нет.</div>';
+  return `<div class="v86-calendar-row"><div class="v86-calendar-date"><strong>${esc(String(Number(day)||'—'))}</strong><span>${esc(new Date(x.date+'T12:00:00').toLocaleDateString('ru-RU',{month:'short'}))}</span></div><div class="v86-calendar-description"><b>${esc(x.title)}</b><small>${esc(x.subtitle)}</small></div><div class="v156-calendar-metrics"><strong class="v86-calendar-sum">${money(x.amount)}</strong><span class="v86-state ${cls}">${label}</span></div>${x.kind==='regular'&&!x.paid?`<div class="v881-cal-actions"><button class="btn small" type="button" ${recordAction('recurring-link',x.recurringId,x.period)}>Связать расход</button><button class="btn primary small" type="button" ${recordAction('recurring-confirm',x.recurringId,x.period)}>Отметить оплату</button></div>`:''}</div>`}).join(''):'<div class="v84-empty">Для этого фильтра платежей нет.</div>';
 }
 function v86CurrentAccounts(){const summary=typeof v117AccountSummary==='function'?v117AccountSummary(today()):null,list=summary?.items?.map(item=>item.account)||v84Data().accounts;return {items:list,total:summary?summary.spendableTotal:list.length?sum(list.map(a=>({amount:Number(a.amount)||0}))):null,complete:summary?.complete===true,warnings:summary?.warnings||[],latest:list.reduce((s,a)=>String(a.updated_at||'')>s?String(a.updated_at||''):s,'')}}
 function v86Forecast(untilDate=null){

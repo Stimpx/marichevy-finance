@@ -123,10 +123,10 @@ class BankMortgageHistory(unittest.TestCase):
         r=self.evaluate("""v128OpenBankHistory();await v128ApplyBankHistory();const o=v78Obligations('2026-11'),row=v78ObligationRows(o).find(r=>r.date==='2026-11-02'),calendar=v86CalendarEvents('2026-11').find(r=>r.date==='2026-11-02');return {paid:o.paid,bank:o.bankConfirmed,remaining:o.remaining,status:v128ObligationStatus(row),rowExpense:row.expenseAllocated,rowBank:row.bankAllocated,calendarExpense:calendar.expenseAllocated,calendarBank:calendar.bankAllocated,debt:v125MortgageProgress().balance};""")
         self.assertEqual(r, {'paid':161830.21,'bank':0,'remaining':85885,'status':'Учтено в расходах','rowExpense':161830.21,'rowBank':0,'calendarExpense':161830.21,'calendarBank':0,'debt':4458197.19})
 
-    def test_home_ledger_is_marked_unreconciled_until_expenses_are_recorded(self):
-        r=self.evaluate("""go('home');const before={title:document.getElementById('v121HomeAvailableTitle').textContent,warning:!document.getElementById('v128HomeBankWarning').hidden,ledger:v111MonthBalance('2026-11').closing};v128OpenBankHistory();await v128ApplyBankHistory();go('home');return {before,after:{title:document.getElementById('v121HomeAvailableTitle').textContent,warning:!document.getElementById('v128HomeBankWarning').hidden,ledger:v111MonthBalance('2026-11').closing}};""")
-        self.assertEqual(r['before'], {'title':'Остаток по истории · не сверен','warning':True,'ledger':345626})
-        self.assertEqual(r['after'], {'title':'Остаток по истории','warning':False,'ledger':143795.79})
+    def test_recording_mortgage_updates_history_without_inventing_account_money(self):
+        r=self.evaluate("""go('home');const read=()=>({title:document.getElementById('v121HomeAvailableTitle').textContent,bank:v150HomeBankData().total,missing:v128BankHistoryState().missingAmount,ledger:v111MonthBalance('2026-11').closing});const before=read();v128OpenBankHistory();await v128ApplyBankHistory();go('home');return {before,after:read()};""")
+        self.assertEqual(r['before'], {'title':'Общий банк семьи по всем счетам','bank':None,'missing':201830.21,'ledger':345626})
+        self.assertEqual(r['after'], {'title':'Общий банк семьи по всем счетам','bank':None,'missing':0,'ledger':143795.79})
 
     def test_future_dated_expense_does_not_confirm_present_cash_payment(self):
         r=self.evaluate("""const e=mkExpense('future',161830.21,'2026-11-03');e.mortgageAllocation=v128BankAllocation('regular',e,BANK_LOAN_RECONCILIATION);state.entries.push(e);return {history:v125ScheduledExpenseAllocated('2026-11-02',loanScheduleData()),missing:v128BankHistoryState().missingAmount};""")
