@@ -5678,7 +5678,8 @@ function v96CalculateAmount(expression){
  // would change the exact cents, even if the cent integer itself is safe.
  const serialized=String(Number(magnitude)/100),serializedParts=serialized.split('.');
  if(!/^\d+(?:\.\d{1,2})?$/.test(serialized)||BigInt(serializedParts[0])*100n+BigInt((serializedParts[1]||'').padEnd(2,'0'))!==magnitude)fail('amount-too-large');
- return {cents:Number(cents),text:(cents<0n?'-':'')+String(magnitude/100n)+','+String(magnitude%100n).padStart(2,'0'),rounded:remainder!==0n};
+ const decimals=String(magnitude%100n).padStart(2,'0').replace(/0+$/,'');
+ return {cents:Number(cents),text:(cents<0n?'-':'')+String(magnitude/100n)+(decimals?','+decimals:''),rounded:remainder!==0n};
 }
 function v96AmountToolsHtml(targetId){
  if(!['eAmount','xAmount'].includes(targetId))return '';
@@ -5771,7 +5772,7 @@ function v96RefreshCalculatedAmount(){
  try{
   const value=v96CalculateAmount(input.value);result.value=value.text;
   apply.disabled=!v96CalculatorTarget||value.cents<=0;
-  message.textContent=v96CalculatorTarget&&value.cents<=0?'Для операции нужна сумма больше нуля.':value.rounded?'Результат округлён до копеек.':'Точный результат в копейках.';
+  message.textContent=v96CalculatorTarget&&value.cents<=0?'Для операции нужна сумма больше нуля.':value.rounded?'Результат округлён до копеек.':'Точный результат.';
   return value;
  }catch(error){
   message.textContent=error.message==='division-by-zero'?'На ноль делить нельзя.':error.message==='amount-too-large'?'Сумма слишком большая.':error.message==='expression-too-complex'?'Расчёт слишком длинный или сложный.':'Проверьте расчёт: числа с двумя знаками после запятой, +, −, ×, ÷, % и скобки.';
