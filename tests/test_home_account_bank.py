@@ -64,7 +64,7 @@ class HomeAccountBank(unittest.TestCase):
             {date:'2026-10-01'})];
           showApp();go('home');
           document.getElementById('homeMonth').value='2026-11';renderHome();
-          window.bankTestFill=(name,opening,date='2026-11-01')=>{
+          window.bankTestFill=(name,opening,date=today())=>{
             document.getElementById('v150AccountName').value=name;
             document.getElementById('v150AccountOpening').value=String(opening);
             document.getElementById('v150AccountDate').value=date;
@@ -141,7 +141,7 @@ class HomeAccountBank(unittest.TestCase):
         self.assertIn('сч', result['note'].lower())
         self.assertTrue(result['unchanged'])
 
-    def test_new_opening_balance_is_not_income_and_is_available_in_new_operation(self):
+    def test_new_current_balance_is_not_income_and_is_available_in_new_operation(self):
         result = self.evaluate('''
           const before=JSON.stringify(state.entries),income=v111MonthBalance('2026-11').income;
           saveAll=async()=>true;v150OpenHomeAccount();bankTestFill('Накопления',12345.67);
@@ -155,8 +155,9 @@ class HomeAccountBank(unittest.TestCase):
         self.assertTrue(result['ok'])
         self.assertEqual(result['count'], 1)
         self.assertEqual(result['account']['name'], 'Накопления')
-        self.assertEqual(result['account']['ledger']['openingBalance'], 12345.67)
-        self.assertEqual(result['account']['ledger']['startDate'], '2026-11-01')
+        self.assertEqual(result['account']['ledger']['startDate'], '2026-11-09')
+        self.assertEqual(result['account']['ledger']['currentBalanceAnchor']['amount'], 12345.67)
+        self.assertEqual(result['account']['ledger']['currentBalanceAnchor']['date'], '2026-11-09')
         self.assertEqual(result['account']['ledger']['kind'], 'asset')
         self.assertTrue(result['account']['ledger']['enabled'])
         self.assertEqual(result['text'], '12 345,67 ₽')
@@ -164,7 +165,7 @@ class HomeAccountBank(unittest.TestCase):
         self.assertTrue(result['fields'])
         self.assertIn(result['account']['id'], result['choices'])
 
-    def test_edit_starting_balance_preserves_operations_and_recalculates_current_total(self):
+    def test_edit_current_balance_preserves_operations_and_restarts_from_actual_amount(self):
         result = self.evaluate('''
           state.intelligence.accounts=[bankTestAccount('card','Карта',1000)];
           state.entries.push(bankTestEntry('income','income',200,{accountId:'card'}),
@@ -175,6 +176,7 @@ class HomeAccountBank(unittest.TestCase):
           bankTestFill('Карта семьи',1500.50);const ok=await v150SaveHomeAccount();renderHome();
           return {ok,text:readBankText(),count:v117AccountRecords().length,
             opening:v117AccountRecord('card').ledger.openingBalance,
+            anchor:v117AccountRecord('card').ledger.currentBalanceAnchor,
             current:v117AccountBalance('card').balance,
             unchanged:JSON.stringify(state.entries)===before,
             monthlyUnchanged:JSON.stringify(v111MonthBalance('2026-11'))===monthly,
@@ -182,13 +184,17 @@ class HomeAccountBank(unittest.TestCase):
         ''')
         self.assertTrue(result['ok'])
         self.assertEqual(result['count'], 1)
-        self.assertEqual(result['opening'], 1500.50)
-        self.assertEqual(result['current'], 1650.25)
-        self.assertEqual(result['text'], '1 650,25 ₽')
+        self.assertEqual(result['opening'], 1000)
+        self.assertEqual(result['anchor']['amount'], 1500.50)
+        self.assertEqual(result['anchor']['date'], '2026-11-09')
+        self.assertEqual(result['current'], 1500.50)
+        self.assertEqual(result['text'], '1 500,50 ₽')
         self.assertTrue(result['unchanged'])
         self.assertTrue(result['monthlyUnchanged'])
-        for key in ['amount', 'date', 'revision', 'verifiedAt']:
-            self.assertEqual(result['snapshotBefore'][key], result['snapshotAfter'][key])
+        self.assertEqual(result['snapshotBefore']['amount'], 1000)
+        self.assertEqual(result['snapshotAfter']['amount'], 1500.50)
+        self.assertEqual(result['snapshotAfter']['date'], '2026-11-09')
+        self.assertNotEqual(result['snapshotBefore']['revision'], result['snapshotAfter']['revision'])
 
     def test_viewer_and_concurrent_account_change_cannot_overwrite_balance(self):
         result = self.evaluate('''

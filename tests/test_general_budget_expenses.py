@@ -283,7 +283,7 @@ class GeneralBudgetExpenses(unittest.TestCase):
                 ''' + {
                     'home': '''
                       v150OpenHomeAccount();document.getElementById('v150AccountName').value='Второй счёт';
-                      document.getElementById('v150AccountDate').value='2026-11-01';
+                      document.getElementById('v150AccountDate').value=today();
                       document.getElementById('v150AccountOpening').value='500';await v150SaveHomeAccount();
                     ''',
                     'manual': '''
@@ -373,7 +373,7 @@ class GeneralBudgetExpenses(unittest.TestCase):
             stampPreserved:state.settings.updated_at>=unrelatedStamp};
           state=blankState();state.entries=[budgetEntry('spend',100)];renderAll();
           v150OpenHomeAccount();document.getElementById('v150AccountName').value='Новый счёт';
-          document.getElementById('v150AccountDate').value='2026-11-01';
+          document.getElementById('v150AccountDate').value=today();
           document.getElementById('v150AccountOpening').value='1000';
           const accountResult=await v150SaveHomeAccount();
           return {selection,account:{ok:accountResult,count:v117AccountRecords().length,

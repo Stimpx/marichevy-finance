@@ -3548,7 +3548,7 @@ body .v141-operation{display:grid;grid-template-columns:minmax(0,1fr) minmax(90p
 </div>
 <div class="v84-modal-back" id="v84DrillModal" aria-hidden="true" onclick="if(event.target===this)v84CloseDrill()"><div class="v84-modal" role="dialog" aria-modal="true" aria-labelledby="v84DrillTitle" tabindex="-1"><div class="v84-modal-head"><div><small id="v84DrillPeriod"></small><h2 id="v84DrillTitle">Расшифровка расходов</h2></div><button type="button" class="v84-close" aria-label="Закрыть расшифровку" onclick="v84CloseDrill()">×</button></div><div id="v84DrillBody"></div></div></div>
 <div class="modal-back" id="authModal" aria-hidden="true"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="authModalTitle" tabindex="-1"><div class="login-brand">СЕМЕЙНЫЙ КАПИТАЛ</div><h2 id="authModalTitle">Вход в семейный бюджет</h2><p class="login-copy">Сергей и Виктория используют разные аккаунты, а финансовые данные семьи общие.</p><div class="field"><label for="loginEmail">Email</label><input autocomplete="username" id="loginEmail" type="email"/></div><div class="field" style="margin-top:10px"><label for="loginPassword">Пароль</label><input autocomplete="current-password" id="loginPassword" type="password"/></div><div id="loginError"></div><div class="actions"><button class="btn primary" id="loginBtn" onclick="login()">Войти</button><button class="btn" onclick="closeAuth()">Закрыть</button></div></div></div>
-<div class="modal-back" id="v150HomeAccountModal" aria-hidden="true"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="v150HomeAccountTitle" tabindex="-1"><h2 id="v150HomeAccountTitle">Начальный остаток счёта</h2><p class="hint">Укажите деньги на начало выбранного дня. Следующие привязанные к счёту операции будут менять остаток автоматически. Это не доход.</p><form onsubmit="event.preventDefault();v150SaveHomeAccount()"><div class="field"><label for="v150AccountName">Название счёта</label><input id="v150AccountName" maxlength="65" placeholder="Карта, наличные, накопления" required></div><div class="field"><label for="v150AccountDate">Дата начала учёта</label><input id="v150AccountDate" type="date" required></div><div class="field"><label for="v150AccountOpening">Начальный остаток, ₽</label><input id="v150AccountOpening" type="text" inputmode="decimal" placeholder="0" required></div><p id="v150AccountError" role="status" hidden></p><div class="actions"><button type="submit" class="btn primary" id="v150AccountSave">Сохранить остаток</button><button type="button" class="btn" onclick="v150CloseHomeAccount()">Отмена</button></div><button type="button" class="btn small" id="v150AccountReconcile" onclick="v150ReconcileHomeAccount()" hidden>Сверить текущий остаток</button></form></div></div>
+<div class="modal-back" id="v150HomeAccountModal" aria-hidden="true"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="v150HomeAccountTitle" tabindex="-1"><h2 id="v150HomeAccountTitle">Текущий остаток счёта</h2><p class="hint">Укажите деньги на счёте сейчас. Покупки до этого момента уже входят в указанную сумму и повторно не вычитаются. После сохранения остаток меняют новые операции.</p><form onsubmit="event.preventDefault();v150SaveHomeAccount()"><div class="field"><label for="v150AccountName">Название счёта</label><input id="v150AccountName" maxlength="65" placeholder="Карта, наличные, накопления" required></div><div class="field"><label for="v150AccountDate">На дату</label><input id="v150AccountDate" type="date" readonly required></div><div class="field"><label for="v150AccountOpening">Текущий остаток, ₽</label><input id="v150AccountOpening" type="text" inputmode="decimal" placeholder="Фактическая сумма сейчас" required></div><p id="v150AccountError" role="status" hidden></p><div class="actions"><button type="submit" class="btn primary" id="v150AccountSave">Сохранить остаток</button><button type="button" class="btn" onclick="v150CloseHomeAccount()">Отмена</button></div><button type="button" class="btn small" id="v150AccountReconcile" onclick="v150ReconcileHomeAccount()" hidden>Сверить с учётом операций</button></form></div></div>
 <div class="modal-back" id="editModal" aria-hidden="true"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="editModalTitle" tabindex="-1"><h2 id="editModalTitle">Изменить операцию</h2><div id="editForm"></div><div class="actions"><button class="btn primary" onclick="saveEdit()">Сохранить</button><button class="btn" onclick="closeEdit()">Отмена</button></div></div></div>
 <script>
 /* Маричевы · Траты.Банк · v75 STABILITY & EXPERIENCE / v74 storage keys and historical records preserved. */
@@ -4239,6 +4239,8 @@ function validateBackup(raw){
   text(value,path);if(value===undefined||value===null||value==='')return;
   if(!isValidCalendarDate(value))fail(path);
  };
+ const snapshotEntryIds=(value,path)=>{if(value===undefined)return;if(!Array.isArray(value))fail(path);const seen=new Set();for(const key of value){id(key,path);if(seen.has(key))fail(path+': повтор');seen.add(key)}};
+ const currentBalanceAnchor=(value,path)=>{if(!object(value)||!v161ValidCurrentBalanceAnchor(value))fail(path);if(value.snapshotRevision!==undefined)id(value.snapshotRevision,path+'.snapshotRevision');snapshotEntryIds(value.existingSameDayEntryIds,path+'.existingSameDayEntryIds')};
  const rows=(parent,key,check)=>{
   if(parent[key]===undefined)return;
   if(!Array.isArray(parent[key]))fail(key);
@@ -4296,8 +4298,8 @@ function validateBackup(raw){
    if(key==='accounts'){
     if(r.archived!==undefined&&typeof r.archived!=='boolean')fail(p+'.archived');date(r.snapshotDate,p+'.snapshotDate');
     if(r.snapshotRevision!==undefined)id(r.snapshotRevision,p+'.snapshotRevision');
-    if(r.ledger&&object(r.ledger)&&r.ledger.version===1){const l=r.ledger;if(typeof l.enabled!=='boolean')fail(p+'.ledger.enabled');if(l.enabled&&(!isValidCalendarDate(l.startDate)||typeof l.openingBalance!=='number'||!Number.isFinite(l.openingBalance)||Math.abs(l.openingBalance)>1e12||!['asset','debt'].includes(l.kind)||typeof l.includeInSpending!=='boolean'))fail(p+'.ledger');if(l.creditLimit!==undefined&&(typeof l.creditLimit!=='number'||!Number.isFinite(l.creditLimit)||l.creditLimit<0||l.creditLimit>1e12))fail(p+'.ledger.creditLimit')}
-    if(r.snapshotVerification!==undefined){const v=r.snapshotVerification;if(!object(v))fail(p+'.snapshotVerification');number(v.amount,p+'.snapshotVerification.amount');date(v.date,p+'.snapshotVerification.date');id(v.revision,p+'.snapshotVerification.revision');text(v.verifiedAt,p+'.snapshotVerification.verifiedAt');text(v.accountUpdatedAt,p+'.snapshotVerification.accountUpdatedAt')}
+    if(r.ledger&&object(r.ledger)&&r.ledger.version===1){const l=r.ledger;if(typeof l.enabled!=='boolean')fail(p+'.ledger.enabled');if(l.enabled&&(!isValidCalendarDate(l.startDate)||typeof l.openingBalance!=='number'||!Number.isFinite(l.openingBalance)||Math.abs(l.openingBalance)>1e12||!['asset','debt'].includes(l.kind)||typeof l.includeInSpending!=='boolean'))fail(p+'.ledger');if(l.creditLimit!==undefined&&(typeof l.creditLimit!=='number'||!Number.isFinite(l.creditLimit)||l.creditLimit<0||l.creditLimit>1e12))fail(p+'.ledger.creditLimit');if(l.currentBalanceAnchor!==undefined&&l.currentBalanceAnchor!==null)currentBalanceAnchor(l.currentBalanceAnchor,p+'.ledger.currentBalanceAnchor');if(l.currentBalanceAnchors!==undefined){if(!Array.isArray(l.currentBalanceAnchors))fail(p+'.ledger.currentBalanceAnchors');l.currentBalanceAnchors.forEach((anchor,i)=>currentBalanceAnchor(anchor,p+'.ledger.currentBalanceAnchors['+i+']'))}}
+    if(r.snapshotVerification!==undefined){const v=r.snapshotVerification;if(!object(v))fail(p+'.snapshotVerification');number(v.amount,p+'.snapshotVerification.amount');date(v.date,p+'.snapshotVerification.date');id(v.revision,p+'.snapshotVerification.revision');text(v.verifiedAt,p+'.snapshotVerification.verifiedAt');text(v.accountUpdatedAt,p+'.snapshotVerification.accountUpdatedAt');snapshotEntryIds(v.existingSameDayEntryIds,p+'.snapshotVerification.existingSameDayEntryIds')}
    }
   });
   const deleted=raw.intelligence.deleted;if(deleted!==undefined){if(!object(deleted))fail('intelligence.deleted');for(const key of ['budgets','recurring','accounts','favorites'])if(deleted[key]!==undefined){if(!object(deleted[key]))fail('intelligence.deleted.'+key);for(const [keyId,at] of Object.entries(deleted[key])){id(keyId,'intelligence.deleted.id');text(at,'intelligence.deleted.at')}}}
@@ -5365,7 +5367,19 @@ function v121InitHomeLayout(){
 }
 function v121ReadableReason(value){return typeof value==='string'?value:typeof value?.message==='string'?value.message:typeof value?.detail==='string'?value.detail:''}
 function v121HomeMoney(node,value){if(!node)return;node.innerHTML=Number.isFinite(value)?v114MoneyHtml(money2(value)):'—'}
-let v150HomeAccountDraft=null,v150HomeAccountBusy=false;
+let v150HomeAccountDraft=null,v150HomeAccountBusy=false,v150PendingNewAccountId='';
+function v161ValidCurrentBalanceAnchor(value){return !!value&&value.version===1&&typeof value.amount==='number'&&Number.isFinite(value.amount)&&Math.abs(value.amount)<=1e12&&v117ExactMoney(value.amount)&&isValidCalendarDate(value.date)&&typeof value.recordedAt==='string'&&Number.isFinite(Date.parse(value.recordedAt))&&Date.parse(value.recordedAt)>0&&(value.existingSameDayEntryIds===undefined||(Array.isArray(value.existingSameDayEntryIds)&&value.existingSameDayEntryIds.every(id=>typeof id==='string'&&id.trim())&&new Set(value.existingSameDayEntryIds).size===value.existingSameDayEntryIds.length))}
+function v161CurrentBalanceAnchor(account,asOf=today(),cutoff=null){
+ const spec=v117LedgerSpec(account);if(!spec||spec.kind!=='asset'||!isValidCalendarDate(asOf))return null;
+ const previous=Array.isArray(account.ledger.currentBalanceAnchors)?account.ledger.currentBalanceAnchors:[],anchors=[...previous,account.ledger.currentBalanceAnchor],cutoffAt=cutoff&&Number.isFinite(Date.parse(cutoff.at||''))?Date.parse(cutoff.at):null;
+ let selected=null;for(const anchor of anchors)if(v161ValidCurrentBalanceAnchor(anchor)&&anchor.date>=spec.startDate&&anchor.date<=asOf&&(cutoffAt===null||Date.parse(anchor.recordedAt)<=cutoffAt)){if(cutoff?.revision&&anchor.snapshotRevision===cutoff.revision)return anchor;if(!selected||anchor.date>selected.date||(anchor.date===selected.date&&Date.parse(anchor.recordedAt)>=Date.parse(selected.recordedAt)))selected=anchor}
+ return selected;
+}
+function v161EntryAfterAnchor(entry,anchor,existingIds){if(!anchor)return true;if(entry.date>anchor.date)return true;if(entry.date<anchor.date)return false;if(Array.isArray(anchor.existingSameDayEntryIds))return !(existingIds||new Set(anchor.existingSameDayEntryIds)).has(entry.id);const createdAt=Date.parse(entry.created_at||'');return Number.isFinite(createdAt)&&createdAt>Date.parse(anchor.recordedAt)}
+function v161EntryCoveredByCurrentBalance(entry,context){
+ if(!['income','expense','transfer','cash'].includes(entry?.type)||entry.balanceAdjustment===true||!isValidCalendarDate(entry.date)||typeof entry.amount!=='number'||!Number.isFinite(entry.amount)||entry.amount<=0||['accountId','fromAccountId','toAccountId'].some(key=>entry[key]!==undefined&&entry[key]!==null&&entry[key]!==''))return false;
+ const shared=context||v157SharedExpenseContext();return !!shared.reviewAnchors?.length&&shared.reviewAnchors.every(item=>!v161EntryAfterAnchor(entry,item.anchor,item.ids));
+}
 let v157SharedExpenseDraft=null,v157SharedExpenseBusy=false;
 function v157SharedExpenseCandidates(){return v117AccountRecords().filter(account=>{const spec=v117LedgerSpec(account);return spec?.kind==='asset'&&spec.startDate<=today()})}
 function v157SharedExpenseAccount(){
@@ -5378,20 +5392,21 @@ function v157SharedExpenseAccount(){
  const ordinary=candidates.filter(account=>v117LedgerSpec(account).includeInSpending);
  return ordinary.length===1?{id:ordinary[0].id,account:ordinary[0],automatic:true,invalid:false,disabled:false,reason:'single',candidates}:{id:'',account:null,automatic:false,invalid:false,disabled:false,reason:ordinary.length?'multiple':'missing',candidates};
 }
-function v157ExpenseWindow(account,asOf=today()){
+function v157ExpenseWindow(account,asOf=today(),cutoff=null){
  const spec=v117LedgerSpec(account);if(!spec||spec.kind!=='asset')return null;
- let legacyDate='',legacyAt=0;
- for(const entry of v117LiveEntries())if(entry.balanceAdjustment===true&&entry.type==='transfer'&&entry.accountId===account.id&&!entry.fromAccountId&&!entry.toAccountId&&typeof entry.reconciliationRevision==='string'&&entry.reconciliationRevision.trim()&&entry.unassignedExpenseVersion!==1&&isValidCalendarDate(entry.date)&&entry.date>=spec.startDate&&entry.date<=asOf&&typeof entry.amount==='number'&&entry.amount>0&&Number.isFinite(entry.amount)&&v117ExactMoney(entry.amount)&&[1,-1].includes(entry.adjustmentDirection)){
+ const anchor=v161CurrentBalanceAnchor(account,asOf,cutoff),anchorIds=anchor&&Array.isArray(anchor.existingSameDayEntryIds)?new Set(anchor.existingSameDayEntryIds):null;let legacyDate='',legacyAt=0;
+ for(const entry of v117LiveEntries())if(entry.balanceAdjustment===true&&entry.type==='transfer'&&entry.accountId===account.id&&!entry.fromAccountId&&!entry.toAccountId&&typeof entry.reconciliationRevision==='string'&&entry.reconciliationRevision.trim()&&entry.unassignedExpenseVersion!==1&&isValidCalendarDate(entry.date)&&entry.date>=spec.startDate&&entry.date<=asOf&&v161EntryAfterAnchor(entry,anchor,anchorIds)&&typeof entry.amount==='number'&&entry.amount>0&&Number.isFinite(entry.amount)&&v117ExactMoney(entry.amount)&&[1,-1].includes(entry.adjustmentDirection)){
   const at=Date.parse(entry.created_at||entry.updated_at||'');
   if(entry.date>legacyDate){legacyDate=entry.date;legacyAt=Number.isFinite(at)?at:0}else if(entry.date===legacyDate)legacyAt=legacyAt&&Number.isFinite(at)?Math.max(legacyAt,at):0;
  }
- return {startDate:spec.startDate,legacyDate,legacyAt};
+ return {startDate:anchor?.date||spec.startDate,legacyDate,legacyAt,anchor,anchorIds};
 }
 function v157RawUnassignedExpense(entry){
  return entry?.type==='expense'&&entry.balanceAdjustment!==true&&!['accountId','fromAccountId','toAccountId'].some(key=>entry[key]!==undefined&&entry[key]!==null&&entry[key]!=='')&&typeof entry.amount==='number'&&Number.isFinite(entry.amount)&&entry.amount>0&&v117ExactMoney(entry.amount)&&isValidCalendarDate(entry.date);
 }
 function v157ExpenseInWindow(entry,window,asOf=today()){
  if(!window||!v157RawUnassignedExpense(entry)||entry.date<window.startDate||entry.date>asOf)return false;
+ if(!v161EntryAfterAnchor(entry,window.anchor,window.anchorIds))return false;
  if(!window.legacyDate||entry.date>window.legacyDate)return true;
  return entry.date===window.legacyDate&&window.legacyAt>0&&Number.isFinite(Date.parse(entry.created_at||''))&&Date.parse(entry.created_at)>window.legacyAt;
 }
@@ -5401,9 +5416,12 @@ function v157ImplicitExpenseRows(accountId=v157SharedExpenseAccount().id,asOf=to
 function v157ExpenseAccountId(entry,context){
  if(typeof entry?.accountId==='string'&&entry.accountId!=='')return entry.accountId;
  if(!v157RawUnassignedExpense(entry))return '';
- const selected=context?.selected||v157SharedExpenseAccount(),window=context?.window||v157ExpenseWindow(selected.account,context?.asOf||today());return selected.account&&v157ExpenseInWindow(entry,window,context?.asOf||today())?selected.id:'';
+ const selected=context?.selected||v157SharedExpenseAccount(),window=context?.window||v157ExpenseWindow(selected.account,context?.asOf||today(),context?.cutoff);return selected.account&&v157ExpenseInWindow(entry,window,context?.asOf||today())?selected.id:'';
 }
-function v157SharedExpenseContext(asOf=today()){const selected=v157SharedExpenseAccount();return {selected,window:v157ExpenseWindow(selected.account,asOf),asOf}}
+function v157SharedExpenseContext(asOf=today(),cutoff=null){
+ const selected=v157SharedExpenseAccount(),assets=v117AccountRecords().filter(account=>(v117LedgerSpec(account)?.kind||(account.kind==='debt'||account.ledger?.kind==='debt'?'debt':'asset'))==='asset'),anchors=assets.map(account=>v161CurrentBalanceAnchor(account,asOf,cutoff)),reviewAnchors=anchors.length&&anchors.every(Boolean)?anchors.map(anchor=>({anchor,ids:Array.isArray(anchor.existingSameDayEntryIds)?new Set(anchor.existingSameDayEntryIds):null})):[];
+ return {selected,window:v157ExpenseWindow(selected.account,asOf,cutoff),asOf,cutoff,reviewAnchors};
+}
 function v157SharedExpenseVersion(){const preferences=state.settings?.preferences||{};return JSON.stringify([Object.hasOwn(preferences,'unassignedExpenseAccountId'),preferences.unassignedExpenseAccountId,preferences.unassignedExpenseUpdatedAt,v117AccountRecords(true).map(account=>[account.id,account.archived,account.ledger,account.updated_at])])}
 function v157SetSharedExpensePreference(id){
  const preferences=state.settings.preferences||{},token={had:Object.hasOwn(preferences,'unassignedExpenseAccountId'),value:preferences.unassignedExpenseAccountId,stamp:state.settings.updated_at,sharedStampHad:Object.hasOwn(preferences,'unassignedExpenseUpdatedAt'),sharedStamp:preferences.unassignedExpenseUpdatedAt,next:id};
@@ -5424,13 +5442,13 @@ function v157CancelSharedExpenseEdit(){v157SharedExpenseDraft=null;v157RenderSha
 function v157PreviewSharedExpenseAccount(){
  const field=document.getElementById('v157SharedExpenseAccount'),node=document.getElementById('v157SharedExpensePreview');if(!field||!node)return;
  const account=v157SharedExpenseCandidates().find(item=>item.id===field.value),window=v157ExpenseWindow(account),rows=account?v157ImplicitExpenseRows(account.id):[];
- node.textContent=account?'Выбор пересчитает уже внесённые расходы без счёта: '+rows.length+' на '+money2(sum(rows))+'. '+(window.legacyDate?'После сверки от '+fmtDate(window.legacyDate)+'.':'С '+fmtDate(window.startDate)+'.'):'Расходы без выбранного счёта будут ждать явной привязки к счёту.';
+ node.textContent=account?'Выбор пересчитает расходы без счёта: '+rows.length+' на '+money2(sum(rows))+'. '+(window.legacyDate?'После сверки от '+fmtDate(window.legacyDate)+'.':window.anchor?'После указания текущего остатка '+fmtDate(window.anchor.date)+'.':'С '+fmtDate(window.startDate)+'.'):'Расходы без выбранного счёта будут ждать явной привязки к счёту.';
 }
 function v157RenderSharedExpenseBudget(){
  const root=document.getElementById('v157SharedExpenseBudget');if(!root)return;
  const selected=v157SharedExpenseAccount(),rows=selected.id?v157ImplicitExpenseRows(selected.id):[],window=v157ExpenseWindow(selected.account),field=document.getElementById('v157SharedExpenseAccount');
  root.hidden=!selected.candidates.length&&!selected.invalid;if(root.hidden)return;
- document.getElementById('v157SharedExpenseSummary').textContent=selected.id?'С общего счёта «'+selected.account.name+'» учтены расходы без привязки: '+rows.length+' на '+money2(sum(rows))+'. '+(window.legacyDate?'После сверки от '+fmtDate(window.legacyDate)+'.':'С '+fmtDate(window.startDate)+'.'):selected.invalid?'Общий счёт недоступен. Выберите другой счёт для расходов без привязки.':selected.disabled?'Автоматическое списание расходов без счёта выключено.':'Выберите общий счёт, чтобы внесённые расходы без привязки уменьшали бюджет.';
+ document.getElementById('v157SharedExpenseSummary').textContent=selected.id?'С общего счёта «'+selected.account.name+'» учтены расходы без привязки: '+rows.length+' на '+money2(sum(rows))+'. '+(window.legacyDate?'После сверки от '+fmtDate(window.legacyDate)+'.':window.anchor?'После указания текущего остатка '+fmtDate(window.anchor.date)+'.':'С '+fmtDate(window.startDate)+'.'):selected.invalid?'Общий счёт недоступен. Выберите другой счёт для расходов без привязки.':selected.disabled?'Автоматическое списание расходов без счёта выключено.':'Выберите общий счёт, чтобы внесённые расходы без привязки уменьшали бюджет.';
  const sameScope=v157SharedExpenseDraft?.epoch===authEpoch&&v157SharedExpenseDraft?.household===CONFIG.household;
  if(!sameScope||!v157SharedExpenseDraft.changed){
   v157SharedExpenseDraft={epoch:authEpoch,household:CONFIG.household,version:v157SharedExpenseVersion(),changed:false};
@@ -5463,7 +5481,7 @@ function v150RenderHomeBank(data=v150HomeBankData()){
  title.textContent='Общий банк семьи по всем счетам';v121HomeMoney(amount,data.total);amount.classList.toggle('money-red',Number.isFinite(data.total)&&data.total<0);
  note.textContent=!data.items.length?'Добавьте первый счёт и укажите деньги, которые уже были у семьи.':data.unknownCount?'Не все остатки указаны: '+data.unknownCount+'. Показана сумма счетов с известным остатком.':data.unassignedCount?'Свои деньги на всех счетах. Операций без привязки к счёту: '+data.unassignedCount+'.':'Свои деньги на картах, наличными и на накопительных счетах.';
  document.getElementById('v121HomeBoundary').textContent='На '+fmtDate(data.asOf);
- root.innerHTML=data.items.map(item=>{const status=!Number.isFinite(item.balance)?'Укажите остаток':item.account.ledger?.enabled&&!item.enabled?'Проверьте начало учёта':item.exact===false?'Проверьте суммы: дробные копейки':item.difference!==null&&item.difference!==0?'Нужна сверка остатка':item.invalidCount?'Проверьте операции счёта':!item.enabled?'Остаток на '+(item.snapshotDate?fmtDate(item.snapshotDate):'дату проверки'):item.stale?'Обновите сверку остатка':'';return `<div class="v150-home-account" data-v150-account-id="${esc(item.id)}"><div><span class="v150-home-account-name">${esc(item.name)}</span>${status?'<small>'+esc(status)+'</small>':''}</div><strong class="v150-home-account-amount">${v117Cash(item.balance)}</strong><button type="button" class="btn small" onclick="v150OpenHomeAccount(this.dataset.accountId)" data-account-id="${esc(item.id)}"${canWrite?'':' disabled'}>Изменить остаток</button></div>`}).join('');
+ root.innerHTML=data.items.map(item=>{const status=!Number.isFinite(item.balance)?'Укажите остаток':item.account.ledger?.enabled&&!item.enabled?'Проверьте начало учёта':item.exact===false?'Проверьте суммы: дробные копейки':item.difference!==null&&item.difference!==0?'Нужна сверка остатка':item.invalidCount?'Проверьте операции счёта':!item.enabled?'Остаток на '+(item.snapshotDate?fmtDate(item.snapshotDate):'дату проверки'):item.stale?'Обновите сверку остатка':'';return `<div class="v150-home-account" data-v150-account-id="${esc(item.id)}"><div><span class="v150-home-account-name">${esc(item.name)}</span>${status?'<small>'+esc(status)+'</small>':''}</div><strong class="v150-home-account-amount">${v117Cash(item.balance)}</strong><button type="button" class="btn small" onclick="v150OpenHomeAccount(this.dataset.accountId)" data-account-id="${esc(item.id)}"${canWrite?'':' disabled'}>Указать текущий остаток</button></div>`}).join('');
  const debtRoot=document.getElementById('v150HomeDebtAccounts'),debts=data.debtItems||[];if(debtRoot){debtRoot.hidden=!debts.length;debtRoot.innerHTML=debts.length?'<p class="hint">Кредитные счета · отдельно от денег семьи</p>'+debts.map(item=>`<div class="v150-home-account" data-v150-debt-account-id="${esc(item.id)}"><span class="v150-home-account-name">${esc(item.name)}</span><strong class="v150-home-account-amount">${v117Cash(item.balance)}</strong><button class="btn small" type="button" onclick="go('accounts')">Открыть</button></div>`).join(''):'';}
  const button=document.getElementById('v150HomeAccountButton');button.textContent='Добавить счёт';button.disabled=!canWrite||v150HomeAccountBusy;v157RenderSharedExpenseBudget();return data;
 }
@@ -5472,8 +5490,8 @@ function v150OpenHomeAccount(id=''){
  if(v150HomeAccountBusy||!v117CanWriteAccounts())return false;
  const account=id?v117AccountRecord(id):null;if(id&&(!account||account.archived||v117AccountBalance(account)?.kind!=='asset'))return false;
  const ledger=v117LedgerSpec(account);v150HomeAccountDraft={epoch:authEpoch,household:CONFIG.household,id:account?.id||uid(),isNew:!account,version:account?JSON.stringify(account):''};
- document.getElementById('v150HomeAccountTitle').textContent=account?'Начальный остаток · '+String(account.name||'Счёт'):'Добавить счёт и накопления';document.getElementById('v150AccountName').value=account?.name||'';document.getElementById('v150AccountDate').value=ledger?.startDate||v117SnapshotDate(account)||today();document.getElementById('v150AccountDate').max=today();document.getElementById('v150AccountOpening').value=ledger?.openingBalance??account?.amount??'';document.getElementById('v150AccountError').hidden=true;document.getElementById('v150AccountReconcile').hidden=!ledger;document.getElementById('v150AccountReconcile').disabled=false;document.getElementById('v150AccountSave').disabled=false;
- document.getElementById('v150HomeAccountModal').classList.add('open');v113OpenDialog('v150HomeAccountModal','#v150AccountName');return true;
+ document.getElementById('v150HomeAccountTitle').textContent=account?'Текущий остаток · '+String(account.name||'Счёт'):'Добавить счёт';document.getElementById('v150AccountName').value=account?.name||'';document.getElementById('v150AccountDate').value=today();document.getElementById('v150AccountDate').max=today();document.getElementById('v150AccountDate').readOnly=true;document.getElementById('v150AccountOpening').value='';document.getElementById('v150AccountOpening').placeholder='Введите фактический остаток';document.getElementById('v150AccountError').hidden=true;document.getElementById('v150AccountReconcile').hidden=!ledger;document.getElementById('v150AccountReconcile').disabled=false;document.getElementById('v150AccountSave').disabled=false;
+ document.getElementById('v150HomeAccountModal').classList.add('open');v113OpenDialog('v150HomeAccountModal',account?'#v150AccountOpening':'#v150AccountName');return true;
 }
 function v150CloseHomeAccount(restoreFocus=true){document.getElementById('v150HomeAccountModal')?.classList.remove('open');v113CloseDialog('v150HomeAccountModal',restoreFocus);v150HomeAccountDraft=null}
 function v150ReconcileHomeAccount(){const draft=v150HomeAccountDraft;if(v150HomeAccountBusy||!v150HomeAccountAllowed(draft))return;const id=draft.id;v150CloseHomeAccount(false);v117OpenReconcile(id)}
@@ -5481,18 +5499,19 @@ async function v150SaveHomeAccount(){
  const draft=v150HomeAccountDraft,error=document.getElementById('v150AccountError'),fail=text=>{error.textContent=text;error.hidden=false;return false};
  if(v150HomeAccountBusy||v117AccountsBusy||!v150HomeAccountAllowed(draft))return false;
  const data=v84Data(),old=v117AccountRecord(draft.id);if((draft.isNew&&old)||(!draft.isNew&&(!old||old.archived||JSON.stringify(old)!==draft.version)))return fail('Счёт изменился. Откройте его заново и проверьте остаток.');
- const name=document.getElementById('v150AccountName').value.trim().slice(0,65),date=document.getElementById('v150AccountDate').value,opening=v113ReadMoney('v150AccountOpening',{signed:true,min:-1e12,max:1e12,message:'Укажите начальный остаток от −1 трлн до 1 трлн ₽'});
- if(!name)return fail('Укажите название счёта.');if(!isValidCalendarDate(date)||date>today())return fail('Укажите дату начала не позже сегодняшнего дня.');if(!Number.isFinite(opening))return false;
+ const name=document.getElementById('v150AccountName').value.trim().slice(0,65),date=document.getElementById('v150AccountDate').value,opening=v113ReadMoney('v150AccountOpening',{signed:true,min:-1e12,max:1e12,message:'Укажите текущий остаток от −1 трлн до 1 трлн ₽'});
+ if(!name)return fail('Укажите название счёта.');if(date!==today())return fail('Текущий остаток задаётся на сегодня. Откройте форму заново.');if(!Number.isFinite(opening))return false;
  const next=old?JSON.parse(JSON.stringify(old)):{id:draft.id,name,amount:opening,created_at:new Date().toISOString()},oldSpec=v117LedgerSpec(old),at=old?v117TouchAccount(next):v117RecordStamp();next.name=name;next.updated_at=at;
- const log=Array.isArray(old?.ledger?.configurationLog)?old.ledger.configurationLog.slice():[];if(oldSpec)log.push({at,startDate:oldSpec.startDate,openingBalance:oldSpec.openingBalance,kind:oldSpec.kind,includeInSpending:oldSpec.includeInSpending});
- next.ledger={...(old?.ledger||{}),version:1,enabled:true,startDate:date,openingBalance:opening,kind:'asset',includeInSpending:oldSpec?.includeInSpending??true,creditLimit:0,configurationLog:log};if(!oldSpec)v117VerifySnapshot(next,opening,date,at);
- let sharedPin=v157PinSharedExpenseAccount();const index=data.accounts.findIndex(account=>account.id===draft.id);if(index<0)data.accounts.push(next);else data.accounts[index]=next;sharedPin=sharedPin||v157PinSharedExpenseAccount();v150HomeAccountBusy=true;v117AccountsBusy=true;document.getElementById('v150AccountSave').disabled=true;document.getElementById('v150AccountReconcile').disabled=true;error.hidden=true;v150RenderHomeBank();
+ const history=Array.isArray(old?.ledger?.currentBalanceAnchors)?old.ledger.currentBalanceAnchors.slice():[];if(v161ValidCurrentBalanceAnchor(old?.ledger?.currentBalanceAnchor))history.push(JSON.parse(JSON.stringify(old.ledger.currentBalanceAnchor)));
+ const anchor={version:1,amount:opening,date,recordedAt:new Date().toISOString(),existingSameDayEntryIds:[...new Set(v117LiveEntries().filter(entry=>entry.date===date).map(entry=>entry.id))]};
+ next.ledger={...(old?.ledger||{}),version:1,enabled:true,startDate:oldSpec?.startDate||date,openingBalance:oldSpec?.openingBalance??opening,kind:'asset',includeInSpending:oldSpec?.includeInSpending??true,creditLimit:0,currentBalanceAnchors:history,currentBalanceAnchor:anchor};v117VerifySnapshot(next,opening,date,at);next.snapshotVerification.verifiedAt=anchor.recordedAt;anchor.snapshotRevision=next.snapshotRevision;
+ let sharedPin=v157PinSharedExpenseAccount();const index=data.accounts.findIndex(account=>account.id===draft.id);if(index<0)data.accounts.push(next);else data.accounts[index]=next;sharedPin=sharedPin||v157PinSharedExpenseAccount();v150HomeAccountBusy=true;v150PendingNewAccountId=draft.isNew?draft.id:'';v117AccountsBusy=true;document.getElementById('v150AccountSave').disabled=true;document.getElementById('v150AccountReconcile').disabled=true;error.hidden=true;v150RenderHomeBank();
  let ok=false,failed=false;try{ok=await saveAll()}catch{failed=true}
  try{
   if(draft.epoch!==authEpoch||draft.household!==CONFIG.household)return false;
   if(failed||(!ok&&v89StorageFailed)){const current=v117AccountRecord(draft.id),accounts=v84Data().accounts;if(current&&JSON.stringify(current)===JSON.stringify(next)){const atIndex=accounts.findIndex(account=>account.id===draft.id);if(old)accounts[atIndex]=old;else accounts.splice(atIndex,1);v157RestoreSharedExpensePreference(sharedPin)}renderAll();if(draft===v150HomeAccountDraft)fail('Не удалось сохранить остаток. Проверьте доступное место и повторите сохранение.');return false;}
-  renderAll();if(draft===v150HomeAccountDraft){v150CloseHomeAccount();if(v99CanWriteDirections())toast(localSaveMessage(ok,'Начальный остаток счёта сохранён'));}return true;
- }finally{v150HomeAccountBusy=false;v117AccountsBusy=false;document.getElementById('v150AccountSave').disabled=false;document.getElementById('v150AccountReconcile').disabled=false;if(draft.epoch===authEpoch&&draft.household===CONFIG.household){v150RenderHomeBank();v117RenderAccounts()}}
+  renderAll();if(draft===v150HomeAccountDraft){v150CloseHomeAccount();if(v99CanWriteDirections())toast(localSaveMessage(ok,'Текущий остаток счёта сохранён'));}return true;
+ }finally{v150HomeAccountBusy=false;v150PendingNewAccountId='';v117AccountsBusy=false;document.getElementById('v150AccountSave').disabled=false;document.getElementById('v150AccountReconcile').disabled=false;if(draft.epoch===authEpoch&&draft.household===CONFIG.household){v150RenderHomeBank();v117RenderAccounts();v119RefreshEntryAccounts();v119RefreshPaymentAccounts()}}
 }
 function v147HomeTopCategories(monthKey=homeMonth()){
  return v99DashboardTotals(monthEntries(monthKey).filter(isExpense),entry=>v99CategoryLabel(v99PurposeCategory(entry))).slice(0,5);
@@ -5693,7 +5712,7 @@ const V81_SUBCATEGORIES={
  'Одежда':['Взрослая','Детская','Обувь','Аксессуары','Другое'],
  'Красота':['Стрижка','Маникюр','Косметика','Парфюмерия','Уход','Другое'],
  'Подписки':['Онлайн-сервисы','Хостинг','Домен','Видео и музыка','Обучение','Облако','Другое'],
- 'Развлечения':['Кино','Квесты и игры','Семейный отдых','Детский досуг','Другое'],
+ 'Развлечения':['Кино','Концерты','Мероприятия','Театры','Квесты и игры','Семейный отдых','Детский досуг','Другое'],
  'Подарки':['Семья','Друзья','Дети','Коллеги','Другое'],
  'Путешествия':['Билеты','Отель','Питание','Экскурсии','Другое'],
  'Кредит':['Ипотека','Рассрочка / Сплит','Кредитная карта','Потребительский кредит','Другое']
@@ -6270,7 +6289,7 @@ function v119OpsCanWrite(){return typeof v117CanWrite==='function'?v117CanWrite(
 function v119OpsContext(){return {epoch:authEpoch,household:CONFIG.household}}
 function v119OpsAllowed(stage){return v119OpsCanWrite()&&(!stage||stage.epoch===authEpoch&&stage.household===CONFIG.household)}
 function v119ResetOperations(){v119Editor=null;v119Split=null;v119CSV=null;v119Undo=null;v119EntryAttempt=null;v119Generation++;document.getElementById('v119UndoNotice')?.remove();for(const id of ['v119SplitPanel','v119CSVPanel','v119EntryRetry']){const el=document.getElementById(id);if(el)el.hidden=true}document.getElementById('v119CSVRows')?.replaceChildren();document.getElementById('v119SplitRows')?.replaceChildren();v119ToolsStatus('');v124RenderCSVPicker()}
-function v119Accounts(){return typeof v117SelectableAccounts==='function'?v117SelectableAccounts():[]}
+function v119Accounts(){return typeof v117SelectableAccounts==='function'?v117SelectableAccounts().filter(account=>account.id!==v150PendingNewAccountId):[]}
 function v119AccountOptions(selected=''){
  const rows=v119Accounts(),known=rows.some(a=>a.id===selected);
  return '<option value="">Не указан</option>'+(!known&&selected?'<option value="'+esc(selected)+'">Прежняя привязка</option>':'')+rows.map(a=>'<option value="'+esc(a.id)+'">'+esc(a.name||'Счёт')+'</option>').join('');
@@ -6286,14 +6305,14 @@ function v119RefreshEntryAccounts(reset=false){
  const type=document.getElementById('eType')?.value,host=document.querySelector('#today .v91-form');if(!host)return;
  let box=document.getElementById('eAccounts'),prior=reset?{}:v119RawAccountFields('e');
  if(reset&&!['transfer','cash'].includes(type))prior={accountId:v119DefaultAccount()};
- const focused=box?.contains(document.activeElement),signature=JSON.stringify([type,v119Accounts().map(a=>[a.id,a.name]),prior,type==='expense'?v157SharedExpenseAccount().id:'']);
+ const focused=box?.contains(document.activeElement),shared=type==='expense'?v157SharedExpenseAccount():null,signature=JSON.stringify([type,v119Accounts().map(a=>[a.id,a.name]),prior,shared?.id||'',shared?.account?.ledger?.currentBalanceAnchor?.recordedAt||'']);
  if(box&&box.dataset.signature===signature)return;
  const shell=document.createElement('div');shell.innerHTML=v119AccountFields('e',type,prior);const fresh=shell.firstElementChild;fresh.dataset.signature=signature;
  if(box)box.replaceWith(fresh);else host.querySelector('#v90Extra .form-grid').append(fresh);v119SetAccountValues('e',prior);
  if(focused)document.getElementById('eAccountId')?.focus();v110RefreshPickers();
 }
 function v119RawAccountFields(prefix){return {accountId:document.getElementById(prefix+'AccountId')?.value||'',fromAccountId:document.getElementById(prefix+'FromAccountId')?.value||'',toAccountId:document.getElementById(prefix+'ToAccountId')?.value||''}}
-function v157AccountFieldsHint(type){const shared=type==='expense'?v157SharedExpenseAccount():null;return shared?.id?'Расходы без выбранного счёта после начала учёта уменьшают общий счёт «'+shared.account.name+'». Явный выбор списывает сумму с выбранного счёта.':'Привязка влияет на расчёт выбранного счёта. Прежние операции без счёта сохраняются.'}
+function v157AccountFieldsHint(type){const shared=type==='expense'?v157SharedExpenseAccount():null;return shared?.id?(v161CurrentBalanceAnchor(shared.account)?'Новые расходы без выбранного счёта уменьшают общий счёт «'+shared.account.name+'». Покупки до указания текущего остатка уже учтены.':'Расходы без выбранного счёта после начала учёта уменьшают общий счёт «'+shared.account.name+'». Явный выбор списывает сумму с выбранного счёта.'):'Привязка влияет на расчёт выбранного счёта. Прежние операции без счёта сохраняются.'}
 function v119ShowAccountControls(prefix,type){const host=document.getElementById(prefix+'Accounts');if(!host)return;const pair=['transfer','cash'].includes(type);host.querySelector('.v119-account-single').hidden=pair;host.querySelector('.v119-account-pair').hidden=!pair;const hint=host.querySelector('small.hint');if(hint)hint.textContent=v157AccountFieldsHint(type);v110RefreshPickers()}
 function v119CheckFields(candidate){
  if(typeof v117CheckAccountFields==='function')return v117CheckAccountFields(candidate);
@@ -8828,14 +8847,16 @@ function v117LiveEntries(){return (state.entries||[]).filter(e=>e&&typeof e.id==
 function v117ExactMoney(value){return typeof value==='number'&&Number.isFinite(value)&&Number.isFinite(parseMoneyInput(String(Math.abs(value))))}
 function v117LedgerAt(account,date=today(),cutoff=null){
  const spec=v117LedgerSpec(account);if(!spec||!isValidCalendarDate(date)||date<spec.startDate)return null;
- const flows=[],adjustments=[],sharedContext=v157SharedExpenseContext(date);let invalidCount=0,exact=v117ExactMoney(spec.openingBalance);
+ const anchor=v161CurrentBalanceAnchor(account,date,cutoff),base=anchor?.amount??spec.openingBalance,anchorIds=anchor&&Array.isArray(anchor.existingSameDayEntryIds)?new Set(anchor.existingSameDayEntryIds):null,cutoffIds=Array.isArray(cutoff?.existingSameDayEntryIds)?new Set(cutoff.existingSameDayEntryIds):null;
+ const flows=[],adjustments=[],sharedContext=v157SharedExpenseContext(date,cutoff);let invalidCount=0,exact=v117ExactMoney(base);
  for(const entry of v117LiveEntries()){
   const accountId=entry.type==='expense'?v157ExpenseAccountId(entry,sharedContext):entry.accountId,affects=accountId===account.id||entry.fromAccountId===account.id||entry.toAccountId===account.id;
   if(!affects)continue;
   if(!isValidCalendarDate(entry.date)){invalidCount++;continue}
   if(entry.date<spec.startDate||entry.date>date)continue;
+  if(!v161EntryAfterAnchor(entry,anchor,anchorIds))continue;
   const sameReconciliation=entry.balanceAdjustment===true&&entry.reconciliationRevision===cutoff?.revision;
-  if(cutoff&&entry.date===date&&!sameReconciliation){const at=Date.parse(entry.created_at||'');if(Number.isFinite(at)&&at>Date.parse(cutoff.at))continue}
+  if(cutoff&&entry.date===date&&!sameReconciliation){if(cutoffIds){if(!cutoffIds.has(entry.id))continue}else if(anchor?.snapshotRevision&&anchor.snapshotRevision===cutoff.revision&&entry.date===anchor.date)continue;else{const at=Date.parse(entry.created_at||'');if(Number.isFinite(at)&&at>Date.parse(cutoff.at))continue}}
   const amount=entry.amount;if(typeof amount!=='number'||!Number.isFinite(amount)||amount<=0){invalidCount++;continue}if(!v117ExactMoney(amount))exact=false;
   if(entry.balanceAdjustment===true){
    if(entry.type!=='transfer'||entry.accountId!==account.id||entry.fromAccountId||entry.toAccountId||![1,-1].includes(entry.adjustmentDirection)||!entry.reconciliationRevision){invalidCount++;continue}
@@ -8848,8 +8869,8 @@ function v117LedgerAt(account,date=today(),cutoff=null){
   else if(['transfer','cash'].includes(entry.type)){if(entry.fromAccountId===account.id)effect-=amount;if(entry.toAccountId===account.id)effect+=amount}
   flows.push({amount:effect});
  }
- const flow=sum(flows),adjustment=sum(adjustments),balance=sum([{amount:spec.openingBalance},{amount:flow},{amount:adjustment}]);
- return {opening:spec.openingBalance,flows:flow,adjustments:adjustment,balance,invalidCount,exact:exact&&v117ExactMoney(balance)};
+ const flow=sum(flows),adjustment=sum(adjustments),balance=sum([{amount:base},{amount:flow},{amount:adjustment}]);
+ return {opening:base,originalOpening:spec.openingBalance,anchor,flows:flow,adjustments:adjustment,balance,invalidCount,exact:exact&&v117ExactMoney(balance)};
 }
 function v117SnapshotDate(account){const date=account?.snapshotDate||String(account?.updated_at||'').slice(0,10);return isValidCalendarDate(date)?date:null}
 function v117SnapshotTrusted(account){
@@ -8875,6 +8896,7 @@ function v117CheckAccountFields(entry,{allowArchived=false}={}){
  return failed('Для этого типа операции счёт не поддерживается');
 }
 function v117EntryNeedsAccount(entry,sharedContext){
+ if(v161EntryCoveredByCurrentBalance(entry,sharedContext))return false;
  if(entry.balanceAdjustment===true)return !entry.accountId||!v117CheckAccountFields(entry,{allowArchived:true}).ok;
  if(entry.type==='expense'&&v157RawUnassignedExpense(entry)&&v157ExpenseAccountId(entry,sharedContext))return false;
  if(['income','expense'].includes(entry.type))return !entry.accountId||!v117CheckAccountFields(entry,{allowArchived:true}).ok;
@@ -8885,14 +8907,14 @@ function v117UnassignedEntries(since,asOf){const context=v157SharedExpenseContex
 function v117AccountBalance(value,asOf=today()){
  const account=v117AccountRecord(value);if(!account)return null;
  const spec=v117LedgerSpec(account),kind=spec?.kind||(account.kind==='debt'||account.ledger?.kind==='debt'?'debt':'asset'),snapshot=Number.isFinite(Number(account.amount))?Number(account.amount):null,snapshotDate=v117SnapshotDate(account),trusted=v117SnapshotTrusted(account),ledger=spec?v117LedgerAt(account,asOf):null;
- const balance=ledger?.balance??(!spec?snapshot:null),verified=trusted&&snapshotDate<=asOf&&(!spec||snapshotDate>=spec.startDate),atSnapshot=verified&&spec?v117LedgerAt(account,snapshotDate,{at:account.snapshotVerification.verifiedAt,revision:account.snapshotRevision}):null;
+ const balance=ledger?.balance??(!spec?snapshot:null),verified=trusted&&snapshotDate<=asOf&&(!spec||snapshotDate>=spec.startDate),atSnapshot=verified&&spec?v117LedgerAt(account,snapshotDate,{at:account.snapshotVerification.verifiedAt,revision:account.snapshotRevision,existingSameDayEntryIds:account.snapshotVerification.existingSameDayEntryIds}):null;
  const difference=atSnapshot&&snapshot!==null?sum([{amount:snapshot},{amount:-atSnapshot.balance}]):null;
  const age=snapshotDate&&isValidCalendarDate(asOf)?Math.floor((Date.parse(asOf+'T12:00:00Z')-Date.parse(snapshotDate+'T12:00:00Z'))/86400000):Infinity;
  const warnings=[];if(!spec)warnings.push(account.ledger?.enabled?'Проверьте настройки начала учёта':'Начало учёта не настроено');
  if(spec&&!ledger)warnings.push('Учёт начинается позже выбранной даты');if(!verified)warnings.push('Нужна проверка фактического остатка');if(age>7)warnings.push('Сверка старше семи дней');
  if(difference!==null&&difference!==0)warnings.push('Остаток отличается от внесённых операций');if(ledger?.invalidCount)warnings.push('Проверьте некорректные операции счёта: '+ledger.invalidCount);if(ledger&&!ledger.exact)warnings.push('В записях есть дробные копейки');if(kind==='debt'&&balance>0)warnings.push('Положительная сумма на кредитном счёте требует проверки; лимит банка не является своими деньгами');
  const unassignedCount=v117UnassignedEntries(spec?.startDate||asOf,asOf).length;
- return {account,id:account.id,name:String(account.name||'Счёт'),kind,includeInSpending:kind==='asset'&&(spec?.includeInSpending??true),enabled:!!spec,archived:account.archived===true,valid:!!ledger&&Number.isFinite(balance)&&!ledger.invalidCount,opening:ledger?.opening??null,flows:ledger?.flows??0,adjustments:ledger?.adjustments??0,balance,snapshot,snapshotDate,snapshotTrusted:verified,difference,stale:!verified||age>7,unassignedCount,invalidCount:ledger?.invalidCount||0,exact:ledger?.exact??v117ExactMoney(balance),warnings};
+ return {account,id:account.id,name:String(account.name||'Счёт'),kind,includeInSpending:kind==='asset'&&(spec?.includeInSpending??true),enabled:!!spec,archived:account.archived===true,valid:!!ledger&&Number.isFinite(balance)&&!ledger.invalidCount,opening:ledger?.opening??null,currentBalanceAnchor:ledger?.anchor||null,flows:ledger?.flows??0,adjustments:ledger?.adjustments??0,balance,snapshot,snapshotDate,snapshotTrusted:verified,difference,stale:!verified||age>7,unassignedCount,invalidCount:ledger?.invalidCount||0,exact:ledger?.exact??v117ExactMoney(balance),warnings};
 }
 function v117AccountSummary(asOf=today()){
  const items=v117AccountRecords().map(a=>v117AccountBalance(a,asOf)),assets=items.filter(a=>a.kind==='asset'),debts=items.filter(a=>a.kind==='debt'),known=rows=>rows.length?sum(rows.filter(a=>Number.isFinite(a.balance)).map(a=>({amount:a.balance}))):null;
@@ -8905,7 +8927,7 @@ function v117AccountSummary(asOf=today()){
 }
 function v117CanWrite(){return v99CanWriteDirections()}
 function v117CanWriteAccounts(){if(v117AccountsBusy)return false;if(!v117CanWrite()){toast('Изменять счета могут владелец и редакторы семьи');return false}return true}
-function v117VerifySnapshot(account,amount,date,stamp){const verifiedAt=new Date().toISOString(),revision=uid();Object.assign(account,{amount,snapshotDate:date,snapshotRevision:revision,updated_at:stamp,snapshotVerification:{amount,date,revision,verifiedAt,accountUpdatedAt:stamp}})}
+function v117VerifySnapshot(account,amount,date,stamp){const verifiedAt=new Date().toISOString(),revision=uid(),existingSameDayEntryIds=[...new Set(v117LiveEntries().filter(entry=>entry.date===date).map(entry=>entry.id))];Object.assign(account,{amount,snapshotDate:date,snapshotRevision:revision,updated_at:stamp,snapshotVerification:{amount,date,revision,verifiedAt,accountUpdatedAt:stamp,existingSameDayEntryIds}})}
 function v117TouchAccount(account){const trusted=v117SnapshotTrusted(account),at=v117RecordStamp(account);account.updated_at=at;if(trusted)account.snapshotVerification={...account.snapshotVerification,accountUpdatedAt:at};return at}
 async function v117PersistAccounts(message){
  const epoch=authEpoch,household=CONFIG.household;v117AccountsBusy=true;renderAll();let ok=false;
@@ -8918,7 +8940,7 @@ function v117AccountCard(item,closed=false){
  const notes=[...item.warnings];if(item.kind==='debt'&&Number.isFinite(a.ledger?.creditLimit))notes.push('Лимит банка '+money2(a.ledger.creditLimit)+' — справочно');
  const actions=closed?v117AccountButton('reopen',a.id,'Вернуть счёт'):v117AccountButton('manual',a.id,'Изменить снимок')+v117AccountButton('configure',a.id,item.enabled?'Настройки учёта':'Начать учёт')+(item.enabled?v117AccountButton('reconcile',a.id,'Сверить'):'')+(item.difference!==null&&item.difference!==0?v117AccountButton('adjust',a.id,'Добавить корректировку'):'')+v117AccountButton('archive',a.id,item.enabled?'Закрыть счёт':'Скрыть счёт');
  const history=v117LiveEntries().filter(e=>e.balanceAdjustment===true&&e.accountId===a.id).sort((x,y)=>String(y.date).localeCompare(String(x.date)));
- return `<article class="v117-account-card" data-v117-account-card="${esc(a.id)}"><div class="v117-account-head"><h3>${esc(item.name)}</h3><span class="v117-account-kind">${esc(kind)}</span></div><div class="v117-account-metrics"><div><small>${item.enabled?'По учёту на '+esc(v84NoticeDate(today())):'Ручной снимок'}</small><strong>${v117Cash(item.balance)}</strong></div><div><small>${esc(snapshotLabel)}</small><strong>${v117Cash(item.snapshot)}</strong></div><div><small>Расхождение на дату проверки</small><strong>${v117Cash(item.difference)}</strong></div></div><p class="v117-account-note">${item.enabled?'Начало '+esc(v84NoticeDate(a.ledger.startDate))+' · '+v117Cash(item.opening)+' на начало дня.':'Сумма ещё не связана с новыми операциями.'}${item.snapshotTrusted?' Сверено по записям на момент проверки.':''}</p>${notes.length?`<p class="v117-account-note v117-account-warning">${notes.map(esc).join(' · ')}</p>`:''}<div class="v117-account-actions">${actions}</div><details class="v117-account-log"><summary>История корректировок · ${history.length}</summary>${history.length?history.map(e=>v141OperationRow(e,{title:e.store||'Сверка остатка',meta:[isValidCalendarDate(e.date)?String(e.date).split('-').reverse().join('.'):String(e.date||'')],comment:e.comment||'Сверка остатка',amountText:(e.adjustmentDirection>0?'+':'−')+money2(Number(e.amount)),amountKind:e.adjustmentDirection>0?'income':'expense',actionsHtml:''})).join(''):'<p>Корректировок пока нет.</p>'}</details></article>`;
+ return `<article class="v117-account-card" data-v117-account-card="${esc(a.id)}"><div class="v117-account-head"><h3>${esc(item.name)}</h3><span class="v117-account-kind">${esc(kind)}</span></div><div class="v117-account-metrics"><div><small>${item.enabled?'По учёту на '+esc(v84NoticeDate(today())):'Ручной снимок'}</small><strong>${v117Cash(item.balance)}</strong></div><div><small>${esc(snapshotLabel)}</small><strong>${v117Cash(item.snapshot)}</strong></div><div><small>Расхождение на дату проверки</small><strong>${v117Cash(item.difference)}</strong></div></div><p class="v117-account-note">${item.currentBalanceAnchor?'Текущий остаток зафиксирован '+esc(v84NoticeDate(item.currentBalanceAnchor.date))+' · '+v117Cash(item.currentBalanceAnchor.amount)+' на момент ввода.':item.enabled?'Начало '+esc(v84NoticeDate(a.ledger.startDate))+' · '+v117Cash(item.opening)+' на начало дня.':'Сумма ещё не связана с новыми операциями.'}${item.snapshotTrusted?' Сверено по записям на момент проверки.':''}</p>${notes.length?`<p class="v117-account-note v117-account-warning">${notes.map(esc).join(' · ')}</p>`:''}<div class="v117-account-actions">${actions}</div><details class="v117-account-log"><summary>История корректировок · ${history.length}</summary>${history.length?history.map(e=>v141OperationRow(e,{title:e.store||'Сверка остатка',meta:[isValidCalendarDate(e.date)?String(e.date).split('-').reverse().join('.'):String(e.date||'')],comment:e.comment||'Сверка остатка',amountText:(e.adjustmentDirection>0?'+':'−')+money2(Number(e.amount)),amountKind:e.adjustmentDirection>0?'income':'expense',actionsHtml:''})).join(''):'<p>Корректировок пока нет.</p>'}</details></article>`;
 }
 function v117RenderAccounts(){
  const mount=document.getElementById('v117AccountsMount'),legacy=document.getElementById('v84AccountsCard');if(mount&&legacy&&legacy.parentElement!==mount)mount.appendChild(legacy);
@@ -8949,10 +8971,10 @@ async function v117SaveLedger(){
  const startDate=document.getElementById('v117LedgerDate').value,kind=document.getElementById('v117LedgerKind').value,openingBalance=v113ReadMoney('v117LedgerOpening',{signed:true,min:-1e12,max:1e12,message:'Введите начальный остаток от −1 трлн до 1 трлн ₽'}),creditLimit=v113ReadMoney('v117CreditLimit',{optional:true,min:0,max:1e12,message:'Введите неотрицательный лимит банка'});
  if(!isValidCalendarDate(startDate)||startDate>today())return fail('Дата начала должна быть корректной и не позже сегодняшнего дня.');if(!Number.isFinite(openingBalance)||!Number.isFinite(creditLimit)||!['asset','debt'].includes(kind))return false;if(kind==='debt'&&openingBalance>0)return fail('Задолженность вводится со знаком минус. Лимит банка укажите отдельно.');if(!document.getElementById('v117OpeningConfirmed').checked)return fail('Подтвердите проверку начального остатка.');
  const old=v117LedgerSpec(a),includeInSpending=kind==='asset'&&document.getElementById('v117LedgerSpending').value==='yes';
- if(old&&!confirm('Изменить начало учёта счёта? Остаток будет пересчитан по выбранной дате; история операций сохранится.'))return false;
+ if(old&&!confirm(v161CurrentBalanceAnchor(a)?'Изменить начало учёта счёта? История до последнего указанного текущего остатка будет пересчитана. Текущая точка отсчёта сохранится, если вид счёта не изменится.':'Изменить начало учёта счёта? Остаток будет пересчитан по выбранной дате; история операций сохранится.'))return false;
  if(epoch!==authEpoch||household!==CONFIG.household||!v117CanWrite())return false;if(v117AccountRecord(a.id)!==a||String(a.updated_at||'')!==v117ConfigVersion)return fail('Счёт изменился. Откройте его настройки заново.');
- v157PinSharedExpenseAccount();const at=v117TouchAccount(a),log=Array.isArray(a.ledger?.configurationLog)?a.ledger.configurationLog.slice():[];if(old)log.push({at,startDate:old.startDate,openingBalance:old.openingBalance,kind:old.kind,includeInSpending:old.includeInSpending});
- a.ledger={...(a.ledger&&typeof a.ledger==='object'?a.ledger:{}),version:1,enabled:true,startDate,openingBalance,kind,includeInSpending,creditLimit:kind==='debt'?creditLimit:0,configurationLog:log};v157PinSharedExpenseAccount();v117CloseLedger();return v117PersistAccounts('Начало учёта сохранено в семье');
+ v157PinSharedExpenseAccount();const at=v117TouchAccount(a),log=Array.isArray(a.ledger?.configurationLog)?a.ledger.configurationLog.slice():[];if(old)log.push({at,startDate:old.startDate,openingBalance:old.openingBalance,kind:old.kind,includeInSpending:old.includeInSpending,...(a.ledger?.currentBalanceAnchor?{currentBalanceAnchor:JSON.parse(JSON.stringify(a.ledger.currentBalanceAnchor)),currentBalanceAnchors:JSON.parse(JSON.stringify(a.ledger.currentBalanceAnchors||[]))}:{})});
+ a.ledger={...(a.ledger&&typeof a.ledger==='object'?a.ledger:{}),version:1,enabled:true,startDate,openingBalance,kind,includeInSpending,creditLimit:kind==='debt'?creditLimit:0,configurationLog:log};if(old&&old.kind!==kind){a.ledger.currentBalanceAnchor=null;a.ledger.currentBalanceAnchors=[]}v157PinSharedExpenseAccount();v117CloseLedger();return v117PersistAccounts('Начало учёта сохранено в семье');
 }
 function v117OpenReconcile(id){
  const a=v117AccountRecord(id);if(!v117LedgerSpec(a))return;go('accounts');document.getElementById('v117ReconcileAccount').value=a.id;document.getElementById('v117SnapshotDate').value=today();document.getElementById('v117SnapshotAmount').value='';document.getElementById('v117SnapshotMessage').textContent='';v117ReconcilePreview(true);document.getElementById('v117ReconcileCard').scrollIntoView({block:'start'});document.getElementById('v117SnapshotAmount').focus({preventScroll:true});v110RefreshPickers();
