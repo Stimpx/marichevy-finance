@@ -2572,6 +2572,22 @@ body .v141-operation{display:grid;grid-template-columns:minmax(0,1fr) minmax(90p
 @container(max-width:520px){#planning #v86Calendar .v86-total:last-child:nth-child(odd){grid-column:1/-1}#planning #v86Calendar .v86-calendar-row{grid-template-columns:44px minmax(0,1fr);padding:10px;gap:7px 10px}#planning #v86Calendar .v86-calendar-date{grid-row:1/3;height:48px;align-self:start}#planning #v86Calendar .v86-calendar-description{grid-column:2;grid-row:1}#planning #v86Calendar .v156-calendar-metrics{grid-column:2;grid-row:2;display:flex;align-items:center;justify-content:flex-start;flex-wrap:wrap;gap:6px 9px}#planning #v86Calendar .v156-calendar-metrics>.v86-state{text-align:left}#planning #v86Calendar .v881-cal-actions{grid-column:1/-1;grid-row:3;flex-wrap:wrap;margin-top:2px}#planning #v86Calendar .v881-cal-actions>.btn{flex:1 1 120px;min-height:44px!important}#planning #v86Calendar .v86-calendar-description b{line-height:1.4}#planning #v86Calendar .v86-calendar-controls{flex-wrap:wrap;gap:7px;width:100%}#planning #v86Calendar .v86-calendar-controls>.v107-select{flex:1 1 160px;width:auto}#planning #v86Calendar .v86-heading{margin-bottom:14px}#planning #v86Calendar .v86-total{padding:10px}}
 @media(max-width:600px){#planning .v118-plan-head{gap:10px}#planning .v118-plan-head>.btn{max-width:100%;white-space:normal}#planning .v118-form-grid{grid-template-columns:minmax(0,1fr)}#planning>.v118-plan-head>label{flex:1 1 100%}#planning #v86Calendar .v86-filters>.btn{flex:1 1 auto}#planning fieldset{padding:12px}}
 </style>
+<style id="v158HistorySummaryStyle">
+#history .v158-history-summary{min-width:0;margin:0 0 14px}#history .v158-history-period{margin:0 0 8px;font-size:12px;line-height:1.5;color:#536984}#history .v158-history-totals{display:flex;flex-wrap:wrap;gap:8px}#history .v158-history-total{flex:1 1 165px;min-width:0;padding:10px 12px;border:1px solid #e0e7f2;border-radius:12px;background:#f8faff}#history .v158-history-total>span{display:block;font-size:12px;line-height:1.4;color:#526680}#history .v158-history-total>strong{display:block;font-size:18px;line-height:1.4;font-weight:650!important;font-variant-numeric:tabular-nums;margin-top:4px;color:#2b4264;overflow-wrap:anywhere}#history .v158-history-total[data-v158-total="expense"]>strong{color:#a14c63}#history .v158-history-total[data-v158-total="income"]>strong{color:#34775f}#history .v75-all-dates[aria-pressed="true"]{background:#e6edfc!important;border-color:#b2c4e6!important;color:#2f5088!important}
+@media(max-width:520px){#history .v158-history-total{flex-basis:130px;padding:10px}#history .v158-history-total>strong{font-size:17px}}
+</style>
+<style id="v159IncomeLinearShares">
+#income .v159-income-total{display:grid;gap:3px;text-align:right;font-variant-numeric:tabular-nums;min-width:0}#income .v159-income-total>span{font-size:12px;color:#60718b}#income .v159-income-total>strong{font-size:24px;overflow-wrap:anywhere}#income .v159-income-overview #incomePeopleChart{margin-top:15px}#income .v159-source-linear{grid-template-columns:minmax(0,1fr);gap:0}#income :is(.v159-income-overview,.v159-source-linear) .bar-top{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:baseline;gap:8px 14px}#income :is(.v159-income-overview,.v159-source-linear) .bar-top>b{min-width:0;overflow-wrap:anywhere}#income :is(.v159-income-values,.v159-source-values){display:flex;justify-content:flex-end;align-items:baseline;gap:12px;white-space:nowrap;font-variant-numeric:tabular-nums}#income :is(.v159-income-share,.v159-source-share){min-width:3.2em;text-align:right;font-size:12px;font-weight:650;color:#354b68}#income .v159-source-linear .bar-row:last-child{margin-bottom:0}
+@media(max-width:450px){#income :is(.v159-income-overview,.v159-source-linear) .bar-top{column-gap:10px}#income :is(.v159-income-values,.v159-source-values){gap:8px}#income :is(.v159-income-share,.v159-source-share){min-width:2.8em}#income .v159-income-total{text-align:left}}
+#income .v159-income-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.65fr);gap:26px;align-items:start}#income .v159-income-bank{min-width:0;padding:4px 0}#income .v159-bank-eyebrow{display:block;font-size:10px;letter-spacing:.12em;color:#617d9f;margin-bottom:14px}#income .v159-income-bank>h2{font-size:22px;margin:0 0 9px}#income .v159-income-bank>#v159IncomeBankDate{display:block;font-size:12px}#income .v159-bank-total{display:block;min-width:0;margin:20px 0 14px;font-size:clamp(34px,3.2vw,50px);line-height:1.2;font-weight:750;font-variant-numeric:tabular-nums;overflow-wrap:anywhere;color:#1d304f}#income .v159-bank-total.money-red{color:#a14c63}#income .v159-income-bank>p{font-size:12px;line-height:1.5;margin:0 0 18px;overflow-wrap:anywhere}#income .v159-income-bank>.btn{max-width:100%}#income .v159-income-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;min-width:0}#income .v159-income-kpi{min-width:0;padding:16px;border:1px solid #dce5f1;border-radius:15px;background:#f8faff;display:flex;flex-direction:column;gap:9px}#income .v159-income-kpi>span{font-size:13px;font-weight:650;color:#344b68;overflow-wrap:anywhere}#income .v159-income-kpi>strong{font-size:clamp(24px,2vw,30px);font-weight:700;line-height:1.25;font-variant-numeric:tabular-nums;color:#243e62;overflow-wrap:anywhere}#income .v159-income-kpi>small{font-size:11px;line-height:1.5;color:#5e728e;overflow-wrap:anywhere}#income .v159-income-primary{background:#f3faf6;border-color:#d1e5d8}#income .v159-income-primary>strong{color:#2f745c}#income .v159-income-comparison{display:grid;gap:4px;padding-top:10px;border-top:1px solid #dce9e1;margin-top:3px;font-size:11px;line-height:1.4;color:#526d62;overflow-wrap:anywhere}#income .v159-income-comparison[hidden]{display:none!important}#income .v159-income-comparison>b{font-size:13px;font-weight:650;font-variant-numeric:tabular-nums}#income .v159-income-comparison[data-change="positive"]>b{color:#2f745c}#income .v159-income-comparison[data-change="negative"]>b{color:#9d5064}#income .v159-income-comparison>small{font-size:11px;color:#5e728e}
+@media(max-width:1200px){#income .v159-income-hero{grid-template-columns:minmax(0,1fr);gap:20px}#income .v159-income-bank{padding:0}#income .v159-bank-total{margin-top:14px}}
+@media(max-width:600px){#income .v159-income-hero{gap:18px}#income .v159-income-metrics{gap:10px}#income .v159-income-kpi{padding:15px 13px}}
+@media(max-width:520px){#income .v159-income-metrics{grid-template-columns:minmax(0,1fr)}}
+</style>
+<style id="v157SharedExpenseStyle">
+#home .v157-shared-budget{min-width:0;margin:2px 0 14px;padding-top:12px;border-top:1px solid #e0e7f1}#home #v157SharedExpenseSummary{margin:0 0 6px;color:#405978;font-size:12px;line-height:1.6;overflow-wrap:anywhere}#home #v157SharedExpenseSettings>summary{min-height:32px;padding:5px 0;color:#38598b;font-size:12px;font-weight:600;line-height:1.5;cursor:pointer}#home .v157-shared-form{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;padding-top:10px;min-width:0}#home .v157-shared-form>label{font-size:12px;font-weight:600;color:#344b6a}#home .v157-shared-form .v107-select{min-width:0;width:100%}#home .v157-shared-form .v107-select-trigger{min-height:40px!important;font-size:13px!important}#home #v157SharedExpensePreview{margin:0;font-size:11px;line-height:1.6;color:#5e718e;overflow-wrap:anywhere}#home .v157-shared-form .actions{display:flex;flex-wrap:wrap;gap:8px;margin:0}#home .v157-shared-form .actions>.btn{min-height:36px!important;padding:7px 10px!important;font-size:12px!important}#home #v157SharedExpenseError{margin:0;font-size:12px;line-height:1.5;overflow-wrap:anywhere}#home #v157SharedExpenseError[hidden]{display:none}
+@media(max-width:520px){#home #v157SharedExpenseSettings>summary{min-height:44px;padding:10px 0}#home .v157-shared-form .v107-select-trigger,#home .v157-shared-form .actions>.btn{min-height:44px!important}}
+</style>
 </head>
 <body>
 <noscript><div style="padding:14px;background:#fff3cd;color:#664d03;text-align:center;font:600 14px/1.4 system-ui">Для работы «Семейный капитал» необходимо включить JavaScript.</div></noscript>
@@ -2621,6 +2637,7 @@ body .v141-operation{display:grid;grid-template-columns:minmax(0,1fr) minmax(90p
  <div id="v150HomeAccounts" class="v150-home-accounts"></div>
  <div id="v150HomeDebtAccounts" class="v150-home-debts" hidden></div>
  <button type="button" id="v150HomeAccountButton" class="btn small" onclick="v150OpenHomeAccount()">Добавить счёт</button>
+ <div id="v157SharedExpenseBudget" class="v157-shared-budget" hidden><p id="v157SharedExpenseSummary" class="hint"></p><details id="v157SharedExpenseSettings"><summary>Счёт для расходов без привязки</summary><div class="v157-shared-form"><label for="v157SharedExpenseAccount">Общий счёт</label><select id="v157SharedExpenseAccount" onchange="v157SharedExpenseChanged()"></select><p id="v157SharedExpensePreview" class="hint"></p><div class="actions"><button id="v157SharedExpenseSave" type="button" class="btn small" onclick="v157SaveSharedExpenseAccount()">Сохранить</button><button id="v157SharedExpenseCancel" type="button" class="btn small" onclick="v157CancelSharedExpenseEdit()" hidden>Отмена</button></div><p id="v157SharedExpenseError" class="error" role="alert" hidden></p></div></details></div>
  <p id="v121HomeAvailableNote" class="hint">Добавьте счета и план, чтобы рассчитать доступную сумму.</p>
  <div id="v128HomeBankWarning" class="v128-bank-notice" hidden role="status"><p id="v128HomeBankWarningText"></p><button type="button" class="btn small" onclick="v128OpenBankHistory()">Учесть списания ипотеки</button></div>
  <div class="v121-home-actions"><button type="button" class="btn v146-add-expense" onclick="openEntry('expense')"><span>Добавить расход</span></button><button type="button" class="btn v146-add-income" onclick="openEntry('income')"><span>Добавить доход</span></button></div>
@@ -2823,7 +2840,8 @@ body .v141-operation{display:grid;grid-template-columns:minmax(0,1fr) minmax(90p
 <section class="section" id="history">
 <div class="card"><h2>Все операции</h2><div class="hint">Поиск по магазинам и комментариям, фильтры и любые месяцы — история остаётся с вами.</div>
 <div class="filters"><input id="fSearch" placeholder="Поиск: магазин, комментарий..."/><select id="fWho" aria-label="Фильтр по старым участникам записи"></select><select id="fGroup" aria-label="Группа расходов"><option value="">Все группы</option></select><select id="fCat" aria-label="Точная категория"></select><select id="fType"><option value="">Все операции</option><option value="expense">Расходы</option><option value="income">Доходы</option><option value="transfer">Переводы</option><option value="cash">Наличные</option></select><input id="fMonth" type="month" aria-label="Месяц или все даты"/><input id="fDay" type="date" aria-label="День операций"/></div>
-<div class="v76-history-tools"><span id="historyCount" aria-live="polite">Загружаем операции…</span><div class="v76-tool-buttons"><button class="btn small v75-all-dates" onclick="clearHistoryMonth()" type="button">Все даты</button><button class="v76-reset-btn" type="button" onclick="resetHistoryFilters()">Сбросить фильтры</button></div></div>
+<div class="v76-history-tools"><span id="historyCount" aria-live="polite">Загружаем операции…</span><div class="v76-tool-buttons"><button class="btn small v75-all-dates" id="v158HistoryAllTime" onclick="clearHistoryMonth()" type="button" aria-pressed="false">За всё время</button><button class="v76-reset-btn" type="button" onclick="resetHistoryFilters()">Сбросить фильтры</button></div></div>
+<section id="v158HistorySummary" class="v158-history-summary" aria-label="Суммы найденных операций" aria-live="polite"><p id="v158HistoryPeriod" class="v158-history-period"></p><div id="v158HistoryTotals" class="v158-history-totals"></div></section>
 <div id="historyBody" class="v141-operation-list"></div></div>
 </section>
 <section class="section" id="analytics">
@@ -2877,10 +2895,19 @@ body .v141-operation{display:grid;grid-template-columns:minmax(0,1fr) minmax(90p
  </section>
  </section>
  <section class="section" id="income">
- <div class="card"><div class="v135-income-head"><div><h2>Доходы</h2><div class="hint">Поступления по участникам и источникам за выбранный месяц.</div></div><select aria-label="Месяц доходов" class="month-select" id="incomeMonth" style="margin-left:0;color:#142033;border-color:var(--line)"></select></div>
+ <div class="card"><div class="v135-income-head"><div><h2>Доходы</h2><div class="hint">Поступления по участникам и источникам за выбранный период.</div></div><select aria-label="Период доходов" class="month-select" id="incomeMonth" style="margin-left:0;color:#142033;border-color:var(--line)"></select></div>
   <details id="v135IncomeParticipants" class="v135-participant-manager"><summary>Участники доходов · добавить или убрать</summary><p class="hint">Убирается только вариант для новых доходов. Внесённые операции и их суммы сохраняются.</p><form class="v135-add-participant" onsubmit="event.preventDefault();v135AddIncomeParticipant()"><label for="v135NewIncomeParticipant">Новый участник<input id="v135NewIncomeParticipant" maxlength="40" autocomplete="off" placeholder="Имя участника"></label><button type="submit" class="btn small">Добавить</button></form><div id="v135IncomeParticipantList" class="v135-participant-list"></div><p id="v135IncomeParticipantStatus" class="hint" role="status" aria-live="polite"></p></details>
  </div>
- <div class="grid2 v135-income-top"><div class="card"><h2>Кто сколько заработал</h2><div class="hint" id="incomePeopleChartHint">Доходы по участникам</div><div id="incomePeopleChart"></div></div><div class="card"><h2>Доля каждого в доходах</h2><div class="hint">Один цвет участника в полосах и круговой диаграмме</div><div class="people-donut-wrap v135-income-donut-wrap"><div class="donut-ring people-donut" id="incomePeopleDonut" aria-hidden="true"></div><div class="hint">Всего доходов</div><div id="incomePeopleDonutTotal">0 ₽</div></div><div class="legend" id="incomePeopleLegend"></div></div></div>
+ <section class="card v159-income-hero" aria-label="Банк семьи и доходы">
+  <div class="v159-income-bank"><span class="v159-bank-eyebrow">ДЕНЬГИ НА СЕГОДНЯ</span><h2>Общий банк семьи</h2><span id="v159IncomeBankDate" class="hint"></span><strong id="v159IncomeBankTotal" class="v159-bank-total">—</strong><p id="v159IncomeBankNote" class="hint"></p><button type="button" class="btn small" onclick="go('accounts')">Счета и остатки</button></div>
+  <div class="v159-income-metrics">
+   <section class="v159-income-kpi v159-income-primary"><span id="v159IncomePeriodLabel">Доходы за выбранный месяц</span><strong id="v159IncomePeriodTotal">0 ₽</strong><div id="v159IncomeComparison" class="v159-income-comparison"><span id="v159IncomeComparisonLabel">Сравнение с предыдущим месяцем</span><b id="v159IncomeComparisonValue"></b><small id="v159IncomeComparisonNote"></small></div></section>
+   <section class="v159-income-kpi"><span id="v159IncomeYearLabel">За год</span><strong id="v159IncomeYearTotal">0 ₽</strong><small id="v159IncomeYearNote"></small></section>
+   <section class="v159-income-kpi"><span>Среднее за месяц</span><strong id="v159IncomeAverage">0 ₽</strong><small id="v159IncomeAverageNote"></small></section>
+   <section class="v159-income-kpi"><span>Среднее за день</span><strong id="v159IncomeAverageDay">0 ₽</strong><small id="v159IncomeAverageDayNote"></small></section>
+  </div>
+ </section>
+ <div class="card v159-income-overview"><div class="v135-income-head"><div><h2>Кто сколько заработал</h2><div class="hint" id="incomePeopleChartHint">Доходы по участникам</div></div><div class="v159-income-total"><span>Всего доходов</span><strong id="incomePeopleDonutTotal">0 ₽</strong></div></div><div id="incomePeopleChart"></div></div>
  <div class="card"><h2>Источники доходов каждого участника</h2><div class="hint">Например, пропуска и консультации: сумма, доля и наглядное распределение.</div><div class="people-cards" id="incomePeopleCards"></div></div>
  <div class="card"><h2>Все доходы</h2><div id="incomeList"></div></div>
 </section>
@@ -4231,6 +4258,7 @@ function validateBackup(raw){
   for(const key of ['accountId','fromAccountId','toAccountId'])if(e[key]!==undefined&&e[key]!==null&&e[key]!=='')id(e[key],p+'.'+key);
   if(e.mortgageAllocation!==undefined){const r=e.mortgageAllocation;if(!object(r)||r.version!==1||!['regular','early'].includes(r.kind)||!isValidCalendarDate(r.date)||!['amount','principal','interest','charges','extraPrincipal'].every(k=>v125Money(r[k]))||v125Cents(r.principal)+v125Cents(r.interest)+v125Cents(r.charges)!==v125Cents(r.amount)||r.extraPrincipal>r.principal||(r.kind==='early'&&r.extraPrincipal!==r.principal)||(r.kind==='regular'&&!isValidCalendarDate(r.dueDate)))fail(p+'.mortgageAllocation')}
   if(e.balanceAdjustment===true){if(e.type!=='transfer'||!Number.isFinite(Number(e.amount))||Number(e.amount)<=0||![1,-1].includes(e.adjustmentDirection))fail(p+'.balanceAdjustment');id(e.accountId,p+'.accountId');id(e.reconciliationRevision,p+'.reconciliationRevision');number(e.expectedBalance,p+'.expectedBalance');number(e.actualBalance,p+'.actualBalance')}
+  if(e.unassignedExpenseVersion!==undefined&&(e.unassignedExpenseVersion!==1||e.balanceAdjustment!==true))fail(p+'.unassignedExpenseVersion');
  });
  const eventStamp=(value,path)=>{text(value,path);if(value!==undefined&&(!value||!Number.isFinite(Date.parse(value))))fail(path)};
  const goalRow=(g,p)=>{
@@ -5298,20 +5326,106 @@ function v121InitHomeLayout(){
 function v121ReadableReason(value){return typeof value==='string'?value:typeof value?.message==='string'?value.message:typeof value?.detail==='string'?value.detail:''}
 function v121HomeMoney(node,value){if(!node)return;node.innerHTML=Number.isFinite(value)?v114MoneyHtml(money2(value)):'—'}
 let v150HomeAccountDraft=null,v150HomeAccountBusy=false;
+let v157SharedExpenseDraft=null,v157SharedExpenseBusy=false;
+function v157SharedExpenseCandidates(){return v117AccountRecords().filter(account=>{const spec=v117LedgerSpec(account);return spec?.kind==='asset'&&spec.startDate<=today()})}
+function v157SharedExpenseAccount(){
+ const preferences=state.settings?.preferences||{},configured=Object.hasOwn(preferences,'unassignedExpenseAccountId'),raw=preferences.unassignedExpenseAccountId,candidates=v157SharedExpenseCandidates();
+ if(configured){
+  if(raw==='')return {id:'',account:null,automatic:false,invalid:false,disabled:true,reason:'disabled',candidates};
+  const account=typeof raw==='string'?candidates.find(item=>item.id===raw):null;
+  return account?{id:raw,account,automatic:false,invalid:false,disabled:false,reason:'selected',candidates}:{id:'',account:null,automatic:false,invalid:true,disabled:false,reason:'unavailable',candidates};
+ }
+ const ordinary=candidates.filter(account=>v117LedgerSpec(account).includeInSpending);
+ return ordinary.length===1?{id:ordinary[0].id,account:ordinary[0],automatic:true,invalid:false,disabled:false,reason:'single',candidates}:{id:'',account:null,automatic:false,invalid:false,disabled:false,reason:ordinary.length?'multiple':'missing',candidates};
+}
+function v157ExpenseWindow(account,asOf=today()){
+ const spec=v117LedgerSpec(account);if(!spec||spec.kind!=='asset')return null;
+ let legacyDate='',legacyAt=0;
+ for(const entry of v117LiveEntries())if(entry.balanceAdjustment===true&&entry.type==='transfer'&&entry.accountId===account.id&&!entry.fromAccountId&&!entry.toAccountId&&typeof entry.reconciliationRevision==='string'&&entry.reconciliationRevision.trim()&&entry.unassignedExpenseVersion!==1&&isValidCalendarDate(entry.date)&&entry.date>=spec.startDate&&entry.date<=asOf&&typeof entry.amount==='number'&&entry.amount>0&&Number.isFinite(entry.amount)&&v117ExactMoney(entry.amount)&&[1,-1].includes(entry.adjustmentDirection)){
+  const at=Date.parse(entry.created_at||entry.updated_at||'');
+  if(entry.date>legacyDate){legacyDate=entry.date;legacyAt=Number.isFinite(at)?at:0}else if(entry.date===legacyDate)legacyAt=legacyAt&&Number.isFinite(at)?Math.max(legacyAt,at):0;
+ }
+ return {startDate:spec.startDate,legacyDate,legacyAt};
+}
+function v157RawUnassignedExpense(entry){
+ return entry?.type==='expense'&&entry.balanceAdjustment!==true&&!['accountId','fromAccountId','toAccountId'].some(key=>entry[key]!==undefined&&entry[key]!==null&&entry[key]!=='')&&typeof entry.amount==='number'&&Number.isFinite(entry.amount)&&entry.amount>0&&v117ExactMoney(entry.amount)&&isValidCalendarDate(entry.date);
+}
+function v157ExpenseInWindow(entry,window,asOf=today()){
+ if(!window||!v157RawUnassignedExpense(entry)||entry.date<window.startDate||entry.date>asOf)return false;
+ if(!window.legacyDate||entry.date>window.legacyDate)return true;
+ return entry.date===window.legacyDate&&window.legacyAt>0&&Number.isFinite(Date.parse(entry.created_at||''))&&Date.parse(entry.created_at)>window.legacyAt;
+}
+function v157ImplicitExpenseRows(accountId=v157SharedExpenseAccount().id,asOf=today()){
+ const account=v117AccountRecord(accountId),window=v157ExpenseWindow(account,asOf);return account&&!account.archived?v117LiveEntries().filter(entry=>v157ExpenseInWindow(entry,window,asOf)):[];
+}
+function v157ExpenseAccountId(entry,context){
+ if(typeof entry?.accountId==='string'&&entry.accountId!=='')return entry.accountId;
+ if(!v157RawUnassignedExpense(entry))return '';
+ const selected=context?.selected||v157SharedExpenseAccount(),window=context?.window||v157ExpenseWindow(selected.account,context?.asOf||today());return selected.account&&v157ExpenseInWindow(entry,window,context?.asOf||today())?selected.id:'';
+}
+function v157SharedExpenseContext(asOf=today()){const selected=v157SharedExpenseAccount();return {selected,window:v157ExpenseWindow(selected.account,asOf),asOf}}
+function v157SharedExpenseVersion(){const preferences=state.settings?.preferences||{};return JSON.stringify([Object.hasOwn(preferences,'unassignedExpenseAccountId'),preferences.unassignedExpenseAccountId,preferences.unassignedExpenseUpdatedAt,v117AccountRecords(true).map(account=>[account.id,account.archived,account.ledger,account.updated_at])])}
+function v157SetSharedExpensePreference(id){
+ const preferences=state.settings.preferences||{},token={had:Object.hasOwn(preferences,'unassignedExpenseAccountId'),value:preferences.unassignedExpenseAccountId,stamp:state.settings.updated_at,sharedStampHad:Object.hasOwn(preferences,'unassignedExpenseUpdatedAt'),sharedStamp:preferences.unassignedExpenseUpdatedAt,next:id};
+ token.nextStamp=v119MonotonicStamp(preferences.unassignedExpenseUpdatedAt||state.settings.updated_at);state.settings.preferences={...preferences,unassignedExpenseAccountId:id,unassignedExpenseUpdatedAt:token.nextStamp};state.settings.updated_at=v119MonotonicStamp(state.settings.updated_at);token.nextSettingsStamp=state.settings.updated_at;return token;
+}
+function v157RestoreSharedExpensePreference(token){
+ if(!token||state.settings.preferences?.unassignedExpenseUpdatedAt!==token.nextStamp||state.settings.preferences?.unassignedExpenseAccountId!==token.next)return false;
+ const preferences={...state.settings.preferences};if(token.had)preferences.unassignedExpenseAccountId=token.value;else delete preferences.unassignedExpenseAccountId;if(token.sharedStampHad)preferences.unassignedExpenseUpdatedAt=token.sharedStamp;else delete preferences.unassignedExpenseUpdatedAt;
+ state.settings.preferences=preferences;state.settings.updated_at=state.settings.updated_at===token.nextSettingsStamp?token.stamp:v119MonotonicStamp(state.settings.updated_at);return true;
+}
+function v157PinSharedExpenseAccount(){
+ if(Object.hasOwn(state.settings?.preferences||{},'unassignedExpenseAccountId'))return null;
+ const selected=v157SharedExpenseAccount();if(selected.automatic)return v157SetSharedExpensePreference(selected.id);
+ if(selected.candidates.filter(account=>v117LedgerSpec(account).includeInSpending).length>1)return v157SetSharedExpensePreference('');return null;
+}
+function v157SharedExpenseChanged(){if(v157SharedExpenseDraft)v157SharedExpenseDraft.changed=true;v157PreviewSharedExpenseAccount();const cancel=document.getElementById('v157SharedExpenseCancel');if(cancel)cancel.hidden=false}
+function v157CancelSharedExpenseEdit(){v157SharedExpenseDraft=null;v157RenderSharedExpenseBudget()}
+function v157PreviewSharedExpenseAccount(){
+ const field=document.getElementById('v157SharedExpenseAccount'),node=document.getElementById('v157SharedExpensePreview');if(!field||!node)return;
+ const account=v157SharedExpenseCandidates().find(item=>item.id===field.value),window=v157ExpenseWindow(account),rows=account?v157ImplicitExpenseRows(account.id):[];
+ node.textContent=account?'Выбор пересчитает уже внесённые расходы без счёта: '+rows.length+' на '+money2(sum(rows))+'. '+(window.legacyDate?'После сверки от '+fmtDate(window.legacyDate)+'.':'С '+fmtDate(window.startDate)+'.'):'Расходы без выбранного счёта будут ждать явной привязки к счёту.';
+}
+function v157RenderSharedExpenseBudget(){
+ const root=document.getElementById('v157SharedExpenseBudget');if(!root)return;
+ const selected=v157SharedExpenseAccount(),rows=selected.id?v157ImplicitExpenseRows(selected.id):[],window=v157ExpenseWindow(selected.account),field=document.getElementById('v157SharedExpenseAccount');
+ root.hidden=!selected.candidates.length&&!selected.invalid;if(root.hidden)return;
+ document.getElementById('v157SharedExpenseSummary').textContent=selected.id?'С общего счёта «'+selected.account.name+'» учтены расходы без привязки: '+rows.length+' на '+money2(sum(rows))+'. '+(window.legacyDate?'После сверки от '+fmtDate(window.legacyDate)+'.':'С '+fmtDate(window.startDate)+'.'):selected.invalid?'Общий счёт недоступен. Выберите другой счёт для расходов без привязки.':selected.disabled?'Автоматическое списание расходов без счёта выключено.':'Выберите общий счёт, чтобы внесённые расходы без привязки уменьшали бюджет.';
+ const sameScope=v157SharedExpenseDraft?.epoch===authEpoch&&v157SharedExpenseDraft?.household===CONFIG.household;
+ if(!sameScope||!v157SharedExpenseDraft.changed){
+  v157SharedExpenseDraft={epoch:authEpoch,household:CONFIG.household,version:v157SharedExpenseVersion(),changed:false};
+  field.innerHTML='<option value="__choose__" disabled>Выберите общий счёт</option><option value="">Не списывать автоматически</option>'+selected.candidates.map(account=>'<option value="'+esc(account.id)+'">'+esc(account.name)+'</option>').join('');
+  field.value=selected.id||(selected.disabled?'':'__choose__');document.getElementById('v157SharedExpenseError').hidden=true;document.getElementById('v157SharedExpenseCancel').hidden=true;
+ }
+ const canWrite=v99CanWriteDirections()&&!v157SharedExpenseBusy&&!v117AccountsBusy;field.disabled=!canWrite;document.getElementById('v157SharedExpenseSave').disabled=!canWrite;document.getElementById('v157SharedExpenseCancel').disabled=v157SharedExpenseBusy;
+ if(!selected.id&&!selected.disabled)document.getElementById('v157SharedExpenseSettings').open=true;v157PreviewSharedExpenseAccount();v110RefreshPickers();
+}
+async function v157SaveSharedExpenseAccount(){
+ const draft=v157SharedExpenseDraft,error=document.getElementById('v157SharedExpenseError'),fail=text=>{error.textContent=text;error.hidden=false;return false};
+ if(v157SharedExpenseBusy||v117AccountsBusy||!v99CanWriteDirections()||!draft||draft.epoch!==authEpoch||draft.household!==CONFIG.household)return false;
+ if(draft.version!==v157SharedExpenseVersion())return fail('Счета или общий счёт изменились. Нажмите «Отмена» и выберите заново.');
+ const id=document.getElementById('v157SharedExpenseAccount').value;if(id!==''&&!v157SharedExpenseCandidates().some(account=>account.id===id))return fail('Выберите действующий собственный счёт с настроенным началом учёта.');
+ const token=v157SetSharedExpensePreference(id);v157SharedExpenseBusy=true;v117AccountsBusy=true;renderAll();let ok=false,failed=false;try{ok=await saveAll()}catch{failed=true}
+ try{
+  if(draft.epoch!==authEpoch||draft.household!==CONFIG.household)return false;
+  if(failed||(!ok&&v89StorageFailed)){v157RestoreSharedExpensePreference(token);renderAll();return fail('Не удалось сохранить общий счёт. Повторите сохранение.');}
+  v157SharedExpenseDraft=null;renderAll();if(v99CanWriteDirections())toast(localSaveMessage(ok,'Общий счёт для расходов сохранён'));return true;
+ }finally{v157SharedExpenseBusy=false;v117AccountsBusy=false;if(draft.epoch===authEpoch&&draft.household===CONFIG.household){v157RenderSharedExpenseBudget();v117RenderAccounts()}}
+}
 function v150HomeBankData(){
  const summary=v117AccountSummary(today()),items=(summary.items||[]).filter(item=>item.kind==='asset').map(item=>({...item,balance:Number.isFinite(item.balance)&&(item.enabled||(typeof item.account.amount==='number'&&Number.isFinite(item.account.amount)&&(!item.snapshotDate||item.snapshotDate<=today())))?item.balance:null}));
- const known=items.filter(item=>Number.isFinite(item.balance)),unknownCount=items.length-known.length;
- return {items,debtItems:(summary.items||[]).filter(item=>item.kind==='debt'),total:known.length?sum(known.map(item=>({amount:item.balance}))):null,unknownCount,unassignedCount:summary.unassignedCount||0,asOf:today()};
+ const known=items.filter(item=>Number.isFinite(item.balance)),unknownCount=items.length-known.length,shared=v157SharedExpenseAccount(),implicitRows=shared.id?v157ImplicitExpenseRows(shared.id):[];
+ return {items,debtItems:(summary.items||[]).filter(item=>item.kind==='debt'),total:known.length?sum(known.map(item=>({amount:item.balance}))):null,unknownCount,unassignedCount:summary.unassignedCount||0,sharedExpenseAccountId:shared.id,implicitExpenseCount:implicitRows.length,implicitExpenseTotal:sum(implicitRows),asOf:today()};
 }
 function v150RenderHomeBank(data=v150HomeBankData()){
  const root=document.getElementById('v150HomeAccounts');if(!root)return data;
- const canWrite=v99CanWriteDirections()&&!v150HomeAccountBusy,amount=document.getElementById('v121HomeAvailable'),title=document.getElementById('v121HomeAvailableTitle'),note=document.getElementById('v121HomeAvailableNote');
+ const canWrite=v99CanWriteDirections()&&!v150HomeAccountBusy&&!v117AccountsBusy,amount=document.getElementById('v121HomeAvailable'),title=document.getElementById('v121HomeAvailableTitle'),note=document.getElementById('v121HomeAvailableNote');
  title.textContent='Общий банк семьи по всем счетам';v121HomeMoney(amount,data.total);amount.classList.toggle('money-red',Number.isFinite(data.total)&&data.total<0);
  note.textContent=!data.items.length?'Добавьте первый счёт и укажите деньги, которые уже были у семьи.':data.unknownCount?'Не все остатки указаны: '+data.unknownCount+'. Показана сумма счетов с известным остатком.':data.unassignedCount?'Свои деньги на всех счетах. Операций без привязки к счёту: '+data.unassignedCount+'.':'Свои деньги на картах, наличными и на накопительных счетах.';
  document.getElementById('v121HomeBoundary').textContent='На '+fmtDate(data.asOf);
  root.innerHTML=data.items.map(item=>{const status=!Number.isFinite(item.balance)?'Укажите остаток':item.account.ledger?.enabled&&!item.enabled?'Проверьте начало учёта':item.exact===false?'Проверьте суммы: дробные копейки':item.difference!==null&&item.difference!==0?'Нужна сверка остатка':item.invalidCount?'Проверьте операции счёта':!item.enabled?'Остаток на '+(item.snapshotDate?fmtDate(item.snapshotDate):'дату проверки'):item.stale?'Обновите сверку остатка':'';return `<div class="v150-home-account" data-v150-account-id="${esc(item.id)}"><div><span class="v150-home-account-name">${esc(item.name)}</span>${status?'<small>'+esc(status)+'</small>':''}</div><strong class="v150-home-account-amount">${v117Cash(item.balance)}</strong><button type="button" class="btn small" onclick="v150OpenHomeAccount(this.dataset.accountId)" data-account-id="${esc(item.id)}"${canWrite?'':' disabled'}>Изменить остаток</button></div>`}).join('');
  const debtRoot=document.getElementById('v150HomeDebtAccounts'),debts=data.debtItems||[];if(debtRoot){debtRoot.hidden=!debts.length;debtRoot.innerHTML=debts.length?'<p class="hint">Кредитные счета · отдельно от денег семьи</p>'+debts.map(item=>`<div class="v150-home-account" data-v150-debt-account-id="${esc(item.id)}"><span class="v150-home-account-name">${esc(item.name)}</span><strong class="v150-home-account-amount">${v117Cash(item.balance)}</strong><button class="btn small" type="button" onclick="go('accounts')">Открыть</button></div>`).join(''):'';}
- const button=document.getElementById('v150HomeAccountButton');button.textContent='Добавить счёт';button.disabled=!canWrite||v150HomeAccountBusy;return data;
+ const button=document.getElementById('v150HomeAccountButton');button.textContent='Добавить счёт';button.disabled=!canWrite||v150HomeAccountBusy;v157RenderSharedExpenseBudget();return data;
 }
 function v150HomeAccountAllowed(draft=v150HomeAccountDraft){return !!draft&&draft===v150HomeAccountDraft&&draft.epoch===authEpoch&&draft.household===CONFIG.household&&v99CanWriteDirections()}
 function v150OpenHomeAccount(id=''){
@@ -5332,11 +5446,11 @@ async function v150SaveHomeAccount(){
  const next=old?JSON.parse(JSON.stringify(old)):{id:draft.id,name,amount:opening,created_at:new Date().toISOString()},oldSpec=v117LedgerSpec(old),at=old?v117TouchAccount(next):v117RecordStamp();next.name=name;next.updated_at=at;
  const log=Array.isArray(old?.ledger?.configurationLog)?old.ledger.configurationLog.slice():[];if(oldSpec)log.push({at,startDate:oldSpec.startDate,openingBalance:oldSpec.openingBalance,kind:oldSpec.kind,includeInSpending:oldSpec.includeInSpending});
  next.ledger={...(old?.ledger||{}),version:1,enabled:true,startDate:date,openingBalance:opening,kind:'asset',includeInSpending:oldSpec?.includeInSpending??true,creditLimit:0,configurationLog:log};if(!oldSpec)v117VerifySnapshot(next,opening,date,at);
- const index=data.accounts.findIndex(account=>account.id===draft.id);if(index<0)data.accounts.push(next);else data.accounts[index]=next;v150HomeAccountBusy=true;v117AccountsBusy=true;document.getElementById('v150AccountSave').disabled=true;document.getElementById('v150AccountReconcile').disabled=true;error.hidden=true;v150RenderHomeBank();
+ let sharedPin=v157PinSharedExpenseAccount();const index=data.accounts.findIndex(account=>account.id===draft.id);if(index<0)data.accounts.push(next);else data.accounts[index]=next;sharedPin=sharedPin||v157PinSharedExpenseAccount();v150HomeAccountBusy=true;v117AccountsBusy=true;document.getElementById('v150AccountSave').disabled=true;document.getElementById('v150AccountReconcile').disabled=true;error.hidden=true;v150RenderHomeBank();
  let ok=false,failed=false;try{ok=await saveAll()}catch{failed=true}
  try{
   if(draft.epoch!==authEpoch||draft.household!==CONFIG.household)return false;
-  if(failed||(!ok&&v89StorageFailed)){const current=v117AccountRecord(draft.id),accounts=v84Data().accounts;if(current&&JSON.stringify(current)===JSON.stringify(next)){const atIndex=accounts.findIndex(account=>account.id===draft.id);if(old)accounts[atIndex]=old;else accounts.splice(atIndex,1)}renderAll();if(draft===v150HomeAccountDraft)fail('Не удалось сохранить остаток. Проверьте доступное место и повторите сохранение.');return false;}
+  if(failed||(!ok&&v89StorageFailed)){const current=v117AccountRecord(draft.id),accounts=v84Data().accounts;if(current&&JSON.stringify(current)===JSON.stringify(next)){const atIndex=accounts.findIndex(account=>account.id===draft.id);if(old)accounts[atIndex]=old;else accounts.splice(atIndex,1);v157RestoreSharedExpensePreference(sharedPin)}renderAll();if(draft===v150HomeAccountDraft)fail('Не удалось сохранить остаток. Проверьте доступное место и повторите сохранение.');return false;}
   renderAll();if(draft===v150HomeAccountDraft){v150CloseHomeAccount();if(v99CanWriteDirections())toast(localSaveMessage(ok,'Начальный остаток счёта сохранён'));}return true;
  }finally{v150HomeAccountBusy=false;v117AccountsBusy=false;document.getElementById('v150AccountSave').disabled=false;document.getElementById('v150AccountReconcile').disabled=false;if(draft.epoch===authEpoch&&draft.household===CONFIG.household){v150RenderHomeBank();v117RenderAccounts()}}
 }
@@ -5429,7 +5543,7 @@ function v121RouteSnapshot(page=document.querySelector('.section.active')?.id||'
 function v121RestoreFilters(filters){
  if(!filters||typeof filters!=='object')return;
  for(const id of V121_FILTER_IDS){const node=document.getElementById(id),value=filters[id];if(!node||typeof value!=='string'||value.length>1000)continue;
-  if(id==='analyticsScope'&&!['month','all'].includes(value))continue;if(node.type==='date'&&value&&!isValidCalendarDate(value))continue;if((node.type==='month'||['homeMonth','analyticsMonth','incomeMonth','carMonth','v86CalendarMonth'].includes(id))&&value&&!/^\d{4}-(0[1-9]|1[0-2])$/.test(value))continue;
+  if(id==='analyticsScope'&&!['month','all'].includes(value))continue;if(node.type==='date'&&value&&!isValidCalendarDate(value))continue;if((node.type==='month'||['homeMonth','analyticsMonth','incomeMonth','carMonth','v86CalendarMonth'].includes(id))&&value&&!(id==='incomeMonth'&&value==='all')&&!/^\d{4}-(0[1-9]|1[0-2])$/.test(value))continue;
   if(node.tagName==='SELECT'&&![...node.options].some(option=>option.value===value))node.add(new Option(value,value));node.value=value;
  }
 }
@@ -5507,10 +5621,10 @@ function refreshHistoryPeriods(){
  const first=firstHistoryMonth(),last=[month(),...(state.entries||[]).map(e=>String(e.date||'').slice(0,7)).filter(m=>/^\d{4}-(0[1-9]|1[0-2])$/.test(m))].sort().pop();
  const opts=[];const [sy,sm]=first.split('-').map(Number),[ey,em]=last.split('-').map(Number);
  for(let y=sy,m=sm;y<ey||(y===ey&&m<=em);m++){if(m>12){m=1;y++} const v=String(y)+'-'+String(m).padStart(2,'0');opts.push('<option value="'+v+'">'+new Date(y,m-1,1).toLocaleDateString('ru-RU',{month:'long',year:'numeric'})+'</option>')}
- const html=opts.join('');['homeMonth','analyticsMonth','incomeMonth','carMonth'].forEach((id,i)=>{const el=document.getElementById(id);if(!el||el.dataset.periodSignature===first+'|'+last)return;const previous=selected[i];el.innerHTML=html;el.value=opts.some(x=>x.includes('value="'+previous+'"'))?previous:month();el.dataset.periodSignature=first+'|'+last});
+ const html=opts.join('');['homeMonth','analyticsMonth','incomeMonth','carMonth'].forEach((id,i)=>{const el=document.getElementById(id),signature=first+'|'+last+(id==='incomeMonth'?'|all':'');if(!el||el.dataset.periodSignature===signature)return;const previous=selected[i];el.innerHTML=(id==='incomeMonth'?'<option value="all">За всё время</option>':'')+html;el.value=(id==='incomeMonth'&&previous==='all')||opts.some(x=>x.includes('value="'+previous+'"'))?previous:month();el.dataset.periodSignature=signature});
  const fm=document.getElementById('fMonth');if(fm){fm.min=first;fm.max=last}
 }
-function clearHistoryMonth(){for(const id of ['fMonth','fDay']){const el=document.getElementById(id);if(el)el.value=''}renderHistory()}
+function clearHistoryMonth(){for(const id of ['fMonth','fDay']){const el=document.getElementById(id);if(el)el.value=''}renderHistory();v110RefreshPickers();v121QueueRouteSnapshot()}
 function filterHistoryDay(){const day=document.getElementById('fDay')?.value||'';if(day)document.getElementById('fMonth').value=day.slice(0,7);renderHistory()}
 function filterHistoryMonth(){const day=document.getElementById('fDay');if(day)day.value='';renderHistory()}
 function amountText(e){return (e.type==='income'?'+':e.type==='expense'?'−':'↔ ')+money(e.amount)}
@@ -5588,7 +5702,7 @@ function initForm(){
    hm.addEventListener('change',()=>{renderHome();const am=document.getElementById('analyticsMonth');if(am){am.value=hm.value;renderAnalytics()}});
    const am=document.getElementById('analyticsMonth');
    if(am){am.innerHTML=html;am.value=hm.value;am.addEventListener('change',()=>{const h=document.getElementById('homeMonth');if(h){h.value=am.value;renderHome()}renderAnalytics()})}
-   const im=document.getElementById('incomeMonth'); if(im){im.innerHTML=html;im.value=hm.value;im.addEventListener('change',()=>renderIncome())}
+   const im=document.getElementById('incomeMonth'); if(im){im.innerHTML='<option value="all">За всё время</option>'+html;im.value=hm.value;im.addEventListener('change',()=>renderIncome())}
    const cm=document.getElementById('carMonth'); if(cm){cm.innerHTML=html;cm.value=hm.value;cm.addEventListener('change',()=>renderCar())}
    const fm=document.getElementById('fMonth'); if(fm){fm.min=PROJECT_START;fm.max=current;if(!fm.value||fm.value<PROJECT_START||fm.value>current)fm.value=current;}
  }
@@ -6122,8 +6236,8 @@ function v119AccountOptions(selected=''){
  return '<option value="">Не указан</option>'+(!known&&selected?'<option value="'+esc(selected)+'">Прежняя привязка</option>':'')+rows.map(a=>'<option value="'+esc(a.id)+'">'+esc(a.name||'Счёт')+'</option>').join('');
 }
 function v119AccountFields(prefix,type,record={}){
- const pair=['transfer','cash'].includes(type);
- return `<div class="field full v119-account-fields" id="${prefix}Accounts"><div class="v119-account-single" ${pair?'hidden':''}><label for="${prefix}AccountId">${type==='income'?'На какой счёт':'С какого счёта'} · необязательно</label><select id="${prefix}AccountId">${v119AccountOptions(record.accountId||'')}</select></div><div class="v119-account-pair" ${pair?'':'hidden'}><label>Откуда<select id="${prefix}FromAccountId">${v119AccountOptions(record.fromAccountId||'')}</select></label><label>Куда<select id="${prefix}ToAccountId">${v119AccountOptions(record.toAccountId||'')}</select></label></div><p id="${prefix}AccountError" class="error" role="alert" hidden></p><small class="hint">Привязка влияет на расчёт выбранного счёта. Прежние операции без счёта сохраняются.</small></div>`;
+ const pair=['transfer','cash'].includes(type),hint=v157AccountFieldsHint(type);
+ return `<div class="field full v119-account-fields" id="${prefix}Accounts"><div class="v119-account-single" ${pair?'hidden':''}><label for="${prefix}AccountId">${type==='income'?'На какой счёт':'С какого счёта'} · необязательно</label><select id="${prefix}AccountId">${v119AccountOptions(record.accountId||'')}</select></div><div class="v119-account-pair" ${pair?'':'hidden'}><label>Откуда<select id="${prefix}FromAccountId">${v119AccountOptions(record.fromAccountId||'')}</select></label><label>Куда<select id="${prefix}ToAccountId">${v119AccountOptions(record.toAccountId||'')}</select></label></div><p id="${prefix}AccountError" class="error" role="alert" hidden></p><small class="hint">${esc(hint)}</small></div>`;
 }
 function v119SetAccountValues(prefix,record={}){for(const [suffix,key]of [['AccountId','accountId'],['FromAccountId','fromAccountId'],['ToAccountId','toAccountId']]){const el=document.getElementById(prefix+suffix);if(el)el.value=record[key]||''}}
 function v119DefaultAccount(){const map=state.settings?.preferences?.defaultAccountByProfile||{},key=currentProfile().id||currentProfile().name;const id=map[key];return v119Accounts().some(a=>a.id===id)?id:''}
@@ -6132,14 +6246,15 @@ function v119RefreshEntryAccounts(reset=false){
  const type=document.getElementById('eType')?.value,host=document.querySelector('#today .v91-form');if(!host)return;
  let box=document.getElementById('eAccounts'),prior=reset?{}:v119RawAccountFields('e');
  if(reset&&!['transfer','cash'].includes(type))prior={accountId:v119DefaultAccount()};
- const focused=box?.contains(document.activeElement),signature=JSON.stringify([type,v119Accounts().map(a=>[a.id,a.name]),prior]);
+ const focused=box?.contains(document.activeElement),signature=JSON.stringify([type,v119Accounts().map(a=>[a.id,a.name]),prior,type==='expense'?v157SharedExpenseAccount().id:'']);
  if(box&&box.dataset.signature===signature)return;
  const shell=document.createElement('div');shell.innerHTML=v119AccountFields('e',type,prior);const fresh=shell.firstElementChild;fresh.dataset.signature=signature;
  if(box)box.replaceWith(fresh);else host.querySelector('#v90Extra .form-grid').append(fresh);v119SetAccountValues('e',prior);
  if(focused)document.getElementById('eAccountId')?.focus();v110RefreshPickers();
 }
 function v119RawAccountFields(prefix){return {accountId:document.getElementById(prefix+'AccountId')?.value||'',fromAccountId:document.getElementById(prefix+'FromAccountId')?.value||'',toAccountId:document.getElementById(prefix+'ToAccountId')?.value||''}}
-function v119ShowAccountControls(prefix,type){const host=document.getElementById(prefix+'Accounts');if(!host)return;const pair=['transfer','cash'].includes(type);host.querySelector('.v119-account-single').hidden=pair;host.querySelector('.v119-account-pair').hidden=!pair;v110RefreshPickers()}
+function v157AccountFieldsHint(type){const shared=type==='expense'?v157SharedExpenseAccount():null;return shared?.id?'Расходы без выбранного счёта после начала учёта уменьшают общий счёт «'+shared.account.name+'». Явный выбор списывает сумму с выбранного счёта.':'Привязка влияет на расчёт выбранного счёта. Прежние операции без счёта сохраняются.'}
+function v119ShowAccountControls(prefix,type){const host=document.getElementById(prefix+'Accounts');if(!host)return;const pair=['transfer','cash'].includes(type);host.querySelector('.v119-account-single').hidden=pair;host.querySelector('.v119-account-pair').hidden=!pair;const hint=host.querySelector('small.hint');if(hint)hint.textContent=v157AccountFieldsHint(type);v110RefreshPickers()}
 function v119CheckFields(candidate){
  if(typeof v117CheckAccountFields==='function')return v117CheckAccountFields(candidate);
  const all=v119Accounts(),ids=['accountId','fromAccountId','toAccountId'].filter(k=>candidate[k]);
@@ -6672,11 +6787,25 @@ function v137RecentAddedEntries(limit=10){
 }
 function renderToday(){const arr=v137RecentAddedEntries();document.getElementById('todayList').innerHTML=arr.length?arr.map(e=>v141OperationRow(e,{recentId:true})).join(''):'<div class="empty">Добавленных операций пока нет.</div>'}
 
+function v158HistorySummary(rows){
+ const expense=rows.filter(e=>e.type==='expense'&&e.balanceAdjustment!==true),income=rows.filter(e=>e.type==='income'&&e.balanceAdjustment!==true),transfer=rows.filter(e=>e.type==='transfer'&&e.balanceAdjustment!==true),cash=rows.filter(e=>e.type==='cash'&&e.balanceAdjustment!==true),adjustment=rows.filter(e=>e.balanceAdjustment===true);
+ return {expense:sum(expense),income:sum(income),transfer:sum(transfer),cash:sum(cash),adjustment:adjustment.every(e=>[1,-1].includes(e.adjustmentDirection))?sum(adjustment.map(e=>({amount:e.amount*e.adjustmentDirection}))):null,counts:{expense:expense.length,income:income.length,transfer:transfer.length,cash:cash.length,adjustment:adjustment.length}};
+}
+function v158RenderHistorySummary(rows,period,day){
+ const root=document.getElementById('v158HistoryTotals');if(!root)return;const data=v158HistorySummary(rows),items=[];
+ if(data.counts.expense||!rows.length)items.push(['expense','Расходы',data.expense]);
+ if(data.counts.income)items.push(['income','Доходы',data.income]);
+ if(data.counts.expense&&data.counts.income)items.push(['result','Доходы − расходы',sum([{amount:data.income},{amount:-data.expense}])]);
+ if(data.counts.transfer)items.push(['transfer','Переводы',data.transfer]);if(data.counts.cash)items.push(['cash','Движение наличных',data.cash]);if(data.counts.adjustment)items.push(['adjustment','Корректировки счетов',data.adjustment]);
+ root.innerHTML=items.map(([kind,label,amount])=>`<div class="v158-history-total" data-v158-total="${kind}"><span>${label}</span><strong>${amount===null?'Проверьте суммы':v114MoneyHtml(money2(amount))}</strong></div>`).join('');
+ document.getElementById('v158HistoryPeriod').textContent=day?'За '+fmtDate(day):period?'За '+v84MonthLabel(period):'За всё время';document.getElementById('v158HistoryAllTime').setAttribute('aria-pressed',String(!period&&!day));
+}
 function renderHistory(){
  const q=document.getElementById('fSearch').value.trim().toLowerCase(),who=document.getElementById('fWho').value,cat=document.getElementById('fCat').value,group=document.getElementById('fGroup')?.value||'',type=document.getElementById('fType').value,m=document.getElementById('fMonth').value,day=document.getElementById('fDay')?.value||'';
  const arr=state.entries.filter(e=>(day?String(e.date||'')===day:!m||String(e.date||'').startsWith(m))&&(!who||(e.type==='expense'?v86ExpenseTarget(e):e.who)===who)&&(!cat||e.category===cat)&&(!group||(e.type==='expense'&&expenseEntryGroup(e)===group))&&(!type||e.type===type)&&(!q||[v96MerchantSearchText(e.store),e.comment,e.category,e.subcategory,e.beneficiary,e.who,e.date].join(' ').toLowerCase().includes(q))).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||''))||String(b.created_at||'').localeCompare(String(a.created_at||'')));
  const count=document.getElementById('historyCount');if(count)count.textContent=arr.length+' '+(arr.length%10===1&&arr.length%100!==11?'операция':([2,3,4].includes(arr.length%10)&&![12,13,14].includes(arr.length%100)?'операции':'операций'))+' найдено';
- document.getElementById('historyBody').innerHTML=arr.map(e=>v141OperationRow(e,{mode:'history'})).join('')||'<div class="empty">Операций не найдено. Попробуйте изменить фильтры или выберите «Все даты».</div>';
+ v158RenderHistorySummary(arr,m,day);
+ document.getElementById('historyBody').innerHTML=arr.map(e=>v141OperationRow(e,{mode:'history'})).join('')||'<div class="empty">Операций не найдено. Попробуйте изменить фильтры или выберите «За всё время».</div>';
 }
 document.getElementById('historyBody').addEventListener('click',event=>{
  const button=event.target.closest('button[data-action][data-id]');if(!button)return;
@@ -6787,17 +6916,47 @@ function v135RenderIncomeParticipants(){
 function v135IncomeSource(entry){for(const value of [entry.incomeSource,entry.subcategory,entry.category,entry.store]){if(typeof value!=='string')continue;const source=v135IncomeName(value);if(source&&!['доход','доходы','прочее','поступление','поступления','не указано','не указан','без уточнения'].includes(v135IncomeNameKey(source)))return source}return 'Источник не указан'}
 function v135IncomeColor(name){if(Object.hasOwn(V84_PERSON_COLORS,name))return V84_PERSON_COLORS[name];const palette=['#3d6af5','#13a57b','#f5a019','#e54e5a','#8a57e5','#05a8cc','#eb5ba1'];let hash=0;for(const char of String(name))hash=(hash*31+char.charCodeAt(0))>>>0;return palette[hash%palette.length]}
 function v135IncomeGroups(entries,key){const sums=new Map();for(const entry of entries){const name=key(entry),cents=Math.round((Number(entry.amount)||0)*100);sums.set(name,(sums.get(name)||0)+cents)}return [...sums].map(([name,cents])=>({name,cents,amount:cents/100,color:v135IncomeColor(name)})).filter(row=>row.cents!==0).sort((a,b)=>b.cents-a.cents||a.name.localeCompare(b.name,'ru'))}
-function v135IncomeDonut(rows){const positive=rows.filter(row=>row.cents>0),total=positive.reduce((n,row)=>n+row.cents,0);let angle=0;return total?'conic-gradient('+positive.map(row=>{const next=angle+row.cents/total*360,part=row.color+' '+angle+'deg '+next+'deg';angle=next;return part}).join(',')+')':'conic-gradient(#e8edf5 0 360deg)'}
-function v135IncomeLegend(rows,total){return rows.map(row=>`<div class="legend-row"><i class="legend-dot" style="background:${row.color}"></i><span title="${esc(row.name)}">${esc(row.name)}${v135IncomeIsArchived(row.name)?' · архив':''}</span><span class="v135-income-share">${total?Math.round(row.amount/total*100):0}%</span><b>${money(row.amount)}</b></div>`).join('')||'<div class="empty">Доходов за выбранный месяц пока нет.</div>'}
+function v159IncomeShare(cents,totalCents){
+ if(!(cents>0)||!(totalCents>0))return '0%';
+ const share=cents/totalCents*100;return share<1?'<1%':Math.round(share)+'%';
+}
+function v159IncomeEntries(period=document.getElementById('incomeMonth')?.value||month()){
+ const entries=typeof v117LiveEntries==='function'?v117LiveEntries():(state.entries||[]);
+ return entries.filter(entry=>entry.type==='income'&&(period==='all'||String(entry.date||'').startsWith(period))).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+}
+function v159IncomeOverview(period=document.getElementById('incomeMonth')?.value||month()){
+ const all=v159IncomeEntries('all'),dated=all.filter(entry=>isValidCalendarDate(entry.date)),anchor=period==='all'?month():period,year=anchor.slice(0,4),cents=rows=>rows.reduce((sum,entry)=>sum+Math.round((Number(entry.amount)||0)*100),0);
+ const selected=period==='all'?all:all.filter(entry=>String(entry.date||'').startsWith(anchor)),totalCents=cents(selected),yearRows=dated.filter(entry=>entry.date.startsWith(year+'-')&&entry.date.slice(0,7)<=anchor),averageRows=period==='all'?dated:yearRows;
+ const periods=averageRows.map(entry=>entry.date.slice(0,7)).sort(),averageTo=period==='all'?[month(),...periods].sort().at(-1):anchor,averageFrom=periods[0]||averageTo,index=value=>Number(value.slice(0,4))*12+Number(value.slice(5,7))-1,averageMonths=Math.max(1,index(averageTo)-index(averageFrom)+1);
+ const dailyFrom=averageFrom+'-01',lastDay=new Date(Date.UTC(Number(averageTo.slice(0,4)),Number(averageTo.slice(5,7)),0)).toISOString().slice(0,10),dailyTo=averageTo===month()?today():lastDay,averageDays=Math.max(1,Math.round((Date.parse(dailyTo+'T00:00:00Z')-Date.parse(dailyFrom+'T00:00:00Z'))/86400000)+1),dailyCents=cents(averageRows.filter(entry=>entry.date>=dailyFrom&&entry.date<=dailyTo));
+ const previousIndex=index(anchor)-1,previousMonth=String(Math.floor(previousIndex/12)).padStart(4,'0')+'-'+String(previousIndex%12+1).padStart(2,'0'),previousCents=cents(dated.filter(entry=>entry.date.startsWith(previousMonth))),monthCents=cents(dated.filter(entry=>entry.date.startsWith(anchor))),differenceCents=monthCents-previousCents;
+ return {period,total:totalCents/100,totalCents,year,anchor,yearTotal:cents(yearRows)/100,average:Math.round(cents(averageRows)/averageMonths)/100,averageMonths,averageFrom,averageTo,dailyFrom,dailyTo,averageDays,dailyAverage:Math.round(dailyCents/averageDays)/100,previousMonth,previousTotal:previousCents/100,difference:differenceCents/100,differencePercent:previousCents>0?Math.round(differenceCents/previousCents*1000)/10:null};
+}
+function v159RenderIncomeOverview(period){
+ const data=v159IncomeOverview(period),all=period==='all',set=(id,value)=>{const node=document.getElementById(id);if(node)node.textContent=value};
+ const bank=typeof v150HomeBankData==='function'?v150HomeBankData():{total:null,unknownCount:0,items:[],asOf:today()},bankNode=document.getElementById('v159IncomeBankTotal');v121HomeMoney(bankNode,bank.total);bankNode?.classList.toggle('money-red',Number.isFinite(bank.total)&&bank.total<0);set('v159IncomeBankDate','На '+fmtDate(bank.asOf));set('v159IncomeBankNote',!bank.items?.length?'Добавьте свои счета и начальные остатки.':!Number.isFinite(bank.total)?'Остатки счетов пока не указаны. Уточните их в разделе счетов.':bank.unknownCount?'Не все остатки указаны. Показана известная сумма счетов.':'Сумма собственных счетов на сегодня, включая накопления.');
+ set('v159IncomePeriodLabel',all?'Доходы за всё время':'Доходы за '+v84MonthLabel(data.anchor));set('v159IncomePeriodTotal',money(data.total));
+ set('v159IncomeYearLabel','За '+data.year+' год');set('v159IncomeYearTotal',money(data.yearTotal));set('v159IncomeYearNote','По '+v84MonthLabel(data.anchor)+' включительно');
+ set('v159IncomeAverage',money(data.average));set('v159IncomeAverageNote',data.averageMonths+' календарных мес. · '+(data.averageFrom===data.averageTo?v84MonthLabel(data.averageFrom):v84MonthLabel(data.averageFrom)+' — '+v84MonthLabel(data.averageTo))+'. Включая месяцы без доходов.');
+ set('v159IncomeAverageDay',money(data.dailyAverage));set('v159IncomeAverageDayNote',data.averageDays+' календарных дн. · '+fmtDate(data.dailyFrom)+' — '+fmtDate(data.dailyTo)+'. Включая дни без доходов.');
+ const comparison=document.getElementById('v159IncomeComparison');if(comparison)comparison.hidden=all;
+ if(!all){
+  set('v159IncomeComparisonLabel','Сравнение с предыдущим месяцем · '+v84MonthLabel(data.previousMonth));
+  const sign=data.difference>0?'+':data.difference<0?'−':'',amount=money(Math.abs(data.difference)),percent=data.differencePercent===null?'':' ('+(data.differencePercent>0?'+':data.differencePercent<0?'−':'')+Math.abs(data.differencePercent).toLocaleString('ru-RU',{maximumFractionDigits:1})+'%)';
+  set('v159IncomeComparisonValue',sign+amount+percent);set('v159IncomeComparisonNote',data.previousTotal===0?(data.difference===0?'В обоих месяцах доходов не было.':'В предыдущем месяце доходов не было.'):'В предыдущем месяце: '+money(data.previousTotal));
+  if(comparison)comparison.dataset.change=data.difference>0?'positive':data.difference<0?'negative':'same';
+ }
+ return data;
+}
 function renderIncome(){
- const all=(state.entries||[]).filter(e=>e.type==='income'),m=document.getElementById('incomeMonth')?.value||month(),entries=all.filter(e=>String(e.date||'').startsWith(m)).sort((a,b)=>String(b.date).localeCompare(String(a.date))),identities=v135IncomeIdentityMap(),who=e=>identities.get(v135IncomeNameKey(e.who))||v135IncomeName(e.who)||'Не указано';
- const rows=v135IncomeGroups(entries,who),total=entries.reduce((n,e)=>n+Math.round((Number(e.amount)||0)*100),0)/100,label=v84MonthLabel(m),maximum=Math.max(...rows.map(row=>row.amount),1);
+ const m=document.getElementById('incomeMonth')?.value||month(),entries=v159IncomeEntries(m),identities=v135IncomeIdentityMap(),who=e=>identities.get(v135IncomeNameKey(e.who))||v135IncomeName(e.who)||'Не указано';
+ v159RenderIncomeOverview(m);
+ const rows=v135IncomeGroups(entries,who),totalCents=entries.reduce((n,e)=>n+Math.round((Number(e.amount)||0)*100),0),total=totalCents/100,label=m==='all'?'всё время':v84MonthLabel(m);
  const hint=document.getElementById('incomePeopleChartHint');if(hint)hint.textContent='Доходы за '+label;
- const chart=document.getElementById('incomePeopleChart');if(chart)chart.innerHTML=rows.length?rows.map(row=>`<div class="bar-row" data-v135-income-person="${esc(row.name)}"><div class="bar-top"><b>${esc(row.name)}${v135IncomeIsArchived(row.name)?'<small class="v135-archived">в архиве</small>':''}</b><strong>${v114MoneyHtml(money(row.amount))}</strong></div><div class="bar"><i style="width:${Math.max(0,Math.min(100,row.amount/maximum*100))}%;background:${row.color}"></i></div></div>`).join(''):'<div class="empty">Доходов за выбранный месяц пока нет.</div>';
- const donut=document.getElementById('incomePeopleDonut');if(donut)donut.style.background=v135IncomeDonut(rows);const sumNode=document.getElementById('incomePeopleDonutTotal');if(sumNode)sumNode.innerHTML=v114MoneyHtml(money(total));
- const legend=document.getElementById('incomePeopleLegend');if(legend)legend.innerHTML=v135IncomeLegend(rows,total);
- const cards=document.getElementById('incomePeopleCards');if(cards)cards.innerHTML=rows.length?rows.map(person=>{const personal=entries.filter(e=>who(e)===person.name),sources=v135IncomeGroups(personal,v135IncomeSource),max=Math.max(...sources.map(source=>source.amount),1);return `<article class="v135-income-source-card" data-v135-person="${esc(person.name)}"><div class="v135-income-source-head"><h3>${esc(person.name)}${v135IncomeIsArchived(person.name)?'<small class="v135-archived">в архиве</small>':''}</h3><strong>${money(person.amount)}</strong></div><div class="v135-source-grid"><div class="v135-source-bars">${sources.map(source=>`<div class="bar-row" data-v135-source="${esc(source.name)}"><div class="bar-top"><b>${esc(source.name)}</b><span>${money(source.amount)}</span></div><div class="bar"><i style="width:${Math.max(0,Math.min(100,source.amount/max*100))}%;background:${source.color}"></i></div></div>`).join('')}</div><div class="v135-source-visual"><div class="donut-ring v135-source-donut" style="background:${v135IncomeDonut(sources)}" aria-hidden="true"></div><div class="v135-source-legend">${sources.map(source=>`<div class="v135-source-row"><i class="legend-dot" style="background:${source.color}"></i><span title="${esc(source.name)}">${esc(source.name)} <small>${person.amount?Math.round(source.amount/person.amount*100):0}%</small></span><b>${money(source.amount)}</b></div>`).join('')}</div></div></div></article>`}).join(''):'<div class="empty">После добавления доходов здесь появятся источники каждого участника.</div>';
- const list=document.getElementById('incomeList');if(list)list.innerHTML=entries.length?entries.map(e=>v141OperationRow(e)).join(''):'<div class="empty">Нет доходов за выбранный месяц.</div>';
+ const chart=document.getElementById('incomePeopleChart');if(chart)chart.innerHTML=rows.length?rows.map(row=>`<div class="bar-row" data-v135-income-person="${esc(row.name)}"><div class="bar-top"><b>${esc(row.name)}${v135IncomeIsArchived(row.name)?'<small class="v135-archived">в архиве</small>':''}</b><span class="v159-income-values"><strong>${v114MoneyHtml(money(row.amount))}</strong><span class="v159-income-share" title="Доля доходов семьи за выбранный период">${esc(v159IncomeShare(row.cents,totalCents))}</span></span></div><div class="bar"><i style="width:${totalCents>0?Math.max(0,Math.min(100,row.cents/totalCents*100)):0}%;background:${row.color}"></i></div></div>`).join(''):'<div class="empty">Доходов за выбранный период пока нет.</div>';
+ const sumNode=document.getElementById('incomePeopleDonutTotal');if(sumNode)sumNode.innerHTML=v114MoneyHtml(money(total));
+ const cards=document.getElementById('incomePeopleCards');if(cards)cards.innerHTML=rows.length?rows.map(person=>{const personal=entries.filter(e=>who(e)===person.name),sources=v135IncomeGroups(personal,v135IncomeSource);return `<article class="v135-income-source-card" data-v135-person="${esc(person.name)}"><div class="v135-income-source-head"><h3>${esc(person.name)}${v135IncomeIsArchived(person.name)?'<small class="v135-archived">в архиве</small>':''}</h3><strong>${money(person.amount)}</strong></div><div class="v135-source-grid v159-source-linear"><div class="v135-source-bars">${sources.map(source=>`<div class="bar-row" data-v135-source="${esc(source.name)}"><div class="bar-top"><b>${esc(source.name)}</b><span class="v159-source-values"><span>${money(source.amount)}</span><strong class="v159-source-share" title="Доля дохода участника">${esc(v159IncomeShare(source.cents,person.cents))}</strong></span></div><div class="bar"><i style="width:${person.cents>0?Math.max(0,Math.min(100,source.cents/person.cents*100)):0}%;background:${source.color}"></i></div></div>`).join('')}</div></div></article>`}).join(''):'<div class="empty">После добавления доходов здесь появятся источники каждого участника.</div>';
+ const list=document.getElementById('incomeList');if(list)list.innerHTML=entries.length?entries.map(e=>v141OperationRow(e)).join(''):'<div class="empty">Нет доходов за выбранный период.</div>';
  v135RenderIncomeParticipants();
 }
 
@@ -8612,7 +8771,7 @@ async function v84SaveAccount(){
  const data=v84Data();let old=data.accounts.find(a=>a.id===v84EditingAccountId);
  if(v84EditingAccountId&&(!old||String(old.updated_at||'')!==v117ManualVersion)){toast('Счёт изменился. Откройте его заново перед сохранением.');return false}
  if(old?.snapshotDate&&date<old.snapshotDate){toast('У счёта уже сохранена более поздняя проверка');return false}
- const now=v117RecordStamp(old);if(old){old.name=name;v117VerifySnapshot(old,amount,date,now)}else{old={id:uid(),name,amount,created_at:now,updated_at:now};v117VerifySnapshot(old,amount,date,now);data.accounts.push(old)}
+ v157PinSharedExpenseAccount();const now=v117RecordStamp(old);if(old){old.name=name;v117VerifySnapshot(old,amount,date,now)}else{old={id:uid(),name,amount,created_at:now,updated_at:now};v117VerifySnapshot(old,amount,date,now);data.accounts.push(old)}v157PinSharedExpenseAccount();
  v84EditingAccountId='';v117ManualVersion='';document.getElementById('v84AccountName').value='';document.getElementById('v84AccountAmount').value='';document.getElementById('v84AccountSave').textContent='Добавить счёт';return v117PersistAccounts('Фактический остаток сохранён в семье');
 }
 function v84EditAccount(id){const a=v117AccountRecord(id);if(!a)return;go('accounts');v84EditingAccountId=id;v117ManualVersion=a.updated_at||'';document.getElementById('v84AccountName').value=a.name;document.getElementById('v84AccountAmount').value=a.amount;document.getElementById('v117ManualDate').value=v117SnapshotDate(a)||today();document.getElementById('v84AccountSave').textContent='Сохранить изменения';document.getElementById('v84AccountsCard').scrollIntoView({block:'start'});document.getElementById('v84AccountAmount').focus({preventScroll:true})}
@@ -8629,9 +8788,9 @@ function v117LiveEntries(){return (state.entries||[]).filter(e=>e&&typeof e.id==
 function v117ExactMoney(value){return typeof value==='number'&&Number.isFinite(value)&&Number.isFinite(parseMoneyInput(String(Math.abs(value))))}
 function v117LedgerAt(account,date=today(),cutoff=null){
  const spec=v117LedgerSpec(account);if(!spec||!isValidCalendarDate(date)||date<spec.startDate)return null;
- const flows=[],adjustments=[];let invalidCount=0,exact=v117ExactMoney(spec.openingBalance);
+ const flows=[],adjustments=[],sharedContext=v157SharedExpenseContext(date);let invalidCount=0,exact=v117ExactMoney(spec.openingBalance);
  for(const entry of v117LiveEntries()){
-  const affects=entry.accountId===account.id||entry.fromAccountId===account.id||entry.toAccountId===account.id;
+  const accountId=entry.type==='expense'?v157ExpenseAccountId(entry,sharedContext):entry.accountId,affects=accountId===account.id||entry.fromAccountId===account.id||entry.toAccountId===account.id;
   if(!affects)continue;
   if(!isValidCalendarDate(entry.date)){invalidCount++;continue}
   if(entry.date<spec.startDate||entry.date>date)continue;
@@ -8642,10 +8801,10 @@ function v117LedgerAt(account,date=today(),cutoff=null){
    if(entry.type!=='transfer'||entry.accountId!==account.id||entry.fromAccountId||entry.toAccountId||![1,-1].includes(entry.adjustmentDirection)||!entry.reconciliationRevision){invalidCount++;continue}
    adjustments.push({amount:entry.adjustmentDirection*amount});continue;
   }
-  if(['income','expense'].includes(entry.type)?(!entry.accountId||entry.fromAccountId||entry.toAccountId):(['transfer','cash'].includes(entry.type)?(!entry.fromAccountId||entry.accountId||(!entry.toAccountId&&!entry.debtRepayment)||entry.fromAccountId===entry.toAccountId):true)){invalidCount++;continue}
+  if(['income','expense'].includes(entry.type)?(!accountId||entry.fromAccountId||entry.toAccountId):(['transfer','cash'].includes(entry.type)?(!entry.fromAccountId||entry.accountId||(!entry.toAccountId&&!entry.debtRepayment)||entry.fromAccountId===entry.toAccountId):true)){invalidCount++;continue}
   let effect=0;
   if(entry.type==='income'&&entry.accountId===account.id)effect=amount;
-  else if(entry.type==='expense'&&entry.accountId===account.id)effect=-amount;
+  else if(entry.type==='expense'&&accountId===account.id)effect=-amount;
   else if(['transfer','cash'].includes(entry.type)){if(entry.fromAccountId===account.id)effect-=amount;if(entry.toAccountId===account.id)effect+=amount}
   flows.push({amount:effect});
  }
@@ -8675,13 +8834,14 @@ function v117CheckAccountFields(entry,{allowArchived=false}={}){
  }
  return failed('Для этого типа операции счёт не поддерживается');
 }
-function v117EntryNeedsAccount(entry){
+function v117EntryNeedsAccount(entry,sharedContext){
  if(entry.balanceAdjustment===true)return !entry.accountId||!v117CheckAccountFields(entry,{allowArchived:true}).ok;
+ if(entry.type==='expense'&&v157RawUnassignedExpense(entry)&&v157ExpenseAccountId(entry,sharedContext))return false;
  if(['income','expense'].includes(entry.type))return !entry.accountId||!v117CheckAccountFields(entry,{allowArchived:true}).ok;
  if(['transfer','cash'].includes(entry.type))return !entry.fromAccountId||(!entry.debtRepayment&&!entry.toAccountId)||!v117CheckAccountFields(entry,{allowArchived:true}).ok;
  return false;
 }
-function v117UnassignedEntries(since,asOf){return v117LiveEntries().filter(e=>isValidCalendarDate(e.date)&&e.date>=since&&e.date<=asOf&&v117EntryNeedsAccount(e))}
+function v117UnassignedEntries(since,asOf){const context=v157SharedExpenseContext(asOf);return v117LiveEntries().filter(e=>isValidCalendarDate(e.date)&&e.date>=since&&e.date<=asOf&&v117EntryNeedsAccount(e,context))}
 function v117AccountBalance(value,asOf=today()){
  const account=v117AccountRecord(value);if(!account)return null;
  const spec=v117LedgerSpec(account),kind=spec?.kind||(account.kind==='debt'||account.ledger?.kind==='debt'?'debt':'asset'),snapshot=Number.isFinite(Number(account.amount))?Number(account.amount):null,snapshotDate=v117SnapshotDate(account),trusted=v117SnapshotTrusted(account),ledger=spec?v117LedgerAt(account,asOf):null;
@@ -8737,6 +8897,7 @@ function v117OpenLedger(id){
 }
 function v117CloseLedger(){v117ConfigId='';document.getElementById('v117LedgerSetup').hidden=true}
 function v117ClearAccountDrafts(){
+ v157SharedExpenseDraft=null;const sharedError=document.getElementById('v157SharedExpenseError');if(sharedError)sharedError.hidden=true;
  v84EditingAccountId='';v117ConfigId='';v117ConfigVersion='';v117ManualVersion='';v117ReconcileVersion='';
  for(const id of ['v84AccountName','v84AccountAmount','v117ManualDate','v117LedgerDate','v117LedgerOpening','v117CreditLimit','v117SnapshotDate','v117SnapshotAmount']){const el=document.getElementById(id);if(el){el.value='';delete el.dataset.v117Seeded}}
  for(const id of ['v117LedgerMessage','v117SnapshotMessage']){const el=document.getElementById(id);if(el)el.textContent=''}
@@ -8750,8 +8911,8 @@ async function v117SaveLedger(){
  const old=v117LedgerSpec(a),includeInSpending=kind==='asset'&&document.getElementById('v117LedgerSpending').value==='yes';
  if(old&&!confirm('Изменить начало учёта счёта? Остаток будет пересчитан по выбранной дате; история операций сохранится.'))return false;
  if(epoch!==authEpoch||household!==CONFIG.household||!v117CanWrite())return false;if(v117AccountRecord(a.id)!==a||String(a.updated_at||'')!==v117ConfigVersion)return fail('Счёт изменился. Откройте его настройки заново.');
- const at=v117TouchAccount(a),log=Array.isArray(a.ledger?.configurationLog)?a.ledger.configurationLog.slice():[];if(old)log.push({at,startDate:old.startDate,openingBalance:old.openingBalance,kind:old.kind,includeInSpending:old.includeInSpending});
- a.ledger={...(a.ledger&&typeof a.ledger==='object'?a.ledger:{}),version:1,enabled:true,startDate,openingBalance,kind,includeInSpending,creditLimit:kind==='debt'?creditLimit:0,configurationLog:log};v117CloseLedger();return v117PersistAccounts('Начало учёта сохранено в семье');
+ v157PinSharedExpenseAccount();const at=v117TouchAccount(a),log=Array.isArray(a.ledger?.configurationLog)?a.ledger.configurationLog.slice():[];if(old)log.push({at,startDate:old.startDate,openingBalance:old.openingBalance,kind:old.kind,includeInSpending:old.includeInSpending});
+ a.ledger={...(a.ledger&&typeof a.ledger==='object'?a.ledger:{}),version:1,enabled:true,startDate,openingBalance,kind,includeInSpending,creditLimit:kind==='debt'?creditLimit:0,configurationLog:log};v157PinSharedExpenseAccount();v117CloseLedger();return v117PersistAccounts('Начало учёта сохранено в семье');
 }
 function v117OpenReconcile(id){
  const a=v117AccountRecord(id);if(!v117LedgerSpec(a))return;go('accounts');document.getElementById('v117ReconcileAccount').value=a.id;document.getElementById('v117SnapshotDate').value=today();document.getElementById('v117SnapshotAmount').value='';document.getElementById('v117SnapshotMessage').textContent='';v117ReconcilePreview(true);document.getElementById('v117ReconcileCard').scrollIntoView({block:'start'});document.getElementById('v117SnapshotAmount').focus({preventScroll:true});v110RefreshPickers();
@@ -8769,12 +8930,13 @@ async function v117AdjustAccount(id){
  if(!confirm('По учёту на дату проверки '+money2(sum([{amount:item.snapshot},{amount:-item.difference}]))+', фактически '+money2(item.snapshot)+'. Добавить отдельную корректировку '+money2(item.difference)+'? Доходы и расходы не изменятся.'))return false;
  if(epoch!==authEpoch||household!==CONFIG.household||!v117CanWrite())return false;
  item=v117AccountBalance(id);if(!item||item.account.updated_at!==oldVersion||item.account.snapshotRevision!==revision||item.difference!==expected||state.entries.some(e=>e.id===key)||state.deletedEntries?.[key]){toast('Счёт изменился. Проверьте сверку заново.');return false}
- const at=v117RecordStamp(state.deletedEntries?.[key]);state.entries.push({id:key,date:a.snapshotDate,type:'transfer',amount:Math.abs(expected),category:'Движение денег',who:'Общее',store:'Сверка · '+a.name,comment:'Корректировка остатка по проверке '+v84NoticeDate(a.snapshotDate),from:expected<0?a.name:'Корректировка остатка',to:expected>0?a.name:'Корректировка остатка',accountId:a.id,balanceAdjustment:true,adjustmentDirection:expected>0?1:-1,reconciliationRevision:revision,expectedBalance:sum([{amount:item.snapshot},{amount:-expected}]),actualBalance:item.snapshot,created_at:at,updated_at:at});return v117PersistAccounts('Корректировка сохранена в семье');
+ const at=v117RecordStamp(state.deletedEntries?.[key]);state.entries.push({id:key,date:a.snapshotDate,type:'transfer',amount:Math.abs(expected),category:'Движение денег',who:'Общее',store:'Сверка · '+a.name,comment:'Корректировка остатка по проверке '+v84NoticeDate(a.snapshotDate),from:expected<0?a.name:'Корректировка остатка',to:expected>0?a.name: 'Корректировка остатка',accountId:a.id,balanceAdjustment:true,adjustmentDirection:expected>0?1:-1,reconciliationRevision:revision,...(v157SharedExpenseAccount().id===a.id?{unassignedExpenseVersion:1}:{}),expectedBalance:sum([{amount:item.snapshot},{amount:-expected}]),actualBalance:item.snapshot,created_at:at,updated_at:at});return v117PersistAccounts('Корректировка сохранена в семье');
 }
 async function v117ArchiveAccount(id,reopen=false){
- if(!v117CanWriteAccounts())return;const epoch=authEpoch,household=CONFIG.household,a=v117AccountRecord(id);if(!a)return false;const version=a.updated_at,item=v117AccountBalance(a);if(!reopen&&item.enabled&&item.balance!==0){toast('Перед закрытием переведите остаток или погасите долг: по учёту '+money2(item.balance));return false}if(!confirm(reopen?'Вернуть счёт в активные?':'Скрыть счёт из активных? Записи и история сверок сохранятся.'))return false;
+ if(!v117CanWriteAccounts())return;const epoch=authEpoch,household=CONFIG.household,a=v117AccountRecord(id);if(!a)return false;const version=a.updated_at,sharedVersion=v157SharedExpenseVersion(),item=v117AccountBalance(a);if(!reopen&&item.enabled&&item.balance!==0){toast('Перед закрытием переведите остаток или погасите долг: по учёту '+money2(item.balance));return false}if(!reopen&&v157SharedExpenseAccount().id===id&&v157ImplicitExpenseRows(id).length){toast('Перед закрытием явно выберите этот счёт у расходов без привязки в истории операций.');return false}if(!confirm(reopen?'Вернуть счёт в активные?':'Скрыть счёт из активных? Записи и история сверок сохранятся.'))return false;
  if(epoch!==authEpoch||household!==CONFIG.household||!v117CanWrite())return false;
- if(v117AccountRecord(id)!==a||a.updated_at!==version||(!reopen&&item.enabled&&v117AccountBalance(a)?.balance!==0)){toast('Счёт изменился. Проверьте остаток ещё раз.');return false}
+ if(v117AccountRecord(id)!==a||a.updated_at!==version||v157SharedExpenseVersion()!==sharedVersion||(!reopen&&item.enabled&&v117AccountBalance(a)?.balance!==0)||(!reopen&&v157SharedExpenseAccount().id===id&&v157ImplicitExpenseRows(id).length)){toast('Счёт изменился. Проверьте остаток ещё раз.');return false}
+ const shared=v157SharedExpenseAccount();v157PinSharedExpenseAccount();if((!reopen&&shared.id===id)||(reopen&&!Object.hasOwn(state.settings.preferences||{},'unassignedExpenseAccountId')))v157SetSharedExpensePreference('');
  v117TouchAccount(a);a.archived=!reopen;return v117PersistAccounts(reopen?'Счёт возвращён в активные':'Счёт скрыт из активных');
 }
 document.addEventListener('click',event=>{const b=event.target.closest?.('[data-v117-account-action]');if(!b||!b.closest('#accounts'))return;const id=b.dataset.v117AccountId;switch(b.dataset.v117AccountAction){case'manual':v84EditAccount(id);break;case'configure':v117OpenLedger(id);break;case'reconcile':v117OpenReconcile(id);break;case'adjust':v117AdjustAccount(id);break;case'archive':v117ArchiveAccount(id);break;case'reopen':v117ArchiveAccount(id,true);break}});
@@ -9944,7 +10106,8 @@ window.addEventListener('resize',queueDonutFit);queueDonutFit();
    }panel.appendChild(grid);
   }
   const footer=document.createElement('div');footer.className='v108-footer';
-  const clear=button('Очистить','Очистить '+label(input),'v108-clear',()=>commit(''));clear.disabled=input.required||!input.value;
+  const allHistory=input.id==='fMonth';
+  const clear=button(allHistory?'За всё время':'Очистить',allHistory?'Показать операции за всё время':'Очистить '+label(input),'v108-clear',()=>{if(!allHistory)return commit('');const restore=!matchMedia('(pointer:coarse)').matches||current?.keyboard;close(false);clearHistoryMonth();if(restore&&visible(input))input.focus({preventScroll:true})});clear.disabled=input.required||(!input.value&&(!allHistory||!document.getElementById('fDay')?.value));
   const today=button(input.type==='month'?'Этот месяц':'Сегодня',input.type==='month'?'Выбрать текущий месяц':'Выбрать сегодня','v108-today',()=>commit(input.type==='month'?monthISO(t):iso(t)));today.disabled=!inBounds(input,t);
   const cancel=button('Закрыть','Закрыть календарь','v108-cancel',()=>close(true));footer.append(clear,today,cancel);panel.appendChild(footer);
   showAndFocus(focus?(view.view==='months'?'.v108-month:not(:disabled)[tabindex="0"]':'.v108-day:not(:disabled)[tabindex="0"]'):null);
