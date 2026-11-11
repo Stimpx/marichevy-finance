@@ -2588,6 +2588,10 @@ body .v141-operation{display:grid;grid-template-columns:minmax(0,1fr) minmax(90p
 #home .v157-shared-budget{min-width:0;margin:2px 0 14px;padding-top:12px;border-top:1px solid #e0e7f1}#home #v157SharedExpenseSummary{margin:0 0 6px;color:#405978;font-size:12px;line-height:1.6;overflow-wrap:anywhere}#home #v157SharedExpenseSettings>summary{min-height:32px;padding:5px 0;color:#38598b;font-size:12px;font-weight:600;line-height:1.5;cursor:pointer}#home .v157-shared-form{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;padding-top:10px;min-width:0}#home .v157-shared-form>label{font-size:12px;font-weight:600;color:#344b6a}#home .v157-shared-form .v107-select{min-width:0;width:100%}#home .v157-shared-form .v107-select-trigger{min-height:40px!important;font-size:13px!important}#home #v157SharedExpensePreview{margin:0;font-size:11px;line-height:1.6;color:#5e718e;overflow-wrap:anywhere}#home .v157-shared-form .actions{display:flex;flex-wrap:wrap;gap:8px;margin:0}#home .v157-shared-form .actions>.btn{min-height:36px!important;padding:7px 10px!important;font-size:12px!important}#home #v157SharedExpenseError{margin:0;font-size:12px;line-height:1.5;overflow-wrap:anywhere}#home #v157SharedExpenseError[hidden]{display:none}
 @media(max-width:520px){#home #v157SharedExpenseSettings>summary{min-height:44px;padding:10px 0}#home .v157-shared-form .v107-select-trigger,#home .v157-shared-form .actions>.btn{min-height:44px!important}}
 </style>
+<style id="v160FamilyIconsStyle">
+.side #v160FamilyIconButton{padding:0;cursor:pointer;transition:box-shadow .15s ease,outline .15s ease}.side #v160FamilyIconButton:hover{box-shadow:0 0 0 3px #a6b5ff55,0 8px 20px #5465f652}.side #v160FamilyIconButton:focus-visible,.v160-mobile-icon:focus-visible{outline:3px solid #b4c1ff;outline-offset:3px}.brand-emblem>svg{width:65%;height:65%}.v160-eyebrow-row{display:block}.top .v160-mobile-icon{display:none;padding:0;margin:0;flex:none;width:28px;height:28px;min-width:28px;min-height:28px;border-radius:9px;font-size:17px}.v160-logo-presets{display:grid;grid-template-columns:repeat(auto-fit,minmax(60px,1fr));gap:8px;min-width:0;margin:0 0 16px}.v160-logo-presets>button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;min-width:0;min-height:86px;padding:8px 4px;border:1px solid #d8e2f2;border-radius:12px;background:#f7f9fe;color:#36517c;font:inherit;font-size:11px;line-height:1.3;cursor:pointer;overflow-wrap:anywhere}.v160-logo-presets>button[aria-pressed="true"]{border-color:#8298df;background:#edf1ff;box-shadow:inset 0 0 0 1px #8298df}.v160-logo-presets>button:hover{background:#edf2fd}.v160-logo-presets>button:focus-visible{outline:3px solid #8da7dd;outline-offset:3px}.v160-logo-presets>button:disabled{opacity:.65;cursor:default}.v160-preset-mark{display:grid;place-items:center;flex:none;width:40px;height:40px;border-radius:12px;color:#fff;background:linear-gradient(145deg,#8897ff,#5c73f0);font-size:25px;font-weight:700}.v160-preset-mark>svg{width:28px;height:28px}#v96LogoDefault{display:flex;align-items:center;gap:10px;min-width:0}#v96LogoDefault[hidden]{display:none}.v160-upload-label{margin-top:12px}#v96BrandingCard .v96-branding-item .actions{display:flex;flex-wrap:wrap;gap:8px}#v96BrandingCard .btn{max-width:100%;white-space:normal;overflow-wrap:anywhere}
+@media(max-width:760px){.v160-eyebrow-row{display:flex;align-items:center;gap:8px;min-width:0;margin-bottom:3px}.top .v160-mobile-icon{display:grid;width:44px;height:44px;min-width:44px;min-height:44px;flex-basis:44px;border-radius:12px}.v160-eyebrow-row>.page-eyebrow{min-width:0}.v160-logo-presets>button{min-height:88px}}
+</style>
 </head>
 <body>
 <noscript><div style="padding:14px;background:#fff3cd;color:#664d03;text-align:center;font:600 14px/1.4 system-ui">Для работы «Семейный капитал» необходимо включить JavaScript.</div></noscript>
@@ -2605,7 +2609,7 @@ body .v141-operation{display:grid;grid-template-columns:minmax(0,1fr) minmax(90p
 </div>
 <div class="app auth-locked" id="appRoot">
 <aside class="side">
-<div class="brand"><span class="brand-emblem" aria-hidden="true">С</span><span class="brand-heading">Семейный капитал<small>Финансы семьи</small></span></div><div class="side-edition"><span class="edition-led"></span>ДЛЯ СЕМЬИ <b>PRO</b></div>
+<div class="brand"><button type="button" class="brand-emblem" id="v160FamilyIconButton" aria-label="Настроить значок семьи" title="Выбрать значок семьи" onclick="v160OpenFamilyIconSettings()">С</button><span class="brand-heading">Семейный капитал<small>Финансы семьи</small></span></div><div class="side-edition"><span class="edition-led"></span>ДЛЯ СЕМЬИ <b>PRO</b></div>
 <div class="nav" id="nav">
 <button data-page="home"><svg class="v81-nav-svg" aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg><span class="v81-nav-label">Главная</span></button><button data-page="today"><svg class="v81-nav-svg" aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg><span class="v81-nav-label">Добавить операцию</span></button><button data-page="history"><svg class="v81-nav-svg" aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><span class="v81-nav-label">История операций</span></button>
 <button data-page="analytics"><svg class="v81-nav-svg" aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M4 20V11M10 20V4M16 20v-8M22 20v-5"/></svg><span class="v81-nav-label">Анализ расходов</span></button><button data-page="income"><svg class="v81-nav-svg" aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M3 17l6-6 4 4 8-9M15 6h6v6"/></svg><span class="v81-nav-label">Доходы семьи</span></button>
@@ -2625,7 +2629,7 @@ body .v141-operation{display:grid;grid-template-columns:minmax(0,1fr) minmax(90p
 </style>
 <main class="main">
 <header class="top">
-<div class="title"><div class="page-eyebrow">СЕМЕЙНЫЙ КАПИТАЛ · ФИНАНСЫ СЕМЬИ</div><h1 id="pageTitle">Финансовый центр семьи</h1><p id="pageSub">Все деньги семьи — в одном понятном месте.</p></div>
+<div class="title"><div class="v160-eyebrow-row"><button type="button" class="brand-emblem v160-mobile-icon" id="v160MobileFamilyIcon" aria-label="Настроить значок семьи" title="Выбрать значок семьи" onclick="v160OpenFamilyIconSettings()">С</button><div class="page-eyebrow">СЕМЕЙНЫЙ КАПИТАЛ · ФИНАНСЫ СЕМЬИ</div></div><h1 id="pageTitle">Финансовый центр семьи</h1><p id="pageSub">Все деньги семьи — в одном понятном месте.</p></div>
 <div class="v104-header-tools"><button type="button" id="v104GlobalCalculator" class="btn v104-global-calculator" aria-label="Открыть калькулятор" aria-haspopup="dialog" onclick="v96OpenCalculator()"><svg aria-hidden="true" width="18" height="20" viewBox="0 0 20 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="2" y="1" width="16" height="22" rx="3"/><path d="M6 5h8v4H6zM6 13h1M13 13h1M6 17h1M13 17h1"/></svg><span>Калькулятор</span></button><div class="userbar"><span class="dot off" id="statusDot"></span><span id="userLabel">Вход не выполнен</span><button class="btn small" id="authBtn">Войти</button></div></div>
 </header>
 <section class="section active" id="home">
@@ -3113,13 +3117,13 @@ body .v141-operation{display:grid;grid-template-columns:minmax(0,1fr) minmax(90p
 @media(max-width:600px){#v96BrandingCard .v109-branding-picker{padding:12px;gap:10px}}
 </style>
 <section class="card v96-branding" id="v96BrandingCard" aria-labelledby="v96BrandingTitle">
- <h2 id="v96BrandingTitle">Логотип и значок вкладки</h2>
- <p class="hint">Оформление вашей семьи. Выберите картинки, проверьте предпросмотр и сохраните. PNG, JPG, WebP или ICO до 1 МБ и 2048 × 2048 пикселей. Изменения не затрагивают операции.</p>
+ <h2 id="v96BrandingTitle">Значок семьи и оформление</h2>
+ <p class="hint">Выберите один из пяти значков или загрузите свою картинку. Значок сохраняется для всей семьи. Проверьте предпросмотр и нажмите «Сохранить значок».</p>
  <div class="v96-branding-grid">
-  <div class="v96-branding-item"><label for="v109LogoChoose">Логотип</label><div class="v109-branding-picker"><span id="v109LogoFileHint" class="v109-branding-file-hint">PNG, JPG, WebP или ICO · до 1 МБ</span><button type="button" id="v109LogoChoose" class="v88-upload-button" aria-label="Выбрать логотип" aria-describedby="v109LogoFileHint" onclick="v109ChooseBrandingFile('logo')" disabled><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="17" height="17"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="8" cy="9" r="1.5"/><path d="m4 17 6-5 4 3 3-2 4 4"/></svg><span>Выбрать файл</span></button><input id="v96LogoFile" class="v109-branding-native" type="file" accept="image/png,image/jpeg,image/webp,image/x-icon,image/vnd.microsoft.icon" aria-hidden="true" tabindex="-1" onchange="v96StageBranding('logo',this.files?.[0])"></div><div class="v96-branding-preview"><img id="v96LogoPreview" alt="Предпросмотр логотипа" hidden><span id="v96LogoDefault">Стандартный логотип</span></div><div class="actions"><button type="button" class="btn small" id="v96LogoSave" onclick="v96SaveBranding('logo')" disabled>Сохранить логотип</button><button type="button" class="btn small" onclick="v96ResetBranding('logo')">Стандартный логотип</button></div></div>
+  <div class="v96-branding-item"><label>Готовые значки</label><div id="v160LogoPresets" class="v160-logo-presets" role="group" aria-label="Готовые значки семьи"></div><label for="v109LogoChoose" class="v160-upload-label">Своя картинка</label><div class="v109-branding-picker"><span id="v109LogoFileHint" class="v109-branding-file-hint">PNG, JPG, WebP или ICO · до 5 МБ · до 8192 пикселей и 32 Мп</span><button type="button" id="v109LogoChoose" class="v88-upload-button" aria-label="Загрузить значок семьи" aria-describedby="v109LogoFileHint" onclick="v109ChooseBrandingFile('logo')" disabled><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="17" height="17"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="8" cy="9" r="1.5"/><path d="m4 17 6-5 4 3 3-2 4 4"/></svg><span>Выбрать файл</span></button><input id="v96LogoFile" class="v109-branding-native" type="file" accept="image/png,image/jpeg,image/webp,image/x-icon,image/vnd.microsoft.icon" aria-hidden="true" tabindex="-1" onchange="v96StageBranding('logo',this.files?.[0])"></div><div class="v96-branding-preview"><img id="v96LogoPreview" alt="Предпросмотр значка семьи" hidden><span id="v96LogoDefault">Стандартный значок</span></div><div class="actions"><button type="button" class="btn small" id="v96LogoSave" onclick="v96SaveBranding('logo')" disabled>Сохранить значок</button><button type="button" class="btn small" onclick="v96ResetBranding('logo')">Стандартный значок</button></div></div>
   <div class="v96-branding-item"><label for="v109FaviconChoose">Фавикон · значок вкладки</label><div class="v109-branding-picker"><span id="v109FaviconFileHint" class="v109-branding-file-hint">PNG, JPG, WebP или ICO · до 1 МБ</span><button type="button" id="v109FaviconChoose" class="v88-upload-button" aria-label="Выбрать значок вкладки" aria-describedby="v109FaviconFileHint" onclick="v109ChooseBrandingFile('favicon')" disabled><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="17" height="17"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="8" cy="9" r="1.5"/><path d="m4 17 6-5 4 3 3-2 4 4"/></svg><span>Выбрать файл</span></button><input id="v96FaviconFile" class="v109-branding-native" type="file" accept="image/png,image/jpeg,image/webp,image/x-icon,image/vnd.microsoft.icon" aria-hidden="true" tabindex="-1" onchange="v96StageBranding('favicon',this.files?.[0])"></div><div class="v96-branding-preview"><img id="v96FaviconPreview" alt="Предпросмотр фавикона" hidden><span id="v96FaviconDefault">Стандартный значок</span></div><div class="actions"><button type="button" class="btn small" id="v96FaviconSave" onclick="v96SaveBranding('favicon')" disabled>Сохранить фавикон</button><button type="button" class="btn small" onclick="v96ResetBranding('favicon')">Стандартный фавикон</button></div></div>
  </div>
- <div class="actions"><button type="button" class="btn primary" id="v96BrandingSave" onclick="v96SaveBranding('all')" disabled>Сохранить оформление</button><button type="button" class="btn" onclick="v96ResetBranding('all')">Вернуть стандартное оформление</button></div>
+ <div class="actions"><button type="button" class="btn primary" id="v96BrandingSave" onclick="v96SaveBranding('all')" disabled>Сохранить оформление</button><button type="button" class="btn" id="v160BrandingCancel" onclick="v96ClearBrandingDraft();v96RenderBrandingChoices()">Отменить выбор</button><button type="button" class="btn" onclick="v96ResetBranding('all')">Вернуть стандартное оформление</button></div>
  <p id="v96BrandingStatus" role="status" aria-live="polite">Новый файл сначала появится в предпросмотре. Сохраните, чтобы применить его.</p>
 </section>
 
@@ -4575,14 +4579,36 @@ async function login(){
 // Family artwork is rasterized locally. Original uploads never enter shared state.
 const v96BrandingDraft={};
 const v96BrandingGeneration={logo:0,favicon:0};
-let v96BrandingBusy=false,v96BrandingDefaults=null;
+let v96BrandingBusy=false,v96BrandingDefaults=null,v160LogoPresetDraft;
+const v160BrandingDraftVersions={};let v160BrandingAttempt=null;
+const V160_FAMILY_ICON_PRESETS=[
+ {id:'letter',label:'Буква С',path:''},
+ {id:'family',label:'Семья',path:'M9 8a3 3 0 1 0 6 0 3 3 0 0 0-6 0M4 18v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2M3 8a2 2 0 0 1 3-1M21 8a2 2 0 0 0-3-1'},
+ {id:'home',label:'Дом',path:'m3 11 9-8 9 8M5 10v11h5v-7h4v7h5V10'},
+ {id:'tree',label:'Дерево',path:'m12 2-6 8h3l-5 7h6v5h4v-5h6l-5-7h3z'},
+ {id:'wallet',label:'Кошелёк',path:'M4 7V5a2 2 0 0 1 2-2h13v4M4 7h15a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a1 1 0 0 1 1-1M21 12h-6v5h6M17 14.5h.01'}
+];
+function v160PresetMarkup(id){const preset=V160_FAMILY_ICON_PRESETS.find(item=>item.id===id)||V160_FAMILY_ICON_PRESETS[0];return preset.path?'<svg aria-hidden="true" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="'+preset.path+'"/></svg>':'С'}
+function v160BrandingCanWrite(){return !document.getElementById('appRoot').classList.contains('auth-locked')&&v99CanWriteDirections()}
+function v160BrandingVersion(kind){const branding=state.settings?.preferences?.branding||{};return JSON.stringify(kind==='logo'?[branding.logoDataUrl,branding.logoPreset,branding.logoUpdatedAt]:[branding.faviconDataUrl,branding.faviconUpdatedAt])}
+function v160StageLogoPreset(id){
+ if(v96BrandingBusy||!v160BrandingCanWrite()||!V160_FAMILY_ICON_PRESETS.some(item=>item.id===id))return false;
+ if(!Object.hasOwn(v160BrandingDraftVersions,'logo'))v160BrandingDraftVersions.logo=v160BrandingVersion('logo');
+ v96BrandingGeneration.logo++;v96BrandingDraft.logo=null;v160LogoPresetDraft=id;v96RenderBrandingChoices();v96BrandingMessage('Значок выбран. Нажмите «Сохранить значок», чтобы применить его для семьи.');return true;
+}
+function v160OpenFamilyIconSettings(){
+ if(document.getElementById('appRoot').classList.contains('auth-locked'))return false;
+ go('settings');const card=document.getElementById('v96BrandingCard');if(!card)return false;
+ for(let parent=card.parentElement;parent;parent=parent.parentElement)if(parent instanceof HTMLDetailsElement)parent.open=true;
+ v96RenderBrandingChoices();card.scrollIntoView({block:'start',behavior:'instant'});card.tabIndex=-1;card.focus({preventScroll:true});return true;
+}
 function v96BrandingMessage(message){const node=document.getElementById('v96BrandingStatus');if(node)node.textContent=message}
-function v96BrandingDimensions(bytes){
+function v96BrandingDimensions(bytes,maxDimension=2048){
  const u16=(n)=>bytes[n]|bytes[n+1]<<8,u32=(n)=>(bytes[n]|bytes[n+1]<<8|bytes[n+2]<<16|bytes[n+3]<<24)>>>0;
  const be32=n=>(bytes[n]*16777216+bytes[n+1]*65536+bytes[n+2]*256+bytes[n+3])>>>0;
  const ascii=(n,count)=>String.fromCharCode(...bytes.slice(n,n+count));
  const png=offset=>bytes.length>=offset+24&&[137,80,78,71,13,10,26,10].every((x,i)=>bytes[offset+i]===x);
- const valid=(width,height,mime)=>{if(!Number.isInteger(width)||!Number.isInteger(height)||width<1||height<1||width>2048||height>2048)throw Error('dimensions');return {width,height,mime}};
+ const valid=(width,height,mime)=>{if(!Number.isInteger(width)||!Number.isInteger(height)||width<1||height<1||width>maxDimension||height>maxDimension)throw Error('dimensions');return {width,height,mime}};
  if(png(0))return valid(be32(16),be32(20),'image/png');
  if(bytes.length>=30&&ascii(0,4)==='RIFF'&&ascii(8,4)==='WEBP'){
   const kind=ascii(12,4);
@@ -4622,37 +4648,40 @@ function v96BrandingSafeData(value,kind){
  try{const raw=atob(value.slice(value.indexOf(',')+1).slice(0,44)),bytes=Uint8Array.from(raw,c=>c.charCodeAt(0)),info=v96BrandingDimensions(bytes),max=kind==='logo'?192:64;return info.mime==='image/png'&&info.width<=max&&info.height<=max?value:''}catch{return ''}
 }
 async function v96RasterBranding(file,kind){
- if(!file||!['logo','favicon'].includes(kind)||!file.size||file.size>1024*1024)throw Error('size');
- const bytes=new Uint8Array(await file.arrayBuffer()),info=v96BrandingDimensions(bytes);
+ if(!file||!['logo','favicon'].includes(kind)||!file.size||file.size>(kind==='logo'?5:1)*1024*1024)throw Error('size');
+ const maxDimension=kind==='logo'?8192:2048,bytes=new Uint8Array(await file.arrayBuffer()),info=v96BrandingDimensions(bytes,maxDimension);if(kind==='logo'&&info.width*info.height>32000000)throw Error('dimensions');
  const url=URL.createObjectURL(new Blob([bytes],{type:info.mime})),image=new Image();
  try{
   await new Promise((resolve,reject)=>{const timer=setTimeout(()=>{image.onload=image.onerror=null;reject(Error('decode'))},8000);image.onload=()=>{clearTimeout(timer);resolve()};image.onerror=()=>{clearTimeout(timer);reject(Error('decode'))};image.src=url});
-  if(!image.naturalWidth||!image.naturalHeight||image.naturalWidth>2048||image.naturalHeight>2048)throw Error('dimensions');
+  if(!image.naturalWidth||!image.naturalHeight||image.naturalWidth>maxDimension||image.naturalHeight>maxDimension||(kind==='logo'&&image.naturalWidth*image.naturalHeight>32000000))throw Error('dimensions');
   const encode=max=>{const canvas=document.createElement('canvas'),ratio=Math.min(1,max/image.naturalWidth,max/image.naturalHeight);canvas.width=kind==='favicon'?64:Math.max(1,Math.round(image.naturalWidth*ratio));canvas.height=kind==='favicon'?64:Math.max(1,Math.round(image.naturalHeight*ratio));const context=canvas.getContext('2d');if(!context)throw Error('decode');const width=Math.max(1,Math.round(image.naturalWidth*ratio)),height=Math.max(1,Math.round(image.naturalHeight*ratio));context.drawImage(image,(canvas.width-width)/2,(canvas.height-height)/2,width,height);return canvas.toDataURL('image/png')};
-  let data=encode(kind==='logo'?192:64);if(kind==='logo'&&data.length>128*1024)data=encode(128);
-  if(!v96BrandingSafeData(data,kind))throw Error('size');return data;
+  let data=encode(kind==='logo'?192:64);if(kind==='logo'&&data.length>96*1024)data=encode(128);
+  if(!v96BrandingSafeData(data,kind)||(kind==='logo'&&data.length>96*1024))throw Error('size');return data;
  }finally{image.onload=image.onerror=null;URL.revokeObjectURL(url)}
 }
 function v109ChooseBrandingFile(kind){
- if(!['logo','favicon'].includes(kind)||v96BrandingBusy||document.getElementById('appRoot').classList.contains('auth-locked'))return false;
+ if(!['logo','favicon'].includes(kind)||v96BrandingBusy||!v160BrandingCanWrite())return false;
  const input=document.getElementById(kind==='logo'?'v96LogoFile':'v96FaviconFile');
  if(!input)return false;
  input.value='';input.click();return true;
 }
 async function v96StageBranding(kind,file){
- if(!file||!['logo','favicon'].includes(kind))return false;
- const generation=++v96BrandingGeneration[kind],epoch=authEpoch;
+ if(!file||!['logo','favicon'].includes(kind)||v96BrandingBusy||!v160BrandingCanWrite())return false;
+ const generation=++v96BrandingGeneration[kind],epoch=authEpoch,household=CONFIG.household,version=Object.hasOwn(v160BrandingDraftVersions,kind)?v160BrandingDraftVersions[kind]:v160BrandingVersion(kind);
  try{
   const data=await v96RasterBranding(file,kind);
-  if(generation!==v96BrandingGeneration[kind]||epoch!==authEpoch||document.getElementById('appRoot').classList.contains('auth-locked'))return false;
-  v96BrandingDraft[kind]=data;v96RenderBrandingChoices();v96BrandingMessage('Картинка подготовлена. Нажмите «Сохранить», чтобы применить.');return true;
+  if(generation!==v96BrandingGeneration[kind]||epoch!==authEpoch||household!==CONFIG.household||!v160BrandingCanWrite())return false;
+  if(version!==v160BrandingVersion(kind)){v96BrandingMessage('Оформление изменилось на другом устройстве. Отмените выбор и выберите картинку заново.');return false}
+  v160BrandingDraftVersions[kind]=version;v96BrandingDraft[kind]=data;if(kind==='logo')v160LogoPresetDraft=undefined;
+  v96RenderBrandingChoices();v96BrandingMessage('Картинка подготовлена. Нажмите «Сохранить», чтобы применить.');return true;
  }catch(error){
-  if(generation!==v96BrandingGeneration[kind]||epoch!==authEpoch)return false;
-  const messages={size:'Файл не принят. Нужна картинка до 1 МБ; выберите более простой или небольшой логотип.',dimensions:'Файл не принят. Размеры изображения должны быть не больше 2048 × 2048 пикселей.',format:'Файл не принят. Выберите PNG, JPG, WebP или ICO. SVG и документы не поддерживаются.',decode:'Не удалось прочитать картинку. Попробуйте другой файл.'};
+  if(generation!==v96BrandingGeneration[kind]||epoch!==authEpoch||household!==CONFIG.household||!v160BrandingCanWrite())return false;
+  const messages={size:kind==='logo'?'Файл не принят. Выберите картинку до 5 МБ.':'Файл не принят. Выберите картинку до 1 МБ.',dimensions:kind==='logo'?'Изображение должно быть не больше 8192 пикселей по стороне и 32 Мп.':'Изображение должно быть не больше 2048 × 2048 пикселей.',format:'Файл не принят. Выберите PNG, JPG, WebP или ICO. SVG и документы не поддерживаются.',decode:'Не удалось прочитать картинку. Попробуйте другой файл.'};
   v96BrandingMessage(messages[error.message]||'Не удалось подготовить картинку. Прежний выбор сохранён.');return false;
  }
 }
 function v96ClearBrandingDraft(){
+ v160LogoPresetDraft=undefined;for(const kind of Object.keys(v160BrandingDraftVersions))delete v160BrandingDraftVersions[kind];v160BrandingAttempt=null;v96BrandingBusy=false;
  for(const kind of ['logo','favicon']){v96BrandingGeneration[kind]++;delete v96BrandingDraft[kind];const input=document.getElementById(kind==='logo'?'v96LogoFile':'v96FaviconFile');if(input)input.value=''}
  v96BrandingMessage('Новый файл сначала появится в предпросмотре. Сохраните, чтобы применить его.');
 }
@@ -4660,47 +4689,58 @@ function v96ApplyBranding(){
  const emblems=[...document.querySelectorAll('.brand-emblem')],icons=[...document.querySelectorAll('link[rel~="icon"]')];
  if(!v96BrandingDefaults)v96BrandingDefaults={emblems:emblems.map(node=>({node,html:node.innerHTML})),icons:icons.map(node=>({node,href:node.getAttribute('href'),type:node.getAttribute('type')}))};
  const locked=document.getElementById('appRoot').classList.contains('auth-locked'),branding=locked?{}:state.settings?.preferences?.branding||{};
- const logo=v96BrandingSafeData(branding.logoDataUrl,'logo'),favicon=v96BrandingSafeData(branding.faviconDataUrl,'favicon');
- for(const original of v96BrandingDefaults.emblems){const node=original.node;node.classList.toggle('v96-has-logo',!!logo);if(logo){if(node.firstElementChild?.getAttribute('src')!==logo){const img=document.createElement('img');img.alt='Логотип семьи';img.src=logo;img.addEventListener('error',()=>{if(node.firstElementChild===img){node.innerHTML=original.html;node.classList.remove('v96-has-logo')}});node.replaceChildren(img)}}else if(node.innerHTML!==original.html)node.innerHTML=original.html}
+ const logo=v96BrandingSafeData(branding.logoDataUrl,'logo'),favicon=v96BrandingSafeData(branding.faviconDataUrl,'favicon'),preset=V160_FAMILY_ICON_PRESETS.find(item=>item.id===branding.logoPreset)?.id||'letter';
+ for(const original of v96BrandingDefaults.emblems){const node=original.node;node.classList.toggle('v96-has-logo',!!logo);if(logo){if(node.firstElementChild?.getAttribute('src')!==logo){const img=document.createElement('img');img.alt='Значок семьи';img.src=logo;img.addEventListener('error',()=>{if(node.firstElementChild===img){node.innerHTML=v160PresetMarkup(preset);node.classList.remove('v96-has-logo')}});node.replaceChildren(img)}}else{const html=v160PresetMarkup(preset);if(node.innerHTML!==html)node.innerHTML=html}}
  for(const original of v96BrandingDefaults.icons){const node=original.node;if(favicon){node.setAttribute('href',favicon);node.setAttribute('type','image/png')}else{if(original.href===null)node.removeAttribute('href');else node.setAttribute('href',original.href);if(original.type===null)node.removeAttribute('type');else node.setAttribute('type',original.type)}}
 }
+
 function v96RenderBrandingChoices(){
- const saved=document.getElementById('appRoot').classList.contains('auth-locked')?{}:state.settings?.preferences?.branding||{};
+ const saved=document.getElementById('appRoot').classList.contains('auth-locked')?{}:state.settings?.preferences?.branding||{},canWrite=v160BrandingCanWrite()&&!v96BrandingBusy;
  for(const kind of ['logo','favicon']){
   const title=kind==='logo'?'Logo':'Favicon',image=document.getElementById('v96'+title+'Preview'),fallback=document.getElementById('v96'+title+'Default'),button=document.getElementById('v96'+title+'Save');if(!image)continue;
-  const candidate=Object.prototype.hasOwnProperty.call(v96BrandingDraft,kind)?v96BrandingDraft[kind]:saved[kind+'DataUrl'],data=v96BrandingSafeData(candidate,kind);
-  image.hidden=!data;if(data)image.src=data;else image.removeAttribute('src');fallback.hidden=!!data;button.disabled=v96BrandingBusy||!Object.prototype.hasOwnProperty.call(v96BrandingDraft,kind);
-  const choose=document.getElementById('v109'+title+'Choose');if(choose)choose.disabled=v96BrandingBusy||document.getElementById('appRoot').classList.contains('auth-locked');
+  const candidate=Object.hasOwn(v96BrandingDraft,kind)?v96BrandingDraft[kind]:saved[kind+'DataUrl'],data=v96BrandingSafeData(candidate,kind);
+  image.hidden=!data;if(data)image.src=data;else image.removeAttribute('src');fallback.hidden=!!data;button.disabled=!canWrite||!Object.hasOwn(v96BrandingDraft,kind);
+  if(kind==='logo'){
+   const id=Object.hasOwn(v96BrandingDraft,'logo')?(v160LogoPresetDraft||'letter'):(saved.logoPreset||'letter'),preset=V160_FAMILY_ICON_PRESETS.find(item=>item.id===id)||V160_FAMILY_ICON_PRESETS[0];
+   fallback.innerHTML='<span class="v160-preset-mark" aria-hidden="true">'+v160PresetMarkup(preset.id)+'</span><span>'+preset.label+'</span>';
+   const root=document.getElementById('v160LogoPresets');if(root){if(!root.children.length)root.innerHTML=V160_FAMILY_ICON_PRESETS.map(item=>'<button type="button" data-v160-logo-preset="'+item.id+'" onclick="v160StageLogoPreset(this.dataset.v160LogoPreset)" aria-pressed="false"><span class="v160-preset-mark" aria-hidden="true">'+v160PresetMarkup(item.id)+'</span><span>'+item.label+'</span></button>').join('');for(const choice of root.querySelectorAll('button')){choice.disabled=!canWrite;choice.setAttribute('aria-pressed',String(!data&&choice.dataset.v160LogoPreset===preset.id))}}
+  }
+  const choose=document.getElementById('v109'+title+'Choose');if(choose)choose.disabled=!canWrite;
  }
- const all=document.getElementById('v96BrandingSave');if(all)all.disabled=v96BrandingBusy||!Object.keys(v96BrandingDraft).length;
- for(const reset of document.querySelectorAll('#v96BrandingCard button[onclick^="v96ResetBranding("]'))reset.disabled=v96BrandingBusy||document.getElementById('appRoot').classList.contains('auth-locked');
+ const all=document.getElementById('v96BrandingSave');if(all)all.disabled=!canWrite||!Object.keys(v96BrandingDraft).length;const cancel=document.getElementById('v160BrandingCancel');if(cancel)cancel.disabled=v96BrandingBusy||document.getElementById('appRoot').classList.contains('auth-locked');
+ for(const reset of document.querySelectorAll('#v96BrandingCard button[onclick^="v96ResetBranding("]'))reset.disabled=!canWrite;
 }
+
 async function v96SaveBranding(kind){
- if(v96BrandingBusy||document.getElementById('appRoot').classList.contains('auth-locked'))return false;
- const epoch=authEpoch;
- const kinds=kind==='all'?Object.keys(v96BrandingDraft):[kind];
- if(!kinds.length||kinds.some(key=>!['logo','favicon'].includes(key)||!Object.prototype.hasOwnProperty.call(v96BrandingDraft,key)))return false;
- const selected=Object.fromEntries(kinds.map(key=>[key,v96BrandingDraft[key]]));
+ if(v96BrandingBusy||!v160BrandingCanWrite())return false;
+ const epoch=authEpoch,household=CONFIG.household,kinds=kind==='all'?Object.keys(v96BrandingDraft):[kind];
+ if(!kinds.length||kinds.some(key=>!['logo','favicon'].includes(key)||!Object.hasOwn(v96BrandingDraft,key)))return false;
+ if(kinds.some(key=>Object.hasOwn(v160BrandingDraftVersions,key)&&v160BrandingDraftVersions[key]!==v160BrandingVersion(key))){v96BrandingMessage('Оформление изменилось на другом устройстве. Нажмите «Отменить выбор» и выберите значок заново.');return false}
+ const selected=Object.fromEntries(kinds.map(key=>[key,v96BrandingDraft[key]])),selectedPreset=v160LogoPresetDraft;
  if(kinds.some(key=>selected[key]!==null&&!v96BrandingSafeData(selected[key],key)))return false;
- v96BrandingBusy=true;v96RenderBrandingChoices();
+ const original=state.settings.preferences?.branding||{},oldStamp=state.settings.updated_at,stamp=v119MonotonicStamp(oldStamp),next={...original},tokens={};
+ for(const key of kinds){const fields=key==='logo'?['logoDataUrl','logoPreset','logoUpdatedAt']:['faviconDataUrl','faviconUpdatedAt'];tokens[key]=fields.map(field=>({field,had:Object.hasOwn(original,field),value:original[field]}));next[key+'DataUrl']=selected[key];if(key==='logo')next.logoPreset=selected[key]?null:selectedPreset||'letter';next[key+'UpdatedAt']=stamp}
+ state.settings.preferences={...state.settings.preferences,branding:next};state.settings.updated_at=stamp;
+ const versions=Object.fromEntries(kinds.map(key=>[key,v160BrandingVersion(key)])),attempt={epoch,household};v160BrandingAttempt=attempt;v96BrandingBusy=true;v96RenderBrandingChoices();
+ let ok=false,failed=false;try{ok=await saveAll()}catch{failed=true}
  try{
-  const preferences=state.settings.preferences||{},branding={...(preferences.branding||{})};
-  // An explicit default choice must survive merging with a stale custom image.
-  for(const key of kinds)branding[key+'DataUrl']=selected[key];
-  state.settings.preferences={...preferences,branding};
-  const previous=Date.parse(state.settings.updated_at||'');
-  state.settings.updated_at=new Date(Math.max(Date.now(),Number.isFinite(previous)&&previous<8640000000000000?previous+1:0)).toISOString();
-  const ok=await saveAll();
-  if(epoch!==authEpoch||document.getElementById('appRoot').classList.contains('auth-locked'))return false;
-  if(!v89StorageFailed)for(const key of kinds)if(v96BrandingDraft[key]===selected[key])delete v96BrandingDraft[key];
-  v96ApplyBranding();v96BrandingMessage(localSaveMessage(ok,'Оформление сохранено.'));return ok||!v89StorageFailed;
- }finally{v96BrandingBusy=false;v96RenderBrandingChoices()}
+  if(epoch!==authEpoch||household!==CONFIG.household)return false;
+  if(failed||(!ok&&v89StorageFailed)){
+   const restored={...(state.settings.preferences?.branding||{})};let changed=false;
+   for(const key of kinds)if(v160BrandingVersion(key)===versions[key]){for(const item of tokens[key]){if(item.had)restored[item.field]=item.value;else delete restored[item.field]}changed=true}
+   if(changed){state.settings.preferences={...state.settings.preferences,branding:restored};state.settings.updated_at=state.settings.updated_at===stamp?oldStamp:v119MonotonicStamp(state.settings.updated_at)}
+   v96ApplyBranding();v96BrandingMessage('Не удалось сохранить оформление. Прежний значок сохранён; повторите попытку.');return false;
+  }
+  for(const key of kinds)if(v96BrandingDraft[key]===selected[key]&&(key!=='logo'||v160LogoPresetDraft===selectedPreset)){delete v96BrandingDraft[key];delete v160BrandingDraftVersions[key];if(key==='logo')v160LogoPresetDraft=undefined}
+  v96ApplyBranding();v96BrandingMessage(localSaveMessage(ok,'Оформление сохранено для семьи.'));return true;
+ }finally{if(v160BrandingAttempt===attempt){v160BrandingAttempt=null;v96BrandingBusy=false;if(epoch===authEpoch&&household===CONFIG.household)v96RenderBrandingChoices()}}
 }
+
 function v96ResetBranding(kind){
- if(document.getElementById('appRoot').classList.contains('auth-locked'))return Promise.resolve(false);
+ if(!v160BrandingCanWrite())return Promise.resolve(false);
  if(v96BrandingBusy){v96BrandingMessage('Дождитесь завершения сохранения и повторите сброс.');return Promise.resolve(false)}
  const kinds=kind==='all'?['logo','favicon']:[kind];if(kinds.some(key=>!['logo','favicon'].includes(key)))return Promise.resolve(false);
- for(const key of kinds){v96BrandingGeneration[key]++;v96BrandingDraft[key]=null;const input=document.getElementById(key==='logo'?'v96LogoFile':'v96FaviconFile');if(input)input.value=''}
+ for(const key of kinds){v96BrandingGeneration[key]++;v96BrandingDraft[key]=null;v160BrandingDraftVersions[key]=v160BrandingVersion(key);if(key==='logo')v160LogoPresetDraft='letter';const input=document.getElementById(key==='logo'?'v96LogoFile':'v96FaviconFile');if(input)input.value=''}
  return v96SaveBranding(kind);
 }
 
