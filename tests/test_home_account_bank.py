@@ -104,7 +104,7 @@ class HomeAccountBank(unittest.TestCase):
         self.assertAlmostEqual(result['total'], 6010.40)
         self.assertEqual(result['unknown'], 0)
         self.assertEqual(result['text'], '6 010,40 ₽')
-        self.assertEqual(result['title'], 'Общий банк семьи по всем счетам')
+        self.assertEqual(result['title'], 'Общий банк семьи')
         self.assertIn('Карта', result['names'])
         self.assertIn('Накопления', result['names'])
         self.assertNotIn('Закрытый', result['names'])
