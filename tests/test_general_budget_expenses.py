@@ -93,10 +93,10 @@ class GeneralBudgetExpenses(unittest.TestCase):
             sameHistory:JSON.stringify(state.entries)===original,
             sameOpening:JSON.stringify(state.intelligence.accounts)===opening};
         ''')
-        self.assertEqual(result['before'], 471096.79)
-        self.assertEqual(result['afterMonthChange'], 471096.79)
-        self.assertEqual(result['balances'], {'main': 471096.79})
-        self.assertEqual(result['displayed'], '471 096,79 ₽')
+        self.assertEqual(result['before'], 1282396.79)
+        self.assertEqual(result['afterMonthChange'], 1282396.79)
+        self.assertEqual(result['balances'], {'main': 1282396.79})
+        self.assertEqual(result['displayed'], '1 282 396,79 ₽')
         self.assertEqual(result['account'], 'main')
         self.assertEqual(result['effective'][:2], ['main', 'main'])
         self.assertFalse(result['effective'][2])
@@ -130,8 +130,8 @@ class GeneralBudgetExpenses(unittest.TestCase):
             unchanged:JSON.stringify(state.entries)===before,
             resolved:Object.fromEntries(state.entries.map(e=>[e.id,v157ExpenseAccountId(e)]))};
         ''')
-        self.assertEqual(result['total'], 1250)
-        self.assertEqual(result['balances'], {'main': 1000, 'saved': 250})
+        self.assertEqual(result['total'], 1349)
+        self.assertEqual(result['balances'], {'main': 1099, 'saved': 250})
         self.assertEqual(result['resolved']['unassigned'], 'main')
         self.assertEqual(result['resolved']['assigned'], 'main')
         self.assertEqual(result['resolved']['unknown-reference'], 'unknown-account')

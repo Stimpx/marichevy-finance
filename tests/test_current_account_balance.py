@@ -96,7 +96,7 @@ class CurrentAccountBalance(unittest.TestCase):
     def evaluate(self, code):
         return self.page.evaluate('async () => {' + code + '}')
 
-    def test_current_800000_replaces_old_computed_143000_without_changing_history_or_reports(self):
+    def test_current_800000_replaces_old_computed_954300_without_changing_history_or_reports(self):
         result = self.evaluate('''
           const before=currentBank(),history=JSON.stringify(state.entries),reports=captureActualReports();
           v150OpenHomeAccount('main');fillCurrentBalance(800000);const ok=await v150SaveHomeAccount();
@@ -108,13 +108,13 @@ class CurrentAccountBalance(unittest.TestCase):
             difference:v117AccountBalance('main').difference,
             pastBalance:v117LedgerAt(account,'2026-11-11').balance,backupAccepted,count:state.entries.length};
         ''')
-        self.assertEqual(result['before'], 143000)
+        self.assertEqual(result['before'], 954300)
         self.assertTrue(result['ok'])
         self.assertEqual(result['total'], 800000)
         self.assertEqual(result['text'], '800 000,00 ₽')
         self.assertEqual(result['snapshot'], 800000)
         self.assertEqual(result['difference'], 0)
-        self.assertEqual(result['pastBalance'], 143000)
+        self.assertEqual(result['pastBalance'], 954300)
         self.assertTrue(result['backupAccepted'])
         self.assertEqual(result['anchor']['version'], 1)
         self.assertEqual(result['anchor']['amount'], 800000)
@@ -266,7 +266,7 @@ class CurrentAccountBalance(unittest.TestCase):
             accounts:v117AccountRecords().length,entries:state.entries.length};
         ''')
         self.assertFalse(result['failed'])
-        self.assertEqual(result['rollback'], {'total': 143000, 'account': True, 'history': True})
+        self.assertEqual(result['rollback'], {'total': 954300, 'account': True, 'history': True})
         self.assertFalse(result['stale'])
         self.assertEqual(result['staleAccount'], {'name': 'Изменён на другом устройстве', 'hasAnchor': False})
         self.assertFalse(result['denied'])

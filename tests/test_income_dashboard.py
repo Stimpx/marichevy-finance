@@ -122,7 +122,8 @@ class IncomeDashboard(unittest.TestCase):
    go('home');renderHome();const home=Number(document.getElementById('v121HomeAvailable').textContent.replaceAll('\\u00a0','').replace(/\\s|₽/g,'').replace(',','.')),data=v150HomeBankData();go('income');const values=[];for(const period of ['all','2026-10','2026-11']){document.getElementById('incomeMonth').value=period;renderIncome();values.push(Number(document.getElementById('v159IncomeBankTotal').textContent.replaceAll('\\u00a0','').replace(/\\s|₽/g,'').replace(',','.')))}
    return {home,total:data.total,unknown:data.unknownCount,values,note:document.getElementById('v159IncomeBankNote').textContent,unchanged:JSON.stringify(state.entries)===before&&JSON.stringify(state.intelligence.accounts)===accounts};
   ''')
-  self.assertEqual(r['home'],6010.85);self.assertEqual(r['total'],6010.85);self.assertEqual(r['unknown'],1);self.assertEqual(r['values'],[6010.85]*3);self.assertRegex(r['note'].lower(),'не все|не указан|непол|неизвест|не заполн');self.assertTrue(r['unchanged'])
+  # Existing November income without an account credits the automatic shared card.
+  self.assertEqual(r['home'],7010.85);self.assertEqual(r['total'],7010.85);self.assertEqual(r['unknown'],1);self.assertEqual(r['values'],[7010.85]*3);self.assertRegex(r['note'].lower(),'не все|не указан|непол|неизвест|не заполн');self.assertTrue(r['unchanged'])
  def test_linear_charts_fit_small_and_large_screens_without_duplicated_donuts(self):
   self.assertEqual(self.page.locator('#income .donut-ring').count(),0)
   for width in [320,390,768,1280,1920]:

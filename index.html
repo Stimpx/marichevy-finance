@@ -2610,6 +2610,91 @@ body .v141-operation{display:grid;grid-template-columns:minmax(0,1fr) minmax(90p
 @media(max-width:1100px){#home>#v163HomeRecentStores{grid-template-columns:minmax(0,1fr);gap:16px}}
 @media(max-width:430px){.v163-store-row{grid-template-columns:minmax(0,1fr)}.v163-store-metrics{justify-content:space-between;text-align:left;width:100%}.v163-store-summary{align-items:flex-start}}
 </style>
+<style id="v166HomePolish">
+#home{gap:20px!important}
+#home>:is(.card,.home-top-today),#home #v163HomeRecentStores>.card{min-width:0}
+#home>:is(.card),#home #v163HomeRecentStores>.card{border:1px solid #dfe7f1;border-radius:22px;background:#fff;box-shadow:0 4px 18px #243d6009}
+#home #v121HomeSummary{padding:26px 28px;background:#fff}
+#home #v121HomeSummary .v121-home-summary-top{align-items:baseline;flex-direction:row;flex-wrap:wrap;gap:6px 18px}
+#home #v121HomeSummary .v121-home-summary-top h2{font-size:20px;line-height:1.4;letter-spacing:-.02em}
+#home #v121HomeBoundary{margin:0;font-size:12px;line-height:1.5;color:#65758d;text-align:right}
+#home #v121HomeSummary .v146-home-body{grid-template-columns:minmax(0,1.05fr) minmax(0,1.15fr);gap:24px 28px;margin-top:20px;align-items:start}
+#home #v121HomeAvailable{margin:0 0 16px;font-size:clamp(36px,3.5vw,52px);font-weight:650;line-height:1.1;letter-spacing:-.035em;color:#1e304c}
+#home #v121HomeAvailable.money-red{color:#a34e65}
+#home #v150HomeAccounts{margin:8px 0 10px}
+#home .v150-home-account{gap:5px 12px;padding:4px 0;min-height:46px;border-color:#e8edf4}
+#home .v150-home-account-name{font-size:13px;line-height:1.5;color:#344b69;font-weight:500}
+#home .v150-home-account-amount{font-size:13px;line-height:1.5;color:#293f5e}
+#home .v150-home-account small{font-size:11px;line-height:1.5;color:#68798f}
+#home .v150-home-account .btn{min-height:44px!important;padding:7px 9px!important;font-size:11px!important;line-height:1.4;background:#f7f9fd!important;border-color:#e1e8f2!important;color:#4c648a!important;box-shadow:none;white-space:normal;max-width:150px}
+#home .v150-home-account .btn:hover{background:#edf2fa!important;border-color:#c9d6e8!important;color:#304f7a!important}
+#home #v150HomeAccounts.v162-single-account .v150-home-account{grid-template-columns:minmax(0,1fr) auto;padding:0;gap:8px 12px}
+#home #v150HomeAccounts.v162-single-account .v150-home-account>.btn{grid-column:2;grid-row:1}
+#home #v150HomeAccountButton{min-height:44px!important;margin:0;padding:8px 11px!important;background:#fff!important;border-color:#dce4ef!important;color:#4d6382!important;box-shadow:none;font-size:12px!important}
+#home #v121HomeAvailableNote{margin:10px 0 0;font-size:12px;line-height:1.6;color:#60728b}
+#home #v121HomeSummary .v121-home-actions{display:flex;gap:10px;margin-top:18px;align-items:stretch}
+#home #v121HomeSummary .v121-home-actions>.btn{min-height:46px!important;padding:11px 14px!important;border-radius:12px;font-size:14px!important;line-height:1.4;white-space:normal;flex:0 1 auto}
+#home #v121HomeSummary .v146-monthly{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:stretch}
+#home #v146HomeMonthLabel{grid-column:1/-1;margin:0 0 1px;font-size:12px;line-height:1.5;font-weight:500;color:#5c708d}
+#home #v121HomeSummary .v146-metric{display:flex;flex-direction:column;min-height:166px;padding:19px 18px 17px;border-radius:16px;box-shadow:none}
+#home .v146-metric-heading{font-size:14px;line-height:1.45;font-weight:500;color:#465c79}
+#home .v146-metric>strong{font-size:clamp(24px,2.1vw,30px);font-weight:650!important;line-height:1.2;letter-spacing:-.02em;margin-top:17px}
+#home .v146-track{height:5px;margin-top:auto;flex:none}
+#home .v146-income{background:#f5faf7;border-color:#d7e7df}
+#home .v146-expense{background:#fcf7f8;border-color:#ebdce2}
+#home .v146-income>strong{color:#377560}
+#home .v146-expense>strong{color:#a25368}
+#home .v149-home-rankings{column-gap:28px;row-gap:0;padding-top:20px;border-color:#e3e9f2}
+#home .v147-home-top>h3{margin:0 0 12px;line-height:1.5;color:#344b6a;font-size:14px!important;font-weight:650!important}
+#home .v147-top-row{padding:8px 0;gap:6px 12px;align-items:baseline}
+#home .v147-top-name,#home .v147-top-value{font-size:13px;line-height:1.5}
+#home .v147-top-name{font-weight:500;color:#435a76}
+#home .v147-top-value{color:#2e4564;font-weight:600!important}
+#home .v147-top-bar{height:4px;background:#e9eef6}
+#home .v147-top-bar>span{background:#7390c7}
+#home #v149HomeTopTargets .v147-top-bar>span{background:#659b92}
+#home .v147-top-empty{font-size:13px;line-height:1.6;color:#65758d;margin:8px 0 0}
+#home .v147-top-footer{margin-top:14px}
+#home .v147-analytics-button{min-height:44px!important;padding:9px 12px!important;font-size:12px!important}
+#home>#v163HomeRecentStores{gap:20px;align-items:stretch}
+#home #v163HomeRecentStores>.card{display:flex;flex-direction:column;padding:22px 24px}
+#home #v97HomeRecent>h2,#home #v163HomeStores>h2{font-size:18px;line-height:1.4;font-weight:650;letter-spacing:-.02em;margin:0 0 5px}
+#home #v97HomeRecentNote,#home #v163HomeStorePeriod{font-size:12px;line-height:1.5;color:#667990;margin:0}
+#home #recent{margin-top:12px}
+#home #v97HomeRecent .v141-operation{padding:12px 0;gap:9px 12px}
+#home #v97HomeRecent .v141-title{font-size:14px;line-height:1.5}
+#home #v97HomeRecent .v141-meta{font-size:12px;line-height:1.55;color:#697b93}
+#home #v97HomeRecent .v141-note{font-size:12px;line-height:1.55;color:#556b86}
+#home #v97HomeRecent>.v97-home-history{align-self:flex-start;min-height:44px!important;font-size:12px!important;margin-top:auto;padding:10px 12px!important}
+#home #v97HomeRecent #recent:has(.v141-operation)+.v97-home-history{margin-top:16px}
+#home .v163-store-summary{margin:14px 0 6px;padding-bottom:12px;gap:6px 12px}
+#home .v163-store-summary>strong{font-size:16px;line-height:1.4;color:#2b4261}
+#home .v163-store-row{padding:10px 0;gap:6px 12px}
+#home .v163-store-name{font-size:13px;line-height:1.5;font-weight:500;color:#435a76}
+#home .v163-store-amount{font-size:13px;color:#2e4564;font-weight:600}
+#home .v163-store-share{font-size:12px;color:#6a7c94}
+#home .v163-store-bar{height:4px;background:#e9eef6}
+#home .v163-store-bar>span{background:#7390c7}
+#home #v163HomeStoreNote{margin:14px 0 0;font-size:12px;line-height:1.6;color:#667990}
+#home #recent>.empty,#home .v163-store-empty{margin:0;padding:20px 0;font-size:13px;line-height:1.6;color:#65758d;text-align:left}
+#home #v97HomePayments,#home #v121HomeAnalysisCard,#home #v121HomeFamilyCard{padding:22px 24px}
+#home .v97-home-card-head{align-items:center;gap:12px;margin-bottom:14px}
+#home .v97-home-card-head h2{font-size:18px;line-height:1.4;font-weight:650;letter-spacing:-.02em;margin:0 0 5px}
+#home .v97-home-card-head p,#home .v97-home-basis{font-size:12px;line-height:1.55;color:#667990}
+#home .v97-home-card-head>.btn{min-height:44px!important;font-size:12px!important;padding:9px 12px!important}
+#home #weatherCard{padding:19px 24px;border:1px solid #dfe7f1;border-radius:22px;box-shadow:0 4px 18px #243d6009;min-height:94px;background:#fff}
+#home #weatherCard .today-weather-main{flex:1 1 180px;align-items:center;gap:14px}
+#home #weatherCard.weather-offline{border-color:#e7ddc9}
+#home #weatherCard .today-weather-copy>b{font-size:25px;line-height:1.2;margin:0 0 4px;color:#2a4262}
+#home #weatherCard .today-weather-copy>span{font-size:13px;line-height:1.5;color:#536a87}
+#home #weatherCard .today-weather-copy>small{font-size:11px;line-height:1.5;margin-top:4px;color:#78869b}
+#home #v121HomeFamilyCard>summary{min-height:30px;line-height:1.5;font-size:15px;font-weight:600;color:#3a506c}
+@supports(grid-template-rows:subgrid){#home .v149-home-rankings{grid-template-rows:auto auto auto}#home .v149-home-rankings>.v147-home-top{display:grid;grid-template-rows:subgrid;grid-row:span 3;row-gap:0}}
+@media(max-width:1200px){#home #v121HomeSummary .v146-home-body{grid-template-columns:minmax(0,1fr);gap:22px}#home #v121HomeSummary .v146-metric{min-height:145px}#home .v146-metric>strong{font-size:28px}}
+@media(max-width:760px){#home{gap:16px!important}#home #v121HomeSummary,#home #v163HomeRecentStores>.card,#home #v97HomePayments,#home #v121HomeAnalysisCard,#home #v121HomeFamilyCard{padding:20px}#home>:is(.card),#home #v163HomeRecentStores>.card{border-radius:20px}#home #v121HomeSummary .v121-home-summary-top{gap:5px 12px}#home #v121HomeBoundary{font-size:11px;text-align:left}#home #v121HomeSummary .v146-home-body{margin-top:18px;gap:20px}#home #v121HomeAvailable{font-size:clamp(32px,7.8vw,42px);margin-bottom:14px}#home .v150-home-account{padding:5px 0}#home .v150-home-account .btn{min-height:44px!important}#home #v150HomeAccountButton{min-height:44px!important}#home #v121HomeSummary .v121-home-actions{margin-top:16px}#home #v121HomeSummary .v121-home-actions>.btn{min-height:46px!important;font-size:13px!important;padding:10px 12px!important;flex:1 1 140px}#home .v149-home-rankings{grid-template-columns:minmax(0,1fr);grid-template-rows:none;gap:22px;padding-top:18px}#home .v149-home-rankings>.v147-home-top{display:block;grid-row:auto}#home .v147-top-row{padding:7px 0}#home .v147-top-footer{margin-top:12px}#home #v97HomeRecent>.v97-home-history{min-height:44px!important}#home .v97-home-card-head{align-items:flex-start}#home .v97-home-card-head>.btn{min-height:44px!important}#home #weatherCard{padding:18px 20px;border-radius:20px}#home #weatherCard .today-weather-main{gap:10px}}
+@media(max-width:520px){#home #v121HomeSummary,#home #v163HomeRecentStores>.card,#home #v97HomePayments,#home #v121HomeAnalysisCard,#home #v121HomeFamilyCard{padding:18px}#home #v121HomeSummary .v146-monthly{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}#home #v121HomeSummary .v146-metric{padding:14px 12px 13px;min-height:128px}#home .v146-metric-heading{font-size:13px}#home .v146-metric>strong{font-size:clamp(20px,5.2vw,24px);margin-top:15px;line-height:1.25}#home .v146-track{height:4px}#home #v121HomeSummary .v150-home-account{grid-template-columns:minmax(0,1fr) auto;gap:3px 10px}#home #v121HomeSummary .v150-home-account>.btn{grid-column:1/-1;justify-self:start}#home #v150HomeAccounts.v162-single-account .v150-home-account>.btn{grid-column:2;grid-row:1}#home .v147-top-name,#home .v147-top-value{font-size:12px}#home #v163HomeRecentStores{gap:16px}}
+@media(max-width:360px){#home #v121HomeSummary .v121-home-actions{display:grid;grid-template-columns:minmax(0,1fr)}#home #v121HomeSummary .v121-home-actions>.btn{width:100%}#home #v121HomeSummary .v146-monthly{grid-template-columns:minmax(0,1fr)}#home #v121HomeSummary .v146-metric{min-height:132px;padding:16px}#home .v146-metric>strong{font-size:26px}#home #v150HomeAccounts.v162-single-account .v150-home-account{grid-template-columns:minmax(0,1fr)}#home #v150HomeAccounts.v162-single-account .v150-home-account>.btn{grid-column:1;grid-row:auto}}
+</style>
 </head>
 <body>
 <noscript><div style="padding:14px;background:#fff3cd;color:#664d03;text-align:center;font:600 14px/1.4 system-ui">Для работы «Семейный капитал» необходимо включить JavaScript.</div></noscript>
@@ -2818,7 +2903,7 @@ body .v141-operation{display:grid;grid-template-columns:minmax(0,1fr) minmax(90p
   <div class="field"><label for="v117SnapshotAmount">Фактический остаток, ₽</label><input id="v117SnapshotAmount" type="text" inputmode="decimal" placeholder="Сумма из банка или наличные"></div>
   <div class="field"><label>По внесённым операциям</label><strong id="v117ReconcileExpected">—</strong></div>
  </div><div class="actions"><button class="btn primary" type="button" onclick="v117SaveSnapshot()">Сохранить сверку</button></div><p id="v117SnapshotMessage" class="hint" role="status"></p></section>
- <div id="v157SharedExpenseBudget" class="card v157-shared-budget" hidden><p id="v157SharedExpenseSummary" class="hint"></p><details id="v157SharedExpenseSettings"><summary>Счёт для расходов без привязки</summary><div class="v157-shared-form"><label for="v157SharedExpenseAccount">Общий счёт</label><select id="v157SharedExpenseAccount" onchange="v157SharedExpenseChanged()"></select><p id="v157SharedExpensePreview" class="hint"></p><div class="actions"><button id="v157SharedExpenseSave" type="button" class="btn small" onclick="v157SaveSharedExpenseAccount()">Сохранить</button><button id="v157SharedExpenseCancel" type="button" class="btn small" onclick="v157CancelSharedExpenseEdit()" hidden>Отмена</button></div><p id="v157SharedExpenseError" class="error" role="alert" hidden></p></div></details></div>
+ <div id="v157SharedExpenseBudget" class="card v157-shared-budget" hidden><p id="v157SharedExpenseSummary" class="hint"></p><details id="v157SharedExpenseSettings"><summary>Общий счёт для доходов и расходов</summary><div class="v157-shared-form"><label for="v157SharedExpenseAccount">Общий счёт</label><select id="v157SharedExpenseAccount" onchange="v157SharedExpenseChanged()"></select><p id="v157SharedExpensePreview" class="hint"></p><div class="actions"><button id="v157SharedExpenseSave" type="button" class="btn small" onclick="v157SaveSharedExpenseAccount()">Сохранить</button><button id="v157SharedExpenseCancel" type="button" class="btn small" onclick="v157CancelSharedExpenseEdit()" hidden>Отмена</button></div><p id="v157SharedExpenseError" class="error" role="alert" hidden></p></div></details></div>
  <details class="card" id="v117ArchivedAccounts"><summary>Закрытые и скрытые счета</summary><div id="v117ArchivedList"></div></details>
 </section>
 <section class="section" id="today">
@@ -4283,6 +4368,7 @@ function validateBackup(raw){
   if(e.mortgageAllocation!==undefined){const r=e.mortgageAllocation;if(!object(r)||r.version!==1||!['regular','early'].includes(r.kind)||!isValidCalendarDate(r.date)||!['amount','principal','interest','charges','extraPrincipal'].every(k=>v125Money(r[k]))||v125Cents(r.principal)+v125Cents(r.interest)+v125Cents(r.charges)!==v125Cents(r.amount)||r.extraPrincipal>r.principal||(r.kind==='early'&&r.extraPrincipal!==r.principal)||(r.kind==='regular'&&!isValidCalendarDate(r.dueDate)))fail(p+'.mortgageAllocation')}
   if(e.balanceAdjustment===true){if(e.type!=='transfer'||!Number.isFinite(Number(e.amount))||Number(e.amount)<=0||![1,-1].includes(e.adjustmentDirection))fail(p+'.balanceAdjustment');id(e.accountId,p+'.accountId');id(e.reconciliationRevision,p+'.reconciliationRevision');number(e.expectedBalance,p+'.expectedBalance');number(e.actualBalance,p+'.actualBalance')}
   if(e.unassignedExpenseVersion!==undefined&&(e.unassignedExpenseVersion!==1||e.balanceAdjustment!==true))fail(p+'.unassignedExpenseVersion');
+  if(e.unassignedIncomeVersion!==undefined&&(e.unassignedIncomeVersion!==1||e.balanceAdjustment!==true))fail(p+'.unassignedIncomeVersion');
  });
  const eventStamp=(value,path)=>{text(value,path);if(value!==undefined&&(!value||!Number.isFinite(Date.parse(value))))fail(path)};
  const goalRow=(g,p)=>{
@@ -5394,6 +5480,12 @@ function v161CurrentBalanceAnchor(account,asOf=today(),cutoff=null){
  return selected;
 }
 function v161EntryAfterAnchor(entry,anchor,existingIds){if(!anchor)return true;if(entry.date>anchor.date)return true;if(entry.date<anchor.date)return false;if(Array.isArray(anchor.existingSameDayEntryIds))return !(existingIds||new Set(anchor.existingSameDayEntryIds)).has(entry.id);const createdAt=Date.parse(entry.created_at||'');return Number.isFinite(createdAt)&&createdAt>Date.parse(anchor.recordedAt)}
+function v165EntryWithinCutoff(entry,asOf,cutoff,anchor=null,existingIds=null){
+ if(!cutoff||entry.date!==asOf||(entry.balanceAdjustment===true&&entry.reconciliationRevision===cutoff.revision))return true;
+ const ids=existingIds||(Array.isArray(cutoff.existingSameDayEntryIds)?new Set(cutoff.existingSameDayEntryIds):null);if(ids)return ids.has(entry.id);
+ if(anchor?.snapshotRevision&&anchor.snapshotRevision===cutoff.revision&&entry.date===anchor.date)return false;
+ const at=Date.parse(entry.created_at||'');return !Number.isFinite(at)||!(at>Date.parse(cutoff.at));
+}
 function v161EntryCoveredByCurrentBalance(entry,context){
  if(!['income','expense','transfer','cash'].includes(entry?.type)||entry.balanceAdjustment===true||!isValidCalendarDate(entry.date)||typeof entry.amount!=='number'||!Number.isFinite(entry.amount)||entry.amount<=0||['accountId','fromAccountId','toAccountId'].some(key=>entry[key]!==undefined&&entry[key]!==null&&entry[key]!==''))return false;
  const shared=context||v157SharedExpenseContext();return !!shared.reviewAnchors?.length&&shared.reviewAnchors.every(item=>!v161EntryAfterAnchor(entry,item.anchor,item.ids));
@@ -5410,35 +5502,46 @@ function v157SharedExpenseAccount(){
  const ordinary=candidates.filter(account=>v117LedgerSpec(account).includeInSpending);
  return ordinary.length===1?{id:ordinary[0].id,account:ordinary[0],automatic:true,invalid:false,disabled:false,reason:'single',candidates}:{id:'',account:null,automatic:false,invalid:false,disabled:false,reason:ordinary.length?'multiple':'missing',candidates};
 }
-function v157ExpenseWindow(account,asOf=today(),cutoff=null){
+function v157ExpenseWindow(account,asOf=today(),cutoff=null,flowType='expense'){
  const spec=v117LedgerSpec(account);if(!spec||spec.kind!=='asset')return null;
- const anchor=v161CurrentBalanceAnchor(account,asOf,cutoff),anchorIds=anchor&&Array.isArray(anchor.existingSameDayEntryIds)?new Set(anchor.existingSameDayEntryIds):null;let legacyDate='',legacyAt=0;
- for(const entry of v117LiveEntries())if(entry.balanceAdjustment===true&&entry.type==='transfer'&&entry.accountId===account.id&&!entry.fromAccountId&&!entry.toAccountId&&typeof entry.reconciliationRevision==='string'&&entry.reconciliationRevision.trim()&&entry.unassignedExpenseVersion!==1&&isValidCalendarDate(entry.date)&&entry.date>=spec.startDate&&entry.date<=asOf&&v161EntryAfterAnchor(entry,anchor,anchorIds)&&typeof entry.amount==='number'&&entry.amount>0&&Number.isFinite(entry.amount)&&v117ExactMoney(entry.amount)&&[1,-1].includes(entry.adjustmentDirection)){
+ const anchor=v161CurrentBalanceAnchor(account,asOf,cutoff),anchorIds=anchor&&Array.isArray(anchor.existingSameDayEntryIds)?new Set(anchor.existingSameDayEntryIds):null,cutoffIds=Array.isArray(cutoff?.existingSameDayEntryIds)?new Set(cutoff.existingSameDayEntryIds):null;let legacyDate='',legacyAt=0;
+ for(const entry of v117LiveEntries())if(entry.balanceAdjustment===true&&entry.type==='transfer'&&entry.accountId===account.id&&!entry.fromAccountId&&!entry.toAccountId&&typeof entry.reconciliationRevision==='string'&&entry.reconciliationRevision.trim()&&(flowType==='income'?entry.unassignedIncomeVersion!==1:entry.unassignedExpenseVersion!==1)&&isValidCalendarDate(entry.date)&&entry.date>=spec.startDate&&entry.date<=asOf&&v161EntryAfterAnchor(entry,anchor,anchorIds)&&v165EntryWithinCutoff(entry,asOf,cutoff,anchor,cutoffIds)&&typeof entry.amount==='number'&&entry.amount>0&&Number.isFinite(entry.amount)&&v117ExactMoney(entry.amount)&&[1,-1].includes(entry.adjustmentDirection)){
   const at=Date.parse(entry.created_at||entry.updated_at||'');
   if(entry.date>legacyDate){legacyDate=entry.date;legacyAt=Number.isFinite(at)?at:0}else if(entry.date===legacyDate)legacyAt=legacyAt&&Number.isFinite(at)?Math.max(legacyAt,at):0;
  }
  return {startDate:anchor?.date||spec.startDate,legacyDate,legacyAt,anchor,anchorIds};
 }
-function v157RawUnassignedExpense(entry){
- return entry?.type==='expense'&&entry.balanceAdjustment!==true&&!['accountId','fromAccountId','toAccountId'].some(key=>entry[key]!==undefined&&entry[key]!==null&&entry[key]!=='')&&typeof entry.amount==='number'&&Number.isFinite(entry.amount)&&entry.amount>0&&v117ExactMoney(entry.amount)&&isValidCalendarDate(entry.date);
+function v165RawUnassignedCashflow(entry){
+ return ['expense','income'].includes(entry?.type)&&entry.balanceAdjustment!==true&&!['accountId','fromAccountId','toAccountId'].some(key=>entry[key]!==undefined&&entry[key]!==null&&entry[key]!=='')&&typeof entry.amount==='number'&&Number.isFinite(entry.amount)&&entry.amount>0&&v117ExactMoney(entry.amount)&&isValidCalendarDate(entry.date);
 }
-function v157ExpenseInWindow(entry,window,asOf=today()){
- if(!window||!v157RawUnassignedExpense(entry)||entry.date<window.startDate||entry.date>asOf)return false;
+function v157RawUnassignedExpense(entry){return entry?.type==='expense'&&v165RawUnassignedCashflow(entry)}
+function v165CashflowInWindow(entry,window,asOf=today()){
+ if(!window||!v165RawUnassignedCashflow(entry)||entry.date<window.startDate||entry.date>asOf)return false;
  if(!v161EntryAfterAnchor(entry,window.anchor,window.anchorIds))return false;
  if(!window.legacyDate||entry.date>window.legacyDate)return true;
  return entry.date===window.legacyDate&&window.legacyAt>0&&Number.isFinite(Date.parse(entry.created_at||''))&&Date.parse(entry.created_at)>window.legacyAt;
 }
+function v157ExpenseInWindow(entry,window,asOf=today()){return entry?.type==='expense'&&v165CashflowInWindow(entry,window,asOf)}
 function v157ImplicitExpenseRows(accountId=v157SharedExpenseAccount().id,asOf=today()){
  const account=v117AccountRecord(accountId),window=v157ExpenseWindow(account,asOf);return account&&!account.archived?v117LiveEntries().filter(entry=>v157ExpenseInWindow(entry,window,asOf)):[];
+}
+function v165ImplicitIncomeRows(accountId=v157SharedExpenseAccount().id,asOf=today()){
+ const account=v117AccountRecord(accountId),window=v157ExpenseWindow(account,asOf,null,'income');return account&&!account.archived?v117LiveEntries().filter(entry=>entry.type==='income'&&v165CashflowInWindow(entry,window,asOf)):[];
 }
 function v157ExpenseAccountId(entry,context){
  if(typeof entry?.accountId==='string'&&entry.accountId!=='')return entry.accountId;
  if(!v157RawUnassignedExpense(entry))return '';
  const selected=context?.selected||v157SharedExpenseAccount(),window=context?.window||v157ExpenseWindow(selected.account,context?.asOf||today(),context?.cutoff);return selected.account&&v157ExpenseInWindow(entry,window,context?.asOf||today())?selected.id:'';
 }
+function v165CashflowAccountId(entry,context){
+ if(entry?.type!=='income')return v157ExpenseAccountId(entry,context);
+ if(typeof entry.accountId==='string'&&entry.accountId!=='')return entry.accountId;
+ if(!v165RawUnassignedCashflow(entry))return '';
+ const selected=context?.selected||v157SharedExpenseAccount(),window=context?.incomeWindow||v157ExpenseWindow(selected.account,context?.asOf||today(),context?.cutoff,'income');return selected.account&&v165CashflowInWindow(entry,window,context?.asOf||today())?selected.id:'';
+}
 function v157SharedExpenseContext(asOf=today(),cutoff=null){
  const selected=v157SharedExpenseAccount(),assets=v117AccountRecords().filter(account=>(v117LedgerSpec(account)?.kind||(account.kind==='debt'||account.ledger?.kind==='debt'?'debt':'asset'))==='asset'),anchors=assets.map(account=>v161CurrentBalanceAnchor(account,asOf,cutoff)),reviewAnchors=anchors.length&&anchors.every(Boolean)?anchors.map(anchor=>({anchor,ids:Array.isArray(anchor.existingSameDayEntryIds)?new Set(anchor.existingSameDayEntryIds):null})):[];
- return {selected,window:v157ExpenseWindow(selected.account,asOf,cutoff),asOf,cutoff,reviewAnchors};
+ return {selected,window:v157ExpenseWindow(selected.account,asOf,cutoff),incomeWindow:v157ExpenseWindow(selected.account,asOf,cutoff,'income'),asOf,cutoff,reviewAnchors};
 }
 function v157SharedExpenseVersion(){const preferences=state.settings?.preferences||{};return JSON.stringify([Object.hasOwn(preferences,'unassignedExpenseAccountId'),preferences.unassignedExpenseAccountId,preferences.unassignedExpenseUpdatedAt,v117AccountRecords(true).map(account=>[account.id,account.archived,account.ledger,account.updated_at])])}
 function v157SetSharedExpensePreference(id){
@@ -5457,20 +5560,22 @@ function v157PinSharedExpenseAccount(){
 }
 function v157SharedExpenseChanged(){if(v157SharedExpenseDraft)v157SharedExpenseDraft.changed=true;v157PreviewSharedExpenseAccount();const cancel=document.getElementById('v157SharedExpenseCancel');if(cancel)cancel.hidden=false}
 function v157CancelSharedExpenseEdit(){v157SharedExpenseDraft=null;v157RenderSharedExpenseBudget()}
+function v165CashflowWindowNote(window){return window?.legacyDate?'После сверки от '+fmtDate(window.legacyDate):window?.anchor?'После указания текущего остатка '+fmtDate(window.anchor.date):window?'С '+fmtDate(window.startDate):''}
+function v165SharedCashflowNote(account){const expense=v165CashflowWindowNote(v157ExpenseWindow(account)),income=v165CashflowWindowNote(v157ExpenseWindow(account,today(),null,'income'));return expense===income?expense+'.':'Доходы: '+income.toLocaleLowerCase('ru-RU')+'. Расходы: '+expense.toLocaleLowerCase('ru-RU')+'.'}
 function v157PreviewSharedExpenseAccount(){
  const field=document.getElementById('v157SharedExpenseAccount'),node=document.getElementById('v157SharedExpensePreview');if(!field||!node)return;
- const account=v157SharedExpenseCandidates().find(item=>item.id===field.value),window=v157ExpenseWindow(account),rows=account?v157ImplicitExpenseRows(account.id):[];
- node.textContent=account?'Выбор пересчитает расходы без счёта: '+rows.length+' на '+money2(sum(rows))+'. '+(window.legacyDate?'После сверки от '+fmtDate(window.legacyDate)+'.':window.anchor?'После указания текущего остатка '+fmtDate(window.anchor.date)+'.':'С '+fmtDate(window.startDate)+'.'):'Расходы без выбранного счёта будут ждать явной привязки к счёту.';
+ const account=v157SharedExpenseCandidates().find(item=>item.id===field.value),rows=account?v157ImplicitExpenseRows(account.id):[],incomes=account?v165ImplicitIncomeRows(account.id):[];
+ node.textContent=account?'Выбор пересчитает операции без счёта: доходы +'+money2(sum(incomes))+' ('+incomes.length+'), расходы −'+money2(sum(rows))+' ('+rows.length+'). '+v165SharedCashflowNote(account):'Доходы и расходы без выбранного счёта будут ждать явной привязки к счёту.';
 }
 function v157RenderSharedExpenseBudget(){
  const root=document.getElementById('v157SharedExpenseBudget');if(!root)return;
- const selected=v157SharedExpenseAccount(),rows=selected.id?v157ImplicitExpenseRows(selected.id):[],window=v157ExpenseWindow(selected.account),field=document.getElementById('v157SharedExpenseAccount');
+ const selected=v157SharedExpenseAccount(),rows=selected.id?v157ImplicitExpenseRows(selected.id):[],incomes=selected.id?v165ImplicitIncomeRows(selected.id):[],field=document.getElementById('v157SharedExpenseAccount');
  root.hidden=!selected.candidates.length&&!selected.invalid;if(root.hidden)return;
- document.getElementById('v157SharedExpenseSummary').textContent=selected.id?'С общего счёта «'+selected.account.name+'» учтены расходы без привязки: '+rows.length+' на '+money2(sum(rows))+'. '+(window.legacyDate?'После сверки от '+fmtDate(window.legacyDate)+'.':window.anchor?'После указания текущего остатка '+fmtDate(window.anchor.date)+'.':'С '+fmtDate(window.startDate)+'.'):selected.invalid?'Общий счёт недоступен. Выберите другой счёт для расходов без привязки.':selected.disabled?'Автоматическое списание расходов без счёта выключено.':'Выберите общий счёт, чтобы внесённые расходы без привязки уменьшали бюджет.';
+ document.getElementById('v157SharedExpenseSummary').textContent=selected.id?'На общем счёте «'+selected.account.name+'» учтены операции без привязки: доходы +'+money2(sum(incomes))+' ('+incomes.length+'), расходы −'+money2(sum(rows))+' ('+rows.length+'). '+v165SharedCashflowNote(selected.account):selected.invalid?'Общий счёт недоступен. Выберите другой счёт для доходов и расходов без привязки.':selected.disabled?'Автоматический учёт доходов и расходов без счёта выключен.':'Выберите общий счёт: доходы без привязки увеличивают бюджет, расходы уменьшают.';
  const sameScope=v157SharedExpenseDraft?.epoch===authEpoch&&v157SharedExpenseDraft?.household===CONFIG.household;
  if(!sameScope||!v157SharedExpenseDraft.changed){
   v157SharedExpenseDraft={epoch:authEpoch,household:CONFIG.household,version:v157SharedExpenseVersion(),changed:false};
-  field.innerHTML='<option value="__choose__" disabled>Выберите общий счёт</option><option value="">Не списывать автоматически</option>'+selected.candidates.map(account=>'<option value="'+esc(account.id)+'">'+esc(account.name)+'</option>').join('');
+  field.innerHTML='<option value="__choose__" disabled>Выберите общий счёт</option><option value="">Не учитывать автоматически</option>'+selected.candidates.map(account=>'<option value="'+esc(account.id)+'">'+esc(account.name)+'</option>').join('');
   field.value=selected.id||(selected.disabled?'':'__choose__');document.getElementById('v157SharedExpenseError').hidden=true;document.getElementById('v157SharedExpenseCancel').hidden=true;
  }
  const canWrite=v99CanWriteDirections()&&!v157SharedExpenseBusy&&!v117AccountsBusy;field.disabled=!canWrite;document.getElementById('v157SharedExpenseSave').disabled=!canWrite;document.getElementById('v157SharedExpenseCancel').disabled=v157SharedExpenseBusy;
@@ -5485,13 +5590,13 @@ async function v157SaveSharedExpenseAccount(){
  try{
   if(draft.epoch!==authEpoch||draft.household!==CONFIG.household)return false;
   if(failed||(!ok&&v89StorageFailed)){v157RestoreSharedExpensePreference(token);renderAll();return fail('Не удалось сохранить общий счёт. Повторите сохранение.');}
-  v157SharedExpenseDraft=null;renderAll();if(v99CanWriteDirections())toast(localSaveMessage(ok,'Общий счёт для расходов сохранён'));return true;
+  v157SharedExpenseDraft=null;renderAll();if(v99CanWriteDirections())toast(localSaveMessage(ok,'Общий счёт для доходов и расходов сохранён'));return true;
  }finally{v157SharedExpenseBusy=false;v117AccountsBusy=false;if(draft.epoch===authEpoch&&draft.household===CONFIG.household){v157RenderSharedExpenseBudget();v117RenderAccounts()}}
 }
 function v150HomeBankData(){
  const summary=v117AccountSummary(today()),items=(summary.items||[]).filter(item=>item.kind==='asset').map(item=>({...item,balance:Number.isFinite(item.balance)&&(item.enabled||(typeof item.account.amount==='number'&&Number.isFinite(item.account.amount)&&(!item.snapshotDate||item.snapshotDate<=today())))?item.balance:null}));
- const known=items.filter(item=>Number.isFinite(item.balance)),unknownCount=items.length-known.length,shared=v157SharedExpenseAccount(),implicitRows=shared.id?v157ImplicitExpenseRows(shared.id):[];
- return {items,debtItems:(summary.items||[]).filter(item=>item.kind==='debt'),total:known.length?sum(known.map(item=>({amount:item.balance}))):null,unknownCount,unassignedCount:summary.unassignedCount||0,sharedExpenseAccountId:shared.id,implicitExpenseCount:implicitRows.length,implicitExpenseTotal:sum(implicitRows),asOf:today()};
+ const known=items.filter(item=>Number.isFinite(item.balance)),unknownCount=items.length-known.length,shared=v157SharedExpenseAccount(),implicitRows=shared.id?v157ImplicitExpenseRows(shared.id):[],implicitIncomeRows=shared.id?v165ImplicitIncomeRows(shared.id):[];
+ return {items,debtItems:(summary.items||[]).filter(item=>item.kind==='debt'),total:known.length?sum(known.map(item=>({amount:item.balance}))):null,unknownCount,unassignedCount:summary.unassignedCount||0,sharedExpenseAccountId:shared.id,implicitExpenseCount:implicitRows.length,implicitExpenseTotal:sum(implicitRows),implicitIncomeCount:implicitIncomeRows.length,implicitIncomeTotal:sum(implicitIncomeRows),asOf:today()};
 }
 function v150RenderHomeBank(data=v150HomeBankData()){
  const root=document.getElementById('v150HomeAccounts');if(!root)return data;
@@ -6324,14 +6429,18 @@ function v119RefreshEntryAccounts(reset=false){
  const type=document.getElementById('eType')?.value,host=document.querySelector('#today .v91-form');if(!host)return;
  let box=document.getElementById('eAccounts'),prior=reset?{}:v119RawAccountFields('e');
  if(reset&&!['transfer','cash'].includes(type))prior={accountId:v119DefaultAccount()};
- const focused=box?.contains(document.activeElement),shared=type==='expense'?v157SharedExpenseAccount():null,signature=JSON.stringify([type,v119Accounts().map(a=>[a.id,a.name]),prior,shared?.id||'',shared?.account?.ledger?.currentBalanceAnchor?.recordedAt||'']);
+ const focused=box?.contains(document.activeElement),shared=['expense','income'].includes(type)?v157SharedExpenseAccount():null,signature=JSON.stringify([type,v119Accounts().map(a=>[a.id,a.name]),prior,shared?.id||'',shared?.account?.ledger?.currentBalanceAnchor?.recordedAt||'']);
  if(box&&box.dataset.signature===signature)return;
  const shell=document.createElement('div');shell.innerHTML=v119AccountFields('e',type,prior);const fresh=shell.firstElementChild;fresh.dataset.signature=signature;
  if(box)box.replaceWith(fresh);else host.querySelector('#v90Extra .form-grid').append(fresh);v119SetAccountValues('e',prior);
  if(focused)document.getElementById('eAccountId')?.focus();v110RefreshPickers();
 }
 function v119RawAccountFields(prefix){return {accountId:document.getElementById(prefix+'AccountId')?.value||'',fromAccountId:document.getElementById(prefix+'FromAccountId')?.value||'',toAccountId:document.getElementById(prefix+'ToAccountId')?.value||''}}
-function v157AccountFieldsHint(type){const shared=type==='expense'?v157SharedExpenseAccount():null;return shared?.id?(v161CurrentBalanceAnchor(shared.account)?'Новые расходы без выбранного счёта уменьшают общий счёт «'+shared.account.name+'». Покупки до указания текущего остатка уже учтены.':'Расходы без выбранного счёта после начала учёта уменьшают общий счёт «'+shared.account.name+'». Явный выбор списывает сумму с выбранного счёта.'):'Привязка влияет на расчёт выбранного счёта. Прежние операции без счёта сохраняются.'}
+function v157AccountFieldsHint(type){
+ if(!['expense','income'].includes(type))return 'Привязка влияет на расчёт выбранного счёта. Прежние операции без счёта сохраняются.';
+ const shared=v157SharedExpenseAccount();if(!shared.id)return 'Выберите счёт для этой операции или настройте общий счёт для доходов и расходов без привязки в разделе «Счета и сверка».';
+ const income=type==='income',subject=income?'Доходы':'Расходы',effect=income?'увеличивают':'уменьшают',anchor=v161CurrentBalanceAnchor(shared.account);return (anchor?'Новые '+subject.toLocaleLowerCase('ru-RU'):subject)+' без выбранного счёта '+(anchor?'':'после начала учёта ')+effect+' общий счёт «'+shared.account.name+'». '+(anchor?'Операции до указания текущего остатка уже учтены.':'Явный выбор учитывает сумму на выбранном счёте.');
+}
 function v119ShowAccountControls(prefix,type){const host=document.getElementById(prefix+'Accounts');if(!host)return;const pair=['transfer','cash'].includes(type);host.querySelector('.v119-account-single').hidden=pair;host.querySelector('.v119-account-pair').hidden=!pair;const hint=host.querySelector('small.hint');if(hint)hint.textContent=v157AccountFieldsHint(type);v110RefreshPickers()}
 function v119CheckFields(candidate){
  if(typeof v117CheckAccountFields==='function')return v117CheckAccountFields(candidate);
@@ -8926,13 +9035,12 @@ function v117LedgerAt(account,date=today(),cutoff=null){
  const anchor=v161CurrentBalanceAnchor(account,date,cutoff),base=anchor?.amount??spec.openingBalance,anchorIds=anchor&&Array.isArray(anchor.existingSameDayEntryIds)?new Set(anchor.existingSameDayEntryIds):null,cutoffIds=Array.isArray(cutoff?.existingSameDayEntryIds)?new Set(cutoff.existingSameDayEntryIds):null;
  const flows=[],adjustments=[],sharedContext=v157SharedExpenseContext(date,cutoff);let invalidCount=0,exact=v117ExactMoney(base);
  for(const entry of v117LiveEntries()){
-  const accountId=entry.type==='expense'?v157ExpenseAccountId(entry,sharedContext):entry.accountId,affects=accountId===account.id||entry.fromAccountId===account.id||entry.toAccountId===account.id;
+  const accountId=['expense','income'].includes(entry.type)?v165CashflowAccountId(entry,sharedContext):entry.accountId,affects=accountId===account.id||entry.fromAccountId===account.id||entry.toAccountId===account.id;
   if(!affects)continue;
   if(!isValidCalendarDate(entry.date)){invalidCount++;continue}
   if(entry.date<spec.startDate||entry.date>date)continue;
   if(!v161EntryAfterAnchor(entry,anchor,anchorIds))continue;
-  const sameReconciliation=entry.balanceAdjustment===true&&entry.reconciliationRevision===cutoff?.revision;
-  if(cutoff&&entry.date===date&&!sameReconciliation){if(cutoffIds){if(!cutoffIds.has(entry.id))continue}else if(anchor?.snapshotRevision&&anchor.snapshotRevision===cutoff.revision&&entry.date===anchor.date)continue;else{const at=Date.parse(entry.created_at||'');if(Number.isFinite(at)&&at>Date.parse(cutoff.at))continue}}
+  if(!v165EntryWithinCutoff(entry,date,cutoff,anchor,cutoffIds))continue;
   const amount=entry.amount;if(typeof amount!=='number'||!Number.isFinite(amount)||amount<=0){invalidCount++;continue}if(!v117ExactMoney(amount))exact=false;
   if(entry.balanceAdjustment===true){
    if(entry.type!=='transfer'||entry.accountId!==account.id||entry.fromAccountId||entry.toAccountId||![1,-1].includes(entry.adjustmentDirection)||!entry.reconciliationRevision){invalidCount++;continue}
@@ -8940,7 +9048,7 @@ function v117LedgerAt(account,date=today(),cutoff=null){
   }
   if(['income','expense'].includes(entry.type)?(!accountId||entry.fromAccountId||entry.toAccountId):(['transfer','cash'].includes(entry.type)?(!entry.fromAccountId||entry.accountId||(!entry.toAccountId&&!entry.debtRepayment)||entry.fromAccountId===entry.toAccountId):true)){invalidCount++;continue}
   let effect=0;
-  if(entry.type==='income'&&entry.accountId===account.id)effect=amount;
+  if(entry.type==='income'&&accountId===account.id)effect=amount;
   else if(entry.type==='expense'&&accountId===account.id)effect=-amount;
   else if(['transfer','cash'].includes(entry.type)){if(entry.fromAccountId===account.id)effect-=amount;if(entry.toAccountId===account.id)effect+=amount}
   flows.push({amount:effect});
@@ -8974,7 +9082,7 @@ function v117CheckAccountFields(entry,{allowArchived=false}={}){
 function v117EntryNeedsAccount(entry,sharedContext){
  if(v161EntryCoveredByCurrentBalance(entry,sharedContext))return false;
  if(entry.balanceAdjustment===true)return !entry.accountId||!v117CheckAccountFields(entry,{allowArchived:true}).ok;
- if(entry.type==='expense'&&v157RawUnassignedExpense(entry)&&v157ExpenseAccountId(entry,sharedContext))return false;
+ if(v165RawUnassignedCashflow(entry)&&v165CashflowAccountId(entry,sharedContext))return false;
  if(['income','expense'].includes(entry.type))return !entry.accountId||!v117CheckAccountFields(entry,{allowArchived:true}).ok;
  if(['transfer','cash'].includes(entry.type))return !entry.fromAccountId||(!entry.debtRepayment&&!entry.toAccountId)||!v117CheckAccountFields(entry,{allowArchived:true}).ok;
  return false;
@@ -9068,12 +9176,12 @@ async function v117AdjustAccount(id){
  if(!confirm('По учёту на дату проверки '+money2(sum([{amount:item.snapshot},{amount:-item.difference}]))+', фактически '+money2(item.snapshot)+'. Добавить отдельную корректировку '+money2(item.difference)+'? Доходы и расходы не изменятся.'))return false;
  if(epoch!==authEpoch||household!==CONFIG.household||!v117CanWrite())return false;
  item=v117AccountBalance(id);if(!item||item.account.updated_at!==oldVersion||item.account.snapshotRevision!==revision||item.difference!==expected||state.entries.some(e=>e.id===key)||state.deletedEntries?.[key]){toast('Счёт изменился. Проверьте сверку заново.');return false}
- const at=v117RecordStamp(state.deletedEntries?.[key]);state.entries.push({id:key,date:a.snapshotDate,type:'transfer',amount:Math.abs(expected),category:'Движение денег',who:'Общее',store:'Сверка · '+a.name,comment:'Корректировка остатка по проверке '+v84NoticeDate(a.snapshotDate),from:expected<0?a.name:'Корректировка остатка',to:expected>0?a.name: 'Корректировка остатка',accountId:a.id,balanceAdjustment:true,adjustmentDirection:expected>0?1:-1,reconciliationRevision:revision,...(v157SharedExpenseAccount().id===a.id?{unassignedExpenseVersion:1}:{}),expectedBalance:sum([{amount:item.snapshot},{amount:-expected}]),actualBalance:item.snapshot,created_at:at,updated_at:at});return v117PersistAccounts('Корректировка сохранена в семье');
+ const at=v117RecordStamp(state.deletedEntries?.[key]);state.entries.push({id:key,date:a.snapshotDate,type:'transfer',amount:Math.abs(expected),category:'Движение денег',who:'Общее',store:'Сверка · '+a.name,comment:'Корректировка остатка по проверке '+v84NoticeDate(a.snapshotDate),from:expected<0?a.name:'Корректировка остатка',to:expected>0?a.name: 'Корректировка остатка',accountId:a.id,balanceAdjustment:true,adjustmentDirection:expected>0?1:-1,reconciliationRevision:revision,...(v157SharedExpenseAccount().id===a.id?{unassignedExpenseVersion:1,unassignedIncomeVersion:1}:{}),expectedBalance:sum([{amount:item.snapshot},{amount:-expected}]),actualBalance:item.snapshot,created_at:at,updated_at:at});return v117PersistAccounts('Корректировка сохранена в семье');
 }
 async function v117ArchiveAccount(id,reopen=false){
- if(!v117CanWriteAccounts())return;const epoch=authEpoch,household=CONFIG.household,a=v117AccountRecord(id);if(!a)return false;const version=a.updated_at,sharedVersion=v157SharedExpenseVersion(),item=v117AccountBalance(a);if(!reopen&&item.enabled&&item.balance!==0){toast('Перед закрытием переведите остаток или погасите долг: по учёту '+money2(item.balance));return false}if(!reopen&&v157SharedExpenseAccount().id===id&&v157ImplicitExpenseRows(id).length){toast('Перед закрытием явно выберите этот счёт у расходов без привязки в истории операций.');return false}if(!confirm(reopen?'Вернуть счёт в активные?':'Скрыть счёт из активных? Записи и история сверок сохранятся.'))return false;
+ if(!v117CanWriteAccounts())return;const epoch=authEpoch,household=CONFIG.household,a=v117AccountRecord(id);if(!a)return false;const version=a.updated_at,sharedVersion=v157SharedExpenseVersion(),item=v117AccountBalance(a);if(!reopen&&item.enabled&&item.balance!==0){toast('Перед закрытием переведите остаток или погасите долг: по учёту '+money2(item.balance));return false}if(!reopen&&v157SharedExpenseAccount().id===id&&(v157ImplicitExpenseRows(id).length||v165ImplicitIncomeRows(id).length)){toast('Перед закрытием явно выберите этот счёт у доходов и расходов без привязки в истории операций.');return false}if(!confirm(reopen?'Вернуть счёт в активные?':'Скрыть счёт из активных? Записи и история сверок сохранятся.'))return false;
  if(epoch!==authEpoch||household!==CONFIG.household||!v117CanWrite())return false;
- if(v117AccountRecord(id)!==a||a.updated_at!==version||v157SharedExpenseVersion()!==sharedVersion||(!reopen&&item.enabled&&v117AccountBalance(a)?.balance!==0)||(!reopen&&v157SharedExpenseAccount().id===id&&v157ImplicitExpenseRows(id).length)){toast('Счёт изменился. Проверьте остаток ещё раз.');return false}
+ if(v117AccountRecord(id)!==a||a.updated_at!==version||v157SharedExpenseVersion()!==sharedVersion||(!reopen&&item.enabled&&v117AccountBalance(a)?.balance!==0)||(!reopen&&v157SharedExpenseAccount().id===id&&(v157ImplicitExpenseRows(id).length||v165ImplicitIncomeRows(id).length))){toast('Счёт изменился. Проверьте остаток ещё раз.');return false}
  const shared=v157SharedExpenseAccount();v157PinSharedExpenseAccount();if((!reopen&&shared.id===id)||(reopen&&!Object.hasOwn(state.settings.preferences||{},'unassignedExpenseAccountId')))v157SetSharedExpensePreference('');
  v117TouchAccount(a);a.archived=!reopen;return v117PersistAccounts(reopen?'Счёт возвращён в активные':'Счёт скрыт из активных');
 }
