@@ -81,7 +81,7 @@ class AccountNameEdit(unittest.TestCase):
           v173CloseAccountRename();v99CanWriteDirections=()=>false;renderAll();
           return {duplicate,blank,long,writes,stale,sameConcurrent:JSON.stringify(v117AccountRecord('main'))===changed,
             denied:v173OpenAccountRename('main')===false,
-            buttonsDisabled:[...document.querySelectorAll('#v150HomeAccounts .v173-account-rename')].every(button=>button.disabled)};
+            buttonsDisabled:[...document.querySelectorAll('#v150HomeAccounts [id^="v173AccountRename-"]')].every(button=>button.disabled)};
         ''')
         self.assertFalse(result['duplicate']['ok'])
         self.assertIn('уже есть', result['duplicate']['error'])
@@ -179,7 +179,7 @@ class AccountNameEdit(unittest.TestCase):
                 ...document.querySelectorAll('#v150HomeAccounts .v150-home-account,#v150HomeAccounts .v173-account-name')];
               const result={page:document.documentElement.scrollWidth<=innerWidth+1,
                 overflow:nodes.some(node=>node.scrollWidth>node.clientWidth+1),
-                controls:[...document.querySelectorAll('#v150HomeAccounts .v173-account-rename')].map(button=>({
+                controls:[...document.querySelectorAll('#v150HomeAccounts [id^="v173AccountRename-"]')].map(button=>({
                   width:button.getBoundingClientRect().width,height:button.getBoundingClientRect().height,
                   label:button.getAttribute('aria-label')}))};v173CloseAccountRename();return result;
             ''')

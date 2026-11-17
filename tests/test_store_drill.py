@@ -34,7 +34,7 @@ class StoreDrill(unittest.TestCase):
         self.assertEqual(result['data']['unknownTotal'], 350000)
         self.assertEqual(result['data']['bankExcludedTotal'], 900000)
         self.assertEqual(result['names'], ['Магазин '+str(i) for i in range(5)])
-        self.assertEqual(result['analyticsNames'], ['Магазин '+str(i) for i in range(6)])
+        self.assertEqual(result['analyticsNames'], ['Без магазина']+['Магазин '+str(i) for i in range(6)])
         self.assertEqual(result['lastStore'], {'title': 'Магазин 5', 'count': 1, 'total': 10})
         self.assertEqual(result['analyticsHeading'], 'Расходы по магазинам')
         self.assertAlmostEqual(sum(row['share'] for row in result['data']['rows']), 100)

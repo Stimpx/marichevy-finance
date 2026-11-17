@@ -136,13 +136,13 @@ class StoreSpending(unittest.TestCase):
             data:v163StoreSpending('2026-10')},
             sameHistory:JSON.stringify(state.entries)===originalStoreHistory};
         ''')
-        self.assertEqual(result['monthly']['names'][0], 'Пятёрочка')
+        self.assertEqual(result['monthly']['names'][:2], ['Без магазина', 'Пятёрочка'])
         self.assertEqual(result['monthly']['total'], 450.50)
         self.assertEqual(result['all']['data']['total'], 1970.91)
         self.assertEqual(result['all']['data']['count'], 11)
         self.assertEqual(result['all']['data']['top5'][0]['name'], 'Ozon')
         self.assertEqual(result['all']['data']['top5'][0]['amount'], 1590.26)
-        self.assertEqual(result['all']['names'][0], 'Ozon')
+        self.assertEqual(result['all']['names'][:2], ['Без магазина', 'Ozon'])
         self.assertEqual(result['all']['home'], 450.50)
         self.assertTrue(result['focusUnchanged'])
         self.assertEqual(result['october']['data']['total'], 1020.40)

@@ -61,15 +61,20 @@ class StoreBankExclusion(unittest.TestCase):
         self.assertAlmostEqual(data['rows'][0]['share'], 100.30 / 190.31 * 100)
         self.assertTrue(result['unchanged'])
         self.assertTrue(result['reportsUnchanged'])
-        for card in result['cards']:
+        for index, card in enumerate(result['cards']):
             self.assertEqual(card['count'], '9')
             self.assertTrue(card['noSummary'])
             self.assertTrue(card['noFooter'])
-            self.assertEqual(len(card['badges']), 4)
+            self.assertEqual(len(card['badges']), 4+index)
             badges = {row['name']: row for row in card['badges']}
             self.assertEqual(badges['Wildberries']['mark'], 'logo')
             self.assertEqual(badges['IKEA']['mark'], 'logo')
-            self.assertNotIn('Без магазина', badges)
+            if index:
+                self.assertEqual(card['names'][0], 'Без магазина')
+                self.assertEqual(badges['Без магазина']['mark'], 'missing')
+                self.assertEqual(badges['Без магазина']['brand'], '')
+            else:
+                self.assertNotIn('Без магазина', badges)
             self.assertEqual(badges['5Levels']['mark'], 'initials')
             for badge in card['badges']:
                 self.assertTrue(badge['local'])
@@ -156,7 +161,7 @@ class StoreBankExclusion(unittest.TestCase):
                 with self.subTest(width=width, route=route):
                     self.assertTrue(result['page'])
                     self.assertFalse(result['overflow'])
-                    self.assertEqual(result['badges'], 4)
+                    self.assertEqual(result['badges'], 5 if route=='analytics' else 4)
                     self.assertFalse(result['badImage'])
                     self.assertFalse(result['ran'])
 

@@ -81,5 +81,113 @@ class HomeMonthlyCards(unittest.TestCase):
         self.assertTrue(result['same']);self.assertEqual(result['available'],'—')
         self.assertEqual(result['cards']['income'],'350,35 ₽');self.assertEqual(result['cards']['expense'],'100,00 ₽')
 
+    def test_previous_month_comparisons_use_exact_cents_and_matching_flow_types(self):
+        result=self.evaluate('''
+          const mk=(id,type,date,amount,fields={})=>({id,type,date,amount,category:'Продукты',...fields});
+          state.entries=[mk('oct-a','income','2026-10-01',.10),mk('oct-b','income','2026-10-31',.20),
+            mk('nov-a','income','2026-11-01',.40),mk('nov-b','income','2026-11-30',.20),
+            mk('oct-food','expense','2026-10-01',.10),mk('oct-credit','expense','2026-10-31',.20,{category:'Кредит'}),
+            mk('nov-food','expense','2026-11-01',.10),mk('nov-move','transfer','2026-11-01',900),
+            mk('oct-cash','cash','2026-10-01',800),mk('dec-income','income','2026-12-01',999)];
+          const before=JSON.stringify(state);v146RenderHomeMonthly(v169HomeBalance('2026-11'));
+          return {income:v182ComparisonData(v169HomeBalance('2026-11').income,v169HomeBalance('2026-10').income,'income'),
+            expense:v182ComparisonData(v169HomeBalance('2026-11').expense,v169HomeBalance('2026-10').expense,'expense'),
+            incomeText:document.getElementById('v182HomeIncomeComparison').textContent,
+            expenseText:document.getElementById('v182HomeExpenseComparison').textContent,
+            unchanged:JSON.stringify(state)===before};
+        ''')
+        self.assertEqual((result['income']['current'],result['income']['previous'],result['income']['delta']),(0.6,0.3,0.3))
+        self.assertEqual(result['income']['percent'],100);self.assertEqual(result['income']['tone'],'good')
+        self.assertEqual((result['expense']['current'],result['expense']['previous'],result['expense']['delta']),(0.1,0.3,-0.2))
+        self.assertAlmostEqual(result['expense']['percent'],-200/3);self.assertEqual(result['expense']['tone'],'good')
+        self.assertIn('+100%',result['incomeText']);self.assertIn('−66,7%',result['expenseText'])
+        self.assertIn('К прошлому месяцу · октябрь 2026',result['incomeText']);self.assertTrue(result['unchanged'])
+
+    def test_previous_calendar_month_rolls_year_and_includes_last_day(self):
+        result=self.evaluate('''
+          state.entries=[
+            {id:'dec-first',type:'income',date:'2025-12-01',amount:20},
+            {id:'dec-last',type:'income',date:'2025-12-31',amount:30},
+            {id:'jan-income',type:'income',date:'2026-01-31',amount:100},
+            {id:'dec-expense',type:'expense',date:'2025-12-31',amount:200,category:'Продукты'},
+            {id:'nov-ignore',type:'income',date:'2025-11-30',amount:999}];
+          const select=document.getElementById('homeMonth');select.add(new Option('Январь','2026-01'));select.value='2026-01';renderHome();
+          return {previous:v182PreviousMonth(v169HomePeriod()),income:document.querySelector('#v182HomeIncomeComparison .v182-month-comparison').outerHTML,
+            expense:document.querySelector('#v182HomeExpenseComparison .v182-month-comparison').outerHTML,cards:readHomeMonthly()};
+        ''')
+        self.assertEqual(result['previous'],'2025-12');self.assertEqual(result['cards']['income'],'100,00 ₽')
+        self.assertIn('+100%',result['income']);self.assertIn('декабрь 2025',result['income'])
+        self.assertIn('−100%',result['expense']);self.assertIn('data-tone="good"',result['expense'])
+
+    def test_deleted_and_revived_records_match_current_and_previous_report_totals(self):
+        result=self.evaluate('''
+          const mk=(id,type,date,amount,updated)=>({id,type,date,amount,category:'Продукты',created_at:updated,updated_at:updated});
+          state.entries=[mk('prior-live','income','2026-10-01',100,'2026-10-01T12:00:00Z'),
+            mk('prior-deleted','income','2026-10-02',1000,'2026-10-02T12:00:00Z'),
+            mk('prior-revived','income','2026-10-03',50,'2026-11-01T12:00:00Z'),
+            mk('current-live','income','2026-11-01',300,'2026-11-01T12:00:00Z'),
+            mk('current-deleted','income','2026-11-02',9000,'2026-11-02T12:00:00Z'),
+            mk('prior-expense','expense','2026-10-03',20,'2026-10-03T12:00:00Z'),
+            mk('current-expense','expense','2026-11-03',30,'2026-11-03T12:00:00Z')];
+          state.deletedEntries={'prior-deleted':'2026-10-03T12:00:00Z','prior-revived':'2026-10-04T12:00:00Z','current-deleted':'2026-11-03T12:00:00Z'};
+          v146RenderHomeMonthly(v169HomeBalance('2026-11'));
+          const read=id=>document.querySelector('#'+id+' .v182-month-comparison');
+          return {incomeText:read('v182HomeIncomeComparison').textContent,incomeTone:read('v182HomeIncomeComparison').dataset.tone,
+            expenseText:read('v182HomeExpenseComparison').textContent,expenseTone:read('v182HomeExpenseComparison').dataset.tone};
+        ''')
+        self.assertIn('+100%',result['incomeText']);self.assertIn('+150,00',result['incomeText']);self.assertEqual(result['incomeTone'],'good')
+        self.assertIn('+50%',result['expenseText']);self.assertIn('+10,00',result['expenseText']);self.assertEqual(result['expenseTone'],'bad')
+
+    def test_zero_baseline_and_zero_current_have_no_infinite_percent(self):
+        result=self.evaluate('''
+          return [[0,0],[10,0],[0,10],[10,10]].map(([current,previous])=>{
+            state.entries=[{id:'current',type:'income',date:'2026-11-01',amount:current},
+              {id:'previous',type:'income',date:'2026-10-01',amount:previous}];
+            v146RenderHomeMonthly(v169HomeBalance('2026-11'));
+            const node=document.querySelector('#v182HomeIncomeComparison .v182-month-comparison');
+            return {data:v182ComparisonData(current,previous,'income'),change:node.querySelector('.v182-comparison-change').textContent,
+              caption:node.querySelector('.v182-comparison-period').textContent,tone:node.dataset.tone};
+          });
+        ''')
+        self.assertEqual([row['data']['percent'] for row in result],[0,None,-100,0])
+        self.assertEqual([row['tone'] for row in result],['neutral','good','bad','neutral'])
+        self.assertIn('0%',result[0]['change']);self.assertNotIn('%',result[1]['change']);self.assertIn('0 ₽',result[1]['caption'])
+        self.assertIn('−100%',result[2]['change']);self.assertIn('0%',result[3]['change'])
+        self.assertNotIn('Infinity',str(result));self.assertNotIn('NaN',str(result))
+
+    def test_all_time_clears_previous_comparison_and_month_return_is_fresh(self):
+        result=self.evaluate('''
+          const nodes=()=>['v182HomeIncomeComparison','v182HomeExpenseComparison'].map(id=>{const node=document.getElementById(id);return {hidden:node.hidden,html:node.innerHTML}});
+          const before=nodes();v146RenderHomeMonthly(v169HomeBalance('all'));const all=nodes();
+          state.entries.push({id:'september',type:'income',date:'2026-09-30',amount:500});
+          v146RenderHomeMonthly(v169HomeBalance('2026-10'));return {before,all,after:nodes(),previous:v182PreviousMonth('all'),invalid:v182PreviousMonth('2026-13')};
+        ''')
+        self.assertTrue(all(not row['hidden'] for row in result['before']))
+        self.assertTrue(all(row['hidden'] and row['html']=='' for row in result['all']))
+        self.assertIsNone(result['previous']);self.assertIsNone(result['invalid'])
+        self.assertIn('+100%',result['after'][0]['html']);self.assertIn('сентябрь 2026',result['after'][0]['html'])
+
+    def test_small_nonzero_change_is_not_labeled_zero_percent(self):
+        result=self.evaluate('''
+          return [10000.01,9999.99].map(amount=>{
+            state.entries=[{id:'current',type:'income',date:'2026-11-01',amount},
+              {id:'previous',type:'income',date:'2026-10-01',amount:10000}];
+            v146RenderHomeMonthly(v169HomeBalance('2026-11'));
+            return document.querySelector('#v182HomeIncomeComparison .v182-comparison-change').textContent;
+          });
+        ''')
+        self.assertIn('+<0,1%',result[0]);self.assertIn('+0,01',result[0])
+        self.assertIn('−<0,1%',result[1]);self.assertIn('−0,01',result[1])
+
+    def test_previous_month_edit_and_delete_refresh_comparison_without_changing_current_total(self):
+        result=self.evaluate('''
+          saveAll=async()=>true;openEdit('prior-income');document.getElementById('xAmount').value='2000';await saveEdit();
+          const afterEdit=document.getElementById('v182HomeIncomeComparison').textContent,currentAfterEdit=readHomeMonthly().income;
+          await deleteEntry('prior-income');return {afterEdit,currentAfterEdit,afterDelete:document.getElementById('v182HomeIncomeComparison').textContent,currentAfterDelete:readHomeMonthly().income};
+        ''')
+        self.assertIn('−82,5%',result['afterEdit']);self.assertIn('−1\u00a0649,65',result['afterEdit'])
+        self.assertNotIn('%',result['afterDelete']);self.assertIn('0 ₽',result['afterDelete'])
+        self.assertEqual(result['currentAfterEdit'],'350,35 ₽');self.assertEqual(result['currentAfterDelete'],'350,35 ₽')
+
 
 if __name__=='__main__':unittest.main(verbosity=2)
