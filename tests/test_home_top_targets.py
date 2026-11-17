@@ -175,7 +175,7 @@ class HomeTopTargets(unittest.TestCase):
         self.assertEqual([row['name'] for row in result['fewer']], ['Алиса', 'Дени'])
         self.assertEqual([row['amount'] for row in result['fewer']], ['12,25 ₽', '5,50 ₽'])
         self.assertEqual(result['emptyRows'], [])
-        self.assertIn('Расходов за этот месяц пока нет', result['emptyText'])
+        self.assertIn('Расходов за выбранный период пока нет', result['emptyText'])
 
     def test_actual_month_change_refreshes_targets_without_mutating_history(self):
         result = self.evaluate('''

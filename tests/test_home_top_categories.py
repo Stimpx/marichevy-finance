@@ -59,7 +59,7 @@ class HomeTopCategories(unittest.TestCase):
         result=self.evaluate('''state.entries=[topTestEntry('one','Продукты',12.25),topTestEntry('two','Дом',5.50),topTestEntry('not-expense','Доход',10000,{type:'income'})];renderHome();const fewer=readHomeTop();state.entries=[];renderHome();return {fewer,emptyRows:readHomeTop(),emptyText:document.getElementById('v147HomeTopList').textContent};''')
         self.assertEqual([row['name'] for row in result['fewer']],['Продукты','Дом и быт'])
         self.assertEqual([row['amount'] for row in result['fewer']],['12,25 ₽','5,50 ₽'])
-        self.assertEqual(result['emptyRows'],[]);self.assertIn('Расходов за этот месяц пока нет',result['emptyText'])
+        self.assertEqual(result['emptyRows'],[]);self.assertIn('Расходов за выбранный период пока нет',result['emptyText'])
 
     def test_actual_month_change_refreshes_ranking_without_mutating_records(self):
         result=self.evaluate('''const select=document.getElementById('homeMonth');select.value='2026-10';select.dispatchEvent(new Event('change',{bubbles:true}));return {rows:readHomeTop(),month:homeMonth(),unchanged:JSON.stringify(state.entries)===originalTopLedger};''')
