@@ -87,6 +87,7 @@ class HistoryDayGroups(unittest.TestCase):
     def test_add_date_edit_delete_and_undo_rebuild_day_membership_and_sums(self):
         result = self.evaluate('''
           historySet('fType','expense');openEntry('expense');document.getElementById('eAmount').value='10.10';
+          document.getElementById('eDate').value='2026-11-12';
           v90Choose('Продукты');v133ChooseRecipient('eBeneficiary','Сергей');await addEntry();
           const added=state.entries.at(-1);go('history');const afterAdd=readHistoryDays();
           openEdit(added.id);document.getElementById('xDate').value='2026-11-02';document.getElementById('xAmount').value='20.20';await saveEdit();go('history');const afterEdit=readHistoryDays();

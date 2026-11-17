@@ -1,4 +1,4 @@
-"""Store spending uses real period expenses, canonical merchants and whole-period shares.
+"""Named-store spending uses canonical merchants and shares of named purchases.
 
 Run: python -m unittest discover -s tests -p test_store_spending.py
 Every browser request is isolated synthetic data; external requests are blocked.
@@ -78,16 +78,15 @@ class StoreSpending(unittest.TestCase):
     def evaluate(self, code):
         return self.page.evaluate('async () => {' + code + '}')
 
-    def test_top_five_use_exact_cents_and_shares_of_all_period_expenses(self):
+    def test_top_five_use_exact_cents_and_shares_of_named_period_purchases(self):
         result = self.evaluate('''
           const beforeIncome=v111MonthBalance('2026-11').income,
             beforeExpense=v111MonthBalance('2026-11').expense,data=v163StoreSpending('2026-11');
           renderHome();renderHome();
           return {data,names:storeNames('#v163HomeStoresList'),
-            totalText:storeTotalText('v163HomeStoreTotal'),
-            note:document.getElementById('v163HomeStoreNote').textContent,
+            summaryRemoved:!document.querySelector('#v163HomeStores .v163-store-summary'),
+            footerRemoved:!document.getElementById('v163HomeStoreNote'),
             excludedAttribute:document.getElementById('v163HomeStores').dataset.excludedCount,
-            summary:document.querySelector('#v163HomeStores .v163-store-summary>span').textContent,
             rowAmounts:[...document.querySelectorAll('#v163HomeStoresList .v163-store-amount')].map(e=>e.textContent.replaceAll('\\u00a0',' ')),
             sameHistory:JSON.stringify(state.entries)===originalStoreHistory,
             sameIncome:v111MonthBalance('2026-11').income===beforeIncome,
@@ -95,27 +94,25 @@ class StoreSpending(unittest.TestCase):
         ''')
         data = result['data']
         self.assertEqual(data['period'], '2026-11')
-        self.assertEqual(data['total'], 505)
-        self.assertEqual(data['count'], 10)
+        self.assertEqual(data['total'], 450.50)
+        self.assertEqual(data['count'], 8)
         self.assertEqual(data['excludedCount'], 0)
         self.assertEqual(data['unknownTotal'], 54.50)
         self.assertEqual(data['unknownCount'], 2)
-        self.assertEqual(len(data['rows']), 7)
+        self.assertEqual(len(data['rows']), 6)
         self.assertEqual([row['name'] for row in data['top5']],
                          ['Пятёрочка', 'Ozon', 'Wildberries', 'Аптека у дома', 'Самокат'])
         self.assertEqual([row['amount'] for row in data['top5']],
                          [100.30, 90.10, 80.01, 70.02, 60.03])
         self.assertEqual([row['count'] for row in data['top5']], [2, 2, 1, 1, 1])
-        self.assertEqual(sum(round(row['amount'] * 100) for row in data['rows']), 50500)
+        self.assertEqual(sum(round(row['amount'] * 100) for row in data['rows']), 45050)
         for row in data['rows']:
-            self.assertAlmostEqual(row['share'], row['amount'] / 505 * 100, places=8)
-        self.assertLess(sum(row['share'] for row in data['top5']), 80)
+            self.assertAlmostEqual(row['share'], row['amount'] / 450.50 * 100, places=8)
+        self.assertLess(sum(row['share'] for row in data['top5']), 90)
         self.assertEqual(result['names'], [row['name'] for row in data['top5']])
-        self.assertIn('505,00 ₽', result['totalText'])
-        self.assertIn('Доля от всех расходов', result['note'])
-        self.assertNotIn('не учтено записей', result['note'])
+        self.assertTrue(result['summaryRemoved'])
+        self.assertTrue(result['footerRemoved'])
         self.assertEqual(result['excludedAttribute'], '0')
-        self.assertEqual(result['summary'], 'Расходы за период')
         self.assertEqual(result['rowAmounts'],
                          ['100,30 ₽', '90,10 ₽', '80,01 ₽', '70,02 ₽', '60,03 ₽'])
         self.assertTrue(result['sameHistory'])
@@ -126,32 +123,30 @@ class StoreSpending(unittest.TestCase):
         result = self.evaluate('''
           go('analytics');const scope=document.getElementById('analyticsScope'),
             period=document.getElementById('analyticsMonth');
-          const monthly={names:storeNames('#v163AnalyticsStoresList'),total:storeTotalText('v163AnalyticsStoreTotal')};
+          const monthly={names:storeNames('#v163AnalyticsStoresList'),total:v163StoreSpending('2026-11').total};
           scope.value='all';scope.dispatchEvent(new Event('change',{bubbles:true}));
           const all={data:v163StoreSpending('all'),names:storeNames('#v163AnalyticsStoresList'),
-            total:storeTotalText('v163AnalyticsStoreTotal'),home:storeTotalText('v163HomeStoreTotal')};
+            home:v163StoreSpending(homeMonth()).total};
           const unchangedCard=document.getElementById('v163AnalyticsStoresList').textContent;
           v81SetFocus('auto');v84Drill('person','Сергей','analytics');
           const focusUnchanged=document.getElementById('v163AnalyticsStoresList').textContent===unchangedCard;
           v84CloseDrill();scope.value='month';scope.dispatchEvent(new Event('change',{bubbles:true}));
           period.value='2026-10';period.dispatchEvent(new Event('change',{bubbles:true}));
           return {monthly,all,focusUnchanged,october:{names:storeNames('#v163AnalyticsStoresList'),
-            total:storeTotalText('v163AnalyticsStoreTotal'),data:v163StoreSpending('2026-10')},
+            data:v163StoreSpending('2026-10')},
             sameHistory:JSON.stringify(state.entries)===originalStoreHistory};
         ''')
         self.assertEqual(result['monthly']['names'][0], 'Пятёрочка')
-        self.assertIn('505,00 ₽', result['monthly']['total'])
-        self.assertEqual(result['all']['data']['total'], 2025.41)
-        self.assertEqual(result['all']['data']['count'], 13)
+        self.assertEqual(result['monthly']['total'], 450.50)
+        self.assertEqual(result['all']['data']['total'], 1970.91)
+        self.assertEqual(result['all']['data']['count'], 11)
         self.assertEqual(result['all']['data']['top5'][0]['name'], 'Ozon')
         self.assertEqual(result['all']['data']['top5'][0]['amount'], 1590.26)
         self.assertEqual(result['all']['names'][0], 'Ozon')
-        self.assertIn('2 025,41 ₽', result['all']['total'])
-        self.assertIn('505,00 ₽', result['all']['home'])
+        self.assertEqual(result['all']['home'], 450.50)
         self.assertTrue(result['focusUnchanged'])
         self.assertEqual(result['october']['data']['total'], 1020.40)
         self.assertEqual(result['october']['names'], ['Ozon', 'Старая лавка'])
-        self.assertIn('1 020,40 ₽', result['october']['total'])
         self.assertTrue(result['sameHistory'])
 
     def test_merchant_aliases_and_generic_names_merge_without_guessing_unknown_merchants(self):
@@ -168,7 +163,7 @@ class StoreSpending(unittest.TestCase):
           return {data,unchanged:JSON.stringify(state.entries)===before};
         ''')
         rows = {row['name']: row for row in result['data']['rows']}
-        self.assertEqual(result['data']['total'], 32.68)
+        self.assertEqual(result['data']['total'], 24.58)
         self.assertEqual(rows['Пятёрочка']['amount'], 11.35)
         self.assertEqual(rows['Пятёрочка']['count'], 3)
         local = next(row for row in result['data']['rows'] if row['name'].casefold() == 'местная лавка')
@@ -179,8 +174,8 @@ class StoreSpending(unittest.TestCase):
         self.assertIn('Точка 1', rows)
         with_punctuation = next(row for row in result['data']['rows'] if row['amount'] == 1.11)
         self.assertNotEqual(with_punctuation['key'], rows['Точка 1']['key'])
-        self.assertEqual(rows['Без магазина']['amount'], 8.10)
-        self.assertEqual(rows['Без магазина']['count'], 4)
+        self.assertNotIn('Без магазина', rows)
+        self.assertEqual(result['data']['unknownCount'], 4)
         self.assertEqual(result['data']['unknownTotal'], 8.10)
         self.assertTrue(result['unchanged'])
 
@@ -201,24 +196,15 @@ class StoreSpending(unittest.TestCase):
           state.deletedEntries={deleted:'2026-11-06T12:00:00.000Z'};
           const monthly=v163StoreSpending('2026-11'),all=v163StoreSpending('all');
           v163RenderStoreSpending('home','2026-11');v163RenderStoreSpending('analytics','all');
-          const omissions={home:document.getElementById('v163HomeStoreNote').textContent,
-            analytics:document.getElementById('v163AnalyticsStoreNote').textContent,
-            homeAttribute:document.getElementById('v163HomeStores').dataset.excludedCount,
-            allAttribute:document.getElementById('v163AnalyticsStores').dataset.excludedCount,
-            summary:document.querySelector('#v163HomeStores .v163-store-summary>span').textContent};
-          const invalidEntries=state.entries;state.entries=invalidEntries.filter(e=>e.id==='bad-amount');
-          v163RenderStoreSpending('home','2026-11');
-          const invalidOnly={data:v163StoreSpending('2026-11'),
-            note:document.getElementById('v163HomeStoreNote').textContent,
-            hidden:document.getElementById('v163HomeStoreNote').hidden};
-          state.entries=invalidEntries.filter(e=>['income','transfer'].includes(e.id));
+          const attributes={home:document.getElementById('v163HomeStores').dataset.excludedCount,
+            all:document.getElementById('v163AnalyticsStores').dataset.excludedCount};
+          state.entries=state.entries.filter(e=>['income','transfer'].includes(e.id));
           const before=JSON.stringify(state.entries);renderAll();
-          return {monthly,all,omissions,invalidOnly,empty:v163StoreSpending('2026-11'),
+          return {monthly,all,attributes,empty:v163StoreSpending('2026-11'),
             homeRows:document.querySelectorAll('#v163HomeStoresList .v163-store-row').length,
             analyticsRows:document.querySelectorAll('#v163AnalyticsStoresList .v163-store-row').length,
             homeText:document.getElementById('v163HomeStoresList').textContent,
-            emptyNote:document.getElementById('v163HomeStoreNote').textContent,
-            emptyNoteHidden:document.getElementById('v163HomeStoreNote').hidden,
+            noExtraText:!document.querySelector('#v163HomeStores .v163-store-summary,#v163AnalyticsStores .v163-store-summary,#v163HomeStoreNote,#v163AnalyticsStoreNote'),
             unchanged:JSON.stringify(state.entries)===before};
         ''')
         self.assertEqual(result['monthly']['total'], .30)
@@ -227,26 +213,17 @@ class StoreSpending(unittest.TestCase):
         self.assertEqual(result['all']['total'], .70)
         self.assertEqual(result['all']['count'], 3)
         self.assertEqual(result['all']['excludedCount'], 8)
-        self.assertEqual(result['omissions']['homeAttribute'], '7')
-        self.assertEqual(result['omissions']['allAttribute'], '8')
-        self.assertEqual(result['omissions']['summary'], 'Учтённые расходы')
-        self.assertIn('Доля от учтённых расходов', result['omissions']['home'])
-        self.assertIn('В топе не учтено записей: 7.', result['omissions']['home'])
-        self.assertIn('В топе не учтено записей: 8.', result['omissions']['analytics'])
-        self.assertEqual(result['invalidOnly']['data']['total'], 0)
-        self.assertEqual(result['invalidOnly']['data']['excludedCount'], 1)
-        self.assertIn('В топе не учтено записей: 1.', result['invalidOnly']['note'])
-        self.assertFalse(result['invalidOnly']['hidden'])
+        self.assertEqual(result['attributes'], {'home': '7', 'all': '8'})
         self.assertEqual(result['empty']['total'], 0)
         self.assertEqual(result['empty']['excludedCount'], 0)
         self.assertEqual(result['empty']['rows'], [])
         self.assertEqual(result['empty']['top5'], [])
         self.assertEqual(result['homeRows'], 0)
         self.assertEqual(result['analyticsRows'], 0)
+        self.assertIn('покупок с указанным магазином пока нет', result['homeText'])
         self.assertNotIn('NaN', result['homeText'])
         self.assertNotIn('Infinity', result['homeText'])
-        self.assertNotIn('не учтено записей', result['emptyNote'])
-        self.assertTrue(result['emptyNoteHidden'])
+        self.assertTrue(result['noExtraText'])
         self.assertTrue(result['unchanged'])
 
     def test_store_labels_are_escaped_in_both_cards_and_prototype_names_remain_data(self):
@@ -281,7 +258,6 @@ class StoreSpending(unittest.TestCase):
           v90Choose('Продукты');document.getElementById('eStore').value='Новый магазин';
           document.getElementById('eDate').value=today();await addEntry();const added=state.entries.at(-1);
           const read=()=>({home:v163StoreSpending(homeMonth()),all:v163StoreSpending('all'),
-            homeText:storeTotalText('v163HomeStoreTotal'),allText:storeTotalText('v163AnalyticsStoreTotal'),
             homeNames:storeNames('#v163HomeStoresList'),allNames:storeNames('#v163AnalyticsStoresList')});
           const afterAdd=read();openEdit(added.id);document.getElementById('xAmount').value='50.05';
           document.getElementById('xStore').value='ozon.ru';await saveEdit();const afterEdit=read();
@@ -292,18 +268,12 @@ class StoreSpending(unittest.TestCase):
         self.assertEqual(result['afterAdd']['home']['total'], 350.35)
         self.assertEqual(result['afterAdd']['all']['total'], 360.55)
         self.assertEqual(result['afterAdd']['homeNames'], ['Новый магазин', 'Ozon'])
-        self.assertIn('350,35 ₽', result['afterAdd']['homeText'])
-        self.assertIn('360,55 ₽', result['afterAdd']['allText'])
         self.assertEqual(result['afterEdit']['home']['total'], 150.15)
         self.assertEqual(result['afterEdit']['all']['total'], 160.35)
         self.assertEqual(result['afterEdit']['homeNames'], ['Ozon'])
         self.assertEqual(result['afterEdit']['allNames'], ['Ozon'])
-        self.assertIn('150,15 ₽', result['afterEdit']['homeText'])
-        self.assertIn('160,35 ₽', result['afterEdit']['allText'])
         self.assertEqual(result['afterDelete']['home']['total'], 100.10)
         self.assertEqual(result['afterDelete']['all']['total'], 110.30)
-        self.assertIn('100,10 ₽', result['afterDelete']['homeText'])
-        self.assertIn('110,30 ₽', result['afterDelete']['allText'])
         self.assertEqual(result['scope'], 'all')
         self.assertTrue(result['oldUnchanged'])
 

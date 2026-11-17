@@ -110,7 +110,9 @@ class AllTimeFilters(unittest.TestCase):
             forecastMonth:homeMonth(),cards:periodCards(),carry:v169HomeBalance(),
             categories:v147HomeTopCategories('all'),targets:v149HomeTopTargets('all'),
             store:v163StoreSpending('all'),bank,afterBank:v150HomeBankData().total,
-            shownStoreTotal:periodNumber('v163HomeStoreTotal'),unchanged:periodUnchanged()};
+            shownStoreTotal:Number(document.querySelector('#v163HomeStoresList .v163-store-amount').textContent.replace(/[^0-9,.-]/g,'').replace(',','.')),
+            shownStorePeriod:document.getElementById('v163HomeStores').dataset.period,
+            unchanged:periodUnchanged()};
         ''')
         self.assertEqual((data['selected'], data['report'], data['forecastMonth']), ('all', 'all', '2026-11'))
         self.assertEqual((data['cards']['income'], data['cards']['expense']), (1700.31, 200.65))
@@ -121,6 +123,7 @@ class AllTimeFilters(unittest.TestCase):
         self.assertEqual(dict(data['targets']), {'Сергей': 100.30, 'Автомобиль': 50.15, 'Виктория': 50.20})
         self.assertEqual((data['store']['total'], data['store']['count']), (200.65, 5))
         self.assertEqual(data['shownStoreTotal'], 200.65)
+        self.assertEqual(data['shownStorePeriod'], 'all')
         self.assertEqual(data['afterBank'], data['bank'])
         self.assertTrue(data['unchanged'])
 

@@ -39,8 +39,8 @@ class StoreBankExclusion(unittest.TestCase):
             allExpense:before.expenses,cards:['v163Home','v163Analytics'].map(prefix=>({
               names:storeNames('#'+prefix+'StoresList'),
               count:document.getElementById(prefix+'Stores').dataset.bankExcludedCount,
-              summary:document.querySelector('#'+prefix+'Stores .v163-store-summary>span').textContent,
-              note:document.getElementById(prefix+'StoreNote').textContent,
+              noSummary:!document.querySelector('#'+prefix+'Stores .v163-store-summary'),
+              noFooter:!document.getElementById(prefix+'StoreNote'),
               badges:[...document.querySelectorAll('#'+prefix+'StoresList .v163-store-identity')].map(node=>({
                 name:node.querySelector('.v163-store-name').textContent,
                 mark:node.querySelector('.v96-merchant-badge')?.dataset.merchantMark,
@@ -49,28 +49,27 @@ class StoreBankExclusion(unittest.TestCase):
                 decorative:node.querySelector('.v96-merchant-badge')?.getAttribute('aria-hidden')}))}))};
         ''')
         data = result['data']
-        self.assertEqual(data['total'], 240.31)
-        self.assertEqual(data['count'], 6)
+        self.assertEqual(data['total'], 190.31)
+        self.assertEqual(data['count'], 5)
         self.assertEqual(data['bankExcludedCount'], 9)
         self.assertEqual(data['bankExcludedTotal'], 201923.26)
         self.assertEqual(data['excludedCount'], 0)
         self.assertEqual(result['allExpense'], 202163.57)
         self.assertEqual([row['name'] for row in data['rows']],
-                         ['Wildberries', 'Без магазина', 'IKEA', '5Levels', 'Банк семян'])
+                         ['Wildberries', 'IKEA', '5Levels', 'Банк семян'])
         self.assertAlmostEqual(sum(row['share'] for row in data['rows']), 100)
-        self.assertAlmostEqual(data['rows'][0]['share'], 100.30 / 240.31 * 100)
+        self.assertAlmostEqual(data['rows'][0]['share'], 100.30 / 190.31 * 100)
         self.assertTrue(result['unchanged'])
         self.assertTrue(result['reportsUnchanged'])
         for card in result['cards']:
             self.assertEqual(card['count'], '9')
-            self.assertEqual(card['summary'], 'Покупки за период')
-            self.assertIn('Доля расходов без банковских платежей.', card['note'])
-            self.assertIn('201 923,26', card['note'].replace('\xa0', ' '))
-            self.assertEqual(len(card['badges']), 5)
+            self.assertTrue(card['noSummary'])
+            self.assertTrue(card['noFooter'])
+            self.assertEqual(len(card['badges']), 4)
             badges = {row['name']: row for row in card['badges']}
             self.assertEqual(badges['Wildberries']['mark'], 'logo')
             self.assertEqual(badges['IKEA']['mark'], 'logo')
-            self.assertEqual(badges['Без магазина']['mark'], 'missing')
+            self.assertNotIn('Без магазина', badges)
             self.assertEqual(badges['5Levels']['mark'], 'initials')
             for badge in card['badges']:
                 self.assertTrue(badge['local'])
@@ -98,10 +97,10 @@ class StoreBankExclusion(unittest.TestCase):
           state.entries=state.entries.filter(row=>row.id==='t-bank');
           v163RenderStoreSpending('home','2026-11');const bankOnly={data:v163StoreSpending('2026-11'),
             text:document.getElementById('v163HomeStoresList').textContent,
-            note:document.getElementById('v163HomeStoreNote').textContent};
+            noFooter:!document.getElementById('v163HomeStoreNote')};
           state.entries=[storeEntry('only-shop',1,'Банк семян')];v163RenderStoreSpending('home','2026-11');
-          const noBank={note:document.getElementById('v163HomeStoreNote').textContent,
-            summary:document.querySelector('#v163HomeStores .v163-store-summary>span').textContent};
+          const noBank={noFooter:!document.getElementById('v163HomeStoreNote'),
+            noSummary:!document.querySelector('#v163HomeStores .v163-store-summary')};
           const ambiguousNames=['Альфа','Открытие','Халва','Мокка','Mokka','Подели','Долями','Русский Стандарт'];
           state.entries=ambiguousNames.flatMap((name,index)=>[
             storeEntry('retail-'+index,1,name,{category:index%2?'Продукты':'Кафе и доставка'}),
@@ -119,11 +118,11 @@ class StoreBankExclusion(unittest.TestCase):
         self.assertEqual(result['allPeriod'], 'За всё время')
         self.assertEqual(result['bankOnly']['data']['total'], 0)
         self.assertEqual(result['bankOnly']['data']['top5'], [])
-        self.assertIn('покупок без банковских платежей нет', result['bankOnly']['text'])
-        self.assertIn('20,02', result['bankOnly']['note'])
+        self.assertIn('покупок с указанным магазином пока нет', result['bankOnly']['text'])
+        self.assertTrue(result['bankOnly']['noFooter'])
         self.assertNotIn('NaN', result['bankOnly']['text'])
-        self.assertNotIn('Банковские', result['noBank']['note'])
-        self.assertEqual(result['noBank']['summary'], 'Расходы за период')
+        self.assertTrue(result['noBank']['noFooter'])
+        self.assertTrue(result['noBank']['noSummary'])
         self.assertEqual(result['ambiguous']['total'], 8)
         self.assertEqual(result['ambiguous']['bankExcludedTotal'], 80)
         self.assertEqual(result['ambiguous']['bankExcludedCount'], 8)
@@ -157,7 +156,7 @@ class StoreBankExclusion(unittest.TestCase):
                 with self.subTest(width=width, route=route):
                     self.assertTrue(result['page'])
                     self.assertFalse(result['overflow'])
-                    self.assertEqual(result['badges'], 5)
+                    self.assertEqual(result['badges'], 4)
                     self.assertFalse(result['badImage'])
                     self.assertFalse(result['ran'])
 
